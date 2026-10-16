@@ -1,15 +1,18 @@
 # Placeholders register
 
-Date: 16 October 2026
-Branch: `feat/newsletter`
+Date: 17 October 2026
+Branch: `feat/ministry-redesign`
 
 Everything listed here is temporary. Each item must be replaced or confirmed
 before launch. Remove a line once its item is done.
 
 Every bracketed placeholder renders through the `Placeholder` component (or
-`StoreButtons`) with a dashed outline and a "Placeholder" badge, and carries a
-`data-placeholder` attribute, so the built HTML can be searched for any that
-remain.
+`StoreButtons`, `SocialLinks`, `YouTubeSubscribeButton`, `PhotoFrame`) with a
+dashed outline or a "Placeholder" badge, and carries a `data-placeholder`
+attribute, so the built HTML can be searched for any that remain.
+
+External links live in one place, `siteConfig.links` in `lib/site-config.ts`.
+Filling in a value there turns every matching placeholder into a real link.
 
 ---
 
@@ -121,14 +124,19 @@ These set their own robots metadata and ignore the global flag.
 - `/subscribe/check-email`, only meaningful straight after a signup
 - The 404 page
 
-## Bracketed copy from the content pack
+## Bracketed copy from the content pack (revision 2)
 
 | Where | Placeholder |
 |---|---|
-| Footer, Connect column | [SOCIAL LINKS: YouTube, and other pages to be supplied] |
-| Home, Plans, New Testament, plan and book pages, `/app` (AppBand and header) | [GOOGLE PLAY LINK] |
-| Same places | [APP STORE LINK OR "COMING SOON", CONFIRM WITH APP DEVELOPER] (shortened to "CONFIRM" on `/app`, as written in the pack) |
-| `/about`, Who teaches | [TEACHER NAME, PHOTO AND SHORT BIOGRAPHY TO BE SUPPLIED] |
+| Footer, Follow column; Home, Follow the ministry; `/subscribe` and `/contact`, Follow the ministry | YouTube [CHANNEL LINK] |
+| Same places | [OTHER SOCIAL PLATFORMS AND LINKS TO BE SUPPLIED] |
+| Home, Next live session; `/events` header | Subscribe on YouTube [CHANNEL LINK] |
+| Every AppBand (Home, `/new-testament`, book pages, `/plans`, journey pages, `/subscribe`) | [GOOGLE PLAY LINK] |
+| Same places | [APP STORE LINK OR "COMING SOON", CONFIRM WITH APP DEVELOPER] |
+| `/app` header | [GOOGLE PLAY LINK], [APP STORE LINK OR "COMING SOON", CONFIRM] (shortened as written in the pack) |
+| `/about`, Mission | [MISSION STATEMENT TO BE SUPPLIED BY THE MINISTRY]. The pack's interim wording is shown beside it with an "Interim wording" badge |
+| `/about`, Where the ministry serves, all three region cards | [LOCAL DETAILS TO BE SUPPLIED] |
+| `/about`, Leadership | [TEACHER NAME, PHOTO AND SHORT BIOGRAPHY TO BE SUPPLIED] |
 | `/about`, Doctrinal position | [DOCTRINAL STATEMENT TO BE SUPPLIED BY THE MINISTRY] |
 | `/events`, Weekly rhythm | [WEEKLY SCHEDULE AND MINISTRY TIME ZONE TO BE SUPPLIED] |
 | `/classes`, How to join | [JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email] |
@@ -144,27 +152,72 @@ These set their own robots metadata and ignore the global flag.
 
 | Where | Placeholder |
 |---|---|
-| Event cards and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
-| `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED], [SESSION DESCRIPTION TO BE SUPPLIED], [PASSAGES TO BE SUPPLIED, LINKED THROUGH /lib/scripture] |
+| Home hero visual, floating session card | [DATE AND TIME TO BE SUPPLIED] (until a session is dated) |
+| Event cards, featured session card and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
+| Featured session card and `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED] |
+| `/events/[slug]` | [SESSION DESCRIPTION TO BE SUPPLIED], [PASSAGES TO BE SUPPLIED, LINKED THROUGH /lib/scripture] |
 | Class cards and `/classes/[slug]` header | [ONE LINE SUMMARY], [AUDIENCE], [DATES] |
 | Teaching cards and `/teachings/[slug]` | [SUMMARY TO BE SUPPLIED], [READING TIME], [PASSAGES], [DATE], [PASSAGES AS LINKED CHIPS], [TEACHING BODY TO BE SUPPLIED] |
 | `/new-testament/[book]`, all five sections | [BODY TEXT FOR THIS SECTION TO BE SUPPLIED] |
-| `/plans/[slug]` for the 60 and 90 day plans | [DAY ONE READING TO BE CONFIRMED AGAINST THE APP] |
+| `/plans/[slug]` for the 60 and 90 day journeys | [DAY ONE READING TO BE CONFIRMED AGAINST THE APP] |
 | `/plans/[slug]`, Frequently asked | [FREQUENTLY ASKED QUESTIONS TO BE SUPPLIED] |
 | `/privacy`, section 8 | [HOW TO EXERCISE THESE RIGHTS TO BE SUPPLIED] |
 | `/contact`, under the form | [CONTACT FORM PRIVACY WORDING TO BE SUPPLIED] |
+
+## Photo frames
+
+Art directed "Photo to come" frames (`PhotoFrame`) stand where photography
+belongs. No stock photos. Each carries `data-placeholder` and an accessible
+label naming what the photo will show.
+
+| Where | Ratio | Subject |
+|---|---|---|
+| Home, Next live session | 4:5 | A live teaching session, the teacher and those gathered |
+| `/about`, Mission | 16:9 | Believers gathered for teaching |
+| `/about`, Leadership | 4:5 | Portrait of the teacher |
+| `/events`, How it works | 4:5 | A session streaming live, seen from the room |
+| `/classes`, Who classes are for | 4:5 | A class in progress, believers with open Bibles |
+| `/app`, four feature sections | 16:9 | "Screenshot to come": a journey, a book introduction, switching translations, the teaching library |
+
+Assets to request from the ministry (CONTENT-PACK 1.7): a portrait of the
+teacher, 10 to 15 photos of sessions and gatherings, a 60 to 90 second
+welcome video (to load behind a click to load `youtube-nocookie.com` facade),
+real app screenshots, the logo SVG (mark and wordmark), and a social share
+image. Swap each frame for `next/image` with explicit dimensions.
+
+## Copy to confirm
+
+Small pieces of copy the pack does not supply, written to fill a layout slot.
+None states a fact. Confirm or replace.
+
+- **Announcement bar, session within 24 hours.** The pack gives only "Live
+  now: {title}. Watch on YouTube". The upcoming case reads "Coming up:
+  {title}, {local time}. Watch on YouTube".
+- **About, closing band heading.** Reuses the Home H1, "Come and be fed by the
+  Word.", with the "Study . Pray . Grow" eyebrow.
+- **Region cards on About.** The pack asks for "one line plus [LOCAL DETAILS]".
+  The one line was not supplied, so each card shows the region name and the
+  placeholder only.
+- **UI headings.** "Subscribe" above the `/subscribe` form, "Send a message"
+  and "Other ways to reach the ministry" on `/contact`, "Classes" and "Choose a
+  pace" as section headings, "Next up" empty state reused on Upcoming.
 
 ## Values to confirm
 
 - **Day one sample.** `/plans/30-day-plan` shows Day 1, James 1-5 and
   Galatians 1-3, theme "Living faith and justification by faith." It is
   labelled as a sample. Confirm against the app.
-- **Plan pace labels.** Focused, Steady and Unhurried are drawn from the
+- **Journey pace labels.** Focused, Steady and Unhurried are drawn from the
   approved one line descriptions. Confirm with the ministry.
-- **Plan slugs.** `30-day-plan`, `60-day-plan`, `90-day-plan` are temporary.
-  Confirm against the app's plan identifiers before they become permanent URLs.
+- **Journey slugs.** `30-day-plan`, `60-day-plan`, `90-day-plan` are kept from
+  the previous pass and are temporary. The display names are now "30 Day NT
+  Journey" and so on. Confirm slugs against the app's plan identifiers before
+  they become permanent URLs.
 - **Detail page meta descriptions.** Sample event, class and teaching pages
   carry a generic description noting they are samples.
+- **"Get the app" and "Start a journey in the app" go to `/app`.** No store
+  link or deep link exists yet, so every app call to action lands on the app
+  page, where the store buttons will be.
 
 ## Placeholder data
 
@@ -197,10 +250,12 @@ pipeline`. Sample entries carry `sample: true` and render a "Sample" badge.
   values, then rerun the contrast checks below.
 - **Logo.** The header and footer show a text wordmark (`Wordmark.tsx`),
   marked TODO until the logo SVG arrives.
-- **Typefaces.** Geist (sans, from the scaffold) and Literata (serif, added
-  for reading). Replace or confirm once brand typefaces are known.
-- **App screenshots.** `/app` and the app band use a CSS phone frame. Swap in
-  real screenshots when supplied.
+- **Typefaces.** Literata at 600 for display and headings, and for reading.
+  Geist for UI, nav, buttons and labels. Replace or confirm once brand
+  typefaces are known.
+- **App screenshots.** The hero visual, `/app` and the app band use a CSS
+  phone frame with illustrative floating cards, marked as illustrative in
+  code. Swap in real screenshots when supplied.
 - **Favicon.** `app/favicon.ico` is the Next.js default.
 
 ## Known behaviour to revisit
@@ -212,6 +267,19 @@ pipeline`. Sample entries carry `sample: true` and render a "Sample" badge.
   all return 404. Keep this export when the MDX pipeline replaces the data.
 - **`.ics` files.** "Add to calendar" is disabled until events carry real
   dates.
+- **Announcement bar.** Pages are static, so the bar renders in the server
+  HTML only for an event whose `status` is `live`. For "starts within 24
+  hours", a small client script compares the visitor's clock with dated
+  sessions. With no dated session, nothing renders and no script runs. A
+  scheduled session already under way counts as live. Logic and tests:
+  `lib/content/announcement.ts`.
+- **Footer closing strip repeats the newsletter band.** The pack puts "Stay
+  close to the ministry" with a Subscribe button at the top of the footer,
+  and most pages close with a newsletter band of the same heading directly
+  above it. Built as written. Consider hiding the strip on pages that end with
+  the band.
+- **Lighthouse.** The 95 target is measured on a Vercel preview (pack section
+  15). It has not been measured on this branch.
 
 ---
 
@@ -244,23 +312,40 @@ green gradient surface carries. Tailwind's default palette is switched off
 
 ## Colour contrast, WCAG 2.2 AA
 
-Measured on 16 October 2026 against the approximate brand values. Normal text
-needs 4.5:1. Large text and non-text UI need 3:1.
+Measured on 17 October 2026 against the approximate brand values, for the
+revision 2 palette. Normal text needs 4.5:1. Large text and non-text UI need
+3:1. Rerun when official hex values arrive.
 
-### Gradient stops
+### Gradient stops and decorative layers
 
-Every green gradient uses only `green` `#0a3616`, `green-deep` `#04290e` and
-`green-night` `#011f0b`. Each pairing below is checked at all three stops.
-Interpolated colours between stops are darker than `green`, so they pass if
-`green` passes. The lime glow is capped at 18% opacity (blended `#265022` at
-its brightest point) and is also checked.
+Green surfaces use four stops: `green-rich` `#0f4a22` (the lightest, top left
+of the hero and band gradient), `green` `#0a3616`, `green-deep` `#04290e` and
+`green-night` `#011f0b` (footer). Interpolated colours lie between stops, so
+the lightest stop is the worst case. Decorative layers are checked at their
+strongest point over `green-rich`, which is worse than over any other stop.
 
-| Text or element | green | green-deep | green-night | Glow peak `#265022` | Result |
-|---|---|---|---|---|---|
-| on-green `#f8f9f8` (headings, body, labels) | 12.82 | 14.98 | 16.55 | 8.83 | Pass |
-| on-green-muted `#c8d2cb` (secondary text) | 8.72 | 10.19 | 11.26 | | Pass |
-| lime `#a6c859` (eyebrows, links, focus ring) | 7.10 | 8.30 | 9.17 | 4.89 | Pass |
-| mint `#05d47c` (progress, success) | 6.90 | 8.06 | 8.91 | | Pass |
+| Surface | on-green `#f8f9f8` | on-green-muted `#c8d2cb` | lime `#a6c859` | mint `#05d47c` |
+|---|---|---|---|---|
+| green-rich `#0f4a22` | 9.84 | 6.69 | 5.45 | 5.30 |
+| green `#0a3616` | 12.82 | 8.72 | 7.10 | 6.90 |
+| green-deep `#04290e` | 14.98 | 10.19 | 8.30 | 8.06 |
+| green-night `#011f0b` | 16.55 | 11.26 | 9.17 | 8.91 |
+| Band glow, 8% lime over rich `#1b5426` | 8.49 | 5.78 | 4.71 | 4.57 |
+| Watermark, 7% lime over rich `#1a5326` | 8.62 | 5.86 | 4.78 | 4.64 |
+| Chip fill, 10% white over rich `#265c37` | 7.46 | 5.07 | 4.13 (icon only, 3:1 needed) | not used |
+| Newsletter form panel, deep at 60% over rich `#083616` | 12.84 | 8.74 | 7.12 | 6.91 |
+| Hero glow, 18% lime over rich `#2a612c` | 6.99 | 4.76 | **3.88, fails** | **3.77, fails** |
+
+Result: every text pairing passes on all four stops and on every decorative
+layer except the hero glow, where lime and mint text fail. The hero glow
+(`.hero-glow`) is therefore placed only behind the phone in `HeroVisual`, on
+Home, `/app` and every AppBand, and is sized so its visible edge stays clear of
+the text column on desktop and of the text above it on mobile. Its 30 second
+drift moves it at most 3rem. No lime or mint text sits over it: the floating
+cards on the phone are white with ink text.
+
+Grain (`.grain`) is white noise at 5% opacity, too fine to change any measured
+pairing.
 
 ### White and tint surfaces
 
@@ -268,21 +353,34 @@ its brightest point) and is also checked.
 |---|---|---|---|
 | ink `#0b2412` (body text) | 16.47 | 15.25 | Pass |
 | ink-muted `#3d5a46` (secondary text, input borders) | 7.64 | 7.07 | Pass |
-| green `#0a3616` (headings, links, focus ring, button fill) | 13.53 | 12.53 | Pass |
+| green `#0a3616` (headings, links, eyebrows, focus ring, button fill) | 13.53 | 12.53 | Pass |
 | success-on-white `#0b7a45` | 5.41 | 5.01 | Pass |
-| border-strong `#6c8673` (non-text, hover and focus edge) | 3.97 | | Pass |
-| border `#dae1dc` (decorative card edge only) | 1.33 | | Decorative, not relied on |
+| border-strong, 55% green `#78907f` (hover and focus edge, non-text) | 3.45 | 3.19 | Pass |
+| border, 12% green `#e2e7e3` (decorative card edge only) | 1.25 | | Decorative, not relied on |
+
+The pack asks for a 50% hover border. That measures 2.98:1 on white, just
+under 3:1, so the token is 55%.
 
 ### Fills
 
 | Text | Fill | Ratio | Result |
 |---|---|---|---|
-| on-lime `#0a3616` | lime `#a6c859` (green surface buttons, badges) | 7.10 | Pass |
+| on-lime `#0a3616` | lime `#a6c859` (green surface buttons, badges, announcement bar) | 7.10 | Pass |
 | on-lime `#0a3616` | mint `#05d47c` | 6.90 | Pass |
 | White | green `#0a3616` (primary button on white) | 13.53 | Pass |
 | White | ink-muted `#3d5a46` (disabled primary button) | 7.64 | Pass |
+| ink-muted `#3d5a46` | White (disabled secondary and ghost buttons) | 7.64 | Pass |
 | on-lime `#0a3616` | on-green-muted `#c8d2cb` (disabled lime button) | 8.72 | Pass |
 | ink `#0b2412` | white input on a green band | 16.47 | Pass |
+
+### Focus rings
+
+| Ring | Against | Ratio | Result |
+|---|---|---|---|
+| green, 3px, on white surfaces | White, tint | 13.53, 12.53 | Pass |
+| lime, 3px, on green surfaces | green-rich, the lightest stop | 5.45 | Pass |
+| lime ring around a white input on a green band | the green surface outside the 3px offset | 5.45 or more | Pass. The ring sits outside the input, not on it |
+| green ring on the lime announcement bar | lime | 7.10 | Pass |
 
 ### Failing pairings, never used
 
@@ -292,7 +390,15 @@ its brightest point) and is also checked.
 | mint `#05d47c` | White | 1.96 |
 | White | lime `#a6c859` | 1.90 |
 | White | mint `#05d47c` | 1.96 |
-| lime | glow at 25% (`#315b27`) | 4.15, which is why the glow is capped at 18% |
+| ink-muted `#3d5a46` | lime | 4.01. The announcement bar pins its muted text to deep green for this reason |
+| lime or mint | hero glow peak | 3.88 and 3.77. See above |
 
-The lime rule above each section heading sits on white at 1.90:1. It is
-decorative only, and the heading beside it is deep green.
+The rule above each section heading is lime on green surfaces (5.45:1 or
+more) and deep green on white. It is decorative only.
+
+### Motion and contrast
+
+The scroll reveal moves sections up 32px without fading them. A fade would
+leave any section straddling the fold partly transparent at load, which would
+lower its measured contrast. The hero entrance does fade, but it is time based
+and finishes within 1 second of load. The H1 rises without fading.
