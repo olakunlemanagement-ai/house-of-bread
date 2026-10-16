@@ -1,7 +1,7 @@
 # Placeholders register
 
 Date: 16 October 2026
-Branch: `feat/page-content`
+Branch: `feat/newsletter`
 
 Everything listed here is temporary. Each item must be replaced or confirmed
 before launch. Remove a line once its item is done.
@@ -22,11 +22,97 @@ remain.
   pipeline. Until then no task can meet that line of the definition of done.
 - **Privacy policy.** `/privacy` is a draft structure, not legal advice, and
   shows a "Draft, under review" badge. A qualified person must review it.
-- **Forms are not wired up.** The newsletter and contact forms render real
-  fields with the submit button disabled and an "opens soon" note. Loading,
-  success and error states arrive with the newsletter and contact slices. The
-  approved error copy is already in `newsletterMessages` in
-  `components/shared/NewsletterForm.tsx`.
+- **Newsletter needs Kit set up.** The signup code is built. Until the steps
+  in "Newsletter setup" below are done, every newsletter form shows a disabled
+  button and "Signup opens soon".
+- **Contact form is not wired up.** It renders real fields with the submit
+  button disabled and a "Messaging opens soon" note until the contact slice.
+
+## Newsletter setup
+
+Manual steps, in this order. The code reads every value from environment
+variables, and `.env.example` lists their names.
+
+### 1. Create the Kit form with double opt-in
+
+1. In Kit, go to Grow, then Landing Pages & Forms, and create a new inline
+   form. Name it "Website signup". The site never shows this form. It exists
+   so the API has a double opt-in form to add people to.
+2. Open the form's settings, then the Incentive (confirmation) email. Turn
+   double opt-in on, so subscribers must confirm by email.
+3. Write the confirmation email. It must follow CLAUDE.md section 6.
+4. Copy the form id from the form's URL in Kit. This is `KIT_FORM_ID`.
+
+Use a form you create. Kit's built-in system form is reported to activate
+subscribers without sending an email.
+
+### 2. Create the tags
+
+In Kit, go to Subscribers, then Tags, and create these. Copy each id from the
+tag's URL.
+
+| Tag | Variable | Applied when |
+|---|---|---|
+| `live-notify` | `KIT_TAG_LIVE_NOTIFY` | The live session checkbox is ticked, or the form is on an events page |
+| `source-footer` | `KIT_TAG_SOURCE_FOOTER` | Signup from a closing newsletter band, including the home page |
+| `source-subscribe-page` | `KIT_TAG_SOURCE_SUBSCRIBE_PAGE` | Signup from `/subscribe` |
+| `source-live-notify` | `KIT_TAG_SOURCE_LIVE_NOTIFY` | Signup from `/events` or an event page |
+| `source-plan-page` | `KIT_TAG_SOURCE_PLAN_PAGE` | Reserved for plan pages, which have no form yet |
+
+Tags are optional in code: a missing id skips that tag. A tag that fails is
+logged and the signup still succeeds, so check the logs after setup.
+
+### 3. Create the API key
+
+In Kit, go to Settings, then Developer, and create a V4 API key. V3 keys do
+not work. This is `KIT_API_KEY`. Treat it as a secret: never give it a
+`NEXT_PUBLIC_` prefix and never commit it.
+
+### 4. Set the variables in Vercel
+
+1. In Vercel, open the project, then Settings, then Environment Variables.
+2. Add `KIT_API_KEY`, `KIT_FORM_ID` and each tag variable. Mark `KIT_API_KEY`
+   as Sensitive.
+3. Choose environments. Production needs them. Leave them off Preview unless
+   previews should create real subscribers.
+4. Redeploy. Pages are static, so whether the forms are enabled is decided at
+   build time. Changing these variables has no effect until the next deploy.
+
+### 5. Add the Vercel Firewall rate limit
+
+1. In Vercel, open the project, then Firewall, then Configure, and add a
+   custom rule.
+2. Condition: Request Path equals `/api/subscribe`, and Method equals `POST`.
+3. Action: Rate Limit, fixed window, 5 requests per 60 seconds, keyed on IP
+   address, then Deny (429).
+4. Save and publish the rule. Check the current Vercel plan includes rate
+   limit rules.
+
+Kit also limits a V4 API key to 120 requests a minute. Each signup uses two
+to four, so the firewall rule must stay well below that. Add Cloudflare
+Turnstile only if abuse appears (spec section 5).
+
+### 6. Test once with a real address
+
+Kit's API reference does not spell out how double opt-in works through the
+API. The code follows the approach other developers report from live tests:
+create the subscriber as `inactive`, then add them to a double opt-in form,
+which sends the confirmation email. Before launch, confirm all of these:
+
+- A new address receives the confirmation email, and shows as unconfirmed
+  in Kit until the link is clicked.
+- Clicking the link makes the subscriber active.
+- Signing up again with the same address shows the same success message and
+  sends no second email.
+- The source and live-notify tags appear on the subscriber.
+- Signing up with JavaScript turned off lands on `/subscribe/check-email`.
+
+### Open item
+
+Spec section 5 says the visitor "confirms and lands on a thank you page". No
+such page exists yet. Kit's default confirmation page is used until the
+ministry chooses one. If a site page is wanted, set it as the form's redirect
+after confirmation in Kit.
 
 ## Pages that stay noindex permanently
 
