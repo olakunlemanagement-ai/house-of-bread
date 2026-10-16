@@ -1,74 +1,215 @@
 @import "tailwindcss";
 
 /*
-  Design tokens.
-  TODO: replace the brand primitives with official brand hex values.
+  Design tokens, light first.
+  TODO: replace the brand primitives with official brand hex values, then
+  rerun the contrast checks recorded in docs/PLACEHOLDERS.md.
 
-  Two layers:
-  - Brand primitives (--brand-*) hold raw colour values. Components never use them.
-  - Semantic tokens (--surface, --text, --heading and so on) describe a role.
-    Components and Tailwind utilities use only these.
+  Three layers:
+  - Brand primitives (--brand-*) hold raw values. Components never use them.
+  - Palette tokens (--surface, --ink, --green and so on) follow the names in
+    docs/CONTENT-PACK.md section 1.
+  - Contextual tokens (--fg, --fg-muted, --fg-heading, --fg-link, --ring)
+    describe the role of a colour on the current surface. They default to the
+    white surface and are redefined by .tone-green, so a link or focus ring
+    is correct on both surfaces without per component overrides.
 
-  Dark is the default look. A light theme later only needs to redefine the
-  semantic tokens under :root[data-theme="light"], without touching components.
-  Contrast results for every pairing are recorded in docs/PLACEHOLDERS.md.
+  Ship light only. A dark theme later redefines the palette and contextual
+  tokens under :root[data-theme="dark"], without touching components.
 */
 :root {
+  --brand-white: #ffffff;
+  --brand-green-50: #f3f8ec;
+  --brand-green-ink: #0b2412;
+  --brand-green-ink-muted: #3d5a46;
   --brand-green-800: #0a3616;
+  --brand-green-900: #04290e;
   --brand-green-950: #011f0b;
   --brand-lime: #a6c859;
   --brand-mint: #05d47c;
-  --brand-white: #f8f9f8;
+  --brand-green-success: #0b7a45;
+  --brand-off-white: #f8f9f8;
 
-  color-scheme: dark;
+  color-scheme: light;
 
-  --surface: var(--brand-green-800);
-  --surface-deep: var(--brand-green-950);
-  --text: var(--brand-white);
-  --text-muted: color-mix(in srgb, var(--brand-white) 80%, var(--brand-green-800));
-  --heading: var(--brand-lime);
-  --link: var(--brand-lime);
-  --accent: var(--brand-lime);
-  --on-accent: var(--brand-green-950);
-  --success: var(--brand-mint);
-  --progress: var(--brand-mint);
-  --border: color-mix(in srgb, var(--brand-lime) 60%, var(--brand-green-800));
-  --focus-ring: var(--brand-lime);
+  /* Palette */
+  --surface: var(--brand-white);
+  --surface-tint: var(--brand-green-50);
+  --ink: var(--brand-green-ink);
+  --ink-muted: var(--brand-green-ink-muted);
+  --green: var(--brand-green-800);
+  --green-deep: var(--brand-green-900);
+  --green-night: var(--brand-green-950);
+  --lime: var(--brand-lime);
+  --mint: var(--brand-mint);
+  --success-on-white: var(--brand-green-success);
+  --on-green: var(--brand-off-white);
+  --on-green-muted: color-mix(in srgb, var(--brand-off-white) 80%, var(--brand-green-800));
+  --on-lime: var(--brand-green-800);
+
+  /* Lines. Card borders are decorative. Input borders must reach 3:1. */
+  --border: color-mix(in srgb, var(--green) 15%, var(--surface));
+  --border-strong: color-mix(in srgb, var(--green) 60%, var(--surface));
+  --input-border: var(--ink-muted);
+
+  /* Contextual tokens, white surface */
+  --fg: var(--ink);
+  --fg-muted: var(--ink-muted);
+  --fg-heading: var(--green);
+  --fg-link: var(--green);
+  --ring: var(--green);
 }
 
-/* Reserved for a future light theme. Redefine semantic tokens only. */
-/* :root[data-theme="light"] { color-scheme: light; --surface: ...; } */
+/* Any green gradient surface. Text goes white, links and focus go lime. */
+.tone-green {
+  --fg: var(--on-green);
+  --fg-muted: var(--on-green-muted);
+  --fg-heading: var(--on-green);
+  --fg-link: var(--lime);
+  --ring: var(--lime);
+  color: var(--fg);
+}
 
 @theme inline {
+  /* Only the brand palette exists, so no stray default colour can slip in. */
+  --color-*: initial;
+  --color-white: var(--brand-white);
   --color-surface: var(--surface);
-  --color-surface-deep: var(--surface-deep);
-  --color-text: var(--text);
-  --color-text-muted: var(--text-muted);
-  --color-heading: var(--heading);
-  --color-link: var(--link);
-  --color-accent: var(--accent);
-  --color-on-accent: var(--on-accent);
-  --color-success: var(--success);
-  --color-progress: var(--progress);
+  --color-surface-tint: var(--surface-tint);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-green: var(--green);
+  --color-green-deep: var(--green-deep);
+  --color-green-night: var(--green-night);
+  --color-lime: var(--lime);
+  --color-mint: var(--mint);
+  --color-success-on-white: var(--success-on-white);
+  --color-on-green: var(--on-green);
+  --color-on-green-muted: var(--on-green-muted);
+  --color-on-lime: var(--on-lime);
   --color-border: var(--border);
-  --color-focus-ring: var(--focus-ring);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-border-strong: var(--border-strong);
+  --color-input-border: var(--input-border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-heading: var(--fg-heading);
+  --color-fg-link: var(--fg-link);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  --font-serif: var(--font-literata), Georgia, "Times New Roman", serif;
+
+  --shadow-card: 0 1px 2px rgb(10 54 22 / 0.06), 0 4px 16px rgb(10 54 22 / 0.06);
+  --shadow-card-hover: 0 2px 4px rgb(10 54 22 / 0.08), 0 10px 28px rgb(10 54 22 / 0.1);
+}
+
+/*
+  Green gradient surfaces. Every stop is green, green-deep or green-night, and
+  on-green text passes 4.5:1 on all three. The lime glow is capped at 18% so
+  lime text on the brightest blended point still passes.
+*/
+@utility bg-green-header {
+  background-color: var(--green-deep);
+  background-image: linear-gradient(90deg, var(--green), var(--green-deep));
+}
+
+@utility bg-green-band {
+  background-color: var(--green-deep);
+  background-image:
+    radial-gradient(
+      ellipse at 90% 0%,
+      color-mix(in srgb, var(--lime) 14%, transparent),
+      transparent 55%
+    ),
+    linear-gradient(135deg, var(--green), var(--green-deep) 60%, var(--green-night));
+}
+
+@utility bg-green-hero {
+  background-color: var(--green-deep);
+  background-image:
+    radial-gradient(
+      circle at 82% 30%,
+      color-mix(in srgb, var(--lime) 18%, transparent),
+      transparent 45%
+    ),
+    linear-gradient(160deg, var(--green) 0%, var(--green-deep) 55%, var(--green-night) 100%);
+}
+
+@utility bg-green-footer {
+  background-color: var(--green-night);
+  background-image: linear-gradient(180deg, var(--green-deep), var(--green-night));
+}
+
+@utility bg-green-tile {
+  background-color: var(--green);
+  background-image: linear-gradient(135deg, var(--green), var(--green-night));
 }
 
 body {
   background: var(--surface);
-  color: var(--text);
-  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+  color: var(--fg);
+  font-family: var(--font-sans);
 }
 
 h1,
 h2,
-h3 {
-  color: var(--heading);
+h3,
+h4 {
+  color: var(--fg-heading);
 }
 
 :focus-visible {
-  outline: 3px solid var(--focus-ring);
+  outline: 3px solid var(--ring);
   outline-offset: 2px;
+}
+
+/*
+  Long reading. Serif, 18px minimum, line height 1.7, measure near 68
+  characters. Used for teaching and book body text.
+*/
+.prose {
+  font-family: var(--font-serif);
+  font-size: 1.1875rem;
+  line-height: 1.7;
+  max-width: 68ch;
+  color: var(--ink);
+}
+
+.prose > * + * {
+  margin-top: 1.25em;
+}
+
+.prose h2 {
+  font-family: var(--font-sans);
+  font-size: 1.625rem;
+  font-weight: 700;
+  line-height: 1.25;
+  margin-top: 2em;
+}
+
+.prose h3 {
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin-top: 1.75em;
+}
+
+.prose a {
+  color: var(--fg-link);
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.prose ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose ul > li::before {
+  content: "- ";
+}
+
+.prose ol {
+  list-style: decimal;
+  padding-left: 1.5em;
 }
