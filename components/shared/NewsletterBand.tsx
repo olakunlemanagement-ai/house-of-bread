@@ -1,12 +1,13 @@
 import { Leaves } from "./Decor";
 import { IconTile } from "./icons";
-import { NewsletterForm, type NewsletterTag } from "./NewsletterForm";
+import type { NewsletterSource } from "@/lib/newsletter/schema";
+import { NewsletterForm } from "./NewsletterForm";
 
 type NewsletterBandProps = {
   idPrefix: string;
   heading?: string;
   text?: string;
-  tag?: NewsletterTag;
+  source?: NewsletterSource;
 };
 
 /** Full width green band with the signup form. Closes most pages. */
@@ -14,7 +15,7 @@ export function NewsletterBand({
   idPrefix,
   heading = "Never miss a session",
   text = "Teaching, new reading plans and live session reminders, sent to your inbox.",
-  tag = "footer",
+  source = "footer",
 }: NewsletterBandProps) {
   const headingId = `${idPrefix}-heading`;
   return (
@@ -29,7 +30,7 @@ export function NewsletterBand({
           </h2>
           <p className="mt-4 max-w-md text-lg leading-relaxed text-on-green">{text}</p>
         </div>
-        <NewsletterForm idPrefix={idPrefix} tag={tag} tone="green" />
+        <NewsletterForm idPrefix={idPrefix} source={source} tone="green" />
       </div>
     </section>
   );

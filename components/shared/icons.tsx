@@ -19,7 +19,8 @@ export type IconName =
   | "question"
   | "compass"
   | "cross"
-  | "search";
+  | "search"
+  | "alert";
 
 const paths: Record<IconName, ReactNode> = {
   book: (
@@ -99,6 +100,12 @@ const paths: Record<IconName, ReactNode> = {
     <>
       <circle cx="11" cy="11" r="6" />
       <path d="m20 20-4.5-4.5" />
+    </>
+  ),
+  alert: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7.5v5.5M12 16.5h.01" />
     </>
   ),
 };

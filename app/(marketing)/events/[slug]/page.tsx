@@ -93,7 +93,7 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
       <NewsletterBand
         idPrefix="event-newsletter"
         heading="Get a reminder before each session"
-        tag="live-notify"
+        source="live-notify"
       />
 
       <nav aria-label="Sessions" className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">

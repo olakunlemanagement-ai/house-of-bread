@@ -1,4 +1,5 @@
 import type { ComponentProps, ReactNode } from "react";
+import { Icon } from "./icons";
 
 // Shared form field styling. On white, inputs use the tint fill with an
 // ink-muted border (7.6:1). On green surfaces they are plain white, which
@@ -48,6 +49,23 @@ export function Honeypot({ id }: { id: string }) {
       <label htmlFor={id}>Leave this field empty</label>
       <input id={id} name="website" type="text" tabIndex={-1} autoComplete="off" />
     </div>
+  );
+}
+
+/**
+ * A form error. The palette has no error colour, so it is a white panel with
+ * ink text and an icon, which reads on white and on every green stop.
+ */
+export function FormError({ id, children }: { id: string; children: ReactNode }) {
+  return (
+    <p
+      id={id}
+      role="alert"
+      className="flex items-start gap-3 rounded-xl border-2 border-ink-muted bg-white px-4 py-3 font-semibold text-ink"
+    >
+      <Icon name="alert" className="mt-0.5 size-5 shrink-0 text-green" />
+      {children}
+    </p>
   );
 }
 

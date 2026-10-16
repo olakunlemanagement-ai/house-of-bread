@@ -70,7 +70,7 @@ export default function EventsPage() {
       <NewsletterBand
         idPrefix="events-newsletter"
         heading="Get a reminder before each session"
-        tag="live-notify"
+        source="live-notify"
       />
     </main>
   );

@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { AppBand } from "@/components/shared/AppBand";
 import { IconTile, type IconName } from "@/components/shared/icons";
 import { NewsletterForm } from "@/components/shared/NewsletterForm";
 import { PageHeader } from "@/components/shared/PageHeader";
+import { SignupError } from "./SignupError";
 
 export const metadata: Metadata = {
   title: "Join the newsletter",
@@ -16,7 +18,7 @@ const expect: { icon: IconName; text: string }[] = [
   { icon: "globe", text: "Occasional news from the ministry." },
 ];
 
-export default function SubscribePage() {
+export default function SubscribePage({ searchParams }: PageProps<"/subscribe">) {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
@@ -25,12 +27,15 @@ export default function SubscribePage() {
         lead="Teaching, new reading plans and reminders for live sessions, sent to your inbox. No spam, and you can leave at any time."
       />
 
-      <section aria-label="Signup" className="bg-surface">
+      <section id="signup" aria-label="Signup" className="scroll-mt-24 bg-surface">
         <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-[1.4fr_1fr]">
           <div className="rounded-3xl border border-border bg-surface p-6 shadow-card sm:p-10">
+            <Suspense fallback={null}>
+              <SignupError searchParams={searchParams} />
+            </Suspense>
             <NewsletterForm
               idPrefix="subscribe"
-              tag="subscribe-page"
+              source="subscribe-page"
               withLiveNotify
               consent="short"
             />
