@@ -7,18 +7,38 @@ export type NavLink = {
 
 /** Main navigation, shown in the header. */
 export const primaryNav: NavLink[] = [
-  { href: "/about", label: "About" },
-  { href: "/events", label: "Events" },
-  { href: "/classes", label: "Classes" },
   { href: "/teachings", label: "Teachings" },
   { href: "/new-testament", label: "New Testament" },
-  { href: "/plans", label: "Reading plans" },
-  { href: "/app", label: "The app" },
+  { href: "/plans", label: "Plans" },
+  { href: "/events", label: "Live" },
+  { href: "/classes", label: "Classes" },
+  { href: "/about", label: "About" },
 ];
 
-/** Secondary links, shown in the footer alongside the main navigation. */
-export const secondaryNav: NavLink[] = [
-  { href: "/subscribe", label: "Newsletter" },
-  { href: "/contact", label: "Contact" },
-  { href: "/privacy", label: "Privacy" },
+/** Footer link columns. */
+export const footerNav: { heading: string; links: NavLink[] }[] = [
+  {
+    heading: "Learn",
+    links: [
+      { href: "/teachings", label: "Teachings" },
+      { href: "/new-testament", label: "New Testament" },
+      { href: "/plans", label: "Reading plans" },
+    ],
+  },
+  {
+    heading: "Ministry",
+    links: [
+      { href: "/about", label: "About" },
+      { href: "/events", label: "Live sessions" },
+      { href: "/classes", label: "Classes and training" },
+      { href: "/contact", label: "Contact" },
+    ],
+  },
+  {
+    heading: "Connect",
+    links: [
+      { href: "/subscribe", label: "Subscribe" },
+      { href: "/app", label: "Get the app" },
+    ],
+  },
 ];
