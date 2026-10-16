@@ -1,18 +1,18 @@
 @import "tailwindcss";
 
 /*
-  Design tokens, light first.
+  Design tokens, light first. Source: docs/CONTENT-PACK.md section 1.
   TODO: replace the brand primitives with official brand hex values, then
   rerun the contrast checks recorded in docs/PLACEHOLDERS.md.
 
   Three layers:
   - Brand primitives (--brand-*) hold raw values. Components never use them.
   - Palette tokens (--surface, --ink, --green and so on) follow the names in
-    docs/CONTENT-PACK.md section 1.
-  - Contextual tokens (--fg, --fg-muted, --fg-heading, --fg-link, --ring)
-    describe the role of a colour on the current surface. They default to the
-    white surface and are redefined by .tone-green, so a link or focus ring
-    is correct on both surfaces without per component overrides.
+    the content pack.
+  - Contextual tokens (--fg, --fg-muted, --fg-heading, --fg-link, --fg-accent,
+    --ring) describe the role of a colour on the current surface. They default
+    to the white surface and are redefined by .tone-green, so a link, eyebrow
+    or focus ring is correct on both surfaces without per component overrides.
 
   Ship light only. A dark theme later redefines the palette and contextual
   tokens under :root[data-theme="dark"], without touching components.
@@ -22,6 +22,7 @@
   --brand-green-50: #f3f8ec;
   --brand-green-ink: #0b2412;
   --brand-green-ink-muted: #3d5a46;
+  --brand-green-700: #0f4a22;
   --brand-green-800: #0a3616;
   --brand-green-900: #04290e;
   --brand-green-950: #011f0b;
@@ -37,6 +38,7 @@
   --surface-tint: var(--brand-green-50);
   --ink: var(--brand-green-ink);
   --ink-muted: var(--brand-green-ink-muted);
+  --green-rich: var(--brand-green-700);
   --green: var(--brand-green-800);
   --green-deep: var(--brand-green-900);
   --green-night: var(--brand-green-950);
@@ -47,9 +49,13 @@
   --on-green-muted: color-mix(in srgb, var(--brand-off-white) 80%, var(--brand-green-800));
   --on-lime: var(--brand-green-800);
 
-  /* Lines. Card borders are decorative. Input borders must reach 3:1. */
-  --border: color-mix(in srgb, var(--green) 15%, var(--surface));
-  --border-strong: color-mix(in srgb, var(--green) 60%, var(--surface));
+  /*
+    Lines. Card borders are decorative (12%). The hover and focus edge is 55%,
+    not the pack's 50%, because 50% measures 2.98:1 on white and non-text UI
+    needs 3:1. Input borders must reach 3:1 and use ink-muted.
+  */
+  --border: color-mix(in srgb, var(--green) 12%, var(--surface));
+  --border-strong: color-mix(in srgb, var(--green) 55%, var(--surface));
   --input-border: var(--ink-muted);
 
   /* Contextual tokens, white surface */
@@ -57,16 +63,40 @@
   --fg-muted: var(--ink-muted);
   --fg-heading: var(--green);
   --fg-link: var(--green);
+  /* Eyebrows and the short rule above headings. */
+  --fg-accent: var(--green);
   --ring: var(--green);
+  /* Chip fill. Plain rgb, so no colour-mix fallback can turn it solid. */
+  --chip-fill: var(--surface-tint);
+
+  /* Two layer shadows, tinted deep green. */
+  --elev-soft: 0 1px 2px rgb(10 54 22 / 0.06), 0 12px 32px rgb(10 54 22 / 0.08);
+  --elev-raised: 0 2px 4px rgb(10 54 22 / 0.08), 0 24px 48px rgb(10 54 22 / 0.14);
+
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* Any green gradient surface. Text goes white, links and focus go lime. */
+/* Any green gradient surface. Text goes white, links, accents and focus go lime. */
 .tone-green {
   --fg: var(--on-green);
   --fg-muted: var(--on-green-muted);
   --fg-heading: var(--on-green);
   --fg-link: var(--lime);
+  --fg-accent: var(--lime);
   --ring: var(--lime);
+  --chip-fill: rgb(248 249 248 / 0.1);
+  color: var(--fg);
+}
+
+/* A white card inside a green surface returns to the white surface roles. */
+.tone-light {
+  --fg: var(--ink);
+  --fg-muted: var(--ink-muted);
+  --fg-heading: var(--green);
+  --fg-link: var(--green);
+  --fg-accent: var(--green);
+  --ring: var(--green);
+  --chip-fill: var(--surface-tint);
   color: var(--fg);
 }
 
@@ -78,6 +108,7 @@
   --color-surface-tint: var(--surface-tint);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
+  --color-green-rich: var(--green-rich);
   --color-green: var(--green);
   --color-green-deep: var(--green-deep);
   --color-green-night: var(--green-night);
@@ -94,45 +125,58 @@
   --color-fg-muted: var(--fg-muted);
   --color-fg-heading: var(--fg-heading);
   --color-fg-link: var(--fg-link);
+  --color-fg-accent: var(--fg-accent);
   --color-ring: var(--ring);
 
   --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   --font-serif: var(--font-literata), Georgia, "Times New Roman", serif;
 
-  --shadow-card: 0 1px 2px rgb(10 54 22 / 0.06), 0 4px 16px rgb(10 54 22 / 0.06);
-  --shadow-card-hover: 0 2px 4px rgb(10 54 22 / 0.08), 0 10px 28px rgb(10 54 22 / 0.1);
+  /* Type scale. Display is the H1, h2 the section heading. */
+  --text-display: clamp(2.75rem, 6vw, 5rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+  --text-h2: clamp(2rem, 4vw, 3rem);
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.015em;
+  --text-lead: 1.25rem;
+  --text-lead--line-height: 1.6;
+
+  --shadow-soft: var(--elev-soft);
+  --shadow-raised: var(--elev-raised);
+
+  /* Radii: buttons 14px, inputs 12px, icon tiles 16px, cards 24px. */
+  --radius-button: 14px;
+  --radius-input: 12px;
+  --radius-tile: 16px;
+  --radius-card: 24px;
 }
 
 /*
-  Green gradient surfaces. Every stop is green, green-deep or green-night, and
-  on-green text passes 4.5:1 on all three. The lime glow is capped at 18% so
-  lime text on the brightest blended point still passes.
+  Green gradient surfaces. Stops: green-rich, green, green-deep and
+  green-night. On-green text passes on all four and on the glow. Lime and
+  mint text pass on all four stops but not on the 18% glow, so the hero glow
+  sits behind the hero visual only, and bands carry an 8% glow in a corner.
+  Every pairing is logged in docs/PLACEHOLDERS.md.
 */
 @utility bg-green-header {
   background-color: var(--green-deep);
   background-image: linear-gradient(90deg, var(--green), var(--green-deep));
 }
 
-@utility bg-green-band {
-  background-color: var(--green-deep);
-  background-image:
-    radial-gradient(
-      ellipse at 90% 0%,
-      color-mix(in srgb, var(--lime) 14%, transparent),
-      transparent 55%
-    ),
-    linear-gradient(135deg, var(--green), var(--green-deep) 60%, var(--green-night));
+@utility bg-green-hero {
+  background-color: var(--green);
+  background-image: linear-gradient(135deg, var(--green-rich) 0%, var(--green) 45%, var(--green-deep) 100%);
 }
 
-@utility bg-green-hero {
-  background-color: var(--green-deep);
+@utility bg-green-band {
+  background-color: var(--green);
   background-image:
     radial-gradient(
-      circle at 82% 30%,
-      color-mix(in srgb, var(--lime) 18%, transparent),
+      ellipse at 100% 0%,
+      color-mix(in srgb, var(--lime) 8%, transparent),
       transparent 45%
     ),
-    linear-gradient(160deg, var(--green) 0%, var(--green-deep) 55%, var(--green-night) 100%);
+    linear-gradient(135deg, var(--green-rich) 0%, var(--green) 45%, var(--green-deep) 100%);
 }
 
 @utility bg-green-footer {
@@ -140,15 +184,55 @@
   background-image: linear-gradient(180deg, var(--green-deep), var(--green-night));
 }
 
+/* Icon tiles: green gradient with a subtle inner highlight. */
 @utility bg-green-tile {
   background-color: var(--green);
-  background-image: linear-gradient(135deg, var(--green), var(--green-night));
+  background-image: linear-gradient(135deg, var(--green-rich), var(--green-night));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14);
+}
+
+/* Faint grain for green surfaces. Inline SVG noise, under 2KB, tiled. */
+@utility grain {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.05;
+}
+
+/* Hero glow. Peak 18% lime, fading to nothing. Placed behind the visual. */
+@utility hero-glow {
+  background-image: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--lime) 18%, transparent) 0%,
+    transparent 100%
+  );
+}
+
+@utility container-page {
+  width: 100%;
+  max-width: calc(75rem + 3rem);
+  margin-inline: auto;
+  padding-inline: 1.5rem;
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  line-height: 1.4;
+  text-transform: uppercase;
+  color: var(--fg-accent);
+}
+
+html {
+  scroll-padding-top: 6rem;
 }
 
 body {
   background: var(--surface);
   color: var(--fg);
   font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.7;
 }
 
 h1,
@@ -156,11 +240,126 @@ h2,
 h3,
 h4 {
   color: var(--fg-heading);
+  font-family: var(--font-serif);
+  font-weight: 600;
+  text-wrap: balance;
 }
 
 :focus-visible {
   outline: 3px solid var(--ring);
-  outline-offset: 2px;
+  outline-offset: 3px;
+}
+
+/*
+  Cards that lift on hover and focus. Only transform and opacity animate: the
+  raised shadow sits on a pseudo element and fades in.
+*/
+.lift {
+  position: relative;
+  transition: transform 200ms var(--ease-out), border-color 200ms var(--ease-out);
+}
+
+.lift::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow: var(--elev-raised);
+  opacity: 0;
+  transition: opacity 200ms var(--ease-out);
+  pointer-events: none;
+}
+
+.lift:hover,
+.lift:focus-within {
+  border-color: var(--border-strong);
+}
+
+.lift:hover::before,
+.lift:focus-within::before {
+  opacity: 1;
+}
+
+/*
+  Motion, CSS only. Everything here is opt in through no-preference, so a
+  visitor who asks for reduced motion gets none of it.
+*/
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* The H1 rises without fading, so the largest text paints at once. */
+@keyframes rise-only {
+  from {
+    transform: translateY(16px);
+  }
+}
+
+/*
+  Scroll reveal rises without fading. A fade would leave any section that
+  straddles the fold partly transparent at load, lowering its contrast.
+*/
+@keyframes reveal {
+  from {
+    transform: translateY(32px);
+  }
+}
+
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(-3rem, 2rem, 0) scale(1.08);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lift:hover,
+  .lift:focus-within {
+    transform: translateY(-4px);
+  }
+
+  .rise {
+    animation: rise 600ms var(--ease-out) both;
+  }
+
+  .rise-text {
+    animation: rise-only 600ms var(--ease-out) both;
+  }
+
+  .rise-1 { animation-delay: 80ms; }
+  .rise-2 { animation-delay: 160ms; }
+  .rise-3 { animation-delay: 240ms; }
+  .rise-4 { animation-delay: 320ms; }
+  .rise-5 { animation-delay: 400ms; }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: reveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+  .drift {
+    animation: drift 30s ease-in-out infinite alternate;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
 }
 
 /*
@@ -180,17 +379,13 @@ h4 {
 }
 
 .prose h2 {
-  font-family: var(--font-sans);
-  font-size: 1.625rem;
-  font-weight: 700;
+  font-size: 1.75rem;
   line-height: 1.25;
   margin-top: 2em;
 }
 
 .prose h3 {
-  font-family: var(--font-sans);
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 1.375rem;
   margin-top: 1.75em;
 }
 
