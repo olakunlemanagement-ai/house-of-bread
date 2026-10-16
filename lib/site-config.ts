@@ -1,8 +1,18 @@
+export type SiteLinks = {
+  /** YouTube channel. Null renders the [CHANNEL LINK] placeholder. */
+  youtubeChannel: string | null;
+  /** Other social pages, in display order. Empty renders a placeholder. */
+  social: { label: string; href: string }[];
+  /** Store links. Null renders a marked placeholder in the button's place. */
+  googlePlay: string | null;
+  appStore: string | null;
+};
+
 export const siteConfig = {
   name: "House of Bread Global",
   url: "https://hobglobal.online",
   description:
-    "Understand the Bible through the New Testament. Structured reading plans, every book explained, and careful teaching on doctrine, in the app and on the web.",
+    "A global teaching ministry serving believers across the UK, Africa and the United States. Live teaching, classes and training, written teaching, and the official House of Bread app.",
   /**
    * Global noindex flag. While true, every page tells search engines not to
    * index or follow it. Flip to false only at launch, once placeholder copy
@@ -10,4 +20,15 @@ export const siteConfig = {
    * metadata and are unaffected by this flag.
    */
   noindex: true,
+  /**
+   * External links nobody has supplied yet. Do not invent them. Each null or
+   * empty value is listed in docs/PLACEHOLDERS.md.
+   * TODO: fill in from the ministry and the app developer.
+   */
+  links: {
+    youtubeChannel: null,
+    social: [],
+    googlePlay: null,
+    appStore: null,
+  } satisfies SiteLinks as SiteLinks,
 } as const;

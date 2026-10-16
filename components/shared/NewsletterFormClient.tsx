@@ -169,13 +169,13 @@ export function NewsletterFormClient({
             type="submit"
             tone={tone}
             aria-disabled={submitting || undefined}
-            className="aria-disabled:cursor-wait"
+            className="w-full aria-disabled:cursor-wait sm:w-auto"
           >
             {submitting ? "Subscribing..." : "Subscribe"}
           </Button>
         ) : (
           <>
-            <Button type="submit" tone={tone} disabled aria-describedby={id("status")}>
+            <Button type="submit" tone={tone} disabled aria-describedby={id("status")} className="w-full sm:w-auto">
               Subscribe
             </Button>
             <OpensSoonNote id={id("status")}>Signup opens soon</OpensSoonNote>

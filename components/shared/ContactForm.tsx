@@ -3,7 +3,13 @@ import { Button } from "./Button";
 import { Field, Honeypot, Input, OpensSoonNote, inputClass } from "./forms";
 import { Placeholder } from "./Placeholder";
 
-const topics = ["General question", "Classes and training", "The app", "Something else"];
+const topics = [
+  "General question",
+  "Live sessions",
+  "Classes and training",
+  "The app",
+  "Something else",
+];
 
 /**
  * Contact form. Real fields, action not wired up: the submit button is

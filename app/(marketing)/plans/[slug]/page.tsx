@@ -1,12 +1,13 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { AppBand } from "@/components/shared/AppBand";
+import { ButtonLink } from "@/components/shared/Button";
 import { IconTile } from "@/components/shared/icons";
 import { StepList } from "@/components/shared/Lists";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
-import { planSteps } from "@/lib/content/copy";
+import { journeySteps } from "@/lib/content/copy";
 import { findBySlug, placeholderPlans } from "@/lib/content/placeholder-data";
 
 // Render the full page before responding, so an unknown slug returns a real
@@ -25,7 +26,7 @@ export async function generateMetadata({
   if (!entry) return {};
   return {
     title: entry.name,
-    description: `${entry.line} A guided route through the New Testament, following the order the books were written.`,
+    description: `${entry.line} A guided journey through the New Testament in the official House of Bread app, following the order the books were written.`,
   };
 }
 
@@ -44,46 +45,56 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
-        eyebrow="Reading plans"
+        eyebrow="New Testament journeys"
         title={plan.name}
         meta={
-          <dl className="flex flex-wrap gap-x-8 gap-y-2 text-lg text-on-green">
-            <div className="flex gap-2">
+          <dl className="flex flex-wrap gap-3 text-on-green">
+            <div className="flex gap-2 rounded-full border border-lime/40 px-4 py-1.5">
               <dt className="text-on-green-muted">Days</dt>
-              <dd className="font-bold">{plan.days}</dd>
+              <dd className="font-semibold">{plan.days}</dd>
             </div>
-            <div className="flex gap-2">
+            <div className="flex gap-2 rounded-full border border-lime/40 px-4 py-1.5">
               <dt className="text-on-green-muted">Pace</dt>
-              <dd className="font-bold">{plan.pace}</dd>
+              <dd className="font-semibold">{plan.pace}</dd>
             </div>
           </dl>
         }
+        actions={
+          <>
+            <ButtonLink href="/app" tone="green" arrow>
+              Start a journey in the app
+            </ButtonLink>
+            <ButtonLink href="/plans" tone="green" variant="secondary">
+              Compare the three paces
+            </ButtonLink>
+          </>
+        }
       />
 
-      <Section id="about" title="About this plan" width="narrow">
-        <p className="text-xl leading-relaxed text-ink">{plan.line}</p>
+      <Section id="about" title="About this journey" width="narrow">
+        <p className="font-serif text-2xl leading-relaxed text-ink">{plan.line}</p>
         <p className="mt-5 text-lg leading-relaxed text-ink-muted">
-          Each plan follows the actual timeline the books were written, as events developed in the
-          early Church, so the story reads in order.
+          Each journey follows the order the books were written, as events developed in the early
+          Church, so the story reads in order.
         </p>
       </Section>
 
       <Section id="day-one" title="A look at day one" tone="tint" width="narrow">
         {dayOne ? (
-          <div className="rounded-2xl border border-border bg-surface p-6 shadow-card sm:p-8">
+          <div className="rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8">
             <div className="flex flex-wrap items-center gap-3">
               <IconTile name="book" />
-              <p className="text-2xl font-bold text-green">Day 1</p>
+              <p className="font-serif text-3xl font-semibold text-green">Day 1</p>
               <PlaceholderBadge label="Sample, confirm against the app" />
             </div>
-            <dl className="mt-6 space-y-4 text-lg">
+            <dl className="mt-7 space-y-5 text-lg">
               <div>
-                <dt className="text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">Reading</dt>
+                <dt className="eyebrow">Reading</dt>
                 <dd className="mt-1 text-ink">{dayOne.readings}</dd>
               </div>
               <div>
-                <dt className="text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">Theme</dt>
-                <dd className="mt-1 font-serif text-xl text-ink">{dayOne.theme}</dd>
+                <dt className="eyebrow">Theme</dt>
+                <dd className="mt-1 font-serif text-2xl text-ink">{dayOne.theme}</dd>
               </div>
             </dl>
           </div>
@@ -93,7 +104,7 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
       </Section>
 
       <Section id="follow" title="How to follow it in the app">
-        <StepList steps={planSteps} />
+        <StepList steps={journeySteps} />
       </Section>
 
       <Section id="faq" title="Frequently asked" tone="tint" width="narrow">
@@ -102,7 +113,8 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
 
       <AppBand
         idPrefix="plan-app"
-        heading="Open this plan in the app"
+        heading="Open this journey in the app"
+        action={{ href: "/app", label: "Start a journey in the app" }}
         note={<Placeholder>[APP DEEP LINK TO BE CONFIRMED]</Placeholder>}
       />
     </main>

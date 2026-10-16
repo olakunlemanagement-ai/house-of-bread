@@ -1,48 +1,69 @@
 import type { Metadata } from "next";
 import { AppBand } from "@/components/shared/AppBand";
+import { ButtonLink } from "@/components/shared/Button";
 import { StepList } from "@/components/shared/Lists";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { PlanCard } from "@/components/shared/PlanCard";
-import { Section } from "@/components/shared/Section";
-import { planSteps } from "@/lib/content/copy";
+import { Section, SectionHeader } from "@/components/shared/Section";
+import { journeySteps } from "@/lib/content/copy";
 import { placeholderPlans } from "@/lib/content/placeholder-data";
 
 export const metadata: Metadata = {
-  title: "Reading plans",
+  title: "New Testament journeys (reading plans)",
   description:
-    "Three guided routes through the New Testament, following the order the books were written. 30, 60 and 90 day plans.",
+    "Three guided reading plans through the New Testament, in the order the books were written. 30, 60 and 90 day journeys in the official House of Bread app.",
 };
 
 export default function PlansPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
-        eyebrow="Reading plans"
-        title="Three routes through the New Testament"
-        lead="Each plan follows the actual timeline the books were written, as events developed in the early Church, so the story reads in order."
+        eyebrow="New Testament journeys"
+        title="Three journeys through the New Testament"
+        lead="Each journey follows the order the books were written, as events developed in the early Church, so the story reads in order. Available in the official House of Bread app."
+        actions={
+          <>
+            <ButtonLink href="/app" tone="green" arrow>
+              Start a journey in the app
+            </ButtonLink>
+            <ButtonLink href="#journeys" tone="green" variant="secondary">
+              Compare the three paces
+            </ButtonLink>
+          </>
+        }
       />
 
-      <Section id="plans" title="Choose a pace that fits real life">
-        <ul className="grid gap-6 md:grid-cols-3">
-          {placeholderPlans.map((plan) => (
-            <PlanCard key={plan.slug} {...plan} href={`/plans/${plan.slug}`} />
+      <Section id="journeys" title="Choose a pace">
+        <ul className="grid gap-5 pt-4 md:grid-cols-3 md:items-stretch">
+          {placeholderPlans.map((plan, index) => (
+            <PlanCard key={plan.slug} {...plan} href={`/plans/${plan.slug}`} raised={index === 1} />
           ))}
         </ul>
       </Section>
 
-      <Section id="how" title="How the plans work" tone="tint">
-        <StepList steps={planSteps} />
+      <Section id="how" title="How a journey works" tone="tint">
+        <StepList
+          steps={journeySteps.map((step, index) => ({
+            ...step,
+            icon: (["route", "phone", "check", "clock"] as const)[index],
+          }))}
+        />
       </Section>
 
-      <Section id="order" title="Why the order matters" width="narrow">
-        <p className="text-xl leading-relaxed text-ink">
-          Reading the books in the order they were written lets each letter be heard against the
-          events that prompted it. The same passage reads differently once the situation behind it
-          is known.
-        </p>
-      </Section>
+      <section id="order" aria-labelledby="order-heading" className="bg-surface">
+        <div className="container-page reveal grid gap-10 py-18 md:py-28 lg:grid-cols-12">
+          <div className="lg:col-span-5">
+            <SectionHeader id="order-heading">Why the order matters</SectionHeader>
+          </div>
+          <p className="font-serif text-2xl leading-relaxed text-ink lg:col-span-7 lg:pt-10">
+            Reading the books in the order they were written lets each letter be heard against the
+            events that prompted it. The same passage reads differently once the situation behind it
+            is known.
+          </p>
+        </div>
+      </section>
 
-      <AppBand idPrefix="plans-app" />
+      <AppBand idPrefix="plans-app" action={{ href: "/app", label: "Start a journey in the app" }} />
     </main>
   );
 }

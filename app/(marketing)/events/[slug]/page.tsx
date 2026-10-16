@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button, textLinkClass } from "@/components/shared/Button";
+import { Button, ButtonLink, textLinkClass } from "@/components/shared/Button";
 import { Icon } from "@/components/shared/icons";
 import { EventDuration, EventWhen, eventKindLabel } from "@/components/shared/LiveSessionCard";
 import { NewsletterBand } from "@/components/shared/NewsletterBand";
@@ -48,7 +48,7 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
               <EventWhen event={event} />
             </p>
             <p className="flex flex-wrap items-center gap-2 text-on-green">
-              <Icon name="live" className="size-5 text-lime" />
+              <Icon name="clock" className="size-5 text-lime" />
               <EventDuration event={event} />
             </p>
           </div>
@@ -56,9 +56,9 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         actions={
           <>
             {event.youtubeUrl ? (
-              <a href={event.youtubeUrl} className="inline-flex min-h-12 items-center rounded-full bg-lime px-6 py-3 font-semibold text-on-lime">
+              <ButtonLink href={event.youtubeUrl as `https://${string}`} tone="green" arrow>
                 Watch on YouTube
-              </a>
+              </ButtonLink>
             ) : (
               <Button tone="green" disabled aria-describedby="youtube-note">
                 Watch on YouTube
@@ -66,6 +66,7 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
             )}
             {/* TODO: link to the .ics file generated at build time once events carry real dates. */}
             <Button tone="green" variant="secondary" disabled aria-describedby="calendar-note">
+              <Icon name="calendar" className="size-5" />
               Add to calendar
             </Button>
             <div className="basis-full space-y-1 text-sm text-on-green-muted">
@@ -96,8 +97,8 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         source="live-notify"
       />
 
-      <nav aria-label="Sessions" className="mx-auto w-full max-w-6xl px-4 py-10 sm:px-6">
-        <Link href="/events" className={`${textLinkClass} inline-flex items-center gap-2`}>
+      <nav aria-label="Sessions" className="container-page py-10">
+        <Link href="/events" className={`${textLinkClass} inline-flex items-center gap-2 py-2`}>
           <Icon name="arrow-left" className="size-5" />
           Back to all sessions
         </Link>

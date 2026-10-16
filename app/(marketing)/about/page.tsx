@@ -1,17 +1,20 @@
 import type { Metadata } from "next";
 import { ButtonLink } from "@/components/shared/Button";
 import { FeatureCard } from "@/components/shared/Card";
+import { ClosingBand } from "@/components/shared/ClosingBand";
+import { IconTile } from "@/components/shared/icons";
 import { StepList } from "@/components/shared/Lists";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { Placeholder } from "@/components/shared/Placeholder";
+import { Placeholder, PlaceholderBadge, PhotoFrame } from "@/components/shared/Placeholder";
 import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
-import { Section } from "@/components/shared/Section";
+import { Section, SectionHeader } from "@/components/shared/Section";
+import { nameText, regions } from "@/lib/content/copy";
 
 const description =
-  "House of Bread Global is a teaching ministry committed to doctrinal clarity and careful handling of Scripture, serving readers across the United Kingdom, Africa and the United States.";
+  "House of Bread Global is a teaching ministry committed to doctrinal clarity and careful handling of Scripture, serving believers across the United Kingdom, Africa and the United States.";
 
 export const metadata: Metadata = {
-  title: "About",
+  title: "About the ministry",
   description,
 };
 
@@ -19,45 +22,83 @@ export default function AboutPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
-        eyebrow="About"
-        title="A teaching ministry built on the bread of life"
-        lead="House of Bread Global is committed to doctrinal clarity and careful handling of Scripture, serving readers across the United Kingdom, Africa and the United States."
+        eyebrow="About the ministry"
+        title="A teaching ministry for believers who want to be fed"
+        lead={description}
       />
 
-      <section aria-labelledby="name-heading" className="bg-surface">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-2 lg:items-center">
-          <div>
-            <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-lime" />
-            <h2 id="name-heading" className="mt-4 text-3xl font-bold leading-tight sm:text-4xl">
-              The name
-            </h2>
-            <p className="mt-6 text-xl leading-relaxed text-ink">
-              The name comes from Bethlehem, the house of bread, and from the One who claimed the
-              title for himself. The aim is not information for its own sake, but Scripture read
-              well, understood clearly, and allowed to feed.
-            </p>
+      <section id="mission" aria-labelledby="mission-heading" className="bg-surface">
+        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <div className="lg:col-span-7">
+            <SectionHeader id="mission-heading">Mission</SectionHeader>
+            {/* Interim wording from the content pack, shown as a marked placeholder. */}
+            <div data-placeholder className="mt-8 space-y-5">
+              <p className="flex flex-wrap items-center gap-3 text-sm">
+                <PlaceholderBadge label="Interim wording" />
+                <Placeholder>[MISSION STATEMENT TO BE SUPPLIED BY THE MINISTRY]</Placeholder>
+              </p>
+              <p className="max-w-2xl font-serif text-2xl leading-relaxed text-ink sm:text-3xl sm:leading-snug">
+                House of Bread Global teaches the Scriptures with doctrinal clarity and care, so that
+                believers are fed, grounded and equipped for a stronger walk with God.
+              </p>
+            </div>
           </div>
-          <ScriptureBlock variant="dark" passage="John 6:33-35" verses={john6_33to35} />
+          <PhotoFrame
+            className="lg:col-span-5"
+            subject="Believers gathered for teaching"
+          />
         </div>
       </section>
 
-      <Section id="does" title="What the ministry does" tone="tint">
-        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <FeatureCard icon="scroll" title="Teaching">
-            Written teaching on doctrine, interpretation and the questions believers actually ask.
-          </FeatureCard>
-          <FeatureCard icon="route" title="Reading plans">
-            Guided routes through the New Testament in the order the books were written.
-          </FeatureCard>
-          <FeatureCard icon="live" title="Live sessions">
-            Teaching streamed on YouTube, with reminders by email.
+      <section id="the-name" aria-labelledby="the-name-heading" className="bg-surface-tint">
+        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <div className="lg:col-span-6">
+            <SectionHeader id="the-name-heading">The name</SectionHeader>
+            <p className="mt-7 font-serif text-2xl leading-relaxed text-ink">{nameText}</p>
+          </div>
+          <div className="lg:col-span-6">
+            <ScriptureBlock variant="dark" passage="John 6:33-35" verses={john6_33to35} />
+          </div>
+        </div>
+      </section>
+
+      <Section id="offers" title="What the ministry offers">
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          <FeatureCard icon="live" title="Live teaching">
+            Sessions streamed on YouTube, with reminders by email.
           </FeatureCard>
           <FeatureCard icon="people" title="Classes and training">
             Structured learning for those who want to go further than reading alone.
           </FeatureCard>
-          <FeatureCard icon="phone" title="The app">
-            Daily reading, six translations and progress tracking, on a phone.
+          <FeatureCard icon="scroll" title="Written teaching">
+            Doctrine, interpretation and the questions believers actually ask.
           </FeatureCard>
+          <FeatureCard icon="book" title="New Testament study">
+            An introduction to every New Testament book, and three guided journeys through the
+            whole.
+          </FeatureCard>
+          <FeatureCard icon="phone" title="The official app">
+            The ministry&apos;s teaching, journeys and six translations on your phone.
+          </FeatureCard>
+        </ul>
+      </Section>
+
+      <Section
+        id="regions"
+        title="Where the ministry serves"
+        intro="Serving believers across three regions, with sessions and teaching open to all."
+        tone="tint"
+      >
+        <ul className="grid gap-5 md:grid-cols-3">
+          {regions.map((region) => (
+            <li key={region} className="rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8">
+              <IconTile name="globe" />
+              <h3 className="mt-6 text-2xl">{region}</h3>
+              <p className="mt-3 text-sm">
+                <Placeholder>[LOCAL DETAILS TO BE SUPPLIED]</Placeholder>
+              </p>
+            </li>
+          ))}
         </ul>
       </Section>
 
@@ -84,9 +125,21 @@ export default function AboutPage() {
         />
       </Section>
 
-      <Section id="teaches" title="Who teaches" tone="tint" width="narrow">
-        <Placeholder block>[TEACHER NAME, PHOTO AND SHORT BIOGRAPHY TO BE SUPPLIED]</Placeholder>
-      </Section>
+      <section id="leadership" aria-labelledby="leadership-heading" className="bg-surface-tint">
+        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <PhotoFrame
+            className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
+            ratio="4/5"
+            subject="Portrait of the teacher"
+          />
+          <div className="lg:col-span-7">
+            <SectionHeader id="leadership-heading">Leadership</SectionHeader>
+            <div className="mt-8">
+              <Placeholder block>[TEACHER NAME, PHOTO AND SHORT BIOGRAPHY TO BE SUPPLIED]</Placeholder>
+            </div>
+          </div>
+        </div>
+      </section>
 
       <Section id="doctrine" title="Doctrinal position" width="narrow">
         <Placeholder block>
@@ -95,16 +148,14 @@ export default function AboutPage() {
         </Placeholder>
       </Section>
 
-      <section aria-label="Next steps" className="tone-green bg-green-band">
-        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-4 px-4 py-16 sm:px-6 md:py-20">
-          <ButtonLink href="/subscribe" tone="green">
-            Join the newsletter
-          </ButtonLink>
-          <ButtonLink href="/contact" tone="green" variant="secondary">
-            Contact the ministry
-          </ButtonLink>
-        </div>
-      </section>
+      <ClosingBand id="about-next" eyebrow="Study . Pray . Grow" title="Come and be fed by the Word.">
+        <ButtonLink href="/events" tone="green" arrow>
+          Join a live session
+        </ButtonLink>
+        <ButtonLink href="/contact" tone="green" variant="secondary">
+          Contact the ministry
+        </ButtonLink>
+      </ClosingBand>
     </main>
   );
 }

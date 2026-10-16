@@ -1,39 +1,53 @@
 import type { Metadata } from "next";
 import type { Route } from "next";
+import { ButtonLink } from "@/components/shared/Button";
 import { LinkCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { FeatureList } from "@/components/shared/Lists";
 import { NewsletterBand } from "@/components/shared/NewsletterBand";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
-import { Section } from "@/components/shared/Section";
+import { Placeholder, PlaceholderBadge, PhotoFrame } from "@/components/shared/Placeholder";
+import { Section, SectionHeader } from "@/components/shared/Section";
 import { classAudience } from "@/lib/content/copy";
 import { placeholderClasses } from "@/lib/content/placeholder-data";
 
 export const metadata: Metadata = {
   title: "Classes and training",
   description:
-    "Structured teaching for those who want to go further than reading alone. See what each class covers, who it is for and how to join.",
+    "Structured teaching from House of Bread Global for believers who want to go deeper. See what each class covers, who it is for and how to join.",
 };
+
+const audienceIcons = ["people", "route", "search", "book"] as const;
 
 export default function ClassesPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
         eyebrow="Classes and training"
-        title="Go further than reading alone"
-        lead="Structured teaching, taught with the same care for context and doctrine as everything else here."
+        title="Go deeper in the Word"
+        lead="Structured teaching from the ministry, taught with the same care for context and doctrine as everything else here."
+        actions={
+          <>
+            <ButtonLink href="#join" tone="green" arrow>
+              See how to join
+            </ButtonLink>
+            <ButtonLink href="/subscribe" tone="green" variant="secondary">
+              Hear when enrolment opens
+            </ButtonLink>
+          </>
+        }
       />
 
-      <Section id="list" title="Class list">
+      <Section id="list" title="Classes">
         {placeholderClasses.length > 0 ? (
-          <ul className="grid gap-6 md:grid-cols-2">
+          <ul className="grid gap-5 md:grid-cols-2">
             {placeholderClasses.map((entry) => (
               <li key={entry.slug} className="flex">
                 <LinkCard
                   href={`/classes/${entry.slug}` as Route}
                   title={entry.title}
                   eyebrow={entry.sample ? <PlaceholderBadge label="Sample" /> : null}
+                  footer={<span className="font-semibold text-green">View class</span>}
                 >
                   <dl className="space-y-2">
                     <div>
@@ -54,18 +68,33 @@ export default function ClassesPage() {
             ))}
           </ul>
         ) : (
-          <EmptyState icon="people" action={{ href: "/subscribe", label: "Subscribe" }}>
+          <EmptyState icon="people" action={{ href: "/subscribe", label: "Hear when enrolment opens" }}>
             Class details are being prepared. Subscribe to hear when enrolment opens.
           </EmptyState>
         )}
       </Section>
 
-      <Section id="join" title="How to join" tone="tint" width="narrow">
-        <Placeholder block>[JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email]</Placeholder>
-      </Section>
+      <section id="for" aria-labelledby="for-heading" className="bg-surface-tint">
+        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
+          <div className="lg:col-span-7">
+            <SectionHeader id="for-heading">Who classes are for</SectionHeader>
+            <div className="mt-10">
+              <FeatureList
+                columns={1}
+                items={classAudience.map((text, index) => ({ icon: audienceIcons[index], text }))}
+              />
+            </div>
+          </div>
+          <PhotoFrame
+            className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
+            ratio="4/5"
+            subject="A class in progress, believers with open Bibles"
+          />
+        </div>
+      </section>
 
-      <Section id="for" title="Who classes are for">
-        <FeatureList items={classAudience} />
+      <Section id="join" title="How to join" width="narrow">
+        <Placeholder block>[JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email]</Placeholder>
       </Section>
 
       <NewsletterBand idPrefix="classes-newsletter" />

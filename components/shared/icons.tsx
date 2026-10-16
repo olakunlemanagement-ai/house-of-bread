@@ -20,7 +20,17 @@ export type IconName =
   | "compass"
   | "cross"
   | "search"
-  | "alert";
+  | "alert"
+  | "bell"
+  | "clock"
+  | "layers"
+  | "signal"
+  | "type"
+  | "swipe"
+  | "pin"
+  | "play"
+  | "share"
+  | "heart";
 
 const paths: Record<IconName, ReactNode> = {
   book: (
@@ -108,6 +118,55 @@ const paths: Record<IconName, ReactNode> = {
       <path d="M12 7.5v5.5M12 16.5h.01" />
     </>
   ),
+  bell: (
+    <>
+      <path d="M6 16v-5a6 6 0 1 1 12 0v5l1.5 2h-15z" />
+      <path d="M10 20.5a2.2 2.2 0 0 0 4 0" />
+    </>
+  ),
+  clock: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3 2" />
+    </>
+  ),
+  layers: (
+    <>
+      <path d="m12 3 9 5-9 5-9-5z" />
+      <path d="m3 13 9 5 9-5" />
+    </>
+  ),
+  signal: <path d="M5 19v-3M10 19v-6M15 19v-9M20 19V5" />,
+  type: <path d="M5 6V4h14v2M12 4v16M9 20h6" />,
+  swipe: (
+    <>
+      <path d="M4 12h12M12 8l4 4-4 4" />
+      <path d="M20 5v14" />
+    </>
+  ),
+  pin: (
+    <>
+      <path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z" />
+      <circle cx="12" cy="9.5" r="2.5" />
+    </>
+  ),
+  play: (
+    <>
+      <rect x="2.5" y="5" width="19" height="14" rx="4" />
+      <path d="M10 9v6l5-3z" fill="currentColor" />
+    </>
+  ),
+  share: (
+    <>
+      <circle cx="6" cy="12" r="2.5" />
+      <circle cx="18" cy="6" r="2.5" />
+      <circle cx="18" cy="18" r="2.5" />
+      <path d="m8.2 10.8 7.6-3.6M8.2 13.2l7.6 3.6" />
+    </>
+  ),
+  heart: (
+    <path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z" />
+  ),
 };
 
 export function Icon({
@@ -133,7 +192,7 @@ export function Icon({
   );
 }
 
-/** Icon inside a rounded square with a green gradient fill. */
+/** Icon inside a rounded square with a green gradient fill and an inner highlight. */
 export function IconTile({
   name,
   glyph = "lime",
@@ -143,7 +202,7 @@ export function IconTile({
   glyph?: "lime" | "white";
   size?: "sm" | "md" | "lg";
 }) {
-  const box = { sm: "size-9 rounded-lg", md: "size-12 rounded-xl", lg: "size-16 rounded-2xl" }[size];
+  const box = { sm: "size-9 rounded-xl", md: "size-12 rounded-tile", lg: "size-16 rounded-tile" }[size];
   const icon = { sm: "size-4", md: "size-6", lg: "size-8" }[size];
   return (
     <span

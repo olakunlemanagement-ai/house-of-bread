@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { CrossWatermark } from "./Decor";
+import { CrossWatermark, Grain } from "./Decor";
 import { Scripture, type ScriptureVersion } from "./Scripture";
 
 type ScriptureBlockProps = {
@@ -23,7 +23,7 @@ export function ScriptureBlock({
   const dark = variant === "dark";
 
   const caption = (
-    <span className="mt-6 flex flex-wrap items-center gap-3 font-sans text-sm font-bold uppercase tracking-[0.16em]">
+    <span className="mt-7 flex flex-wrap items-center gap-3 font-sans text-sm font-semibold uppercase tracking-[0.16em]">
       <cite className={`not-italic ${dark ? "text-lime" : "text-green"}`}>{passage}</cite>
       <span
         className={`rounded-full px-2.5 py-0.5 text-xs ${
@@ -39,24 +39,34 @@ export function ScriptureBlock({
     <div
       className={
         dark
-          ? "tone-green bg-green-band relative overflow-hidden rounded-3xl p-8 sm:p-12"
-          : "rounded-r-2xl border-l-4 border-green bg-surface-tint px-6 py-6 sm:px-8"
+          ? "tone-green bg-green-band relative overflow-hidden rounded-card p-8 shadow-raised sm:p-12"
+          : "rounded-r-card border-l-4 border-green bg-surface-tint px-6 py-7 sm:px-9"
       }
     >
-      {dark ? <CrossWatermark className="-right-4 -top-6 h-64 w-44 opacity-[0.07]" /> : null}
-      {label ? (
-        <p
-          className={`relative mb-5 font-sans text-sm font-bold uppercase tracking-[0.2em] ${
-            dark ? "text-lime" : "text-green"
-          }`}
-        >
-          {label}
-        </p>
+      {dark ? (
+        <>
+          <Grain />
+          <CrossWatermark className="-right-4 -top-6 h-64 w-44 opacity-[0.07]" />
+          <span
+            aria-hidden="true"
+            className="absolute left-6 top-2 font-serif text-[7rem] leading-none text-lime opacity-25 sm:left-9"
+          >
+            &ldquo;
+          </span>
+        </>
       ) : null}
-      <Scripture passage={passage} version={version} caption={caption} className="relative">
+      {label ? (
+        <p className={`eyebrow relative mb-5 ${dark ? "pt-8" : ""}`}>{label}</p>
+      ) : null}
+      <Scripture
+        passage={passage}
+        version={version}
+        caption={caption}
+        className={`relative ${dark && !label ? "pt-8" : ""}`}
+      >
         <div
           className={`space-y-3 font-serif ${
-            dark ? "text-xl leading-relaxed text-on-green sm:text-2xl" : "text-lg leading-[1.7] text-ink"
+            dark ? "text-xl leading-relaxed text-on-green sm:text-2xl sm:leading-relaxed" : "text-lg leading-[1.7] text-ink"
           }`}
         >
           {verses.map((verse, index) => (

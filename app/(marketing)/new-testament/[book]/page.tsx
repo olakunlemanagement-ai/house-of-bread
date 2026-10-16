@@ -3,6 +3,7 @@ import type { Route } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AppBand } from "@/components/shared/AppBand";
+import { ButtonLink } from "@/components/shared/Button";
 import { Icon } from "@/components/shared/icons";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
@@ -39,8 +40,8 @@ function Neighbour({ book, direction }: { book: PlaceholderBook; direction: "pre
   const label = direction === "previous" ? "Previous book" : "Next book";
   const content = (
     <>
-      <span className="block text-sm font-bold uppercase tracking-[0.16em] text-ink-muted">{label}</span>
-      <span className="mt-1 flex items-center gap-2 text-xl font-bold">
+      <span className="eyebrow block">{label}</span>
+      <span className="mt-2 flex items-center gap-2 font-serif text-2xl font-semibold">
         {direction === "previous" ? <Icon name="arrow-left" className="size-5" /> : null}
         {book.name}
         {direction === "next" ? <Icon name="arrow-right" className="size-5" /> : null}
@@ -51,12 +52,12 @@ function Neighbour({ book, direction }: { book: PlaceholderBook; direction: "pre
   return book.hasPage ? (
     <Link
       href={`/new-testament/${book.slug}` as Route}
-      className={`block rounded-2xl border border-border-strong bg-surface p-5 text-green shadow-card hover:border-green ${align}`}
+      className={`lift block rounded-card border border-border-strong bg-surface p-6 text-green shadow-soft ${align}`}
     >
       {content}
     </Link>
   ) : (
-    <div className={`rounded-2xl border border-dashed border-border bg-surface p-5 text-ink ${align}`}>
+    <div className={`rounded-card border border-dashed border-border-strong bg-surface-tint p-6 text-ink ${align}`}>
       {content}
       <span className="mt-1 block text-sm text-ink-muted">Coming soon</span>
     </div>
@@ -75,9 +76,19 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
-        eyebrow="The New Testament"
+        eyebrow="New Testament study"
         title={`${entry.name}: an introduction`}
         meta={<PlaceholderBadge label="Sample" />}
+        actions={
+          <>
+            <ButtonLink href="/app" tone="green" arrow>
+              Read this book in the app
+            </ButtonLink>
+            <ButtonLink href="/new-testament" tone="green" variant="secondary">
+              Browse all 27 books
+            </ButtonLink>
+          </>
+        }
       />
 
       {introductionHeadings.map((heading, position) => (
@@ -95,13 +106,17 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
       ))}
 
       <nav aria-label="Books" className="bg-surface">
-        <div className="mx-auto grid max-w-3xl gap-4 px-4 py-12 sm:grid-cols-2 sm:px-6">
+        <div className="container-page grid gap-4 py-12 sm:grid-cols-2">
           <div>{previous ? <Neighbour book={previous} direction="previous" /> : null}</div>
           <div>{next ? <Neighbour book={next} direction="next" /> : null}</div>
         </div>
       </nav>
 
-      <AppBand idPrefix="book-app" heading={`Read ${entry.name} in the app`} />
+      <AppBand
+        idPrefix="book-app"
+        heading={`Read ${entry.name} in the app`}
+        action={{ href: "/app", label: "Read this book in the app" }}
+      />
     </main>
   );
 }

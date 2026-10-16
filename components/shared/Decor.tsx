@@ -1,6 +1,6 @@
-// Decorative inline SVG for green surfaces. Low opacity, hidden from
-// assistive technology, and never placed behind body text at a strength
-// that could weaken contrast.
+// Decorative inline SVG and layers for green surfaces. Low opacity, hidden
+// from assistive technology, and never placed behind lime text at a strength
+// that could weaken contrast. No images, no blur, no backdrop-filter.
 
 export function CrossWatermark({ className = "" }: { className?: string }) {
   return (
@@ -39,15 +39,25 @@ export function Leaves({ className = "" }: { className?: string }) {
   );
 }
 
-/** Soft curved edge from a green band into the white page below. */
-export function CurveEdge() {
+/** Faint noise over a green surface. Sits under the content layer. */
+export function Grain() {
+  return <div aria-hidden="true" className="grain pointer-events-none absolute inset-0" />;
+}
+
+/**
+ * Soft curved edge from a green band into the white page below. `tone`
+ * matches the colour of the section that follows.
+ */
+export function CurveEdge({ tone = "white" }: { tone?: "white" | "tint" }) {
   return (
     <svg
       viewBox="0 0 1440 64"
       preserveAspectRatio="none"
       aria-hidden="true"
       focusable="false"
-      className="pointer-events-none absolute inset-x-0 -bottom-px block h-10 w-full text-surface sm:h-16"
+      className={`pointer-events-none absolute inset-x-0 -bottom-px block h-10 w-full sm:h-16 ${
+        tone === "tint" ? "text-surface-tint" : "text-surface"
+      }`}
     >
       <path d="M0 64V32C240 0 480 0 720 16s480 48 720 16v32z" fill="currentColor" />
     </svg>

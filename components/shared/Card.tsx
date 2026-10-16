@@ -3,12 +3,11 @@ import type { Route } from "next";
 import type { ReactNode } from "react";
 import { Icon, IconTile, type IconName } from "./icons";
 
-export const cardClass =
-  "rounded-2xl border border-border bg-surface p-6 shadow-card transition-[border-color,box-shadow]";
+/** Card on white or tint: white surface, 12% green edge, soft shadow, 24px radius. */
+export const cardClass = "rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8";
 
-/** Adds the hover and focus treatment to a card that contains a link. */
-export const interactiveCardClass =
-  "relative hover:border-border-strong hover:shadow-card-hover focus-within:border-border-strong focus-within:shadow-card-hover";
+/** Lift 4px, raised shadow and a stronger edge on hover and focus. See .lift. */
+export const interactiveCardClass = "lift";
 
 export function Card({
   children,
@@ -22,7 +21,7 @@ export function Card({
   return <Tag className={`${cardClass} ${className}`}>{children}</Tag>;
 }
 
-/** Icon, heading and one line. Used for feature and topic grids. */
+/** Icon tile, heading and one line. Used for feature and topic grids. */
 export function FeatureCard({
   icon,
   title,
@@ -38,8 +37,8 @@ export function FeatureCard({
   return (
     <Card as="li" className="flex flex-col">
       <IconTile name={icon} />
-      <Heading className="mt-5 text-xl font-bold">{title}</Heading>
-      <p className="mt-2 leading-relaxed text-ink-muted">{children}</p>
+      <Heading className="mt-6 text-2xl leading-snug">{title}</Heading>
+      <p className="mt-3 leading-relaxed text-ink-muted">{children}</p>
     </Card>
   );
 }
@@ -63,19 +62,22 @@ export function LinkCard({
 }) {
   return (
     <Card as="article" className={`flex w-full flex-col ${interactiveCardClass}`}>
-      {eyebrow ? <div className="mb-3 flex flex-wrap items-center gap-2 text-sm">{eyebrow}</div> : null}
-      <h3 className="text-xl font-bold">
+      {eyebrow ? <div className="mb-4 flex flex-wrap items-center gap-2 text-sm">{eyebrow}</div> : null}
+      <h3 className="text-2xl leading-snug">
         <Link
           href={href}
-          className="rounded after:absolute after:inset-0 after:rounded-2xl after:content-[''] focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring"
+          className="rounded after:absolute after:inset-0 after:rounded-card after:content-[''] focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring"
         >
           {title}
         </Link>
       </h3>
-      {children ? <div className="mt-2 leading-relaxed text-ink-muted">{children}</div> : null}
-      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-5">
+      {children ? <div className="mt-3 leading-relaxed text-ink-muted">{children}</div> : null}
+      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
         {footer}
-        <span aria-hidden="true" className="ml-auto text-green">
+        <span
+          aria-hidden="true"
+          className="bg-green-tile ml-auto inline-flex size-10 items-center justify-center rounded-xl text-lime"
+        >
           <Icon name="arrow-right" className="size-5" />
         </span>
       </div>

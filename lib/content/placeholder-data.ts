@@ -142,28 +142,29 @@ export const bookGroups: BookGroup[] = [
 ];
 
 // TODO: replace with MDX content pipeline. Pace labels are drawn from the
-// approved one line descriptions, to confirm with the ministry.
+// approved one line descriptions, to confirm with the ministry. Slugs are
+// temporary until confirmed against the app's plan identifiers.
 export const placeholderPlans: PlaceholderPlan[] = [
   {
     slug: "30-day-plan",
-    name: "30 day plan",
+    name: "30 Day NT Journey",
     days: 30,
     pace: "Focused",
-    line: "A focused, fast-moving read.",
+    line: "Focused and fast moving.",
   },
   {
     slug: "60-day-plan",
-    name: "60 day plan",
+    name: "60 Day NT Journey",
     days: 60,
     pace: "Steady",
-    line: "A steady, balanced pace.",
+    line: "Steady and balanced.",
   },
   {
     slug: "90-day-plan",
-    name: "90 day plan",
+    name: "90 Day NT Journey",
     days: 90,
     pace: "Unhurried",
-    line: "Unhurried reading with room to think.",
+    line: "Unhurried, with room to think.",
   },
 ];
 

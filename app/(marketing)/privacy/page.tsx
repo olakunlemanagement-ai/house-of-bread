@@ -81,14 +81,14 @@ export default function PrivacyPage() {
       />
 
       <div className="bg-surface">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-[16rem_1fr]">
+        <div className="container-page grid gap-12 py-18 md:py-24 lg:grid-cols-[16rem_1fr]">
           <nav aria-label="Policy sections" className="lg:sticky lg:top-24 lg:self-start">
-            <ol className="space-y-1 rounded-2xl bg-surface-tint p-5 text-sm">
+            <ol className="space-y-1 rounded-card bg-surface-tint p-5 text-sm">
               {sections.map((section, index) => (
                 <li key={section.id}>
                   <a
                     href={`#${section.id}`}
-                    className="block rounded px-2 py-1.5 text-green underline-offset-4 hover:underline"
+                    className="block rounded-lg px-2 py-1.5 text-green underline-offset-4 hover:underline"
                   >
                     {index + 1}. {section.title}
                   </a>
@@ -97,12 +97,12 @@ export default function PrivacyPage() {
             </ol>
           </nav>
 
-          <ol className="max-w-[68ch] space-y-10">
+          <ol className="max-w-[68ch] space-y-12">
             {sections.map((section, index) => (
               <li key={section.id}>
                 <section id={section.id} aria-labelledby={`${section.id}-heading`} className="scroll-mt-24">
-                  <h2 id={`${section.id}-heading`} className="flex items-baseline gap-3 text-2xl font-bold">
-                    <span className="text-base text-ink-muted">{index + 1}.</span>
+                  <h2 id={`${section.id}-heading`} className="flex items-baseline gap-3 text-3xl">
+                    <span className="font-sans text-base text-ink-muted">{index + 1}.</span>
                     {section.title}
                   </h2>
                   <p className="mt-3 font-serif text-lg leading-[1.7] text-ink">{section.body}</p>

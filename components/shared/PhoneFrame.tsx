@@ -1,18 +1,20 @@
 /**
- * A phone drawn in CSS with a simple mock of the reading screen. No
- * screenshot needed. TODO: swap in real screenshots once supplied.
+ * A phone drawn in CSS with a simple mock of the app reading screen.
+ * Illustrative only, not a screenshot. TODO: swap in real screenshots once
+ * the app developer supplies them.
  */
-export function PhoneFrame() {
+export function PhoneFrame({ className = "" }: { className?: string }) {
   return (
     <div
       role="img"
-      aria-label="Illustration of the app reading screen, showing John chapter 6 in the King James Version"
-      className="mx-auto w-full max-w-[17rem]"
+      aria-label="Illustration of the official app reading screen, showing John chapter 6 in the King James Version"
+      className={`w-full max-w-[16rem] sm:max-w-[17rem] ${className}`}
     >
-      <div className="rounded-[2.5rem] border-[10px] border-green-night bg-green-night shadow-[0_24px_60px_rgb(1_31_11/0.45)]">
-        <div aria-hidden="true" className="overflow-hidden rounded-[1.8rem] bg-surface">
-          <div className="flex items-center justify-between bg-green-header px-5 pb-3 pt-5 text-on-green">
-            <span className="text-sm font-bold">John 6</span>
+      <div className="rounded-[2.6rem] border-[10px] border-green-night bg-green-night shadow-[0_2px_4px_rgb(1_31_11/0.3),0_32px_64px_rgb(1_31_11/0.45)]">
+        <div aria-hidden="true" className="overflow-hidden rounded-[1.9rem] bg-surface">
+          <div className="mx-auto mt-2 h-1.5 w-16 rounded-full bg-green-night/80" />
+          <div className="bg-green-header mt-2 flex items-center justify-between px-5 pb-3 pt-3 text-on-green">
+            <span className="font-serif text-sm font-semibold">John 6</span>
             <span className="rounded-full bg-lime px-2 py-0.5 text-[0.65rem] font-bold text-on-lime">
               KJV
             </span>
@@ -32,7 +34,7 @@ export function PhoneFrame() {
               and he that believeth on me shall never thirst.
             </p>
           </div>
-          <div className="mx-5 mb-5 h-1.5 overflow-hidden rounded-full bg-surface-tint">
+          <div className="mx-5 mb-6 h-1.5 overflow-hidden rounded-full bg-surface-tint">
             <div className="h-full w-2/5 rounded-full bg-success-on-white" />
           </div>
         </div>

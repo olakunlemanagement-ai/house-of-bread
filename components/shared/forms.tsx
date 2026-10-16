@@ -8,7 +8,7 @@ import { Icon } from "./icons";
 export type FieldTone = "light" | "green";
 
 export function inputClass(tone: FieldTone) {
-  return `block w-full min-h-12 rounded-xl border-2 px-4 py-3 text-base text-ink placeholder:text-ink-muted ${
+  return `block w-full min-h-13 rounded-input border-2 px-4 py-3 text-base text-ink placeholder:text-ink-muted ${
     tone === "green" ? "border-white bg-white" : "border-input-border bg-surface-tint"
   }`;
 }
@@ -61,7 +61,7 @@ export function FormError({ id, children }: { id: string; children: ReactNode })
     <p
       id={id}
       role="alert"
-      className="flex items-start gap-3 rounded-xl border-2 border-ink-muted bg-white px-4 py-3 font-semibold text-ink"
+      className="flex items-start gap-3 rounded-input border-2 border-ink-muted bg-white px-4 py-3 font-semibold text-ink"
     >
       <Icon name="alert" className="mt-0.5 size-5 shrink-0 text-green" />
       {children}

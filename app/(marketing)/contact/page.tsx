@@ -4,6 +4,8 @@ import { IconTile } from "@/components/shared/icons";
 import { NewsletterBand } from "@/components/shared/NewsletterBand";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder } from "@/components/shared/Placeholder";
+import { Section, SectionHeader } from "@/components/shared/Section";
+import { SocialLinks } from "@/components/shared/SocialLinks";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -16,24 +18,42 @@ export default function ContactPage() {
       <PageHeader
         eyebrow="Contact"
         title="Get in touch"
-        lead="Questions about the teaching, classes or the app are welcome."
+        lead="Questions about the ministry, live sessions, classes or the app are welcome."
       />
 
       <div className="bg-surface">
-        <div className="mx-auto grid max-w-6xl gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-[1.5fr_1fr]">
+        <div className="container-page grid gap-8 py-18 md:py-24 lg:grid-cols-12 lg:gap-10">
           <section
-            aria-label="Contact form"
-            className="rounded-3xl border border-border bg-surface p-6 shadow-card sm:p-10"
+            aria-labelledby="message-heading"
+            className="rounded-card border border-border bg-surface p-6 shadow-raised sm:p-10 lg:col-span-7"
           >
+            <h2 id="message-heading" className="mb-8 text-3xl">
+              Send a message
+            </h2>
             <ContactForm />
           </section>
 
-          <aside aria-label="Other ways to reach the ministry" className="space-y-6 rounded-3xl bg-surface-tint p-6 sm:p-10">
+          <aside
+            aria-labelledby="reach-heading"
+            className="space-y-6 rounded-card bg-surface-tint p-6 sm:p-10 lg:col-span-5"
+          >
             <IconTile name="mail" size="lg" />
+            <SectionHeader id="reach-heading" size="compact">
+              Other ways to reach the ministry
+            </SectionHeader>
             <Placeholder block>[RESPONSE TIME, EMAIL ADDRESS AND SOCIAL LINKS TO BE SUPPLIED]</Placeholder>
           </aside>
         </div>
       </div>
+
+      <Section
+        id="follow"
+        title="Follow the ministry"
+        intro="Live sessions stream on YouTube, and the ministry shares teaching on its social pages."
+        tone="tint"
+      >
+        <SocialLinks />
+      </Section>
 
       <NewsletterBand idPrefix="contact-newsletter" />
     </main>

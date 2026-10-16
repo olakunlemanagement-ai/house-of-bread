@@ -3,28 +3,23 @@ import type { Route } from "next";
 export type NavLink = {
   href: Route;
   label: string;
+  /** Other path prefixes that mark this item as the current section. */
+  also?: string[];
 };
 
-/** Main navigation, shown in the header. */
+/** Main navigation, ministry first (CONTENT-PACK section 2). */
 export const primaryNav: NavLink[] = [
-  { href: "/teachings", label: "Teachings" },
-  { href: "/new-testament", label: "New Testament" },
-  { href: "/plans", label: "Plans" },
   { href: "/events", label: "Live" },
   { href: "/classes", label: "Classes" },
+  { href: "/teachings", label: "Teachings" },
+  { href: "/new-testament", label: "Study" },
+  // New Testament journeys live in the official app.
+  { href: "/app", label: "The App", also: ["/plans"] },
   { href: "/about", label: "About" },
 ];
 
-/** Footer link columns. */
+/** Footer link columns. The Follow column is rendered from SocialLinks. */
 export const footerNav: { heading: string; links: NavLink[] }[] = [
-  {
-    heading: "Learn",
-    links: [
-      { href: "/teachings", label: "Teachings" },
-      { href: "/new-testament", label: "New Testament" },
-      { href: "/plans", label: "Reading plans" },
-    ],
-  },
   {
     heading: "Ministry",
     links: [
@@ -35,10 +30,18 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     ],
   },
   {
-    heading: "Connect",
+    heading: "Learn",
     links: [
-      { href: "/subscribe", label: "Subscribe" },
-      { href: "/app", label: "Get the app" },
+      { href: "/teachings", label: "Teachings" },
+      { href: "/new-testament", label: "Study the New Testament" },
+      { href: "/plans", label: "New Testament journeys" },
+      { href: "/app", label: "The official app" },
     ],
   },
 ];
+
+export function isCurrent(item: NavLink, pathname: string): boolean {
+  return [item.href, ...(item.also ?? [])].some(
+    (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
+  );
+}

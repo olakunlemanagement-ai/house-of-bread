@@ -54,23 +54,25 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
       />
 
       <article aria-labelledby="body-heading" className="bg-surface">
-        <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-24">
-          <h2 id="body-heading" className="sr-only">
-            {entry.title}
-          </h2>
-          <Prose>
-            <Placeholder block>
-              [TEACHING BODY TO BE SUPPLIED. Sample layout only: body text in serif, with every
-              quotation in a ScriptureBlock as below.]
-            </Placeholder>
-            <ScriptureBlock passage="John 6:33-35" verses={john6_33to35} />
-          </Prose>
+        <div className="container-page py-18 md:py-24">
+          <div className="mx-auto max-w-[68ch]">
+            <h2 id="body-heading" className="sr-only">
+              {entry.title}
+            </h2>
+            <Prose>
+              <Placeholder block>
+                [TEACHING BODY TO BE SUPPLIED. Sample layout only: body text in serif, with every
+                quotation in a ScriptureBlock as below.]
+              </Placeholder>
+              <ScriptureBlock passage="John 6:33-35" verses={john6_33to35} />
+            </Prose>
+          </div>
         </div>
       </article>
 
       <Section id="related" title="Related teachings" tone="tint">
         {related.length > 0 ? (
-          <ul className="grid gap-6 md:grid-cols-2">
+          <ul className="grid gap-5 md:grid-cols-2">
             {related.map((other) => (
               <li key={other.slug} className="flex">
                 <LinkCard
@@ -84,7 +86,7 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
             ))}
           </ul>
         ) : (
-          <EmptyState icon="scroll" action={{ href: "/teachings", label: "Teachings" }}>
+          <EmptyState icon="scroll" action={{ href: "/subscribe", label: "Subscribe for new teaching" }}>
             The first teachings are being prepared. Subscribe to be told when they are published.
           </EmptyState>
         )}

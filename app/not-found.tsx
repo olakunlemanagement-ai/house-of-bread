@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { Route } from "next";
-import { IconTile } from "@/components/shared/icons";
+import { AnnouncementBar } from "@/components/shared/AnnouncementBar";
+import { Icon, IconTile } from "@/components/shared/icons";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
 
@@ -12,35 +13,37 @@ export const metadata: Metadata = {
 
 const links: { href: Route; label: string }[] = [
   { href: "/", label: "Home" },
-  { href: "/teachings", label: "Teachings" },
-  { href: "/plans", label: "Reading plans" },
-  { href: "/new-testament", label: "New Testament" },
   { href: "/events", label: "Live sessions" },
+  { href: "/classes", label: "Classes" },
+  { href: "/teachings", label: "Teachings" },
+  { href: "/app", label: "The official app" },
 ];
 
 // Handles unknown URLs and notFound() calls from any route.
 export default function NotFound() {
   return (
     <>
+      <AnnouncementBar />
       <SiteHeader />
       <main id="main" tabIndex={-1} className="bg-surface">
-        <div className="mx-auto max-w-3xl px-4 py-20 sm:px-6 md:py-28">
-          <IconTile name="compass" size="lg" />
-          <h1 className="mt-8 text-4xl font-bold tracking-tight sm:text-5xl">
-            This page could not be found
-          </h1>
-          <p className="mt-6 text-xl leading-relaxed text-ink">
-            The link may be old, or the address may have been typed differently. Try one of these
-            instead.
-          </p>
-          <ul className="mt-10 grid gap-3 sm:grid-cols-2">
+        <div className="container-page py-20 md:py-32">
+          <div className="max-w-3xl">
+            <IconTile name="compass" size="lg" />
+            <h1 className="mt-8 text-display">This page could not be found</h1>
+            <p className="mt-6 text-lead text-ink">
+              The link may be old, or the address may have been typed differently. Try one of these
+              instead.
+            </p>
+          </div>
+          <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
             {links.map((item) => (
-              <li key={item.href}>
+              <li key={item.href} className="lift rounded-tile">
                 <Link
                   href={item.href}
-                  className="flex min-h-14 items-center rounded-xl border border-border-strong bg-surface px-5 font-semibold text-green shadow-card hover:border-green"
+                  className="flex min-h-16 items-center justify-between gap-2 rounded-tile border border-border-strong bg-surface px-5 font-semibold text-green shadow-soft"
                 >
                   {item.label}
+                  <Icon name="arrow-right" className="size-5 shrink-0" />
                 </Link>
               </li>
             ))}

@@ -1,42 +1,49 @@
 import type { Metadata } from "next";
-import { Icon, IconTile, type IconName } from "@/components/shared/icons";
+import { ButtonLink } from "@/components/shared/Button";
+import { HeroVisual } from "@/components/shared/HeroVisual";
+import { IconTile, type IconName } from "@/components/shared/icons";
 import { FeatureList } from "@/components/shared/Lists";
 import { NewsletterBand } from "@/components/shared/NewsletterBand";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { PhoneFrame } from "@/components/shared/PhoneFrame";
-import { Section } from "@/components/shared/Section";
+import { PhotoFrame } from "@/components/shared/Placeholder";
+import { Section, SectionHeader } from "@/components/shared/Section";
 import { StoreButtons } from "@/components/shared/StoreButtons";
+import { appAudience } from "@/lib/content/copy";
 
 export const metadata: Metadata = {
-  title: "The House of Bread app",
+  title: "The official House of Bread app",
   description:
-    "Bible study, trusted teaching and practical guidance all in one place. Reading plans, every New Testament book explained, and six translations.",
+    "The official app of House of Bread Global. New Testament journeys, every book introduced, six translations and the ministry's teaching, on your phone.",
 };
 
-const features: { id: string; title: string; icon: IconName; text: string }[] = [
+const features: { id: string; title: string; icon: IconName; text: string; screen: string }[] = [
   {
-    id: "study-plans",
-    title: "Study plans",
+    id: "journeys",
+    title: "New Testament journeys",
     icon: "route",
-    text: "Three guided routes through the New Testament, following the order the books were written. Progress is tracked automatically. Open the app and continue exactly where the last session ended.",
+    text: "Three guided routes through the New Testament, in the order the books were written. Progress is tracked automatically. Open the app and continue exactly where the last session ended.",
+    screen: "A journey's daily reading and progress",
+  },
+  {
+    id: "books",
+    title: "Every book introduced",
+    icon: "scroll",
+    text: "Twenty-seven books, each with a written introduction covering who wrote it, who received it, the central argument, the themes and where it sits in Scripture.",
+    screen: "A book introduction",
   },
   {
     id: "translations",
     title: "Six translations",
     icon: "book",
-    text: "Comparing translations is one of the simplest ways to see what a passage is actually saying. Where one rendering is familiar, another often makes the meaning plain. The King James Version is the default text, and versions switch without losing your place.",
+    text: "Comparing translations is one of the simplest ways to see what a passage is actually saying. The King James Version is the default text, and versions switch without losing your place.",
+    screen: "Switching between translations",
   },
   {
-    id: "books",
-    title: "Every book explained",
-    icon: "scroll",
-    text: "Twenty-seven books, each with a written introduction covering who wrote it, who received it, the central argument, the themes and where it sits in Scripture.",
-  },
-  {
-    id: "articles",
-    title: "Articles and teaching",
+    id: "teaching",
+    title: "The ministry's teaching",
     icon: "compass",
     text: "A growing library of written teaching on doctrine, interpretation and the questions believers actually ask.",
+    screen: "The teaching library",
   },
 ];
 
@@ -44,71 +51,67 @@ export default function AppPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
-        eyebrow="The app"
-        title="The House of Bread app"
+        eyebrow="The official app"
+        title="The official House of Bread app"
         lead="Bible study, trusted teaching and practical guidance all in one place. Equipping you for a deeper understanding of God's Word and a stronger walk with Him."
-        actions={<StoreButtons confirmLabel="CONFIRM" />}
+        actions={
+          <div className="flex w-full flex-col gap-4">
+            <StoreButtons confirmLabel="CONFIRM" />
+            <p>
+              <ButtonLink href="#inside" tone="green" variant="secondary" className="w-full sm:w-auto">
+                See what is inside
+              </ButtonLink>
+            </p>
+          </div>
+        }
+        visual={<HeroVisual showSession={false} />}
       />
 
-      {features.map((feature, index) => {
-        const flip = index % 2 === 1;
-        return (
-          <section
-            key={feature.id}
-            aria-labelledby={`${feature.id}-heading`}
-            className={flip ? "bg-surface-tint" : "bg-surface"}
-          >
-            <div className="mx-auto grid max-w-6xl items-center gap-10 px-4 py-16 sm:px-6 md:grid-cols-[1.3fr_1fr] md:py-24">
-              <div className={flip ? "md:order-2" : ""}>
-                <IconTile name={feature.icon} size="lg" />
-                <span aria-hidden="true" className="mt-6 block h-1 w-12 rounded-full bg-lime" />
-                <h2 id={`${feature.id}-heading`} className="mt-4 text-3xl font-bold sm:text-4xl">
-                  {feature.title}
-                </h2>
-                <p className="mt-5 max-w-xl text-lg leading-relaxed text-ink">{feature.text}</p>
+      <div id="inside">
+        {features.map((feature, index) => {
+          const flip = index % 2 === 1;
+          return (
+            <section
+              key={feature.id}
+              id={feature.id}
+              aria-labelledby={`${feature.id}-heading`}
+              className={flip ? "bg-surface-tint" : "bg-surface"}
+            >
+              <div className="container-page reveal grid items-center gap-10 py-18 md:py-28 lg:grid-cols-12 lg:gap-16">
+                <div className={`lg:col-span-7 ${flip ? "lg:order-2" : ""}`}>
+                  <IconTile name={feature.icon} size="lg" />
+                  <div className="mt-7">
+                    <SectionHeader id={`${feature.id}-heading`}>{feature.title}</SectionHeader>
+                  </div>
+                  <p className="mt-6 max-w-xl text-lead text-ink">{feature.text}</p>
+                </div>
+                <PhotoFrame
+                  className={`lg:col-span-5 ${flip ? "lg:order-1" : ""}`}
+                  label="Screenshot to come"
+                  subject={feature.screen}
+                />
               </div>
-              {index === 0 ? (
-                <div className={`bg-green-hero rounded-3xl px-6 py-10 ${flip ? "md:order-1" : ""}`}>
-                  <PhoneFrame />
-                </div>
-              ) : (
-                <div
-                  aria-hidden="true"
-                  className={`bg-green-band relative hidden aspect-[4/3] items-center justify-center overflow-hidden rounded-3xl md:flex ${
-                    flip ? "md:order-1" : ""
-                  }`}
-                >
-                  <Icon name={feature.icon} className="size-28 text-lime opacity-80" />
-                </div>
-              )}
-            </div>
-          </section>
-        );
-      })}
+            </section>
+          );
+        })}
+      </div>
 
       <Section id="daily" title="Built for daily use">
         <FeatureList
           items={[
-            "Clean, distraction-free reading",
-            "Swipe navigation between chapters",
-            "Readable typography for long sessions",
-            "Works on modest devices and modest data",
+            { icon: "book", text: "Clean, distraction-free reading" },
+            { icon: "swipe", text: "Swipe navigation between chapters" },
+            { icon: "type", text: "Readable typography for long sessions" },
+            { icon: "signal", text: "Works on modest devices and modest data" },
           ]}
         />
       </Section>
 
       <Section id="for" title="Who it is for" tone="tint">
-        <FeatureList
-          items={[
-            "New believers who want a structured way into the New Testament",
-            "Readers who have started Bible plans before and stalled",
-            "Students and teachers who want translation comparison without a desk full of books",
-            "Anyone who wants to know the Scriptures rather than simply own one",
-          ]}
-        />
+        <FeatureList items={appAudience} />
       </Section>
 
-      <NewsletterBand idPrefix="app-newsletter" />
+      <NewsletterBand idPrefix="app-newsletter" heading="Hear about new features and sessions" />
     </main>
   );
 }

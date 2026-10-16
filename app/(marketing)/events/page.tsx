@@ -1,52 +1,87 @@
 import type { Metadata } from "next";
+import { ButtonLink } from "@/components/shared/Button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { StepList } from "@/components/shared/Lists";
-import { LiveSessionCard } from "@/components/shared/LiveSessionCard";
+import { EventCard, LiveSessionCard } from "@/components/shared/LiveSessionCard";
 import { NewsletterBand } from "@/components/shared/NewsletterBand";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { Placeholder } from "@/components/shared/Placeholder";
-import { Section } from "@/components/shared/Section";
+import { Placeholder, PhotoFrame } from "@/components/shared/Placeholder";
+import { Section, SectionHeader } from "@/components/shared/Section";
+import { YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
 import { placeholderEvents, replayEvents, upcomingEvents } from "@/lib/content/placeholder-data";
 
 export const metadata: Metadata = {
   title: "Live sessions and events",
   description:
-    "Live teaching sessions stream on YouTube. See what is coming, in your local time, and ask to be notified.",
+    "House of Bread Global teaches live on YouTube. See what is coming, in your local time, and set a reminder.",
 };
 
 export default function EventsPage() {
-  const upcoming = upcomingEvents(placeholderEvents);
+  const [next, ...rest] = upcomingEvents(placeholderEvents);
   const replays = replayEvents(placeholderEvents);
 
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
         eyebrow="Live"
-        title="Live sessions and events"
-        lead="Live sessions stream on YouTube. This page shows what is coming, in your local time."
+        title="Live teaching, wherever you are"
+        lead="House of Bread Global teaches live on YouTube. See what is coming in your local time, and never miss a session."
+        actions={
+          <>
+            <ButtonLink href="/subscribe" tone="green" arrow>
+              Set a reminder
+            </ButtonLink>
+            <YouTubeSubscribeButton tone="green" />
+          </>
+        }
       />
 
-      <Section id="how" title="How it works" tone="tint">
-        <StepList
-          steps={[
-            { text: "Find a session below." },
-            { text: "Add it to your calendar, or ask to be notified by email." },
-            { text: "Join on YouTube when it starts." },
-            { text: "Watch the replay afterwards if you miss it." },
-          ]}
-        />
+      <Section id="next-up" title="Next up">
+        {next ? (
+          <LiveSessionCard event={next} idPrefix="events-next" />
+        ) : (
+          <EmptyState icon="live" action={{ href: "/subscribe", label: "Set a reminder" }}>
+            The next session will be announced here and by email. Subscribe and the date arrives in
+            your inbox.
+          </EmptyState>
+        )}
       </Section>
 
+      <section id="how" aria-labelledby="how-heading" className="bg-surface-tint">
+        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-14">
+          <div className="lg:col-span-8">
+            <SectionHeader id="how-heading">How it works</SectionHeader>
+            <div className="mt-10">
+              <StepList
+                columns={2}
+                steps={[
+                  { icon: "search", text: "Find a session." },
+                  { icon: "bell", text: "Add it to your calendar or ask for an email reminder." },
+                  { icon: "play", text: "Join on YouTube when it starts." },
+                  { icon: "clock", text: "Watch the replay if you miss it." },
+                ]}
+              />
+            </div>
+          </div>
+          <PhotoFrame
+            className="mx-auto w-full max-w-sm lg:col-span-4 lg:max-w-none"
+            ratio="4/5"
+            subject="A session streaming live, seen from the room"
+          />
+        </div>
+      </section>
+
       <Section id="upcoming" title="Upcoming">
-        {upcoming.length > 0 ? (
+        {rest.length > 0 ? (
           <ul className="space-y-4">
-            {upcoming.map((event) => (
-              <LiveSessionCard key={event.slug} event={event} />
+            {rest.map((event) => (
+              <EventCard key={event.slug} event={event} />
             ))}
           </ul>
         ) : (
-          <EmptyState icon="calendar" action={{ href: "/subscribe", label: "Subscribe" }}>
-            No sessions are scheduled yet. Subscribe and the next date will arrive in your inbox.
+          <EmptyState icon="calendar">
+            Sessions are announced here and by email. Ask for a reminder and the next date arrives
+            in your inbox.
           </EmptyState>
         )}
       </Section>
@@ -59,11 +94,11 @@ export default function EventsPage() {
         {replays.length > 0 ? (
           <ul className="space-y-4">
             {replays.map((event) => (
-              <LiveSessionCard key={event.slug} event={event} />
+              <EventCard key={event.slug} event={event} />
             ))}
           </ul>
         ) : (
-          <EmptyState icon="live">Replays will appear here after each session.</EmptyState>
+          <EmptyState icon="play">Replays will appear here after each session.</EmptyState>
         )}
       </Section>
 

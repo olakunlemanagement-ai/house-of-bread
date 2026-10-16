@@ -2,31 +2,38 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { primaryNav } from "./nav-links";
+import { useEffect, type MouseEvent } from "react";
+import { isCurrent, primaryNav } from "./nav-links";
+import { navLinkClass } from "./nav-styles";
 
-// Client only to mark the current page. The links themselves are plain
-// anchors in the server HTML, so navigation works without JavaScript.
+/** The mobile menu is a details element. Close it after a client side navigation. */
+function closeMenu(event: MouseEvent<HTMLAnchorElement>) {
+  event.currentTarget.closest("details")?.removeAttribute("open");
+}
+
+// Client only to mark the current page and close the mobile menu. The links
+// themselves are plain anchors in the server HTML, so navigation works
+// without JavaScript.
 export function NavLinks({ layout }: { layout: "inline" | "stacked" }) {
   const pathname = usePathname();
+
+  // Any client side navigation, including the menu's Subscribe and app
+  // links, closes the mobile menu.
+  useEffect(() => {
+    document.querySelectorAll("details[data-menu]").forEach((menu) => menu.removeAttribute("open"));
+  }, [pathname]);
 
   return (
     <ul className={layout === "inline" ? "flex items-center gap-1" : "flex flex-col"}>
       {primaryNav.map((item) => {
-        const current = pathname === item.href || pathname.startsWith(`${item.href}/`);
+        const current = isCurrent(item, pathname);
         return (
           <li key={item.href}>
             <Link
               href={item.href}
               aria-current={current ? "page" : undefined}
-              className={
-                layout === "inline"
-                  ? `block rounded px-3 py-2 font-medium text-on-green underline-offset-8 decoration-lime decoration-2 hover:underline ${
-                      current ? "underline decoration-[3px]" : ""
-                    }`
-                  : `block min-h-12 rounded px-4 py-3 text-lg font-medium text-on-green ${
-                      current ? "underline decoration-lime decoration-[3px] underline-offset-8" : ""
-                    }`
-              }
+              onClick={layout === "stacked" ? closeMenu : undefined}
+              className={navLinkClass(layout, current)}
             >
               {item.label}
             </Link>
