@@ -1,6 +1,14 @@
 import type { Metadata } from "next";
+import type { Route } from "next";
 import { notFound } from "next/navigation";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { LinkCard } from "@/components/shared/Card";
+import { EmptyState } from "@/components/shared/EmptyState";
+import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { PageHeader } from "@/components/shared/PageHeader";
+import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
+import { Prose } from "@/components/shared/Prose";
+import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
+import { Section } from "@/components/shared/Section";
 import { findBySlug, placeholderTeachings } from "@/lib/content/placeholder-data";
 
 // Render the full page before responding, so an unknown slug returns a real
@@ -17,7 +25,10 @@ export async function generateMetadata({
   const { slug } = await params;
   const entry = findBySlug(placeholderTeachings, slug);
   if (!entry) return {};
-  return { title: entry.title, description: entry.description };
+  return {
+    title: entry.title,
+    description: "Teaching from House of Bread Global. Sample draft, content to be supplied.",
+  };
 }
 
 export default async function TeachingPage({ params }: PageProps<"/teachings/[slug]">) {
@@ -25,10 +36,61 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
   const entry = findBySlug(placeholderTeachings, slug);
   if (!entry) notFound();
 
+  const related = placeholderTeachings.filter((other) => other.slug !== entry.slug);
+
   return (
-    <PlaceholderPage
-      title={entry.title}
-      description="Placeholder teaching. Final content will come from the MDX content pipeline."
-    />
+    <main id="main" tabIndex={-1}>
+      <PageHeader
+        eyebrow="Teachings"
+        title={entry.title}
+        meta={
+          <div className="flex flex-wrap items-center gap-3 text-sm">
+            {entry.sample ? <PlaceholderBadge label="Sample, draft" /> : null}
+            <Placeholder>[DATE]</Placeholder>
+            <Placeholder>[READING TIME]</Placeholder>
+            <Placeholder>[PASSAGES AS LINKED CHIPS]</Placeholder>
+          </div>
+        }
+      />
+
+      <article aria-labelledby="body-heading" className="bg-surface">
+        <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 md:py-24">
+          <h2 id="body-heading" className="sr-only">
+            {entry.title}
+          </h2>
+          <Prose>
+            <Placeholder block>
+              [TEACHING BODY TO BE SUPPLIED. Sample layout only: body text in serif, with every
+              quotation in a ScriptureBlock as below.]
+            </Placeholder>
+            <ScriptureBlock passage="John 6:33-35" verses={john6_33to35} />
+          </Prose>
+        </div>
+      </article>
+
+      <Section id="related" title="Related teachings" tone="tint">
+        {related.length > 0 ? (
+          <ul className="grid gap-6 md:grid-cols-2">
+            {related.map((other) => (
+              <li key={other.slug} className="flex">
+                <LinkCard
+                  href={`/teachings/${other.slug}` as Route}
+                  title={other.title}
+                  eyebrow={other.sample ? <PlaceholderBadge label="Sample, draft" /> : null}
+                >
+                  <Placeholder>[SUMMARY TO BE SUPPLIED]</Placeholder>
+                </LinkCard>
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <EmptyState icon="scroll" action={{ href: "/teachings", label: "Teachings" }}>
+            The first teachings are being prepared. Subscribe to be told when they are published.
+          </EmptyState>
+        )}
+      </Section>
+
+      <NewsletterBand idPrefix="teaching-newsletter" />
+    </main>
   );
 }

@@ -1,6 +1,10 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { PlaceholderPage } from "@/components/shared/PlaceholderPage";
+import { IconTile, type IconName } from "@/components/shared/icons";
+import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { PageHeader } from "@/components/shared/PageHeader";
+import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
+import { Section } from "@/components/shared/Section";
 import { findBySlug, placeholderClasses } from "@/lib/content/placeholder-data";
 
 // Render the full page before responding, so an unknown slug returns a real
@@ -17,8 +21,19 @@ export async function generateMetadata({
   const { slug } = await params;
   const entry = findBySlug(placeholderClasses, slug);
   if (!entry) return {};
-  return { title: entry.title, description: entry.description };
+  return {
+    title: entry.title,
+    description: "Class and training from House of Bread Global. Sample entry, details to be supplied.",
+  };
 }
+
+const details: { id: string; title: string; icon: IconName }[] = [
+  { id: "covers", title: "What it covers", icon: "book" },
+  { id: "who", title: "Who it is for", icon: "people" },
+  { id: "when", title: "When it runs", icon: "calendar" },
+  { id: "join", title: "How to join", icon: "arrow-right" },
+  { id: "cost", title: "Cost", icon: "compass" },
+];
 
 export default async function ClassPage({ params }: PageProps<"/classes/[slug]">) {
   const { slug } = await params;
@@ -26,9 +41,32 @@ export default async function ClassPage({ params }: PageProps<"/classes/[slug]">
   if (!entry) notFound();
 
   return (
-    <PlaceholderPage
-      title={entry.title}
-      description="Placeholder class. Final content will come from the MDX content pipeline."
-    />
+    <main id="main" tabIndex={-1}>
+      <PageHeader
+        eyebrow="Classes and training"
+        title={entry.title}
+        lead={<Placeholder>[ONE LINE SUMMARY]</Placeholder>}
+        meta={entry.sample ? <PlaceholderBadge label="Sample" /> : null}
+      />
+
+      {details.map((item, index) => (
+        <Section
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          tone={index % 2 === 0 ? "white" : "tint"}
+          width="narrow"
+        >
+          <div className="flex items-start gap-5">
+            <IconTile name={item.icon} />
+            <div className="flex-1">
+              <Placeholder block>[CLASS DETAILS TO BE SUPPLIED]</Placeholder>
+            </div>
+          </div>
+        </Section>
+      ))}
+
+      <NewsletterBand idPrefix="class-newsletter" />
+    </main>
   );
 }
