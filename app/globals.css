@@ -245,12 +245,17 @@
   background-image: linear-gradient(100deg, var(--green-rich), var(--emerald));
 }
 
+/*
+  The hero holds green-rich to 30%, so the lime-bright closing phrase of the
+  H1 sits on the green-rich end at every width (measured at 375 and 1280).
+*/
 @utility bg-green-hero {
   background-color: var(--emerald-deep);
   background-image: linear-gradient(
     135deg,
     var(--green-rich),
-    var(--emerald-deep) 50%,
+    var(--green-rich) 30%,
+    var(--emerald-deep) 65%,
     var(--brand-green-glow)
   );
 }

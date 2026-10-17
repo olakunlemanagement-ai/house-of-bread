@@ -467,7 +467,7 @@ Rerun it for every new pairing and add the row here.
 | Eyebrow pill in mint sections | emerald-deep on a white pill over mint | 7.65 | Pass |
 | Eyebrow pill on green | white on 12% white over green-rich, emerald-deep, green-deep | 7.41, 5.71, 9.43 | Pass |
 | | over the glow end `#1e7b3a` | **4.22** | **Fails.** Never placed there: section headers sit at the emerald-deep start of the band |
-| Hero emphasis | lime-bright on green-rich | 6.45 | Pass. Placed only over the green-rich end |
+| Hero emphasis | lime-bright on green-rich | 6.45 | Pass. The hero gradient holds green-rich to 30%, then emerald-deep at 65%, so the phrase's far corner measured on green-rich at 375 and at the green-rich side of the blend at 1280 (rerun the screenshot gate after any copy change) |
 | Play chip on thumbnails | white on 85% green-night over a white or black image | 10.01, 16.82 | Pass |
 | Region band frames | ink, ink-muted on mint; emerald-deep on cream | 14.88, 6.90, 7.22 | Pass |
 | Nav labels | off-white on the header's emerald end, full opacity | 6.22 | Pass |

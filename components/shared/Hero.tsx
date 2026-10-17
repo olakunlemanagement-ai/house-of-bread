@@ -30,7 +30,7 @@ export function Hero({ nextEvent }: { nextEvent?: DatedEvent }) {
           <h1 id="hero-heading" className="rise-text rise-1 mt-5 text-display">
             Come and be fed{" "}
             {/* Lime-bright only over the green-rich end of the gradient (6.45:1). */}
-            <span className="text-lime-bright">by the Word.</span>
+            <span className="whitespace-nowrap text-lime-bright">by the Word.</span>
           </h1>
           <p className="rise rise-2 mt-7 max-w-2xl text-lead text-on-green">
             A global teaching ministry serving believers across the United Kingdom, Africa and the
