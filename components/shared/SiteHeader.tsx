@@ -10,7 +10,7 @@ import { Wordmark } from "./Wordmark";
  * (secondary on green) and Get the app (primary on green) on the right.
  * Narrow screens: wordmark, a compact Get app button and a Menu button,
  * all always visible. The menu is a details element, so it opens and closes
- * without JavaScript.
+ * without JavaScript. The open panel fades in over 180ms (.menu-panel).
  */
 export function SiteHeader() {
   return (
@@ -60,7 +60,7 @@ export function SiteHeader() {
               <span className="group-open:hidden">Menu</span>
               <span className="hidden group-open:inline">Close</span>
             </summary>
-            <div className="tone-deep bg-green-feature absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-white/10 shadow-raised">
+            <div className="menu-panel tone-deep bg-green-feature absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-t border-white/10 shadow-raised">
               <nav aria-label="Main" className="mx-auto w-full max-w-[78rem] px-4 py-5 sm:px-6">
                 <Suspense fallback={<StaticNavLinks layout="stacked" />}>
                   <NavLinks layout="stacked" />

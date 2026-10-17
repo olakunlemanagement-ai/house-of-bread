@@ -568,6 +568,20 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
   }
 }
 
+/*
+  The mobile menu panel fades in when its details element opens. CSS only:
+  browsers without @starting-style show it at once. Closing is instant.
+*/
+@media (prefers-reduced-motion: no-preference) {
+  details[open] > .menu-panel {
+    transition: opacity 180ms var(--ease-standard);
+
+    @starting-style {
+      opacity: 0;
+    }
+  }
+}
+
 @media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
   .drift {
     animation: drift 30s ease-in-out infinite alternate;
