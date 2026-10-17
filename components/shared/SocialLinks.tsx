@@ -56,7 +56,7 @@ export function YouTubeSubscribeButton({ tone = "light" }: { tone?: ButtonTone }
 export function SocialLinks({ layout = "row" }: { layout?: "row" | "column" }) {
   const { youtubeChannel, social } = siteConfig.links;
   const list = layout === "row" ? "flex flex-wrap gap-3" : "flex flex-col items-start gap-3";
-  const live = `${tile} border-fg-link text-fg-link hover:bg-[var(--chip-fill)]`;
+  const live = `${tile} border-fg-link text-fg-link hover:bg-[var(--chip-hover)]`;
 
   return (
     <ul className={list}>

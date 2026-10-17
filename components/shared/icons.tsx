@@ -223,7 +223,7 @@ export function IconTile({
   const icon = { sm: "size-4", md: "size-6", lg: "size-8" }[size];
   return (
     <span
-      className={`bg-green-tile inline-flex shrink-0 items-center justify-center text-white ${box}`}
+      className={`inline-flex shrink-0 items-center justify-center bg-tint text-emerald ring-1 ring-inset ring-emerald/10 ${box}`}
     >
       <Icon name={name} className={icon} />
     </span>

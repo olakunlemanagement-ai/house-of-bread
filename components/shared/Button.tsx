@@ -5,7 +5,7 @@ import { Icon } from "./icons";
 
 /** Live is the gold emphasis button, used only while a session is live. */
 export type ButtonVariant = "primary" | "secondary" | "live";
-/** The surface the button sits on: light is white, cream, mint or gold; green is any green surface. */
+/** The surface the button sits on: light is any light surface; green is the deep green footer. */
 export type ButtonTone = "light" | "green";
 
 /** An in-page anchor or an external address. Rendered as a plain anchor. */
@@ -21,15 +21,15 @@ const styles: Record<ButtonTone, Record<ButtonVariant, string>> = {
   light: {
     // White on emerald 6.57:1, on emerald-deep 7.65:1.
     primary: "bg-emerald text-white shadow-soft hover:bg-emerald-deep disabled:bg-ink-muted",
-    // Emerald text on white 6.57:1, on surface-mint 5.94:1.
+    // Emerald-deep text on white 7.65:1, on tint 6.81:1.
     secondary:
-      "border-2 border-emerald bg-white text-emerald hover:bg-surface-mint disabled:border-dashed disabled:border-ink-muted disabled:text-ink-muted disabled:hover:bg-white",
+      "border-[1.5px] border-emerald/55 bg-white text-emerald-deep hover:border-emerald hover:bg-tint disabled:border-dashed disabled:border-ink-muted disabled:text-ink-muted disabled:hover:bg-white",
     live: "bg-gold text-ink shadow-soft hover:bg-gold-soft",
   },
   green: {
-    // Ink on lime-bright 10.23:1.
-    primary: "bg-lime-bright text-ink shadow-soft hover:bg-white disabled:bg-on-green-muted",
-    // White at 12% over emerald 5.01:1. Keep off the light end of a gradient.
+    // Green-deep on white 13.53:1.
+    primary: "bg-white text-green-deep shadow-soft hover:bg-surface-mint disabled:bg-on-green-muted",
+    // White at 12% over green-deep 9.43:1.
     secondary:
       "border-[1.5px] border-white bg-white/12 text-white hover:bg-white/20 disabled:border-dashed disabled:bg-transparent",
     live: "bg-gold text-ink shadow-soft hover:bg-gold-soft",

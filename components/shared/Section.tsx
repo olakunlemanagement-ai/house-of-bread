@@ -1,18 +1,15 @@
 import type { ReactNode } from "react";
-import { Grain } from "./Decor";
 
 /**
- * Section surfaces. Light pages alternate white, warm (cream) and mint.
- * Green is the lighter feature band. Deep green is reserved for the footer
- * and one feature panel per page, so it is not a section tone.
+ * Section surfaces. Pages are white, with warm (cream) and mint bands for
+ * rhythm. There are no green or deep green sections.
  */
-export type SectionTone = "white" | "warm" | "mint" | "green";
+export type SectionTone = "white" | "warm" | "mint";
 
 const toneClass: Record<SectionTone, string> = {
   white: "bg-surface",
   warm: "bg-surface-warm",
-  mint: "tone-mint bg-surface-mint",
-  green: "tone-green bg-green-band relative overflow-hidden",
+  mint: "bg-surface-mint",
 };
 
 type SectionProps = {
@@ -29,7 +26,7 @@ type SectionProps = {
   children?: ReactNode;
 };
 
-/** A page section: 72px vertical rhythm on mobile, 112px on desktop. */
+/** A page section: 80px vertical rhythm on mobile, 120px on desktop. */
 export function Section({
   id,
   eyebrow,
@@ -42,8 +39,7 @@ export function Section({
 }: SectionProps) {
   return (
     <section id={id} aria-labelledby={`${id}-heading`} className={toneClass[tone]}>
-      {tone === "green" ? <Grain /> : null}
-      <div className="container-page relative py-18 md:py-28">
+      <div className="container-page relative py-20 md:py-30">
         <div className={`reveal ${width === "narrow" ? "max-w-3xl" : ""}`}>
           <SectionHeader
             id={`${id}-heading`}
@@ -53,7 +49,7 @@ export function Section({
           >
             {title}
           </SectionHeader>
-          {children ? <div className="mt-10 md:mt-14">{children}</div> : null}
+          {children ? <div className="mt-10 md:mt-12">{children}</div> : null}
         </div>
       </div>
     </section>
@@ -61,8 +57,8 @@ export function Section({
 }
 
 /**
- * The recurring motif: a short rule above the heading, lime on green
- * surfaces and deep green on white, then an optional eyebrow pill and intro.
+ * The recurring motif: a short emerald rule above the heading, then an
+ * optional eyebrow and intro.
  */
 export function SectionHeader({
   id,
@@ -87,22 +83,22 @@ export function SectionHeader({
     <div className={centred ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
       <span
         aria-hidden="true"
-        className={`block h-1 w-12 rounded-full bg-fg-accent ${centred ? "mx-auto" : ""}`}
+        className={`block h-0.5 w-10 rounded-full bg-emerald ${centred ? "mx-auto" : ""}`}
       />
       {eyebrow ? (
         <p className="mt-5">
-          <span className="eyebrow eyebrow-pill">{eyebrow}</span>
+          <span className="eyebrow">{eyebrow}</span>
         </p>
       ) : null}
       <Heading
         id={id}
-        className={`${eyebrow ? "mt-3" : "mt-5"} ${size === "large" ? "text-h2" : "text-3xl leading-tight"}`}
+        className={`${eyebrow ? "mt-3" : "mt-5"} ${size === "large" ? "text-h2" : "text-2xl leading-tight"}`}
       >
         {children}
       </Heading>
       {/* Body text stays left aligned on phones, even under a centred heading. */}
       {intro ? (
-        <div className={`mt-5 text-lead text-fg-muted ${centred ? "text-left sm:text-center" : ""}`}>{intro}</div>
+        <div className={`mt-4 text-lead text-fg-muted ${centred ? "text-left sm:text-center" : ""}`}>{intro}</div>
       ) : null}
     </div>
   );

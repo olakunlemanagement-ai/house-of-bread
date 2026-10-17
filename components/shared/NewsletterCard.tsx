@@ -3,19 +3,26 @@ import type { NewsletterSource } from "@/lib/newsletter/schema";
 import { IconTile } from "./icons";
 import { NewsletterForm } from "./NewsletterForm";
 
+// Radial tints behind the card: what the glass softens. No blur filter here.
+const tint = {
+  gold: "[background-image:radial-gradient(40rem_22rem_at_15%_30%,var(--surface-gold),transparent_70%),radial-gradient(36rem_22rem_at_90%_80%,var(--surface-mint),transparent_70%)]",
+  mint: "[background-image:radial-gradient(40rem_22rem_at_15%_30%,var(--surface-mint),transparent_70%),radial-gradient(36rem_22rem_at_90%_80%,var(--tint),transparent_70%)]",
+};
+
 type NewsletterCardProps = {
   idPrefix: string;
   heading?: string;
   text?: string;
   source?: NewsletterSource;
-  /** Card colour. Gold by default, mint where gold sits next to a live state. */
+  /** The tint behind the glass card. Gold by default, mint where gold sits next to a live state. */
   surface?: "gold" | "mint";
 };
 
 /**
- * The closing signup: a light rounded card with an emerald button, not a
- * green band. data-newsletter lets the footer hide its own "Stay close to
- * the ministry" strip on pages that already end with this card.
+ * The closing signup: a light glass card over soft gold or mint radial
+ * tints, with an emerald button. Never a green band. data-newsletter lets
+ * the footer hide its own "Stay close to the ministry" strip on pages that
+ * already end with this card.
  */
 export function NewsletterCard({
   idPrefix,
@@ -26,19 +33,19 @@ export function NewsletterCard({
 }: NewsletterCardProps) {
   const headingId = `${idPrefix}-heading`;
   return (
-    <section data-newsletter aria-labelledby={headingId} className="bg-surface">
-      <div className="container-page py-18 md:py-28">
-        <div
-          className={`reveal grid gap-10 rounded-card border border-border p-6 shadow-soft sm:p-10 lg:grid-cols-12 lg:gap-14 lg:p-14 ${
-            surface === "gold" ? "bg-surface-gold" : "bg-surface-mint"
-          }`}
-        >
+    <section
+      data-newsletter
+      aria-labelledby={headingId}
+      className={`bg-surface ${surface === "gold" ? tint.gold : tint.mint}`}
+    >
+      <div className="container-page py-20 md:py-30">
+        <div className="glass-card reveal grid gap-10 rounded-card border border-white/70 p-6 sm:p-10 lg:grid-cols-12 lg:gap-14 lg:p-12">
           <div className="lg:col-span-5">
             <IconTile name="mail" size="lg" />
-            <h2 id={headingId} className="mt-7 text-h2">
+            <h2 id={headingId} className="mt-6 text-h2">
               {heading}
             </h2>
-            <p className="mt-5 max-w-md text-lead text-ink-muted">{text}</p>
+            <p className="mt-4 max-w-md text-lead text-ink-muted">{text}</p>
           </div>
           <div className="lg:col-span-7 lg:pt-2">
             <NewsletterForm idPrefix={idPrefix} source={source} />

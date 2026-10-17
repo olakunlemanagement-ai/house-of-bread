@@ -10,12 +10,12 @@ export function PhoneFrame({ className = "" }: { className?: string }) {
       aria-label="Illustration of the official app reading screen, showing John chapter 6 in the King James Version"
       className={`w-full max-w-[16rem] sm:max-w-[17rem] ${className}`}
     >
-      <div className="rounded-[2.6rem] border-[10px] border-green-night bg-green-night shadow-[0_2px_4px_rgb(1_31_11/0.3),0_32px_64px_rgb(1_31_11/0.45)]">
+      <div className="rounded-[2.6rem] border-[10px] border-green-night bg-green-night shadow-[0_2px_6px_rgb(4_41_14/0.12),0_24px_48px_rgb(4_41_14/0.18)]">
         <div aria-hidden="true" className="overflow-hidden rounded-[1.9rem] bg-surface">
           <div className="mx-auto mt-2 h-1.5 w-16 rounded-full bg-green-night/80" />
-          <div className="bg-green-header mt-2 flex items-center justify-between px-5 pb-3 pt-3 text-on-green">
+          <div className="bg-emerald mt-2 flex items-center justify-between px-5 pb-3 pt-3 text-on-green">
             <span className="font-serif text-sm font-semibold">John 6</span>
-            <span className="rounded-full bg-lime px-2 py-0.5 text-[0.65rem] font-bold text-ink">
+            <span className="rounded-full bg-white px-2 py-0.5 text-[0.65rem] font-bold text-emerald-deep">
               KJV
             </span>
           </div>

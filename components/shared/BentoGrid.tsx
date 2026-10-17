@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
-import { CrossWatermark, Grain } from "./Decor";
 import { buttonClasses } from "./Button";
 import { Icon, IconTile, type IconName } from "./icons";
 import { TextCTA } from "./TextCTA";
@@ -18,7 +17,7 @@ export function BentoGrid({ children }: { children: ReactNode }) {
 
 type BentoTileProps = {
   size: "large" | "medium" | "small";
-  surface: "green" | "white" | "warm" | "mint";
+  surface: "white" | "warm" | "mint";
   icon: IconName;
   title: string;
   children: ReactNode;
@@ -32,7 +31,6 @@ const placement = {
 };
 
 const surfaceClass = {
-  green: "tone-green bg-green-band border-transparent",
   white: "bg-surface border-border",
   warm: "bg-surface-warm border-border",
   mint: "bg-surface-mint border-border",
@@ -55,11 +53,9 @@ export function BentoTile({ size, surface, icon, title, children, cta }: BentoTi
         // Decor sits under the content, clipped to the tile, so the lift
         // shadow outside the tile is not clipped with it.
         <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden rounded-card">
-          <Grain />
-          <CrossWatermark className="-bottom-10 -right-6 h-80 w-56 opacity-[0.07]" />
           <Icon
             name={icon}
-            className="pointer-events-none absolute right-8 top-8 size-28 text-on-green opacity-[0.12]"
+            className="pointer-events-none absolute right-8 top-8 size-24 text-emerald opacity-[0.08]"
           />
         </div>
       ) : null}
@@ -68,23 +64,23 @@ export function BentoTile({ size, surface, icon, title, children, cta }: BentoTi
         {/* The large tile anchors its text to the bottom, below the icon. */}
         <div
           className={`flex flex-col ${
-            small ? "mt-5 flex-1 sm:mt-0" : large ? "mt-auto pt-16" : "mt-6 flex-1"
+            small ? "mt-5 flex-1 sm:mt-0" : large ? "mt-auto pt-14" : "mt-6 flex-1"
           }`}
         >
-          <h3 className={large ? "text-4xl leading-tight sm:text-5xl" : "text-2xl leading-snug"}>
+          <h3 className={large ? "text-3xl font-medium leading-tight sm:text-4xl" : "text-xl leading-snug sm:text-2xl"}>
             {title}
           </h3>
           <p
-            className={`mt-3 leading-relaxed ${large ? "max-w-md text-lead text-on-green" : "text-ink-muted"}`}
+            className={`mt-3 leading-relaxed ${large ? "max-w-md text-lead text-ink-muted" : "text-ink-muted"}`}
           >
             {children}
           </p>
           <div className={large ? "mt-8" : "mt-auto pt-5"}>
             {large ? (
-              // Primary on green: lime-bright with ink text, stretched over the tile.
+              // The emerald primary, stretched over the tile.
               <Link
                 href={cta.href}
-                className={`${buttonClasses("primary", "green")} after:absolute after:inset-0 after:rounded-card after:content-[''] focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring`}
+                className={`${buttonClasses("primary")} after:absolute after:inset-0 after:rounded-card after:content-[''] focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring`}
               >
                 {cta.label}
                 <Icon

@@ -1,7 +1,6 @@
 import type { Route } from "next";
 import type { ReactNode } from "react";
 import { ButtonLink } from "./Button";
-import { CrossWatermark, Grain } from "./Decor";
 import { HeroVisual } from "./HeroVisual";
 import { FeatureList, type FeatureItem } from "./Lists";
 import { StoreButtons } from "./StoreButtons";
@@ -28,7 +27,7 @@ type AppBandProps = {
   note?: ReactNode;
 };
 
-/** The official app band: green gradient, feature list, CSS phone frame. */
+/** The official app band: a soft mint panel with a radial tint, feature list, CSS phone frame. */
 export function AppBand({
   idPrefix,
   eyebrow = "The official app",
@@ -40,25 +39,21 @@ export function AppBand({
 }: AppBandProps) {
   const headingId = `${idPrefix}-heading`;
   return (
-    <section aria-labelledby={headingId} className="tone-green bg-green-band relative overflow-hidden">
-      <Grain />
-      <CrossWatermark className="-left-8 bottom-0 h-72 w-52 opacity-[0.05]" />
-      <div className="container-page relative grid items-center gap-12 py-18 md:py-28 lg:grid-cols-12">
+    <section aria-labelledby={headingId} className="bg-panel-tint relative overflow-hidden border-y border-border">
+      <div className="container-page relative grid items-center gap-12 py-20 md:py-30 lg:grid-cols-12">
         <div className="reveal lg:col-span-7">
-          <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-fg-accent" />
-          <p className="mt-5">
-            <span className="eyebrow eyebrow-pill">{eyebrow}</span>
-          </p>
+          <span aria-hidden="true" className="block h-0.5 w-10 rounded-full bg-emerald" />
+          <p className="eyebrow mt-5">{eyebrow}</p>
           <h2 id={headingId} className="mt-3 text-h2">
             {heading}
           </h2>
-          {text ? <p className="mt-5 max-w-xl text-lead text-on-green">{text}</p> : null}
+          {text ? <p className="mt-4 max-w-xl text-lead text-ink-muted">{text}</p> : null}
           <div className="mt-9">
             <FeatureList items={features} />
           </div>
           <div className="mt-10 space-y-4">
             {action ? (
-              <ButtonLink href={action.href} tone="green" arrow className="w-full sm:w-auto">
+              <ButtonLink href={action.href} arrow className="w-full sm:w-auto">
                 {action.label}
               </ButtonLink>
             ) : null}

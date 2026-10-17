@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { CrossWatermark, Grain } from "./Decor";
 import { resolvePassage, Scripture, type ScriptureVersion } from "./Scripture";
 
 type ScriptureBlockProps = {
@@ -7,8 +6,8 @@ type ScriptureBlockProps = {
   version?: ScriptureVersion;
   /** Optional label above the text, such as "The name behind the ministry". */
   label?: string;
-  /** Light for teaching text. Dark is the deep green feature panel: one per page at most. */
-  variant?: "light" | "dark";
+  /** Light for teaching text. Feature is the larger panel beside a split section (Home, About). */
+  variant?: "light" | "feature";
   /** One string per verse, so each verse keeps its own line. */
   verses?: ReactNode[];
   /** Paragraphs from MDX, used when `verses` is not given. */
@@ -23,17 +22,13 @@ export function ScriptureBlock({
   verses,
   children,
 }: ScriptureBlockProps) {
-  const dark = variant === "dark";
+  const feature = variant === "feature";
   const { canonical } = resolvePassage(passage);
 
   const caption = (
     <span className="mt-7 flex flex-wrap items-center gap-3 font-sans text-sm font-semibold uppercase tracking-[0.16em]">
-      <cite className={`not-italic ${dark ? "text-lime" : "text-emerald-deep"}`}>{canonical}</cite>
-      <span
-        className={`rounded-full px-2.5 py-0.5 text-xs ${
-          dark ? "bg-lime text-ink" : "bg-emerald text-white"
-        }`}
-      >
+      <cite className="not-italic text-emerald-deep">{canonical}</cite>
+      <span className="rounded-full bg-emerald px-2.5 py-0.5 text-xs text-white">
         {version}
       </span>
     </span>
@@ -42,35 +37,31 @@ export function ScriptureBlock({
   return (
     <div
       className={
-        dark
-          ? "tone-green tone-deep bg-green-feature relative overflow-hidden rounded-card p-8 shadow-raised sm:p-12"
+        feature
+          ? "relative overflow-hidden rounded-r-card border border-l-4 border-border border-l-emerald bg-surface-mint p-8 shadow-soft sm:p-10"
           : "rounded-r-card border-l-4 border-emerald bg-surface-mint px-6 py-7 sm:px-9"
       }
     >
-      {dark ? (
-        <>
-          <Grain />
-          <CrossWatermark className="-right-4 -top-6 h-64 w-44 opacity-[0.07]" />
-          <span
-            aria-hidden="true"
-            className="absolute left-6 top-2 font-serif text-[7rem] leading-none text-lime opacity-25 sm:left-9"
-          >
-            &ldquo;
-          </span>
-        </>
+      {feature ? (
+        <span
+          aria-hidden="true"
+          className="absolute left-6 top-1 font-serif text-[6rem] leading-none text-emerald opacity-15 sm:left-8"
+        >
+          &ldquo;
+        </span>
       ) : null}
       {label ? (
-        <p className={`eyebrow relative mb-5 ${dark ? "pt-8" : ""}`}>{label}</p>
+        <p className={`eyebrow relative mb-5 ${feature ? "pt-8" : ""}`}>{label}</p>
       ) : null}
       <Scripture
         passage={passage}
         version={version}
         caption={caption}
-        className={`relative ${dark && !label ? "pt-8" : ""}`}
+        className={`relative ${feature && !label ? "pt-8" : ""}`}
       >
         <div
           className={`space-y-3 font-serif ${
-            dark ? "text-xl leading-relaxed text-on-green sm:text-2xl sm:leading-relaxed" : "text-lg leading-[1.7] text-ink"
+            feature ? "text-xl leading-relaxed text-ink" : "text-lg leading-[1.7] text-ink"
           }`}
         >
           {verses ? verses.map((verse, index) => <p key={index}>{verse}</p>) : children}

@@ -88,7 +88,7 @@ export function PhotoFrame({
       {media === "video" ? (
         <span
           aria-hidden="true"
-          className="bg-green-tile absolute left-1/2 top-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-raised sm:size-20"
+          className="bg-emerald absolute left-1/2 top-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-raised sm:size-20"
         >
           <svg viewBox="0 0 24 24" className="ml-1 size-7 sm:size-8" fill="currentColor" focusable="false">
             <path d="M7 4.5v15l12-7.5z" />

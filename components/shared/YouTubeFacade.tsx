@@ -48,7 +48,7 @@ export function YouTubeFacade({ videoId, title }: { videoId: string; title: stri
       />
       <span
         aria-hidden="true"
-        className="bg-green-tile absolute left-1/2 top-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-raised transition-transform duration-200 motion-safe:group-hover:scale-105"
+        className="bg-emerald absolute left-1/2 top-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-raised transition-transform duration-200 motion-safe:group-hover:scale-105"
       >
         <svg viewBox="0 0 24 24" className="ml-1 size-8" fill="currentColor" focusable="false">
           <path d="M7 4.5v15l12-7.5z" />
