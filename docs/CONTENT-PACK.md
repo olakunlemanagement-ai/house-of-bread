@@ -1,7 +1,7 @@
 # House of Bread Global: Content Pack and Layout Brief
 
 Date: 17 October 2026
-Revision: 3 (lighter palette, buttons and TextCTA, navigation, House of Bread Academy, Media Library). Revision 2 was ministry first, premium UI.
+Revision: 4 (white and green redesign: mostly white, green as structure and accent, calmer type, scoped translucent surfaces, skeleton loading, the logo). Revision 3 was the lighter palette, buttons and TextCTA, navigation, House of Bread Academy and the Media Library.
 Use with: CLAUDE.md and docs/SPEC-v3.md
 Purpose: real copy and layout direction for all stage-one routes.
 
@@ -37,79 +37,75 @@ The House of Bread app is the official app of the ministry. It carries the minis
 
 ---
 
-## 1. Design direction (premium)
+## 1. Design direction (premium, demure)
 
-The site must feel like a confident, modern global ministry. Alive, warm and polished, never a template. Fast on a mid range Android phone.
+The site must feel like a confident, calm global ministry. Mostly white, with green built around it. Premium through restraint: quiet type, generous space, hairlines and soft depth. Fast on a mid range Android phone.
 
 ### 1.1 Feel
-- White is the base, with cream (surface-warm), mint and gold light surfaces for rhythm. Most of every page is light.
-- Green carries the brand in a few deliberate places: the header, the hero and inner page headers, one lighter feature band (the app band), icon tiles and buttons. Deep green is kept for the footer and at most one feature panel per page.
-- Lime, mint and gold are accents. Lime and mint only on green surfaces. Gold only for live states, badges and small highlights, always with ink text.
-- Premium comes from scale, spacing, depth and detail: large type, generous space, layered surfaces, consistent radii, soft layered shadows, and small hover and focus moments.
+- White is the base. Cream (surface-warm) and mint bands give rhythm. There is no full bleed green hero and no deep green section.
+- Green is structure and accent: the short rule above headings, heading accents, links, icons, primary buttons, soft tinted panels and radial tints behind the hero.
+- Deep green is the footer and small elements only (the phone frame).
+- Lime is a tiny accent at most: the halo on a 6px eyebrow dot. Never a button fill, text or headline colour. Gold only for live states, badges and small highlights, always with ink text.
+- Nothing shouts: smaller display type, calm scale, more whitespace, hairline borders, soft low opacity shadows, short gentle motion.
 
 ### 1.2 Colour tokens (light first)
-Values from the palette revision of 17 October 2026, not yet confirmed against official brand files. Keep names semantic so a dark theme can be added later, but ship light only. Every pairing is logged in docs/PLACEHOLDERS.md.
+Values from the palette revision of 17 October 2026, not yet confirmed against official brand files. Every pairing is logged in docs/PLACEHOLDERS.md and checked with npm run contrast.
 
 | Token | Value | Use |
 |---|---|---|
 | surface | #ffffff | page background |
-| surface-warm | #fbf8f1 | cream sections |
-| surface-mint | #eef6e8 | mint sections, scripture panels in teaching text |
-| surface-gold | #fdf3d6 | the newsletter card, live highlights |
-| ink | #0b2412 | body text and headings on light |
-| ink-muted | #3d5a46 | secondary text on light |
-| emerald | #1b6b33 | primary fill on light |
-| emerald-deep | #14602f | hover, links, eyebrows and TextCTA labels on light |
-| leaf | #2e9e4f | decorative gradient start only (icon tiles) |
-| green-rich | #0f4a22 | the dark start of the header and hero gradients |
-| green-deep | #0a3616 | the footer and one feature panel per page |
-| green-night | #04290e | the footer and one feature panel per page |
-| lime | #a6c859 | accents on deep green |
-| lime-bright | #b7d86a | button fills on green, the hero eyebrow |
+| surface-warm | #fbf8f1 | cream bands |
+| surface-mint | #eef6e8 | mint bands, scripture panels, the app band |
+| surface-gold | #fdf3d6 | the tint behind the newsletter card, live highlights |
+| tint | #edf3ef | current nav pill, icon tiles, skeletons |
+| ink | #0b2412 | body text and headings |
+| ink-muted | #3d5a46 | secondary text |
+| emerald | #1b6b33 | primary fill, icon glyphs, heading rules |
+| emerald-deep | #14602f | links, eyebrows, TextCTA labels, heading accents, focus rings |
+| green-deep | #0a3616 | the footer |
+| green-night | #04290e | the footer, the phone frame |
+| lime | #a6c859 | the eyebrow dot halo only |
 | gold | #e9b949 | live fills and badges, with ink text |
 | gold-soft | #f3d98b | badges and soft highlights, with ink text |
-| mint | #05d47c | progress accents on green |
 
-Gradients:
-- Header: linear-gradient(100deg, green-rich, emerald).
-- Hero and inner page headers: linear-gradient(135deg, #0f4a22, #14602f 50%, #1e7b3a).
-- App band (the one lighter feature band per page): #14602f to #1e7b3a.
-- Footer and the feature panel: green-deep to green-night.
-- Icon tiles: leaf to emerald, white glyph.
-Rules: lime text only where the background is #14602f or darker, and in practice green-rich or darker, because lime on #14602f measures 4.02:1. Never put text on the light end of a gradient.
+Backgrounds:
+- Hero: white with two soft emerald radial gradients (10% at the peak).
+- Inner page headers: white with one emerald radial at the top right and a hairline below.
+- App band and closing bands: mint with a white and an emerald radial.
+- Newsletter: soft gold and mint radials behind a translucent white card.
+- Footer: green-deep to green-night.
+Radial gradients only. No blur filters, grain, watermarks or curved edges.
 
 ### 1.2a Rhythm
-Hero, white, cream, mint, the app band, cream, the newsletter card, then the dark footer. Apart from the footer, at most one deep green section or panel per page (on Home and About it is the dark scripture panel). The newsletter closes as a light rounded card on surface-gold or surface-mint with an emerald button, not a green band.
+Hero, the stat row, white, cream, white, mint, white, the app panel, cream, white, the newsletter card, then the dark footer. No deep green section or panel apart from the footer.
 
 ### 1.3 Typography
-- Display and headings: the serif already installed (Literata) at weight 600, used large. This gives the site gravitas that a plain sans cannot.
-- UI, nav, buttons, labels, eyebrows: the existing sans.
-- Scale (use clamp): H1 clamp(2.75rem, 6vw, 5rem) with line height 1.05 and letter spacing -0.02em. H2 clamp(2rem, 4vw, 3rem). Lead paragraph 1.25rem. Body 18px minimum, line height 1.7, line length near 68 characters.
-- Eyebrows: 0.8rem, uppercase, letter spacing 0.18em, semi bold. Lime on green surfaces, deep green on white.
-- Wordmark: HOUSE OF in regular weight, BREAD in bold, wide letter spacing, uppercase. Text until the real logo SVG is supplied, with a TODO.
+- Display and headings: Literata. H1 clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem), 36 to 56px, weight 500, line height 1.1, letter spacing -0.015em. H2 clamp(1.75rem, 1.35rem + 1.2vw, 2.25rem), weight 500. h3 and smaller at 600.
+- UI, nav, buttons, labels, eyebrows: Geist.
+- Lead 1.125rem. Body 18px minimum, line height 1.7, line length near 68 characters.
+- Eyebrows: 0.75rem, uppercase, letter spacing 0.14em, semi bold, emerald-deep, no pill. The hero and page header eyebrows lead with a 6px emerald dot.
+- Logo: the supplied mark beside the text wordmark (HOUSE OF in regular, BREAD in bold). The mark is a trimmed PNG until an SVG is supplied.
 
 ### 1.4 Layout and composition
-- Container 1200px, with 24px gutters on mobile. Section spacing 112px on desktop, 72px on mobile.
-- Break the repeated row of cards. Use a bento grid on Home for "ways to be fed": one large tile, two medium, one small, different surfaces.
-- Overlap and depth: hero visuals overlap the hero edge into the white page. Floating cards sit partly outside their parent.
-- Alternate section surfaces: white, tint, green band, white.
-- Asymmetric splits (7/5 columns) instead of centred stacks. Align text left on content, centre only on short closing bands.
+- Container 1152px, with 24px gutters on mobile. Section spacing 120px on desktop, 80px on mobile.
+- The hero and page headers keep at least 64px between the header and the eyebrow.
+- A bento grid on Home for "ways to be fed": one large tile, two medium, one small, white and mint.
+- Asymmetric splits (7/5 columns) instead of centred stacks. Align text left; centre only short closing bands.
 
 ### 1.5 Depth, shape and detail
-- Radii: cards 24px, buttons 14px, inputs 12px, icon tiles 16px.
-- Shadows, two layers: soft = 0 1px 2px rgba(10,54,22,0.06), 0 12px 32px rgba(10,54,22,0.08). Raised = 0 2px 4px rgba(10,54,22,0.08), 0 24px 48px rgba(10,54,22,0.14).
-- Cards on light: white surface, 1px border at 14% emerald, soft shadow. Hover and focus: lift 4px, raised shadow, border at 80% emerald.
-- Icon tiles: rounded square, leaf to emerald gradient, white glyph, subtle inner highlight. Tiles holding text (plan days, step numbers) use solid emerald, because white on leaf is only 3.43:1.
-- Texture: a very faint inline SVG grain on green surfaces (under 2KB), a large cross watermark and leaf shapes at low opacity. No stock photos.
-- A short rule above section headings: emerald-deep on light, white on green.
+- Radii: cards 20px, buttons 12px, inputs 10px, icon tiles 14px.
+- Shadows: soft = 0 1px 2px rgba(11,36,18,0.04), 0 8px 24px rgba(11,36,18,0.05). Raised = 0 2px 6px rgba(11,36,18,0.05), 0 16px 40px rgba(11,36,18,0.08).
+- Cards: white, 1px hairline at 12% emerald, soft shadow. Hover and focus: lift 2px, raised shadow, edge at 35% emerald.
+- Icon tiles: tint fill, emerald glyph, a faint inner emerald ring. Tiles holding text (plan days, step numbers) use solid emerald with white text.
+- A short emerald rule above section headings.
+- Translucent white surfaces, scoped: the header (white at 96%), the hero floating cards and the newsletter card (white at 84%). Never on full width sections or long lists. Solid white under prefers-reduced-transparency. Backdrop blur is allowed on these surfaces only, at 12px or less with a near solid fallback, but ships off until a real device check shows it costs no more than a few fps.
 
 ### 1.6 Motion (CSS only)
-- No JavaScript for decoration. Use CSS transitions and keyframes on transform and opacity only.
-- Entrance: hero text and visuals fade and rise 16px over 600ms, staggered by 80ms. Section reveal on scroll using CSS scroll driven animation where supported, with no animation as the fallback.
-- Hover: buttons lift 2px, the arrow icon in a button nudges 4px right. Cards lift 4px.
-- A slow, subtle drift on the hero glow (30s loop) on desktop only.
-- Respect prefers-reduced-motion: disable all of the above.
-- No backdrop-filter, large blurs or full-screen animated gradients. They cost frames on mid range Android.
+- No JavaScript for decoration. Transitions and keyframes on transform and opacity only.
+- Entrance: hero text rises 8px over 500ms, staggered by 60ms. Sections reveal on scroll from 0.85 opacity and 10px, through CSS scroll driven animation where supported.
+- Hover: buttons lift 2px and the arrow nudges 4px. Cards lift 2px. The mobile menu fades in over 180ms.
+- Skeletons shimmer by transform only, and only where content really loads.
+- Respect prefers-reduced-motion: none of the above runs.
 
 ### 1.7 Imagery
 - Real photography is the biggest single lift for "alive". Until it arrives, use art directed placeholder frames (a light mint to cream wash, a subtle emerald pattern, a small "Photo to come" label, 4:5 and 16:9 ratios). The welcome video frame reads "Photo and video to come".
@@ -119,30 +115,30 @@ Hero, white, cream, mint, the app band, cream, the newsletter card, then the dar
 
 ### 1.8 Components to build
 - AnnouncementBar: appears only when a session is live or starts within 24 hours. Gold while live, gold-soft when coming up, ink text, "Live now: {title}." and a "Watch on YouTube" TextCTA. Hidden otherwise.
-- SiteHeader: green gradient bar, sticky, 72px.
+- SiteHeader: white bar at 96%, hairline bottom border, sticky, 72px, logo left.
 - Hero with HeroVisual: phone mock in CSS plus two floating cards.
 - Button (primary, secondary, live; light and green tones) with an optional arrow icon.
 - TextCTA: label and arrow chip, the text form of a call to action.
 - BentoGrid and BentoTile, FeatureCard, CTACard, IconTile.
 - StatStrip, RegionChips, SocialLinks.
-- Section, SectionHeader, PageHeader (green gradient band), StepList.
-- ScriptureBlock, light and dark variants. The dark variant is the page's deep feature panel.
+- Section, SectionHeader, PageHeader (white with a radial tint), StepList.
+- ScriptureBlock, light and feature variants. Both are mint with an emerald rule; feature is larger, beside a split section.
 - PlanCard, BookGrid, LiveSessionCard, EventCard, VideoGrid.
 - NewsletterCard, AppBand, StoreButtons, EmptyState, YouTubeFacade.
 - Prose for MDX body text.
+- Skeleton and LoadingRegion for content that really loads.
 
 ### 1.9 Buttons and links
 - Every call to action is a real button or a TextCTA. No call to action is underlined.
-- Buttons: minimum height 52px desktop and 48px mobile, horizontal padding 24px, font weight 600, radius 14px. Hover lifts 2px and the arrow nudges 4px.
-- Primary on light: emerald fill, white text, soft shadow. Hover darkens to emerald-deep.
-- Primary on green: lime-bright fill, ink text.
-- Secondary on light: white fill, 2px emerald border, emerald text. Hover fills surface-mint.
-- Secondary on green: white at 12% fill, 1.5px white border, white text.
+- Buttons: minimum height 52px desktop and 48px mobile, horizontal padding 24px, font weight 600, radius 12px. Hover lifts 2px and the arrow nudges 4px.
+- Primary: emerald fill, white text, soft shadow. Hover darkens to emerald-deep.
+- Secondary: white fill, 1.5px emerald border at 55%, emerald-deep text. Hover fills tint with a full emerald border.
+- In the footer: primary is white with green-deep text; secondary is white at 12% with a 1.5px white border.
 - Live emphasis: gold fill, ink text, only while a session is live.
-- TextCTA: label weight 600, then a 28px circular arrow chip, no underline. On light: label emerald-deep, chip with a 1px emerald border at 25% and an emerald arrow; hover fills the chip emerald, the arrow turns white and slides 3px. On green: white label, chip white at 15%; hover fills lime-bright with an ink arrow.
+- TextCTA: label weight 600, then a 28px circular arrow chip, no underline. On light: label emerald-deep, chip with a 1px emerald border at 25% and an emerald arrow; hover fills the chip emerald, the arrow turns white and slides 3px. In the footer: white label, chip white at 15%; hover fills white with a green-deep arrow.
 - Links inside paragraphs and teaching body text keep a thin underline: offset 3px, skip-ink, emerald at 50% opacity, solid on hover. This is required for accessibility.
 - Nav and footer link lists have no underline. Hover is a pill background. The current page uses aria-current plus a stronger pill, not colour alone.
-- Focus ring 3px: emerald-deep on light, white on green, lime on deep green, each with 3:1 contrast against its surroundings.
+- Focus ring 3px: emerald-deep on light, white in the footer, each with 3:1 contrast against its surroundings.
 - On mobile, hero and band buttons are full width and stacked.
 
 ### 1.10 CTA system
@@ -168,19 +164,19 @@ One primary action per section, written as a verb that says what happens next. N
 | Element | Surface |
 |---|---|
 | Announcement bar | gold (live) or gold-soft (within 24 hours), ink text |
-| Header and nav | green-rich to emerald gradient, white wordmark, lime-bright primary button |
-| Home hero | hero gradient with glow, grain and watermark, white text, lime-bright eyebrow |
-| Inner page header | the hero gradient, shorter, white text, lime-bright eyebrow |
-| Stat strip | white, overlapping the hero edge, soft shadow |
-| Bento tiles | one lighter green band tile, others white or mint |
+| Header and nav | white at 96%, hairline border, ink nav, tint pill for the current page, emerald primary button |
+| Home hero | white with soft emerald radials, ink type, emerald-deep accent phrase, translucent floating cards |
+| Inner page header | white with one emerald radial, hairline below, ink type |
+| Stat strip | white row under the hero, hairline dividers, soft shadow |
+| Bento tiles | white and mint, hairline borders |
 | Feature and plan cards | white on white, cream or mint sections |
 | Split text sections, steps, FAQ | cream or mint, alternating with white |
-| Feature scripture panel (Home, About) | deep green, the page's one deep panel, serif white text, lime reference label |
+| Feature scripture panel (Home, About) | mint, emerald left rule, serif ink text, emerald reference label |
 | Scripture inside teaching text | mint panel, emerald left rule, serif ink text |
-| App band | the lighter green band (#14602f to #1e7b3a) with phone frame, no lime text |
-| Newsletter | a light card on surface-gold (or surface-mint), emerald button |
+| App band | mint panel with soft radials, phone frame |
+| Newsletter | translucent white card over gold or mint radials, emerald button |
 | Teaching and book body | white, serif, ink |
-| Footer | green-deep to green-night, white text and links, lime headings |
+| Footer | green-deep to green-night, white text and links, logo in a white tile |
 | 404, error, check-email | white page with an icon tile and ink heading |
 
 ---
@@ -191,16 +187,16 @@ One primary action per section, written as a verb that says what happens next. N
 - Content driven from event data. Hidden when no session is live or within 24 hours.
 
 ### Header
-- Sticky, 72px, the green-rich to emerald gradient.
-- Left: wordmark, then Home, About, Academy, Media Library, Contact.
-- Right: Subscribe (secondary on green) and Get the app (primary on green).
+- Sticky, 72px, white at 96% with a hairline bottom border.
+- Left: logo, then Home, About, Academy, Media Library, Contact.
+- Right: Subscribe (secondary) and Get the app (primary).
 - Current page: aria-current and a stronger pill, not colour alone.
-- Mobile: wordmark left, a compact "Get app" button and a "Menu" button on the right, both always visible. The menu is a details element and works without JavaScript. It lists Home, About, Academy, Media Library, Contact as large tap targets, then a full width Subscribe button.
+- Mobile: logo left (the name hides below 420px), a compact "Get app" button and a "Menu" button on the right, both always visible. The menu is a details element and works without JavaScript. It lists Home, About, Academy, Media Library, Contact as large tap targets, then a full width Subscribe button.
 
 ### Footer
 - Top strip: "Stay close to the ministry" and a Subscribe button, only on pages that do not already offer signup (pages without the newsletter card, plus /subscribe and check-email are excluded).
 - Columns:
-  - Brand: wordmark and "A teaching ministry committed to doctrinal clarity and careful handling of Scripture, serving believers across the United Kingdom, Africa and the United States." Region chips: United Kingdom, Africa, United States.
+  - Brand: logo and "A teaching ministry committed to doctrinal clarity and careful handling of Scripture, serving believers across the United Kingdom, Africa and the United States." Region chips: United Kingdom, Africa, United States.
   - Ministry: About, Academy, Media Library, Live sessions, Contact
   - Learn: Teachings, Study the New Testament, New Testament journeys, The official app
   - Follow: YouTube [CHANNEL LINK], [OTHER SOCIAL PLATFORMS AND LINKS TO BE SUPPLIED]
@@ -223,9 +219,9 @@ Metadata description: A global teaching ministry serving believers across the UK
 - TextCTA: Explore the Academy (to /academy). Two buttons and one TextCTA, no more.
 - Under the buttons: RegionChips (United Kingdom, Africa, United States) and the line STUDY . PRAY . GROW
 - HeroVisual (right on desktop, below on mobile): a CSS phone showing the app reading screen, a floating LiveSessionCard ("Next live session", time placeholder or empty state) overlapping the phone's left edge, and a floating progress card ("30 Day NT Journey, Day 1 of 30") overlapping its lower right. Illustrative, marked as such in code comments.
-- Background: rich green gradient, lime glow, grain, cross watermark, leaf shapes. The hero ends with a curved edge into white.
+- Background: white with two soft emerald radial gradients. Generous top padding keeps the eyebrow clear of the header.
 
-### Stat strip (overlaps the hero edge)
+### Stat strip (directly under the hero)
 - 3 regions served: the United Kingdom, Africa and the United States
 - 27 New Testament books introduced
 - 6 translations in the app
@@ -241,7 +237,7 @@ Metadata description: A global teaching ministry serving believers across the UK
 
 ### Ways to be fed (bento, four tiles, cream)
 - Heading H2: Four ways to be fed
-- Large tile, the lighter green band, icon: Live teaching. "House of Bread Global teaches live on YouTube, with reminders so no session is missed." CTA: See upcoming sessions (to /events)
+- Large tile, mint, icon: Live teaching. "House of Bread Global teaches live on YouTube, with reminders so no session is missed." CTA: See upcoming sessions (to /events)
 - Medium tile, white: House of Bread Academy. "Equipped in the truth. Bible classes that give believers a structured place to study the Word, taught with care for context and doctrine." CTA: Explore the Academy (to /academy)
 - Medium tile, mint: The official app. "Daily reading, New Testament journeys, six translations and the ministry's teaching, in your pocket." CTA: Get the app (to /app)
 - Small tile, white: Written teaching. "Doctrine, interpretation and the questions believers actually ask." CTA: Read the teachings (to /teachings)
@@ -260,9 +256,9 @@ Metadata description: A global teaching ministry serving believers across the UK
 - H2: Why House of Bread?
 - Text: The name comes from Bethlehem, the house of bread, and from the One who claimed the title for himself. The aim is not information for its own sake, but Scripture read well, understood clearly, and allowed to feed.
 - Link: About the ministry (to /about), with arrow
-- Right: dark ScriptureBlock, John 6:33-35 KJV
+- Right: feature ScriptureBlock, John 6:33-35 KJV
 
-### The official app (the lighter green band, phone frame)
+### The official app (the mint app panel, phone frame)
 - Eyebrow: THE OFFICIAL APP
 - H2: The ministry in your pocket
 - Text: The official House of Bread app brings the ministry's teaching and study tools together on your phone, so the Word goes where you go.
@@ -304,7 +300,7 @@ Metadata description: House of Bread Global is a teaching ministry committed to 
 
 ### The name
 - Text: The name comes from Bethlehem, the house of bread, and from the One who claimed the title for himself. The aim is not information for its own sake, but Scripture read well, understood clearly, and allowed to feed.
-- Dark ScriptureBlock: John 6:33-35 KJV
+- Feature ScriptureBlock: John 6:33-35 KJV
 
 ### What the ministry offers (five cards with icon tiles)
 - Live teaching: Sessions streamed on YouTube, with reminders by email.
@@ -659,11 +655,11 @@ Sections:
 ## 15. Acceptance checks for this pass
 
 - No page reads as a Bible study website. Live teaching, the Academy and the ministry lead on Home, About and the header. The New Testament material sits under Study and the app.
-- Home has a hero with a visual, a stat strip, a Start here section, a bento grid, one dark scripture panel, an app band, a social row and a newsletter card.
+- Home has a hero with a visual, a stat strip, a Start here section, a bento grid, a feature scripture panel, an app band, a social row and a newsletter card.
 - Every page has a header band, at least three sections and a closing call to action, and each section has one clear primary CTA from the CTA system.
-- Light surfaces carry every page. Apart from the footer, no page has more than one deep green section or panel. No call to action is underlined.
-- Every text and background pairing, including each gradient stop, passes WCAG 2.2 AA and is logged in docs/PLACEHOLDERS.md. Lime or mint text never appears on white.
-- Motion is CSS only, respects prefers-reduced-motion, and adds no backdrop-filter.
+- Light surfaces carry every page. No deep green section or panel apart from the footer. No call to action is underlined.
+- Every text and background pairing, including each gradient stop, passes WCAG 2.2 AA and is logged in docs/PLACEHOLDERS.md. Lime never appears as text.
+- Motion is CSS only and respects prefers-reduced-motion. Translucent surfaces stay within the scope in 1.5.
 - Works at 375px with no horizontal scroll, keyboard only, and with JavaScript disabled for navigation.
 - Lighthouse 95 or above on performance and accessibility for Home, About, Live and the app page, measured on a Vercel preview.
 - No new dependency except the icon approach, which uses inline SVG or the icon package already installed.

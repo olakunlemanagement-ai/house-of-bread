@@ -278,15 +278,25 @@ is copied from the app. Replace or delete each one when real content arrives.
   come from the palette revision of 17 October 2026 and are not yet
   confirmed against official brand files. Replace them with official hex
   values, then rerun the contrast checks below.
-- **Logo.** The header and footer show a text wordmark (`Wordmark.tsx`),
-  marked TODO until the logo SVG arrives.
+- **Logo.** `public/house-of-bread-logo.png` is the supplied source: a
+  1254px square RGB PNG, no transparency, an off white background with
+  noise, about 23% padding, 1.1 MB, and the mark only (no name). It reads
+  well on white once trimmed. `public/logo-mark.png` (214x256, 13KB) is
+  trimmed with near white lifted to pure white, shown beside the text
+  wordmark. On the deep green footer it sits in a white tile, because the
+  source has no alpha. **Ask the ministry for an SVG with a transparent
+  background**: the rays blur below 32px, and a cut out cannot be made
+  cleanly from this PNG (the cross is near white too).
 - **Typefaces.** Literata at 600 for display and headings, and for reading.
   Geist for UI, nav, buttons and labels. Replace or confirm once brand
   typefaces are known.
 - **App screenshots.** The hero visual, `/app` and the app band use a CSS
   phone frame with illustrative floating cards, marked as illustrative in
   code. Swap in real screenshots when supplied.
-- **Favicon.** `app/favicon.ico` is the Next.js default.
+- **Favicon and share image.** `app/icon.png` (192px), `app/apple-icon.png`
+  (180px) and `app/opengraph-image.png` (1200x630, mark and name on white)
+  come from the same PNG. The Next.js default favicon is removed. Regenerate
+  all three when the SVG arrives.
 
 ## Design work deferred
 
@@ -386,6 +396,80 @@ Pages run hero, then white, cream and mint sections in turn, the app band
 dark footer. Apart from the footer, no page has more than one deep green
 element: the dark scripture panel on Home and About. Gold appears only for
 live states, badges and small highlights.
+
+## White and green redesign (palette revision 4)
+
+Branch `feat/white-glass-redesign`, 17 October 2026. The site is now mostly
+white with green built around it. This supersedes the green surfaces in
+revision 3 below, which stays as a record.
+
+- Removed: `green-rich`, `lime-bright`, `mint` (`#05d47c`), the glow
+  primitive, `bg-green-header`, `bg-green-hero`, `bg-green-band`,
+  `bg-green-feature`, `bg-green-tile`, `hero-glow`, `grain`, `drift`,
+  `eyebrow-pill`, `.tone-green`, `.tone-light`, `.tone-mint`, and the
+  `Grain`, `CrossWatermark`, `Leaves` and `CurveEdge` decor.
+- Added: `tint` `#edf3ef` (emerald 8% over white), `bg-hero-tint`,
+  `bg-page-tint`, `bg-panel-tint` (radial gradients only), `glass-bar`,
+  `glass-card`, `eyebrow-dot`, `.skeleton`.
+- Kept: `bg-green-footer` and `.tone-deep`, now the footer's only set.
+- Borders: hairline 12% emerald, hover edge 35%. Keyboard focus carries its
+  own ring, so the hover edge no longer needs 3:1.
+- No deep green section or panel apart from the footer. The scripture
+  feature panel on Home and About is mint with an emerald rule.
+
+### Redesign pairings
+
+Measured with `npm run contrast`. All pass.
+
+| Element | Pairing | Ratio |
+|---|---|---|
+| Body and muted text | ink, ink-muted on white | 16.47, 7.64 |
+| | ink-muted on cream, mint | 7.20, 6.90 |
+| Accents (links, eyebrows, H1 phrase) | emerald-deep on white, cream, mint | 7.65, 7.22, 6.92 |
+| Hero tint at its 10% peak | ink, ink-muted, emerald-deep | 14.21, 6.59, 6.60 |
+| Primary button | white on emerald, on emerald-deep (hover) | 6.57, 7.65 |
+| Secondary button | emerald-deep on white, on tint (hover) | 7.65, 6.80 |
+| Footer buttons | green-deep on white, on mint (hover); white on 12% white over green-deep | 13.53, 12.23, 9.43 |
+| Icon glyph (UI, 3:1) | emerald on tint | 5.84 |
+| Header, white at 96%, worst case | ink, emerald-deep over a black thumbnail | 15.08, 7.01 |
+| | ink over the green-night phone frame | 15.24 |
+| Nav current pill | emerald-deep on tint over the header over black | 6.25 |
+| Hero floating cards, white at 84%, worst case | ink-muted, emerald-deep over the green-night phone frame | 5.53, 5.54 |
+| | ink-muted over the hero tint | 7.43 |
+| Newsletter card, white at 84% | ink-muted over gold, mint; emerald-deep over gold | 7.51, 7.52, 7.53 |
+| Footer | off-white on green-night, green-deep; 80% muted; current pill | 14.98, 12.82, 8.73, 8.12 |
+| Live and badges | ink on gold, gold-soft | 9.02, 11.85 |
+| Play chip | white on 85% green-night over white, black images | 10.01, 16.82 |
+| Focus rings (3:1) | emerald-deep on white, mint, the header over black; white on green-deep | 7.65, 6.92, 7.01, 13.53 |
+| Never used | lime on white | **1.90**, so lime is a decorative dot halo only |
+
+### Glass and scroll performance
+
+Brief: backdrop-filter on the header, the hero floating cards and the
+newsletter card only, dropped from any surface that costs more than a few
+fps. Tested 17 October 2026 on a production build, headless Chromium,
+4x CPU slowdown, a 6 second scripted scroll, Home and Media at 1280 and 375.
+
+- Sequential runs showed blur costing 10 to 25 fps at 1280.
+- A paired rerun (blur and no blur interleaved, 6 pairs each) showed no
+  consistent difference: no blur was faster in 3 of 6, 3 of 6 and 2 of 6
+  pairs, and the baseline itself swung from 7 to 45 fps between runs.
+- Headless Chromium on this machine rasterises in software, so the test
+  cannot resolve a few fps either way.
+
+Decision: blur ships off. The three surfaces keep translucent white (header
+96%, cards 84%), which passes AA without blur. Over the smooth radial tints
+behind the cards and the newsletter, blur is close to invisible anyway.
+**Open item:** scroll Home and the Media Library on a real mid range Android
+phone with blur on the header only (`backdrop-filter: blur(10px)`, header at
+88%, contrast already measured at 12.52 and 5.82). Keep it if the loss is a
+few fps or less.
+
+### Motion and contrast (revision 4)
+
+The scroll reveal now starts at 0.85 opacity and 10px. At 0.85 every text
+pairing passes: ink 10.38, ink-muted 5.18 on white and 4.80 on mint,
+emerald-deep on cream 5.08. The 0.7 notes below no longer apply.
 
 ## Colour contrast, WCAG 2.2 AA
 

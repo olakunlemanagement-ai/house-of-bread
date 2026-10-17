@@ -264,51 +264,103 @@ app. Write accordingly:
 ## 7. Design system
 
 Tokens live in `app/globals.css`. Every value and every contrast pairing is
-logged in `docs/PLACEHOLDERS.md`. Check any new pairing, including each
-gradient stop, before it ships, and log it.
+logged in `docs/PLACEHOLDERS.md`. Add any new pairing to
+`scripts/check-contrast.mjs`, run `npm run contrast`, and log it before it
+ships.
 
 ### Palette
 
-- Light surfaces carry the page: white, `surface-warm` (cream), `surface-mint`
-  and `surface-gold`. Sections alternate white, cream and mint.
-- Text on light is `ink` and `ink-muted`. Links, eyebrows, TextCTA labels and
-  focus rings on light are `emerald-deep`. `emerald` is the primary fill.
-  `leaf` is a decorative gradient start only.
-- Green surfaces: the header, the hero and inner page headers, and one
-  lighter feature band per page (the app band). Text on them is white.
-- Deep green (`green-deep`, `green-night`) is for the footer and one feature
-  panel per page. Apart from the footer, a page has at most one deep green
-  section or panel.
-- `lime` and `lime-bright` are accents and button fills on green only. Lime
-  text only where the background is green-rich or darker. Lime on
-  emerald-deep measures 4.02:1 and fails.
+- The site is mostly white, with green built around it. Premium, demure,
+  calm: nothing shouts.
+- Surfaces: white carries the page. `surface-warm` (cream) and
+  `surface-mint` alternate as bands. `tint` (emerald at 8%) is for the
+  current nav pill, icon tiles and skeletons. Hero and page headers are
+  white with soft emerald radial gradients (`bg-hero-tint`,
+  `bg-page-tint`); the app band and closing bands are `bg-panel-tint`.
+  Radial gradients only, no blur filters.
+- Text on light is `ink` and `ink-muted`. Links, eyebrows, TextCTA labels,
+  heading accents and focus rings are `emerald-deep`. `emerald` is the
+  primary fill, icon glyphs and the short rule above section headings.
+- Deep green (`green-deep`, `green-night`) is the footer and small
+  elements only, such as the phone frame. No deep green section or panel
+  anywhere else, and no full bleed green hero.
+- `lime` is a decorative 6px dot at most (the eyebrow dot halo). Never text,
+  a fill, a headline colour or a carrier of meaning. Lime on white is
+  1.90:1.
 - `gold` and `gold-soft` are fills for live states, badges and small
   highlights, always with ink text. Use them sparingly.
-- Never put text on the light end of a gradient. Never lime, mint or gold on
-  white, either way round.
+- Borders are hairlines (emerald at 12%), deepening to 35% on hover.
+  Shadows are soft and low opacity (`shadow-soft`, `shadow-raised`).
+
+### Type and shape
+
+- Literata for display and headings: H1 36 to 56px and H2 28 to 36px at
+  weight 500; h3 and smaller at 600. Geist for UI, nav, buttons and labels.
+  Body 18px, line height 1.7.
+- Eyebrows: 0.75rem, uppercase, 0.14em tracking, emerald-deep, no pill.
+- Radii: buttons 12px, inputs 10px, icon tiles 14px, cards 20px.
+- Motion is CSS only and short: hero rise 8px over 500ms, scroll reveal
+  from 0.85 opacity and 10px, card lift 2px, button lift 2px with a 4px
+  arrow nudge, menu fade 180ms. Nothing runs under reduced motion.
+- The hero eyebrow never touches the header: hero and page headers keep at
+  least 64px of top padding below the 72px header.
+
+### Translucent surfaces and glass
+
+- Translucent white (`glass-bar`, `glass-card`) is allowed ONLY on the
+  header, the hero floating cards (next live session chip, phone card) and
+  the newsletter card. Never on full width sections or long lists.
+- Opacity is set so text keeps AA over the worst background behind it:
+  the header is white at 96%, cards at 84%. Under
+  `prefers-reduced-transparency` they turn solid white.
+- `backdrop-filter` is allowed on those surfaces only, with blur at 12px or
+  less, a solid or near solid fallback inside
+  `@supports not (backdrop-filter: blur(1px))`, and AA contrast against the
+  worst background. It ships off: a 4x CPU slowdown test on 17 October
+  2026 could not show it was cheap. Turn it on for a surface only after a
+  scroll check on a real mid range Android phone shows no more than a few
+  fps lost.
+
+### Loading states
+
+- Skeletons only where content really loads: the Media Library video grid
+  (Suspense fallback), route segments that await data (`loading.tsx`), and
+  a still tint behind `next/image` thumbnails. Never on static content.
+- Use `components/shared/Skeleton.tsx`: `Skeleton` blocks inside a
+  `LoadingRegion` (aria-busy plus a visually hidden "Loading"). The shimmer
+  moves by transform only and stays still under reduced motion. Size every
+  skeleton like the real content, so nothing shifts.
+
+### Logo
+
+- `public/logo-mark.png` is the mark, trimmed and whitened from the
+  supplied PNG (no transparency), shown with `next/image` beside the text
+  wordmark (`Logo.tsx`), with `priority` in the header. On the footer it
+  sits in a white tile. `app/icon.png`, `app/apple-icon.png` and
+  `app/opengraph-image.png` come from the same source. Replace all of them
+  when the SVG arrives.
 
 ### Buttons and calls to action
 
 - Every call to action is a `Button`, a `ButtonLink` or a `TextCTA`. No call to
   action is underlined.
-- Buttons: 14px radius, at least 48px tall on mobile and 52px from `sm`, full
+- Buttons: 12px radius, at least 48px tall on mobile and 52px from `sm`, full
   width and stacked in heroes and bands on mobile. Hover lifts 2px and the
   arrow nudges 4px.
-  - Primary on light: emerald fill, white text, soft shadow, emerald-deep on
-    hover.
-  - Primary on green: lime-bright fill, ink text.
-  - Secondary on light: white fill, 2px emerald border, emerald text, mint on
-    hover.
-  - Secondary on green: white at 12% fill, 1.5px white border, white text.
-    Keep it off the light end of a gradient (4.21:1 there).
+  - Primary: emerald fill, white text, soft shadow, emerald-deep on hover.
+  - Secondary: white fill, 1.5px emerald border at 55%, emerald-deep text,
+    tint and a full emerald border on hover.
+  - Footer (`tone="green"`): primary is white with green-deep text;
+    secondary is white at 12% with a 1.5px white border.
   - Live: gold fill, ink text, only while a session is live.
 - `TextCTA`: a weight 600 label and a 28px circular arrow chip. On light the
   label is emerald-deep and the chip has an emerald border at 25%; on hover
-  the chip fills emerald and the arrow turns white and slides 3px. On green
-  the label is white, the chip white at 15%, and hover fills it lime-bright
-  with an ink arrow. A card that stretches a TextCTA over itself carries
-  `.cta-host`.
-- Every interactive element has a visible focus ring.
+  the chip fills emerald and the arrow turns white and slides 3px. In the
+  footer the label is white, the chip white at 15%, and hover fills it
+  white with a green-deep arrow. A card that stretches a TextCTA over
+  itself carries `.cta-host`.
+- Every interactive element has a visible focus ring: emerald-deep on
+  light, white in the footer.
 
 ### Links
 
@@ -322,19 +374,21 @@ gradient stop, before it ships, and log it.
 
 ### Navigation
 
-- Header: sticky, 72px, gradient from green-rich to emerald. Left: wordmark,
-  Home, About, Academy, Media Library, Contact. Right: Subscribe (secondary
-  on green) and Get the app (primary on green).
-- Below `xl`: wordmark, a compact "Get app" button and a "Menu" button, all
-  always visible. The menu is a `details` element and works without
+- Header: sticky, 72px, white at 96% with a hairline bottom border. Left:
+  logo, then Home, About, Academy, Media Library, Contact in ink, the
+  current page in a tint pill with an inset emerald ring. Right: Subscribe
+  (secondary) and Get the app (primary).
+- Below `xl`: logo (the name hides below 420px), a compact "Get app"
+  button and a "Menu" button, all always visible. The menu panel is solid
+  white. The menu is a `details` element and works without
   JavaScript: the five links as large tap targets, then a full width
   Subscribe button.
 - Footer: Ministry (About, Academy, Media Library, Live sessions, Contact),
   Learn (Teachings, Study the New Testament, New Testament journeys, The
   official app), Follow. The "Stay close to the ministry" strip shows only
   on pages that do not already offer signup (`[data-newsletter]`).
-- Pages close with the newsletter card: a light card on `surface-gold` or
-  `surface-mint` with an emerald button, never a green band.
+- Pages close with the newsletter card: a translucent white card over soft
+  gold or mint radial tints, with an emerald button, never a green band.
 
 ---
 
