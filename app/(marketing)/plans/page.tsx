@@ -23,10 +23,10 @@ export default function PlansPage() {
         lead="Each journey follows the order the books were written, as events developed in the early Church, so the story reads in order. Available in the official House of Bread app."
         actions={
           <>
-            <ButtonLink href="/app" tone="green" arrow>
+            <ButtonLink href="/app" arrow>
               Start a journey in the app
             </ButtonLink>
-            <ButtonLink href="#journeys" tone="green" variant="secondary">
+            <ButtonLink href="#journeys" variant="secondary">
               Compare the three paces
             </ButtonLink>
           </>

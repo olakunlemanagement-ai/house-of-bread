@@ -1,16 +1,17 @@
 import type { DatedEvent } from "@/lib/content/events";
-import { IconTile } from "./icons";
 import { LocalTime } from "./LocalTime";
 import { PhoneFrame } from "./PhoneFrame";
 import { Placeholder } from "./Placeholder";
 
-const floating = "tone-light absolute z-10 rounded-tile border border-border bg-surface p-4 shadow-raised";
+// Glass over the hero tint and the phone. White at 84% keeps ink-muted
+// above 4.5:1 even where the card overlaps the dark phone frame.
+const floating = "glass-card absolute z-10 rounded-tile border border-white/70 p-4";
 
 /**
  * Hero visual: a CSS phone with two floating cards. Illustrative, not a
  * screenshot and not live data, except that the session card shows the next
- * real session once one is dated. The lime glow sits here, behind the
- * phone, and never behind lime text.
+ * real session once one is dated. A soft emerald radial sits behind the
+ * phone.
  */
 export function HeroVisual({
   nextEvent,
@@ -32,7 +33,7 @@ export function HeroVisual({
     >
       <div
         aria-hidden="true"
-        className="hero-glow drift pointer-events-none absolute left-1/2 top-1/2 size-[22rem] -translate-x-1/2 -translate-y-1/2 rounded-full lg:size-[34rem]"
+        className="pointer-events-none absolute left-1/2 top-1/2 size-[22rem] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:radial-gradient(closest-side,rgb(27_107_51/0.12),transparent)] lg:size-[30rem]"
       />
       <div aria-hidden="true" className="relative">
         <PhoneFrame className="mx-auto" />
@@ -41,8 +42,7 @@ export function HeroVisual({
           // Illustrative card overlapping the phone's left edge.
           <div className={`${floating} left-0 top-12 w-44 sm:-left-6 sm:w-56`}>
             <div className="flex items-center gap-2">
-              <IconTile name="live" size="sm" />
-              <p className="eyebrow leading-tight">Next live session</p>
+              <p className="eyebrow eyebrow-dot leading-tight">Next live session</p>
             </div>
             {nextEvent ? (
               <>

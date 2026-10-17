@@ -63,10 +63,10 @@ export default async function ClassPage({ params }: PageProps<"/academy/[slug]">
         meta={entry.placeholder ? <PlaceholderBadge label="Sample" /> : null}
         actions={
           <>
-            <ButtonLink href="#join" tone="green" arrow>
+            <ButtonLink href="#join" arrow>
               See how to join
             </ButtonLink>
-            <ButtonLink href="/subscribe" tone="green" variant="secondary">
+            <ButtonLink href="/subscribe" variant="secondary">
               Hear when enrolment opens
             </ButtonLink>
           </>

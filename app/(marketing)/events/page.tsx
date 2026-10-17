@@ -30,10 +30,10 @@ export default function EventsPage() {
         lead="House of Bread Global teaches live on YouTube. See what is coming in your local time, and never miss a session."
         actions={
           <>
-            <ButtonLink href="/subscribe" tone="green" arrow>
+            <ButtonLink href="/subscribe" arrow>
               Set a reminder
             </ButtonLink>
-            <YouTubeSubscribeButton tone="green" />
+            <YouTubeSubscribeButton />
           </>
         }
       />

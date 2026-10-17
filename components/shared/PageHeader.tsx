@@ -1,5 +1,4 @@
 import type { ReactNode } from "react";
-import { CrossWatermark, CurveEdge, Grain, Leaves, type EdgeTone } from "./Decor";
 
 type PageHeaderProps = {
   eyebrow: string;
@@ -11,47 +10,34 @@ type PageHeaderProps = {
   actions?: ReactNode;
   /** Optional visual on the right on desktop, below on mobile. */
   visual?: ReactNode;
-  /** Colour of the section that follows, so the curved edge blends in. */
-  next?: EdgeTone;
 };
 
-/** Green gradient band that opens every inner page. */
-export function PageHeader({
-  eyebrow,
-  title,
-  lead,
-  meta,
-  actions,
-  visual,
-  next = "white",
-}: PageHeaderProps) {
+/**
+ * Opens every inner page: white with a soft emerald light at the top right,
+ * a hairline below. Generous top padding keeps the eyebrow well clear of the
+ * sticky header.
+ */
+export function PageHeader({ eyebrow, title, lead, meta, actions, visual }: PageHeaderProps) {
   return (
-    <div className="tone-green bg-green-hero relative overflow-hidden">
-      <Grain />
-      <CrossWatermark className="-right-6 -top-10 h-80 w-56 opacity-[0.06] sm:right-12" />
-      <Leaves className="-bottom-10 right-1/3 hidden size-56 opacity-[0.07] md:block" />
+    <div className="bg-page-tint border-b border-border">
       <div
-        className={`container-page relative pb-24 pt-14 sm:pb-32 sm:pt-20 ${
+        className={`container-page pb-16 pt-16 sm:pb-20 sm:pt-24 ${
           visual ? "grid items-center gap-12 lg:grid-cols-12" : ""
         }`}
       >
         <div className={visual ? "lg:col-span-7" : ""}>
-          {/* White in a 12% white pill at the dark top left of the gradient (7.41:1). */}
-          <p className="rise">
-            <span className="eyebrow eyebrow-pill">{eyebrow}</span>
-          </p>
-          <h1 className="rise-text rise-1 mt-5 max-w-4xl text-display">{title}</h1>
-          {lead ? <p className="rise rise-2 mt-6 max-w-2xl text-lead text-on-green">{lead}</p> : null}
-          {meta ? <div className="rise rise-2 mt-6 text-on-green">{meta}</div> : null}
+          <p className="rise eyebrow eyebrow-dot">{eyebrow}</p>
+          <h1 className="rise-text rise-1 mt-5 max-w-3xl text-display">{title}</h1>
+          {lead ? <p className="rise rise-2 mt-5 max-w-2xl text-lead text-ink-muted">{lead}</p> : null}
+          {meta ? <div className="rise rise-2 mt-6">{meta}</div> : null}
           {actions ? (
-            <div className="rise rise-3 mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center [&>*]:w-full sm:[&>*]:w-auto">
+            <div className="rise rise-3 mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center [&>*]:w-full sm:[&>*]:w-auto">
               {actions}
             </div>
           ) : null}
         </div>
         {visual ? <div className="rise rise-3 lg:col-span-5">{visual}</div> : null}
       </div>
-      <CurveEdge tone={next} />
     </div>
   );
 }

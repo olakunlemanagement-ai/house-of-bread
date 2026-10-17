@@ -29,10 +29,10 @@ export default function AcademyPage() {
         lead="House of Bread Academy gives believers a structured place to study the Bible, so they are equipped with knowledge of the truth and ready to stand in it."
         actions={
           <>
-            <ButtonLink href="#join" tone="green" arrow>
+            <ButtonLink href="#join" arrow>
               See how to join
             </ButtonLink>
-            <ButtonLink href="/subscribe" tone="green" variant="secondary">
+            <ButtonLink href="/subscribe" variant="secondary">
               Hear when enrolment opens
             </ButtonLink>
           </>

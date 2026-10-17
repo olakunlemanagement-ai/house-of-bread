@@ -58,7 +58,7 @@ export default function AppPage() {
           <div className="flex w-full flex-col gap-4">
             <StoreButtons confirmLabel="CONFIRM" />
             <p>
-              <ButtonLink href="#inside" tone="green" variant="secondary" className="w-full sm:w-auto">
+              <ButtonLink href="#inside" variant="secondary" className="w-full sm:w-auto">
                 See what is inside
               </ButtonLink>
             </p>

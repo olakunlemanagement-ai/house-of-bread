@@ -78,10 +78,10 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
         meta={found.data.placeholder ? <PlaceholderBadge label="Sample" /> : null}
         actions={
           <>
-            <ButtonLink href="/app" tone="green" arrow>
+            <ButtonLink href="/app" arrow>
               Read this book in the app
             </ButtonLink>
-            <ButtonLink href="/new-testament" tone="green" variant="secondary">
+            <ButtonLink href="/new-testament" variant="secondary">
               Browse all 27 books
             </ButtonLink>
           </>

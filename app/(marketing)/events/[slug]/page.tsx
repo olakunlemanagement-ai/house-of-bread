@@ -43,12 +43,12 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         meta={
           <div className="space-y-3">
             {event.placeholder ? <PlaceholderBadge label="Sample" /> : null}
-            <p className="flex flex-wrap items-center gap-2 text-lg text-on-green">
-              <Icon name="calendar" className="size-5 text-on-green" />
+            <p className="flex flex-wrap items-center gap-2 text-lg text-ink">
+              <Icon name="calendar" className="size-5 text-emerald" />
               <EventWhen event={event} />
             </p>
-            <p className="flex flex-wrap items-center gap-2 text-on-green">
-              <Icon name="clock" className="size-5 text-on-green" />
+            <p className="flex flex-wrap items-center gap-2 text-ink-muted">
+              <Icon name="clock" className="size-5 text-emerald" />
               <EventDuration event={event} />
             </p>
           </div>
@@ -56,20 +56,20 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         actions={
           <>
             {event.youtubeUrl ? (
-              <ButtonLink href={event.youtubeUrl as `https://${string}`} tone="green" arrow>
+              <ButtonLink href={event.youtubeUrl as `https://${string}`} arrow>
                 Watch on YouTube
               </ButtonLink>
             ) : (
-              <Button tone="green" disabled aria-describedby="youtube-note">
+              <Button disabled aria-describedby="youtube-note">
                 Watch on YouTube
               </Button>
             )}
             {/* TODO: link to the .ics file generated at build time once events carry real dates. */}
-            <Button tone="green" variant="secondary" disabled aria-describedby="calendar-note">
+            <Button variant="secondary" disabled aria-describedby="calendar-note">
               <Icon name="calendar" className="size-5" />
               Add to calendar
             </Button>
-            <div className="basis-full space-y-1 text-sm text-on-green">
+            <div className="basis-full space-y-1 text-sm text-ink-muted">
               {event.youtubeUrl ? null : (
                 <p id="youtube-note">
                   <Placeholder>[YOUTUBE LINK TO BE SUPPLIED]</Placeholder>

@@ -36,13 +36,13 @@ export default function HomePage() {
     <main id="main" tabIndex={-1}>
       <Hero nextEvent={next} />
 
-      {/* Stat strip overlaps the hero edge. Left columns only on desktop, clear of the phone. */}
-      <div className="container-page relative z-20 -mt-24 lg:-mt-28">
-        <StatStrip stats={homeStats} className="lg:w-7/12" />
+      {/* Figures sit just under the hero as a hairline row. */}
+      <div className="container-page relative">
+        <StatStrip stats={homeStats} />
       </div>
 
       <section id="start" aria-labelledby="start-heading" className="bg-surface">
-        <div className="container-page reveal pb-18 pt-18 md:pb-28 md:pt-24 lg:pt-36">
+        <div className="container-page reveal py-20 md:py-30">
           {/* Heading beside the welcome video on desktop, the three first steps below. */}
           <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
             <div className="lg:col-span-5">
@@ -81,7 +81,7 @@ export default function HomePage() {
             <BentoGrid>
               <BentoTile
                 size="large"
-                surface="green"
+                surface="mint"
                 icon="live"
                 title="Live teaching"
                 cta={{ href: "/events", label: "See upcoming sessions" }}
@@ -101,7 +101,7 @@ export default function HomePage() {
               </BentoTile>
               <BentoTile
                 size="medium"
-                surface="mint"
+                surface="white"
                 icon="phone"
                 title="The official app"
                 cta={{ href: "/app", label: "Get the app" }}
@@ -183,7 +183,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="lg:col-span-5">
-            <ScriptureBlock variant="dark" passage="John 6:33-35" verses={john6_33to35} />
+            <ScriptureBlock variant="feature" passage="John 6:33-35" verses={john6_33to35} />
           </div>
         </div>
       </section>

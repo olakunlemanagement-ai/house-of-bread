@@ -10,19 +10,19 @@ export const homeStats: Stat[] = [
   { value: "3", label: "New Testament journeys: 30, 60 and 90 days" },
 ];
 
-/** White strip of figures that overlaps the green edge above it. */
+/** A quiet row of figures with hairline dividers, just under the hero. */
 export function StatStrip({ stats, className = "" }: { stats: Stat[]; className?: string }) {
   return (
     <ul
       aria-label="The ministry at a glance"
-      className={`grid grid-cols-2 gap-px overflow-hidden rounded-card border border-border bg-border shadow-raised lg:grid-cols-4 ${className}`}
+      className={`grid grid-cols-2 gap-px overflow-hidden rounded-card border border-border bg-border shadow-soft lg:grid-cols-4 ${className}`}
     >
       {stats.map((stat, index) => (
-        <li key={index} className="bg-surface p-5 sm:p-7">
-          <span className="block font-serif text-4xl font-semibold leading-none text-emerald-deep sm:text-5xl">
+        <li key={index} className="bg-surface p-5 sm:p-6">
+          <span className="block font-serif text-3xl font-medium leading-none text-emerald-deep sm:text-4xl">
             {stat.value}
           </span>
-          <span className="mt-3 block text-sm leading-snug text-ink-muted sm:text-base">
+          <span className="mt-2.5 block text-sm leading-snug text-ink-muted">
             {stat.label}
           </span>
         </li>

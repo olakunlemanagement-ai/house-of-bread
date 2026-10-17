@@ -48,23 +48,23 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
         eyebrow="New Testament journeys"
         title={plan.name}
         meta={
-          <dl className="flex flex-wrap gap-3 text-on-green">
-            <div className="flex gap-2 rounded-full border border-on-green/40 px-4 py-1.5">
-              <dt className="text-on-green">Days</dt>
+          <dl className="flex flex-wrap gap-3 text-ink">
+            <div className="flex gap-2 rounded-full border border-border bg-surface px-4 py-1.5">
+              <dt className="text-ink-muted">Days</dt>
               <dd className="font-semibold">{plan.days}</dd>
             </div>
-            <div className="flex gap-2 rounded-full border border-on-green/40 px-4 py-1.5">
-              <dt className="text-on-green">Pace</dt>
+            <div className="flex gap-2 rounded-full border border-border bg-surface px-4 py-1.5">
+              <dt className="text-ink-muted">Pace</dt>
               <dd className="font-semibold">{plan.pace}</dd>
             </div>
           </dl>
         }
         actions={
           <>
-            <ButtonLink href="/app" tone="green" arrow>
+            <ButtonLink href="/app" arrow>
               Start a journey in the app
             </ButtonLink>
-            <ButtonLink href="/plans" tone="green" variant="secondary">
+            <ButtonLink href="/plans" variant="secondary">
               Compare the three paces
             </ButtonLink>
           </>

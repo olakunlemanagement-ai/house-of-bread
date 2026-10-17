@@ -26,11 +26,11 @@ export default function NewTestamentPage() {
         title="Study the New Testament, book by book"
         lead="House of Bread Global introduces every New Testament book before the verses are lifted out. Context is not decoration. A letter read without knowing what prompted it will be misread, and most misreadings of the New Testament begin exactly there."
         actions={
-          <ButtonLink href="#books" tone="green" arrow>
+          <ButtonLink href="#books" arrow>
             Browse all 27 books
           </ButtonLink>
         }
-        next="mint"
+       
       />
 
       <Section id="covers" title="What each introduction covers" tone="mint">

@@ -57,7 +57,7 @@ export default function AboutPage() {
             <p className="mt-7 font-serif text-2xl leading-relaxed text-ink">{nameText}</p>
           </div>
           <div className="lg:col-span-6">
-            <ScriptureBlock variant="dark" passage="John 6:33-35" verses={john6_33to35} />
+            <ScriptureBlock variant="feature" passage="John 6:33-35" verses={john6_33to35} />
           </div>
         </div>
       </section>
@@ -150,10 +150,10 @@ export default function AboutPage() {
       </Section>
 
       <ClosingBand id="about-next" eyebrow="Study . Pray . Grow" title="Come and be fed by the Word.">
-        <ButtonLink href="/events" tone="green" arrow>
+        <ButtonLink href="/events" arrow>
           Join a live session
         </ButtonLink>
-        <ButtonLink href="/contact" tone="green" variant="secondary">
+        <ButtonLink href="/contact" variant="secondary">
           Contact the ministry
         </ButtonLink>
       </ClosingBand>

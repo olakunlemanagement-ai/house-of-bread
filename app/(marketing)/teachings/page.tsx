@@ -25,7 +25,7 @@ export default function TeachingsPage() {
         title="Teaching written to be understood"
         lead="A growing library from the ministry on doctrine, interpretation and the questions believers actually ask. Rigorous without being academic."
         actions={
-          <ButtonLink href="/subscribe" tone="green" arrow>
+          <ButtonLink href="/subscribe" arrow>
             Subscribe for new teaching
           </ButtonLink>
         }
