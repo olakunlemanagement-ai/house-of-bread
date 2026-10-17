@@ -30,6 +30,11 @@ Filling in a value there turns every matching placeholder into a real link.
   button and "Signup opens soon".
 - **Contact form is not wired up.** It renders real fields with the submit
   button disabled and a "Messaging opens soon" note until the contact slice.
+- **Security headers are not set.** CLAUDE.md requires a
+  Content-Security-Policy and the other headers in `next.config`. None exist
+  yet. When added, `img-src` must allow `https://i.ytimg.com` (Media Library
+  thumbnails) and `frame-src` must allow `https://www.youtube-nocookie.com`
+  on pages with a video facade (Home).
 
 ## Newsletter setup
 
@@ -130,6 +135,10 @@ These set their own robots metadata and ignore the global flag.
 |---|---|
 | Footer, Follow column; Home, Follow the ministry; `/subscribe` and `/contact`, Follow the ministry | YouTube [CHANNEL LINK] |
 | Same places | [OTHER SOCIAL PLATFORMS AND LINKS TO BE SUPPLIED] |
+| `/media`, Live and replays | Watch live on YouTube [CHANNEL LINK] |
+| `/media`, Social | Follow [CHANNEL LINK] on the YouTube card, [OTHER PLATFORMS AND LINKS TO BE SUPPLIED], and [CONFIRM CONTENT] after the intro line |
+| `/media`, Audio | [AUDIO PLATFORMS AND LINKS TO BE SUPPLIED]. Fill `siteConfig.links.audio` |
+| `/media`, Video | `YOUTUBE_CHANNEL_ID` is not set, so the page shows "Videos will appear here soon". Set it in Vercel (all environments) and redeploy |
 | Home, Next live session; `/events` header | Subscribe on YouTube [CHANNEL LINK] |
 | Every AppBand (Home, `/new-testament`, book pages, `/plans`, journey pages, `/subscribe`) | [GOOGLE PLAY LINK] |
 | Same places | [APP STORE LINK OR "COMING SOON", CONFIRM WITH APP DEVELOPER] |

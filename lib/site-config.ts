@@ -3,6 +3,8 @@ export type SiteLinks = {
   youtubeChannel: string | null;
   /** Other social pages, in display order. Empty renders a placeholder. */
   social: { label: string; href: string }[];
+  /** Audio platforms (podcast and similar), in display order. Empty renders a placeholder. */
+  audio: { label: string; href: string }[];
   /** Store links. Null renders a marked placeholder in the button's place. */
   googlePlay: string | null;
   appStore: string | null;
@@ -28,6 +30,7 @@ export const siteConfig = {
   links: {
     youtubeChannel: null,
     social: [],
+    audio: [],
     googlePlay: null,
     appStore: null,
   } satisfies SiteLinks as SiteLinks,

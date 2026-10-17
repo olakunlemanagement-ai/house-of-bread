@@ -30,7 +30,9 @@ export type IconName =
   | "pin"
   | "play"
   | "share"
-  | "heart";
+  | "heart"
+  | "headphones"
+  | "video";
 
 const paths: Record<IconName, ReactNode> = {
   book: (
@@ -166,6 +168,19 @@ const paths: Record<IconName, ReactNode> = {
   ),
   heart: (
     <path d="M12 20s-7.5-4.4-7.5-10A4.3 4.3 0 0 1 12 7.4 4.3 4.3 0 0 1 19.5 10c0 5.6-7.5 10-7.5 10z" />
+  ),
+  headphones: (
+    <>
+      <path d="M4 15v-3a8 8 0 0 1 16 0v3" />
+      <rect x="3" y="14" width="4" height="6" rx="1.5" />
+      <rect x="17" y="14" width="4" height="6" rx="1.5" />
+    </>
+  ),
+  video: (
+    <>
+      <rect x="3" y="5" width="14" height="14" rx="2.5" />
+      <path d="m17 10 4-2.5v9L17 14" />
+    </>
   ),
 };
 

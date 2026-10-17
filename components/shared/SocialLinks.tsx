@@ -1,5 +1,5 @@
 import { siteConfig } from "@/lib/site-config";
-import { buttonClasses, type ButtonTone } from "./Button";
+import { buttonClasses, type ButtonTone, type ButtonVariant } from "./Button";
 import { Icon } from "./icons";
 import { PlaceholderBadge } from "./Placeholder";
 
@@ -8,29 +8,44 @@ const tile =
 const pending = `${tile} border-dashed border-fg-link font-mono text-sm font-normal text-fg`;
 
 /**
- * "Subscribe on YouTube" as a secondary button, or a marked placeholder in
- * the button's shape until the channel link is supplied.
+ * A button to the ministry's YouTube channel, or a marked placeholder in the
+ * button's shape until the channel link is supplied.
  */
-export function YouTubeSubscribeButton({ tone = "light" }: { tone?: ButtonTone }) {
+export function YouTubeChannelButton({
+  label,
+  tone = "light",
+  variant = "secondary",
+  className = "",
+}: {
+  label: string;
+  tone?: ButtonTone;
+  variant?: ButtonVariant;
+  className?: string;
+}) {
   const { youtubeChannel } = siteConfig.links;
   if (youtubeChannel) {
     return (
-      <a href={youtubeChannel} className={buttonClasses("secondary", tone)}>
+      <a href={youtubeChannel} className={buttonClasses(variant, tone, className)}>
         <Icon name="play" className="size-5" />
-        Subscribe on YouTube
+        {label}
       </a>
     );
   }
   return (
     <span
       data-placeholder
-      className="inline-flex min-h-12 flex-wrap items-center justify-center gap-2 rounded-button border-2 border-dashed border-fg-link px-5 py-2 text-base font-semibold text-fg sm:min-h-13"
+      className={`inline-flex min-h-12 flex-wrap items-center justify-center gap-2 rounded-button border-2 border-dashed border-fg-link px-5 py-2 text-base font-semibold text-fg sm:min-h-13 ${className}`}
     >
       <Icon name="play" className="size-5" />
-      Subscribe on YouTube
+      {label}
       <span className="font-mono text-sm font-normal">[CHANNEL LINK]</span>
     </span>
   );
+}
+
+/** "Subscribe on YouTube" as a secondary button, or its placeholder. */
+export function YouTubeSubscribeButton({ tone = "light" }: { tone?: ButtonTone }) {
+  return <YouTubeChannelButton label="Subscribe on YouTube" tone={tone} />;
 }
 
 /**

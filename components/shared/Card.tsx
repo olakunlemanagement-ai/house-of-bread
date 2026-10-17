@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
 import { IconTile, type IconName } from "./icons";
-import { TextCTAChip, TextCTALabel } from "./TextCTA";
+import { TextCTA, TextCTAChip, TextCTALabel } from "./TextCTA";
 
 /** Card on light surfaces: white, 14% emerald edge, soft shadow, 24px radius. */
 export const cardClass = "rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8";
@@ -40,6 +40,37 @@ export function FeatureCard({
       <IconTile name={icon} />
       <Heading className="mt-6 text-2xl leading-snug">{title}</Heading>
       <p className="mt-3 leading-relaxed text-ink-muted">{children}</p>
+    </Card>
+  );
+}
+
+/**
+ * Icon tile, heading, one line and a TextCTA stretched over the card: one tab
+ * stop, and the whole card lifts and moves the arrow chip on hover.
+ */
+export function CTACard({
+  icon,
+  title,
+  children,
+  cta,
+  className = "",
+}: {
+  icon: IconName;
+  title: string;
+  children: ReactNode;
+  cta: { href: Route; label: string };
+  className?: string;
+}) {
+  return (
+    <Card as="li" className={`cta-host flex flex-col ${interactiveCardClass} ${className}`}>
+      <IconTile name={icon} />
+      <h3 className="mt-6 text-2xl leading-snug">{title}</h3>
+      <p className="mt-3 leading-relaxed text-ink-muted">{children}</p>
+      <div className="mt-auto pt-5">
+        <TextCTA href={cta.href} stretch>
+          {cta.label}
+        </TextCTA>
+      </div>
     </Card>
   );
 }

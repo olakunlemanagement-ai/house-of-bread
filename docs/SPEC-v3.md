@@ -85,10 +85,12 @@ The website is where the ministry is found, understood and joined.
 ```
 /                         Home, next live session, newsletter, app call to action
 /about                    Ministry, teacher, doctrinal position
+/academy                  House of Bread Academy overview (was /classes)
+/academy/[slug]           Single class: what, who, when, how to join
+/media                    Media Library: live and replays, video, audio,
+                          social pages, read and study
 /events                   Live sessions, trainings, meetings, schedule
 /events/[slug]            Single session with YouTube link, calendar file, notify me
-/classes                  Classes and training overview
-/classes/[slug]           Single class: what, who, when, how to join
 /teachings                Archive index, filterable
 /teachings/[slug]         Individual teaching
 /new-testament            Book index
@@ -101,6 +103,34 @@ The website is where the ministry is found, understood and joined.
 /contact
 /privacy
 ```
+
+`/classes` and `/classes/[slug]` redirect permanently (308) to `/academy` and
+`/academy/[slug]`.
+
+### Media Library (/media)
+
+One page for everything the ministry shares, in five anchored sections:
+
+- Live and replays (`#live`): the next session from event data, or an empty
+  state, with "Watch live on YouTube", "Set a reminder" and a link to the
+  full schedule on `/events`.
+- Video (`#video`): the latest six videos from the channel's public feed
+  (`https://www.youtube.com/feeds/videos.xml?channel_id=...`). Fetched on the
+  server at build time and revalidated hourly (`"use cache"` with
+  `cacheLife("hours")`), using `YOUTUBE_CHANNEL_ID`. Parsed by a small,
+  tested, dependency free function in `/lib/media`. Links and thumbnails are
+  rebuilt from the validated video id; thumbnails load from `i.ytimg.com`.
+  If the variable is missing or the request fails (the endpoint returns 404
+  intermittently), the page shows "Videos will appear here soon" and a
+  Subscribe on YouTube button. Videos open on YouTube; nothing is embedded.
+- Audio (`#audio`): a card and a "Listen on {platform}" button per platform,
+  from `siteConfig.links.audio`.
+- Social (`#social`): a card and a Follow button per platform. Links, not
+  embedded feeds (section 2, non goals).
+- Read and study (`#written`): Teachings, Study the New Testament and New
+  Testament journeys.
+
+The page closes with the newsletter card.
 
 ### Stage two pages
 
