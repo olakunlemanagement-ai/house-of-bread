@@ -1,20 +1,17 @@
 import { Suspense } from "react";
 import { ButtonLink } from "./Button";
-import { CrossWatermark, Grain } from "./Decor";
 import { footerNav, legalNav } from "./nav-links";
 import { NavLinks, StaticNavLinks } from "./NavLinks";
 import { RegionChips } from "./RegionChips";
 import { SocialLinks } from "./SocialLinks";
-import { Wordmark } from "./Wordmark";
+import { Logo } from "./Logo";
 
-const columnHeading = "font-sans text-sm font-semibold uppercase tracking-[0.18em] text-lime";
+const columnHeading = "font-sans text-xs font-semibold uppercase tracking-[0.16em] text-on-green-muted";
 
 export function SiteFooter() {
+  // Deep green is the footer only. White text and links, white focus ring.
   return (
-    <footer className="tone-green tone-deep bg-green-footer relative mt-auto overflow-hidden">
-      <Grain />
-      <CrossWatermark className="-right-10 top-24 h-96 w-64 opacity-[0.04]" />
-
+    <footer className="tone-deep bg-green-footer relative mt-auto overflow-hidden">
       <div className="container-page relative">
         {/*
           Closing call to action, only on pages that do not already end with
@@ -22,7 +19,7 @@ export function SiteFooter() {
           page holds [data-newsletter]. Without :has support it simply shows.
         */}
         <div className="footer-cta flex flex-col gap-6 border-b border-white/15 py-12 sm:flex-row sm:items-center sm:justify-between md:py-14">
-          <p className="font-serif text-3xl font-semibold leading-tight text-on-green sm:text-4xl">
+          <p className="font-serif text-2xl font-medium leading-tight text-on-green sm:text-3xl">
             Stay close to the ministry
           </p>
           <ButtonLink href="/subscribe" tone="green" arrow className="w-full sm:w-auto">
@@ -33,8 +30,8 @@ export function SiteFooter() {
         {/* Link columns size to their content, so no link or current pill wraps. */}
         <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.5fr)_auto_auto_minmax(0,1.1fr)] lg:gap-x-14">
           <div>
-            <p className="text-lg text-on-green">
-              <Wordmark />
+            <p className="text-base text-on-green">
+              <Logo onDeep />
             </p>
             <p className="mt-5 max-w-sm leading-relaxed text-on-green-muted">
               A teaching ministry committed to doctrinal clarity and careful handling of Scripture,
@@ -71,7 +68,7 @@ export function SiteFooter() {
               <NavLinks layout="legal" items={legalNav} />
             </Suspense>
           </nav>
-          <p className="font-semibold uppercase tracking-[0.3em] text-lime">Study . Pray . Grow</p>
+          <p className="font-semibold uppercase tracking-[0.3em]">Study . Pray . Grow</p>
         </div>
       </div>
     </footer>
