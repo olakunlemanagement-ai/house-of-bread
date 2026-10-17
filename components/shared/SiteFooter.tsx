@@ -1,9 +1,7 @@
-import Link from "next/link";
 import { Suspense } from "react";
 import { ButtonLink } from "./Button";
 import { CrossWatermark, Grain } from "./Decor";
-import { footerNav } from "./nav-links";
-import { navLinkClass } from "./nav-styles";
+import { footerNav, legalNav } from "./nav-links";
 import { NavLinks, StaticNavLinks } from "./NavLinks";
 import { RegionChips } from "./RegionChips";
 import { SocialLinks } from "./SocialLinks";
@@ -32,7 +30,8 @@ export function SiteFooter() {
           </ButtonLink>
         </div>
 
-        <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-[1.6fr_1fr_1fr_1.2fr]">
+        {/* Link columns size to their content, so no link or current pill wraps. */}
+        <div className="grid gap-12 py-14 sm:grid-cols-2 lg:grid-cols-[minmax(0,1.5fr)_auto_auto_minmax(0,1.1fr)] lg:gap-x-14">
           <div>
             <p className="text-lg text-on-green">
               <Wordmark />
@@ -67,9 +66,11 @@ export function SiteFooter() {
 
         <div className="flex flex-col gap-3 border-t border-white/15 py-6 text-sm text-on-green-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 House of Bread Global</p>
-          <Link href="/privacy" className={`${navLinkClass("footer", false)} sm:mx-0`}>
-            Privacy
-          </Link>
+          <nav aria-label="Legal">
+            <Suspense fallback={<StaticNavLinks layout="legal" items={legalNav} />}>
+              <NavLinks layout="legal" items={legalNav} />
+            </Suspense>
+          </nav>
           <p className="font-semibold uppercase tracking-[0.3em] text-lime">Study . Pray . Grow</p>
         </div>
       </div>

@@ -50,3 +50,6 @@ export function isCurrent(item: NavLink, pathname: string): boolean {
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
 }
+
+/** The footer's bottom line. */
+export const legalNav: NavLink[] = [{ href: "/privacy", label: "Privacy" }];

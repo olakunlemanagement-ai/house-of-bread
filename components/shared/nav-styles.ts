@@ -1,4 +1,4 @@
-export type NavLayout = "inline" | "stacked" | "footer";
+export type NavLayout = "inline" | "stacked" | "footer" | "legal";
 
 /**
  * Shared by the client nav and its static fallback. No underlines: hover is
@@ -17,7 +17,9 @@ export function navLinkClass(layout: NavLayout, current: boolean) {
     case "stacked":
       return `flex min-h-14 items-center rounded-2xl px-4 font-serif text-2xl font-semibold text-on-green ${state}`;
     case "footer":
-      return `-mx-3 inline-flex min-h-10 items-center rounded-full px-3 text-on-green ${state}`;
+      return `-mx-3 inline-flex min-h-10 items-center whitespace-nowrap rounded-full px-3 text-on-green ${state}`;
+    case "legal":
+      return `-mx-3 inline-flex min-h-10 items-center rounded-full px-3 text-on-green sm:mx-0 ${state}`;
   }
 }
 
@@ -25,4 +27,5 @@ export const navListClass: Record<NavLayout, string> = {
   inline: "flex items-center gap-1",
   stacked: "flex flex-col gap-1",
   footer: "mt-4 flex flex-col items-start gap-1",
+  legal: "flex",
 };

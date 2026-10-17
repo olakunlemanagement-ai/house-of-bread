@@ -100,7 +100,10 @@ export function PhotoFrame({
           <span className="size-1.5 rounded-full bg-emerald" />
           {label}
         </span>
-        <p className="mt-2 max-w-xs font-sans text-sm text-ink-muted">{subject}</p>
+        {/* Video frames drop the subject line on small screens, clear of the play mark. */}
+        <p className={`mt-2 max-w-xs font-sans text-sm text-ink-muted ${media === "video" ? "hidden sm:block" : ""}`}>
+          {subject}
+        </p>
       </div>
     </div>
   );

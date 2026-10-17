@@ -201,7 +201,7 @@ export default function MediaPage() {
       </Section>
 
       <Section id="written" title="Read and study" tone="warm">
-        <ul className="grid gap-5 md:grid-cols-3">
+        <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           <CTACard icon="scroll" title="Teachings" cta={{ href: "/teachings", label: "Read the teachings" }}>
             Doctrine, interpretation and the questions believers actually ask.
           </CTACard>

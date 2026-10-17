@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 /** Where a signup posted without JavaScript lands. */
 export default function CheckEmailPage() {
   return (
-    <main id="main" tabIndex={-1} className="bg-surface">
+    // data-newsletter: the visitor has just signed up, so the footer strip stays hidden.
+    <main id="main" data-newsletter tabIndex={-1} className="bg-surface">
       <div className="container-page py-20 md:py-32">
         <div className="max-w-2xl">
           <IconTile name="mail" size="lg" />

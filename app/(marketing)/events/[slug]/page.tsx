@@ -91,17 +91,19 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         <Placeholder block>[PASSAGES TO BE SUPPLIED, LINKED THROUGH /lib/scripture]</Placeholder>
       </Section>
 
+      <nav aria-label="Sessions" className="bg-surface">
+        <div className="container-page pt-10">
+          <TextCTA href="/events" direction="back">
+            Back to all sessions
+          </TextCTA>
+        </div>
+      </nav>
+
       <NewsletterCard
         idPrefix="event-newsletter"
         heading="Get a reminder before each session"
         source="live-notify"
       />
-
-      <nav aria-label="Sessions" className="container-page py-10">
-        <TextCTA href="/events" direction="back">
-          Back to all sessions
-        </TextCTA>
-      </nav>
     </main>
   );
 }

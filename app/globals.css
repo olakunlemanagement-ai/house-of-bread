@@ -391,9 +391,11 @@ h4 {
 
 /*
   The footer's "Stay close to the ministry" strip repeats the newsletter
-  card, so it shows only on pages that do not end with one.
+  card, so it shows only on pages that do not already offer signup:
+  [data-newsletter] marks the newsletter card, the /subscribe form and the
+  check-email page.
 */
-body:has(main [data-newsletter]) .footer-cta {
+body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
   display: none;
 }
 
