@@ -3,13 +3,13 @@ import { Suspense, type ReactNode } from "react";
 import { ButtonLink } from "@/components/shared/Button";
 import { CTACard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { Icon, IconTile, type IconName } from "@/components/shared/icons";
+import { IconTile, type IconName } from "@/components/shared/icons";
 import { LiveSessionCard } from "@/components/shared/LiveSessionCard";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
-import { YouTubeChannelButton } from "@/components/shared/SocialLinks";
+import { SocialLinks, YouTubeChannelButton } from "@/components/shared/SocialLinks";
 import { TextCTA } from "@/components/shared/TextCTA";
 import { VideoGrid, VideoGridSkeleton } from "@/components/shared/VideoGrid";
 import { getAll, upcomingEvents } from "@/lib/content";
@@ -89,7 +89,7 @@ function PendingPlatformCard({ icon, children }: { icon: IconName; children: Rea
 export default function MediaPage() {
   const next = upcomingEvents(getAll("event"))[0];
   const live = next?.status === "live";
-  const { audio, social } = siteConfig.links;
+  const { audio } = siteConfig.links;
 
   return (
     <main id="main" tabIndex={-1}>
@@ -174,32 +174,7 @@ export default function MediaPage() {
           </>
         }
       >
-        <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          <PlatformCard
-            icon="play"
-            name="YouTube"
-            action={<YouTubeChannelButton label="Follow" className="w-full" />}
-          >
-            Live sessions and teaching videos.
-          </PlatformCard>
-          {social.length > 0 ? (
-            social.map((platform) => (
-              <PlatformCard
-                key={platform.href}
-                icon="share"
-                name={platform.label}
-                action={
-                  <ButtonLink href={platform.href as `https://${string}`} variant="secondary" className="w-full">
-                    <Icon name="share" className="size-5" />
-                    Follow<span className="sr-only"> on {platform.label}</span>
-                  </ButtonLink>
-                }
-              />
-            ))
-          ) : (
-            <PendingPlatformCard icon="share">[OTHER PLATFORMS AND LINKS TO BE SUPPLIED]</PendingPlatformCard>
-          )}
-        </ul>
+        <SocialLinks variant="labelled" />
       </Section>
 
       <Section id="written" title="Read and study" tone="warm">

@@ -387,6 +387,19 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
   Cards that lift on hover and focus. Only transform and opacity animate: the
   raised shadow sits on a pseudo element and fades in.
 */
+/* Social tiles lift 2px on hover. Transform only, still under reduced motion. */
+.social-link {
+  transition:
+    transform 200ms var(--ease-standard),
+    border-color 200ms var(--ease-standard);
+}
+
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .social-link:hover {
+    transform: translateY(-2px);
+  }
+}
+
 .lift {
   position: relative;
   transition: transform 200ms var(--ease-out), border-color 200ms var(--ease-out);

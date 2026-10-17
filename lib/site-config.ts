@@ -1,13 +1,27 @@
+export type SocialPlatform = "instagram" | "youtube" | "tiktok" | "facebook" | "x" | "linktree";
+
+export type SocialAccount = {
+  platform: SocialPlatform;
+  /** Plain profile URL. No tracking parameters. */
+  href: `https://${string}`;
+  /**
+   * Who runs the account. The ministry must confirm which accounts are
+   * official (docs/PLACEHOLDERS.md).
+   */
+  owner: "ministry" | "pastor";
+};
+
 export type SiteLinks = {
-  /** YouTube channel. Null renders the [CHANNEL LINK] placeholder. */
+  /** The ministry's YouTube channel. Null renders the [CHANNEL LINK] placeholder. */
   youtubeChannel: string | null;
-  /** Other social pages, in display order. Empty renders a placeholder. */
-  social: { label: string; href: string }[];
+  /** Social accounts, in display order. Empty renders a placeholder. */
+  social: SocialAccount[];
   /** Audio platforms (podcast and similar), in display order. Empty renders a placeholder. */
   audio: { label: string; href: string }[];
   /**
    * The 60 to 90 second welcome video on Home, as a YouTube video id. Null
-   * renders a "Photo and video to come" frame.
+   * falls back to the latest video from the channel feed, then to a "Photo
+   * and video to come" frame.
    */
   welcomeVideoId: string | null;
   /**
@@ -19,6 +33,13 @@ export type SiteLinks = {
   googlePlay: string | null;
   appStore: string | null;
 };
+
+/**
+ * The ministry's YouTube channel id. Public, not a secret: it is in every
+ * channel URL. YOUTUBE_CHANNEL_ID in the environment carries the same value
+ * for the video feed.
+ */
+export const YOUTUBE_CHANNEL_ID = "UCGkSJEWgmpHK7eR1ysKZZgA";
 
 export const siteConfig = {
   name: "House of Bread Global",
@@ -33,13 +54,21 @@ export const siteConfig = {
    */
   noindex: true,
   /**
-   * External links nobody has supplied yet. Do not invent them. Each null or
-   * empty value is listed in docs/PLACEHOLDERS.md.
-   * TODO: fill in from the ministry and the app developer.
+   * External links. Do not invent them. Each null or empty value is listed
+   * in docs/PLACEHOLDERS.md.
+   * TODO: fill in the rest from the ministry and the app developer.
    */
   links: {
-    youtubeChannel: null,
-    social: [],
+    youtubeChannel: `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}`,
+    social: [
+      { platform: "youtube", href: `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}`, owner: "ministry" },
+      { platform: "youtube", href: "https://www.youtube.com/@TheBrotherOla", owner: "pastor" },
+      { platform: "instagram", href: "https://www.instagram.com/brother0la/", owner: "pastor" },
+      { platform: "facebook", href: "https://www.facebook.com/brother0la", owner: "pastor" },
+      { platform: "tiktok", href: "https://www.tiktok.com/@brotherola", owner: "pastor" },
+      { platform: "x", href: "https://x.com/brotherola", owner: "pastor" },
+      { platform: "linktree", href: "https://linktr.ee/brotherola", owner: "pastor" },
+    ],
     audio: [],
     welcomeVideoId: null,
     weeklySessionUtc: null,

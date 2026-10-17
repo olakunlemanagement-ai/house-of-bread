@@ -87,6 +87,15 @@ const pairings = [
   ["Focus ring: emerald-deep on mint", "emeraldDeep", ["mint50"], UI],
   ["Focus ring: emerald-deep on the header over the hero tint peak", "emeraldDeep", ["white", "emerald/0.1"], UI],
   ["Focus ring: white on green-deep", "white", ["greenDeep"], UI],
+  // Social brand marks on their white tiles (UI, 3:1).
+  ["Social: YouTube red on white", "#ff0000", ["white"], UI],
+  ["Social: Facebook blue on white", "#0866ff", ["white"], UI],
+  ["Social: Instagram gradient middle stop on white", "#d62976", ["white"], UI],
+  ["Social: Instagram gradient deepest stop on white", "#962fbf", ["white"], UI],
+  ["Social: Instagram gradient lightest stop on white (one corner of the mark)", "#fdbb2d", ["white"], UI, "gradient corner only"],
+  ["Social: TikTok and X black on white", "black", ["white"], UI],
+  ["Social: Linktree mark, darkened green, on white", "#1e7a35", ["white"], UI],
+  ["Social: Linktree brand green on white (not used)", "#43e55e", ["white"], UI, "not used"],
   // Never used: lime is a decorative dot only.
   ["Lime on white (never used for text or meaning)", "lime", ["white"], TEXT, "not used"],
 ];

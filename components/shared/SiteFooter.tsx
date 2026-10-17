@@ -55,8 +55,8 @@ export function SiteFooter() {
 
           <div>
             <h2 className={columnHeading}>Follow</h2>
-            <div className="mt-5 text-sm">
-              <SocialLinks layout="column" />
+            <div className="mt-5">
+              <SocialLinks />
             </div>
           </div>
         </div>

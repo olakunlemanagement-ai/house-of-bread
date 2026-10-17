@@ -129,17 +129,35 @@ These set their own robots metadata and ignore the global flag.
 - `/subscribe/check-email`, only meaningful straight after a signup
 - The 404 page
 
+## Social accounts to confirm
+
+Added 17 October 2026 on `feat/come-alive`. The links live in
+`siteConfig.links.social` (`lib/site-config.ts`), plain profile URLs with no
+tracking parameters. Each carries an owner. **The ministry must confirm which
+accounts are official** and whether the pastor's personal accounts should be
+shown as the ministry's. Every link's accessible name reads "House of Bread
+on {platform}", as briefed, which is not accurate for the pastor's accounts
+until confirmed.
+
+| Platform | URL | Owner |
+|---|---|---|
+| YouTube | https://www.youtube.com/channel/UCGkSJEWgmpHK7eR1ysKZZgA | ministry |
+| YouTube | https://www.youtube.com/@TheBrotherOla | pastor |
+| Instagram | https://www.instagram.com/brother0la/ | pastor |
+| Facebook | https://www.facebook.com/brother0la | pastor |
+| TikTok | https://www.tiktok.com/@brotherola | pastor |
+| X | https://x.com/brotherola | pastor |
+| Linktree | https://linktr.ee/brotherola | pastor |
+
+No email address is published anywhere on the site.
+
 ## Bracketed copy from the content pack (revision 2)
 
 | Where | Placeholder |
 |---|---|
-| Footer, Follow column; Home, Follow the ministry; `/subscribe` and `/contact`, Follow the ministry | YouTube [CHANNEL LINK] |
-| Same places | [OTHER SOCIAL PLATFORMS AND LINKS TO BE SUPPLIED] |
-| `/media`, Live and replays | Watch live on YouTube [CHANNEL LINK] |
-| `/media`, Social | Follow [CHANNEL LINK] on the YouTube card, [OTHER PLATFORMS AND LINKS TO BE SUPPLIED], and [CONFIRM CONTENT] after the intro line |
+| `/media`, Social | [CONFIRM CONTENT] after the intro line. The links are filled, see "Social accounts to confirm" |
 | `/media`, Audio | [AUDIO PLATFORMS AND LINKS TO BE SUPPLIED]. Fill `siteConfig.links.audio` |
-| `/media`, Video | `YOUTUBE_CHANNEL_ID` is not set, so the page shows "Videos will appear here soon". Set it in Vercel (all environments) and redeploy |
-| Home, Next live session; `/events` header | Subscribe on YouTube [CHANNEL LINK] |
+| `/media`, Video | Set `YOUTUBE_CHANNEL_ID=UCGkSJEWgmpHK7eR1ysKZZgA` in Vercel (all environments) and redeploy. Until then Vercel builds show "Videos will appear here soon" |
 | Every AppBand (Home, `/new-testament`, book pages, `/plans`, journey pages, `/subscribe`) | [GOOGLE PLAY LINK] |
 | Same places | [APP STORE LINK OR "COMING SOON", CONFIRM WITH APP DEVELOPER] |
 | `/app` header | [GOOGLE PLAY LINK], [APP STORE LINK OR "COMING SOON", CONFIRM] (shortened as written in the pack) |
@@ -591,3 +609,25 @@ transient: the reveal's range is `entry 0% entry 120px`, so a section is
 fully opaque once 120px of it is on screen, and a section straddling the fold
 at load never rests part faded. The hero entrance is time based and finishes
 within 1 second of load. The H1 rises without fading.
+
+## Come alive (revision 5)
+
+Branch `feat/come-alive`, 17 October 2026. Measured with `npm run contrast`.
+
+- The header is no longer sticky or translucent. It floats over the hero
+  and page header tints, so its pairings are now ink and emerald-deep over
+  the 10% tint peak. The header blur open item above no longer applies.
+- Social brand marks sit on 44px white round tiles. Non-text, so 3:1.
+
+| Element | Pairing | Ratio |
+|---|---|---|
+| Header nav | ink over the hero tint peak | 14.21 |
+| Nav current pill | emerald-deep on tint over the hero tint peak | 5.91 |
+| Header focus ring (3:1) | emerald-deep over the hero tint peak | 6.60 |
+| YouTube mark | #ff0000 on white | 4.00 |
+| Facebook mark | #0866ff on white | 4.82 |
+| Instagram mark | gradient stops #d62976, #962fbf on white | 4.73, 6.08 |
+| | lightest stop #fdbb2d, one corner of the gradient only | **1.70** |
+| TikTok and X marks | black on white | 21.00 |
+| Linktree mark | darkened Linktree green #1e7a35 on white | 5.40 |
+| Not used | Linktree brand green #43e55e on white | **1.67**, so the mark uses the darker green |
