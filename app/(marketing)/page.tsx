@@ -3,7 +3,8 @@ import { AppBand } from "@/components/shared/AppBand";
 import { BentoGrid, BentoTile } from "@/components/shared/BentoGrid";
 import { ButtonLink } from "@/components/shared/Button";
 import { TextCTA } from "@/components/shared/TextCTA";
-import { FeatureCard } from "@/components/shared/Card";
+import { YouTubeFacade } from "@/components/shared/YouTubeFacade";
+import { CTACard, FeatureCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Hero } from "@/components/shared/Hero";
 import { LiveSessionCard } from "@/components/shared/LiveSessionCard";
@@ -16,6 +17,7 @@ import { SocialLinks, YouTubeSubscribeButton } from "@/components/shared/SocialL
 import { homeStats, StatStrip } from "@/components/shared/StatStrip";
 import { nameText } from "@/lib/content/copy";
 import { placeholderEvents, placeholderPlans, upcomingEvents } from "@/lib/content/placeholder-data";
+import { isVideoId } from "@/lib/media/youtube-feed";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -25,6 +27,8 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   const next = upcomingEvents(placeholderEvents)[0];
+  // Validated here, so a malformed id falls back to the placeholder frame.
+  const welcomeVideoId = isVideoId(siteConfig.links.welcomeVideoId) ? siteConfig.links.welcomeVideoId : null;
 
   return (
     <main id="main" tabIndex={-1}>
@@ -35,8 +39,41 @@ export default function HomePage() {
         <StatStrip stats={homeStats} className="lg:w-7/12" />
       </div>
 
-      <section id="ways" aria-labelledby="ways-heading" className="bg-surface-warm">
+      <section id="start" aria-labelledby="start-heading" className="bg-surface">
         <div className="container-page reveal pb-18 pt-18 md:pb-28 md:pt-24 lg:pt-36">
+          {/* Heading beside the welcome video on desktop, the three first steps below. */}
+          <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
+            <div className="lg:col-span-5">
+              <SectionHeader id="start-heading">New here? Start here.</SectionHeader>
+            </div>
+            <div className="lg:col-span-7">
+              {welcomeVideoId ? (
+                <YouTubeFacade videoId={welcomeVideoId} title="A welcome from House of Bread Global" />
+              ) : (
+                <PhotoFrame
+                  media="video"
+                  label="Photo and video to come"
+                  subject="A 60 to 90 second welcome from the ministry"
+                />
+              )}
+            </div>
+          </div>
+          <ul className="mt-10 grid gap-5 md:mt-14 lg:grid-cols-3">
+            <CTACard icon="play" title="Hear the teaching" cta={{ href: "/media", label: "Open the Media Library" }}>
+              Watch live sessions and replays, or listen on audio.
+            </CTACard>
+            <CTACard icon="route" title="Read with guidance" cta={{ href: "/plans", label: "Choose a journey" }}>
+              Follow a 30, 60 or 90 day journey through the New Testament in the official app.
+            </CTACard>
+            <CTACard icon="people" title="Go deeper" cta={{ href: "/academy", label: "Explore the Academy" }}>
+              Join House of Bread Academy, Bible classes for believers taught by the ministry.
+            </CTACard>
+          </ul>
+        </div>
+      </section>
+
+      <section id="ways" aria-labelledby="ways-heading" className="bg-surface-warm">
+        <div className="container-page reveal py-18 md:py-28">
           <SectionHeader id="ways-heading">Four ways to be fed</SectionHeader>
           <div className="mt-10 md:mt-14">
             <BentoGrid>
@@ -109,7 +146,7 @@ export default function HomePage() {
             </div>
           </div>
           <PhotoFrame
-            className="lg:col-span-5"
+            className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
             ratio="4/5"
             subject="A live teaching session, the teacher and those gathered"
           />

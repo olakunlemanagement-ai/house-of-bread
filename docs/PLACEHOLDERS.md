@@ -161,6 +161,7 @@ These set their own robots metadata and ignore the global flag.
 
 | Where | Placeholder |
 |---|---|
+| Home, Start here | Welcome video. `siteConfig.links.welcomeVideoId` is null, so a "Photo and video to come" frame shows. Supply a YouTube id and it loads behind the click to load facade |
 | Home hero visual, floating session card | [DATE AND TIME TO BE SUPPLIED] (until a session is dated) |
 | Event cards, featured session card and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
 | Featured session card and `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED] |
@@ -291,10 +292,11 @@ pipeline`. Sample entries carry `sample: true` and render a "Sample" badge.
   scheduled session already under way counts as live. Logic and tests:
   `lib/content/announcement.ts`.
 - **Footer closing strip.** "Stay close to the ministry" shows only on pages
-  that do not end with the newsletter card: `/about`, `/new-testament`,
-  book pages, `/plans`, journey pages, `/subscribe`, check-email and the
-  404 page. The CSS rule `body:has(main [data-newsletter]) .footer-cta` hides
-  it. Browsers without `:has` show it on every page, which is harmless.
+  that do not already offer signup: `/about`, `/new-testament`, book pages,
+  `/plans`, journey pages and the 404 page. `[data-newsletter]` marks the
+  newsletter card, the `/subscribe` form and the check-email page, and a CSS
+  `:has` rule in `globals.css` hides the strip wherever it appears. Browsers
+  without `:has` show it on every page, which is harmless.
 - **Lighthouse.** The 95 target is measured on a Vercel preview (pack section
   15). It has not been measured on this branch.
 

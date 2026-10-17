@@ -5,6 +5,11 @@ export type SiteLinks = {
   social: { label: string; href: string }[];
   /** Audio platforms (podcast and similar), in display order. Empty renders a placeholder. */
   audio: { label: string; href: string }[];
+  /**
+   * The 60 to 90 second welcome video on Home, as a YouTube video id. Null
+   * renders a "Photo and video to come" frame.
+   */
+  welcomeVideoId: string | null;
   /** Store links. Null renders a marked placeholder in the button's place. */
   googlePlay: string | null;
   appStore: string | null;
@@ -31,6 +36,7 @@ export const siteConfig = {
     youtubeChannel: null,
     social: [],
     audio: [],
+    welcomeVideoId: null,
     googlePlay: null,
     appStore: null,
   } satisfies SiteLinks as SiteLinks,

@@ -16,6 +16,12 @@ export type FeedVideo = {
 };
 
 const VIDEO_ID = /^[A-Za-z0-9_-]{11}$/;
+
+/** True for a well formed YouTube video id (11 characters). */
+export function isVideoId(value: unknown): value is string {
+  return typeof value === "string" && VIDEO_ID.test(value);
+}
+
 const CHANNEL_ID = /^UC[A-Za-z0-9_-]{22}$/;
 const MAX_FEED_LENGTH = 2_000_000;
 const MAX_TITLE_LENGTH = 200;
@@ -84,7 +90,7 @@ export function parseYouTubeFeed(xml: unknown, limit = 6): FeedVideo[] {
   const videos: FeedVideo[] = [];
   for (const [, block] of xml.matchAll(/<entry(?:\s[^>]*)?>([\s\S]*?)<\/entry>/g)) {
     const id = textOf(block, "yt:videoId")?.trim() ?? "";
-    if (!VIDEO_ID.test(id) || seen.has(id)) continue;
+    if (!isVideoId(id) || seen.has(id)) continue;
     const title = cleanTitle(textOf(block, "title") ?? textOf(block, "media:title"));
     if (!title) continue;
     seen.add(id);
