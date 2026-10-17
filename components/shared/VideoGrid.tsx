@@ -3,6 +3,7 @@ import { getLatestVideos } from "@/lib/media/videos";
 import type { FeedVideo } from "@/lib/media/youtube-feed";
 import { ButtonLink } from "./Button";
 import { IconTile } from "./icons";
+import { PlayChip } from "./PlayChip";
 import { YouTubeSubscribeButton } from "./SocialLinks";
 
 // Dates in the ministry's own style, fixed to UTC so the server output is stable.
@@ -15,7 +16,7 @@ const dateFormat = new Intl.DateTimeFormat("en-GB", {
 
 function VideoCard({ video, index }: { video: FeedVideo; index: number }) {
   return (
-    <li className="flex flex-col overflow-hidden rounded-card border border-border bg-surface shadow-soft">
+    <li className="lift flex flex-col overflow-hidden rounded-card border border-border bg-surface shadow-soft">
       <div className="relative aspect-video bg-surface-mint">
         {/* hqdefault is 4:3 with letterbox bars; cover crops them to 16:9. */}
         <Image
@@ -26,6 +27,7 @@ function VideoCard({ video, index }: { video: FeedVideo; index: number }) {
           className="object-cover"
           loading={index < 3 ? "eager" : "lazy"}
         />
+        <PlayChip className="absolute bottom-4 left-4" />
       </div>
       <div className="flex flex-1 flex-col p-6">
         <h3 className="text-xl leading-snug">

@@ -460,6 +460,33 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
 }
 
 /*
+  "Watch" chip on cards with something to watch. Decorative: the card's own
+  button or link carries the action. It fades in and rises 8px with the
+  card's lift. Touch screens have no hover, so there it simply shows.
+*/
+.play-chip {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 300ms var(--ease-standard),
+    transform 300ms var(--ease-standard);
+  pointer-events: none;
+}
+
+.lift:hover .play-chip,
+.lift:focus-within .play-chip {
+  opacity: 1;
+  transform: none;
+}
+
+@media (hover: none) {
+  .play-chip {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
   Motion, CSS only. Everything here is opt in through no-preference, so a
   visitor who asks for reduced motion gets none of it.
 */

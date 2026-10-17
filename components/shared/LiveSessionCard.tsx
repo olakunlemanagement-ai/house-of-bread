@@ -6,6 +6,7 @@ import { cardClass, interactiveCardClass } from "./Card";
 import { Icon, IconTile } from "./icons";
 import { LocalTime } from "./LocalTime";
 import { Placeholder, PlaceholderBadge } from "./Placeholder";
+import { PlayChip } from "./PlayChip";
 import { TextCTA } from "./TextCTA";
 
 export const eventKindLabel: Record<EventKind, string> = {
@@ -140,6 +141,7 @@ export function EventCard({ event }: { event: PlaceholderEvent }) {
           <EventDuration event={event} />
         </p>
       </div>
+      {event.status === "scheduled" ? null : <PlayChip className="absolute right-4 top-4" />}
       <TextCTA href={`/events/${event.slug}` as Route} stretch>
         Details<span className="sr-only">: {event.title}</span>
       </TextCTA>
