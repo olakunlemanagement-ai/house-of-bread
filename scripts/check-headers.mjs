@@ -6,7 +6,7 @@
 // Prints the headers per route and exits 1 if any check fails. No
 // dependencies: uses the global fetch in Node 18 and later.
 
-const EMBED_ROUTES = new Set(["/"]);
+const EMBED_ROUTES = new Set(["/", "/media"]);
 const ROUTES = ["/", "/media", "/events", "/app", "/contact", "/subscribe"];
 const YOUTUBE_FRAME = "https://www.youtube-nocookie.com";
 

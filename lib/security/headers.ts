@@ -10,7 +10,7 @@
  * Routes that render a YouTube embed. Only these may frame
  * youtube-nocookie.com. Add a path here when a page gains an embed.
  */
-export const EMBED_ROUTES = ["/"] as const;
+export const EMBED_ROUTES = ["/", "/media"] as const;
 
 const YOUTUBE_FRAME = "https://www.youtube-nocookie.com";
 
