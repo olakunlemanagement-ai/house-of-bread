@@ -293,7 +293,7 @@ site does not have yet.
 - **Numbered FAQ.** A native details and summary list with Literata numbers.
   Needs the questions and answers.
 - **Store badges.** Official App Store and Google Play badges in the footer.
-  Needs the store links (, ).
+  Needs the store links (`siteConfig.links.appStore` and `googlePlay`).
 - **Copy buttons.** Copy a session link or calendar link from a session card.
   Needs real session links and calendar files first.
 - **Topic chips in the Media Library.** Left out: videos carry no topics.
