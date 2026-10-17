@@ -6,7 +6,7 @@ import { Placeholder } from "./Placeholder";
 const topics = [
   "General question",
   "Live sessions",
-  "Classes and training",
+  "Academy",
   "The app",
   "Something else",
 ];

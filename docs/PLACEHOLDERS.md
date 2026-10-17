@@ -139,8 +139,8 @@ These set their own robots metadata and ignore the global flag.
 | `/about`, Leadership | [TEACHER NAME, PHOTO AND SHORT BIOGRAPHY TO BE SUPPLIED] |
 | `/about`, Doctrinal position | [DOCTRINAL STATEMENT TO BE SUPPLIED BY THE MINISTRY] |
 | `/events`, Weekly rhythm | [WEEKLY SCHEDULE AND MINISTRY TIME ZONE TO BE SUPPLIED] |
-| `/classes`, How to join | [JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email] |
-| `/classes/[slug]`, all five sections | [CLASS DETAILS TO BE SUPPLIED] |
+| `/academy`, How to join | [JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email] |
+| `/academy/[slug]`, all five sections | [CLASS DETAILS TO BE SUPPLIED] |
 | `/plans/[slug]`, closing band | [APP DEEP LINK TO BE CONFIRMED] |
 | `/contact`, side panel | [RESPONSE TIME, EMAIL ADDRESS AND SOCIAL LINKS TO BE SUPPLIED] |
 | `/privacy`, section 1 | [LEGAL NAME, ADDRESS AND CONTACT EMAIL OF THE MINISTRY] |
@@ -156,7 +156,7 @@ These set their own robots metadata and ignore the global flag.
 | Event cards, featured session card and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
 | Featured session card and `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED] |
 | `/events/[slug]` | [SESSION DESCRIPTION TO BE SUPPLIED], [PASSAGES TO BE SUPPLIED, LINKED THROUGH /lib/scripture] |
-| Class cards and `/classes/[slug]` header | [ONE LINE SUMMARY], [AUDIENCE], [DATES] |
+| Class cards and `/academy/[slug]` header | [ONE LINE SUMMARY], [AUDIENCE], [DATES] |
 | Teaching cards and `/teachings/[slug]` | [SUMMARY TO BE SUPPLIED], [READING TIME], [PASSAGES], [DATE], [PASSAGES AS LINKED CHIPS], [TEACHING BODY TO BE SUPPLIED] |
 | `/new-testament/[book]`, all five sections | [BODY TEXT FOR THIS SECTION TO BE SUPPLIED] |
 | `/plans/[slug]` for the 60 and 90 day journeys | [DAY ONE READING TO BE CONFIRMED AGAINST THE APP] |
@@ -176,7 +176,7 @@ label naming what the photo will show.
 | `/about`, Mission | 16:9 | Believers gathered for teaching |
 | `/about`, Leadership | 4:5 | Portrait of the teacher |
 | `/events`, How it works | 4:5 | A session streaming live, seen from the room |
-| `/classes`, Who classes are for | 4:5 | A class in progress, believers with open Bibles |
+| `/academy`, Who the Academy is for | 4:5 | A class in progress, believers with open Bibles |
 | `/app`, four feature sections | 16:9 | "Screenshot to come": a journey, a book introduction, switching translations, the teaching library |
 
 Assets to request from the ministry (CONTENT-PACK 1.7): a portrait of the
@@ -189,6 +189,13 @@ image. Swap each frame for `next/image` with explicit dimensions.
 
 Small pieces of copy the pack does not supply, written to fill a layout slot.
 None states a fact. Confirm or replace.
+
+- **House of Bread Academy copy.** The Home bento tile reads "Equipped in the
+  truth. Bible classes that give believers a structured place to study the
+  Word, taught with care for context and doctrine." The About card reads
+  "Bible classes that equip believers with knowledge of the truth, for those
+  who want to go further than reading alone." Both are built from the
+  approved tagline and description.
 
 - **Announcement bar, session within 24 hours.** The pack gives only "Live
   now: {title}. Watch on YouTube". The upcoming case reads "Coming up:
@@ -227,7 +234,7 @@ pipeline`. Sample entries carry `sample: true` and render a "Sample" badge.
 | Route | Sample slugs |
 |---|---|
 | `/events/[slug]` | `sample-event-one`, `sample-event-two` |
-| `/classes/[slug]` | `sample-class-one`, `sample-class-two` |
+| `/academy/[slug]` | `sample-class-one`, `sample-class-two` |
 | `/teachings/[slug]` | `sample-teaching-one`, `sample-teaching-two` (marked draft) |
 | `/new-testament/[book]` | `matthew`, `mark` |
 | `/plans/[slug]` | `30-day-plan`, `60-day-plan`, `90-day-plan` |

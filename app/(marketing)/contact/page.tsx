@@ -18,7 +18,7 @@ export default function ContactPage() {
       <PageHeader
         eyebrow="Contact"
         title="Get in touch"
-        lead="Questions about the ministry, live sessions, classes or the app are welcome."
+        lead="Questions about the ministry, live sessions, the Academy or the app are welcome."
       />
 
       <div className="bg-surface">

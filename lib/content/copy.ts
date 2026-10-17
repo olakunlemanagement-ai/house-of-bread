@@ -17,7 +17,7 @@ export const journeySteps = [
   { text: "Come back any time and continue exactly where the last session ended." },
 ];
 
-/** Who the classes are for. */
+/** Who House of Bread Academy is for. */
 export const classAudience = [
   "New believers who want a structured way into the New Testament",
   "Readers who have started and stalled before",

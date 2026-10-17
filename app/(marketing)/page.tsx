@@ -54,11 +54,11 @@ export default function HomePage() {
                 size="medium"
                 surface="white"
                 icon="people"
-                title="Classes and training"
-                cta={{ href: "/classes", label: "Explore classes" }}
+                title="House of Bread Academy"
+                cta={{ href: "/academy", label: "Explore the Academy" }}
               >
-                Structured teaching for believers who want to go deeper, taught with care for
-                context and doctrine.
+                Equipped in the truth. Bible classes that give believers a structured place to study
+                the Word, taught with care for context and doctrine.
               </BentoTile>
               <BentoTile
                 size="medium"

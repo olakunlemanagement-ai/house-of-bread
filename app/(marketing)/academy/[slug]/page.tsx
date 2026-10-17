@@ -18,13 +18,13 @@ export function generateStaticParams() {
 
 export async function generateMetadata({
   params,
-}: PageProps<"/classes/[slug]">): Promise<Metadata> {
+}: PageProps<"/academy/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const entry = findBySlug(placeholderClasses, slug);
   if (!entry) return {};
   return {
     title: entry.title,
-    description: "Class and training from House of Bread Global. Sample entry, details to be supplied.",
+    description: "A class from House of Bread Academy. Sample entry, details to be supplied.",
   };
 }
 
@@ -36,7 +36,7 @@ const details: { id: string; title: string; icon: IconName }[] = [
   { id: "cost", title: "Cost", icon: "compass" },
 ];
 
-export default async function ClassPage({ params }: PageProps<"/classes/[slug]">) {
+export default async function ClassPage({ params }: PageProps<"/academy/[slug]">) {
   const { slug } = await params;
   const entry = findBySlug(placeholderClasses, slug);
   if (!entry) notFound();
@@ -44,7 +44,7 @@ export default async function ClassPage({ params }: PageProps<"/classes/[slug]">
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
-        eyebrow="Classes and training"
+        eyebrow="House of Bread Academy"
         title={entry.title}
         lead={<Placeholder>[ONE LINE SUMMARY]</Placeholder>}
         meta={entry.sample ? <PlaceholderBadge label="Sample" /> : null}

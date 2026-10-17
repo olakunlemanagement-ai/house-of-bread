@@ -10,7 +10,7 @@ export type NavLink = {
 /** Main navigation, ministry first (CONTENT-PACK section 2). */
 export const primaryNav: NavLink[] = [
   { href: "/events", label: "Live" },
-  { href: "/classes", label: "Classes" },
+  { href: "/academy", label: "Academy" },
   { href: "/teachings", label: "Teachings" },
   { href: "/new-testament", label: "Study" },
   // New Testament journeys live in the official app.
@@ -25,7 +25,7 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     links: [
       { href: "/about", label: "About" },
       { href: "/events", label: "Live sessions" },
-      { href: "/classes", label: "Classes and training" },
+      { href: "/academy", label: "Academy" },
       { href: "/contact", label: "Contact" },
     ],
   },

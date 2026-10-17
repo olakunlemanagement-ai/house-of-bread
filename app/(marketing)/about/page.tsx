@@ -67,8 +67,9 @@ export default function AboutPage() {
           <FeatureCard icon="live" title="Live teaching">
             Sessions streamed on YouTube, with reminders by email.
           </FeatureCard>
-          <FeatureCard icon="people" title="Classes and training">
-            Structured learning for those who want to go further than reading alone.
+          <FeatureCard icon="people" title="House of Bread Academy">
+            Bible classes that equip believers with knowledge of the truth, for those who want to
+            go further than reading alone.
           </FeatureCard>
           <FeatureCard icon="scroll" title="Written teaching">
             Doctrine, interpretation and the questions believers actually ask.

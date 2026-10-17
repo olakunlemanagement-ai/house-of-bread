@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 const links: { href: Route; label: string }[] = [
   { href: "/", label: "Home" },
   { href: "/events", label: "Live sessions" },
-  { href: "/classes", label: "Classes" },
+  { href: "/academy", label: "Academy" },
   { href: "/teachings", label: "Teachings" },
   { href: "/app", label: "The official app" },
 ];

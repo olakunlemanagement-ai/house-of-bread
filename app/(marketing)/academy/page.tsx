@@ -12,20 +12,20 @@ import { classAudience } from "@/lib/content/copy";
 import { placeholderClasses } from "@/lib/content/placeholder-data";
 
 export const metadata: Metadata = {
-  title: "Classes and training",
+  title: "House of Bread Academy",
   description:
-    "Structured teaching from House of Bread Global for believers who want to go deeper. See what each class covers, who it is for and how to join.",
+    "House of Bread Academy: the believers' Bible classes of House of Bread Global, equipping believers with knowledge of the truth. See what each class covers, who it is for and how to join.",
 };
 
 const audienceIcons = ["people", "route", "search", "book"] as const;
 
-export default function ClassesPage() {
+export default function AcademyPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
-        eyebrow="Classes and training"
-        title="Go deeper in the Word"
-        lead="Structured teaching from the ministry, taught with the same care for context and doctrine as everything else here."
+        eyebrow="House of Bread Academy"
+        title="Be equipped in the truth."
+        lead="House of Bread Academy gives believers a structured place to study the Bible, so they are equipped with knowledge of the truth and ready to stand in it."
         actions={
           <>
             <ButtonLink href="#join" tone="green" arrow>
@@ -44,7 +44,7 @@ export default function ClassesPage() {
             {placeholderClasses.map((entry) => (
               <li key={entry.slug} className="flex">
                 <LinkCard
-                  href={`/classes/${entry.slug}` as Route}
+                  href={`/academy/${entry.slug}` as Route}
                   title={entry.title}
                   eyebrow={entry.sample ? <PlaceholderBadge label="Sample" /> : null}
                   cta="View class"
@@ -77,7 +77,7 @@ export default function ClassesPage() {
       <section id="for" aria-labelledby="for-heading" className="bg-surface-warm">
         <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div className="lg:col-span-7">
-            <SectionHeader id="for-heading">Who classes are for</SectionHeader>
+            <SectionHeader id="for-heading">Who the Academy is for</SectionHeader>
             <div className="mt-10">
               <FeatureList
                 columns={1}
@@ -97,7 +97,7 @@ export default function ClassesPage() {
         <Placeholder block>[JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email]</Placeholder>
       </Section>
 
-      <NewsletterCard idPrefix="classes-newsletter" />
+      <NewsletterCard idPrefix="academy-newsletter" />
     </main>
   );
 }

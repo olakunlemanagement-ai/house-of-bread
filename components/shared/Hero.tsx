@@ -30,7 +30,7 @@ export function Hero({ nextEvent }: { nextEvent?: DatedEvent }) {
           </h1>
           <p className="rise rise-2 mt-7 max-w-2xl text-lead text-on-green">
             A global teaching ministry serving believers across the United Kingdom, Africa and the
-            United States, through live teaching, classes and training, written teaching and the
+            United States, through live teaching, House of Bread Academy, written teaching and the
             official House of Bread app.
           </p>
           <div className="rise rise-3 mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
@@ -42,7 +42,7 @@ export function Hero({ nextEvent }: { nextEvent?: DatedEvent }) {
             </ButtonLink>
           </div>
           <p className="rise rise-3 mt-4">
-            <TextCTA href="/classes">Explore classes and training</TextCTA>
+            <TextCTA href="/academy">Explore the Academy</TextCTA>
           </p>
           <div className="rise rise-4 mt-10 space-y-5">
             <RegionChips />
