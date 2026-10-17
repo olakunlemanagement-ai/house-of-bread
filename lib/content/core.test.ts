@@ -59,6 +59,12 @@ describe("valid content passes", () => {
     expect(lines(parseEntry("teaching", "content/teachings/a-teaching.mdx", source))).toEqual([]);
   });
 
+  it("accepts Old Testament passages in frontmatter and body", () => {
+    const frontmatter = validTeaching.replace("  - John 6:35", "  - John 6:35\n  - Psalm 23\n  - Isaiah 53:4-6");
+    const body = '<Scripture passage="Ps 23:1" version="KJV">\nText.\n</Scripture>\n';
+    expect(lines(parseEntry("teaching", "content/teachings/a-teaching.mdx", teaching(frontmatter, body)))).toEqual([]);
+  });
+
   it("accepts a valid Scripture component in the body", () => {
     const body = '<Scripture passage="Jn 6:33-35" version="KJV">\nText.\n</Scripture>\n';
     expect(lines(parseEntry("teaching", "content/teachings/a-teaching.mdx", teaching(validTeaching, body)))).toEqual([]);
@@ -110,6 +116,12 @@ describe("invalid frontmatter fails, naming the file and field", () => {
       .replace("https://www.youtube.com/watch?v=abcdefghijk", "https://example.com/video");
     const fields = errorsOf(parseEntry("event", "content/events/an-event.mdx", teaching(source))).map((e) => e.field);
     expect(fields.sort()).toEqual(["startsAtUtc", "timeZone", "youtubeUrl"]);
+  });
+
+  it("reports a book page for an Old Testament book", () => {
+    const source = validTeaching.replace("slug: a-teaching", "slug: genesis");
+    const result = parseEntry("book", "content/books/genesis.mdx", teaching(source));
+    expect(errorsOf(result)).toEqual([expect.objectContaining({ field: "slug" })]);
   });
 
   it("reports a book slug that is not a canonical book id", () => {

@@ -8,6 +8,7 @@
 //   John 6:70-7:2     cross chapter range
 //
 // Verse counts per chapter are not checked yet. Chapter counts are.
+// A one chapter book cited without a colon reads as verses: "Jude 3" is Jude 1:3.
 
 import { type Book, findBook } from "./books.ts";
 
@@ -84,9 +85,12 @@ const point = (p: Point) => (p.verse === undefined ? `${p.chapter}` : `${p.chapt
 /** Canonical text form, for example "John 6:33-35". */
 export function formatReference(ref: ScriptureRef): string {
   const { book, start, end } = ref;
-  if (!end) return `${book.name} ${point(start)}`;
+  // "Psalm 23", "Psalm 23:1-6", but "Psalms 23-24".
+  const oneChapter = !end || end.chapter === start.chapter;
+  const name = oneChapter ? (book.singular ?? book.name) : book.name;
+  if (!end) return `${name} ${point(start)}`;
   const tail = end.chapter === start.chapter && end.verse !== undefined ? `${end.verse}` : point(end);
-  return `${book.name} ${point(start)}-${tail}`;
+  return `${name} ${point(start)}-${tail}`;
 }
 
 /** Parses and formats in one step. Returns undefined when the input does not parse. */

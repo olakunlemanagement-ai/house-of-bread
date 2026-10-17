@@ -36,7 +36,7 @@ const shared = {
 export const teachingSchema = z.strictObject({ ...shared });
 
 export const bookSchema = z.strictObject({ ...shared }).superRefine((data, ctx) => {
-  if (!bookById(data.slug)) {
+  if (bookById(data.slug)?.testament !== "NT") {
     ctx.addIssue({
       code: "custom",
       path: ["slug"],

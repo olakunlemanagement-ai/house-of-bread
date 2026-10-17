@@ -33,7 +33,7 @@ export type BookListing = {
 /** All 27 New Testament books in canonical order, marked by whether a page exists. */
 export function bookListings(withPages: ReadonlySet<string>): BookListing[] {
   let group: BookGroup = groupStarts[0][1];
-  return books.map((book) => {
+  return books.filter((book) => book.testament === "NT").map((book) => {
     group = groupStarts.find(([id]) => id === book.id)?.[1] ?? group;
     return { slug: book.id, name: book.name, group, hasPage: withPages.has(book.id) };
   });

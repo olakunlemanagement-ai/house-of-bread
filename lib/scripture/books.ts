@@ -4,15 +4,20 @@
 // Changing an id or a display name changes deep links. Treat it as a
 // breaking change and update the golden tests deliberately.
 //
-// New Testament only for now. Old Testament books are added later.
+// All 66 books of the Protestant canon, in canonical order.
 
-export type Testament = "NT";
+export type Testament = "OT" | "NT";
 
 export type Book = {
   /** Canonical id, used in URLs: `john`, `1-corinthians`. */
   id: string;
   /** Display name, used in canonical references: `John`, `1 Corinthians`. */
   name: string;
+  /**
+   * Name for a reference within one chapter, where it differs: "Psalm 23"
+   * but "Psalms 23-24".
+   */
+  singular?: string;
   testament: Testament;
   /** Number of chapters, so a reference past the last chapter is rejected. */
   chapters: number;
@@ -20,15 +25,66 @@ export type Book = {
   aliases: readonly string[];
 };
 
-const nt = (id: string, chapters: number, name: string, aliases: string[]): Book => ({
-  id,
-  name,
-  chapters,
-  testament: "NT",
-  aliases,
-});
+const book =
+  (testament: Testament) =>
+  (id: string, chapters: number, name: string, aliases: string[], singular?: string): Book => ({
+    id,
+    name,
+    ...(singular ? { singular } : {}),
+    chapters,
+    testament,
+    aliases,
+  });
+const ot = book("OT");
+const nt = book("NT");
+
+/** Numbered book spellings: "1 Sam", "I Samuel", "First Samuel". */
+const numbered = (n: 1 | 2 | 3, name: string, short: string[]): string[] => {
+  const roman = ["I", "II", "III"][n - 1];
+  const word = ["First", "Second", "Third"][n - 1];
+  return [...short.map((s) => `${n} ${s}`), `${roman} ${name}`, ...short.map((s) => `${roman} ${s}`), `${word} ${name}`];
+};
 
 export const books: readonly Book[] = [
+  ot("genesis", 50, "Genesis", ["Gen", "Ge", "Gn"]),
+  ot("exodus", 40, "Exodus", ["Exod", "Exo", "Ex"]),
+  ot("leviticus", 27, "Leviticus", ["Lev", "Le", "Lv"]),
+  ot("numbers", 36, "Numbers", ["Num", "Nu", "Nm", "Nb"]),
+  ot("deuteronomy", 34, "Deuteronomy", ["Deut", "Deu", "Dt", "De"]),
+  ot("joshua", 24, "Joshua", ["Josh", "Jos", "Jsh"]),
+  ot("judges", 21, "Judges", ["Judg", "Jdg", "Jg", "Jdgs"]),
+  ot("ruth", 4, "Ruth", ["Rth", "Ru"]),
+  ot("1-samuel", 31, "1 Samuel", numbered(1, "Samuel", ["Sam", "Sa", "Sm"])),
+  ot("2-samuel", 24, "2 Samuel", numbered(2, "Samuel", ["Sam", "Sa", "Sm"])),
+  ot("1-kings", 22, "1 Kings", numbered(1, "Kings", ["Kgs", "Ki", "Kin"])),
+  ot("2-kings", 25, "2 Kings", numbered(2, "Kings", ["Kgs", "Ki", "Kin"])),
+  ot("1-chronicles", 29, "1 Chronicles", numbered(1, "Chronicles", ["Chron", "Chr", "Ch"])),
+  ot("2-chronicles", 36, "2 Chronicles", numbered(2, "Chronicles", ["Chron", "Chr", "Ch"])),
+  ot("ezra", 10, "Ezra", ["Ezr"]),
+  ot("nehemiah", 13, "Nehemiah", ["Neh", "Ne"]),
+  ot("esther", 10, "Esther", ["Esth", "Est", "Es"]),
+  ot("job", 42, "Job", ["Jb"]),
+  ot("psalms", 150, "Psalms", ["Psalm", "Ps", "Psa", "Pss", "Psm", "Pslm"], "Psalm"),
+  ot("proverbs", 31, "Proverbs", ["Prov", "Pro", "Prv", "Pr"]),
+  ot("ecclesiastes", 12, "Ecclesiastes", ["Eccles", "Eccl", "Ecc", "Ec", "Qoheleth"]),
+  ot("song-of-solomon", 8, "Song of Solomon", ["Song of Songs", "Song of Sol", "Song", "SOS", "Canticles", "Cant"]),
+  ot("isaiah", 66, "Isaiah", ["Isa", "Is"]),
+  ot("jeremiah", 52, "Jeremiah", ["Jer", "Je", "Jr"]),
+  ot("lamentations", 5, "Lamentations", ["Lam", "La"]),
+  ot("ezekiel", 48, "Ezekiel", ["Ezek", "Eze", "Ezk"]),
+  ot("daniel", 12, "Daniel", ["Dan", "Da", "Dn"]),
+  ot("hosea", 14, "Hosea", ["Hos", "Ho"]),
+  ot("joel", 3, "Joel", ["Jl"]),
+  ot("amos", 9, "Amos", ["Am"]),
+  ot("obadiah", 1, "Obadiah", ["Obad", "Ob"]),
+  ot("jonah", 4, "Jonah", ["Jnh", "Jon"]),
+  ot("micah", 7, "Micah", ["Mic", "Mc"]),
+  ot("nahum", 3, "Nahum", ["Nah", "Na"]),
+  ot("habakkuk", 3, "Habakkuk", ["Hab", "Hb"]),
+  ot("zephaniah", 3, "Zephaniah", ["Zeph", "Zep", "Zp"]),
+  ot("haggai", 2, "Haggai", ["Hag", "Hg"]),
+  ot("zechariah", 14, "Zechariah", ["Zech", "Zec", "Zc"]),
+  ot("malachi", 4, "Malachi", ["Mal", "Ml"]),
   nt("matthew", 28, "Matthew", ["Matt", "Mat", "Mt"]),
   nt("mark", 16, "Mark", ["Mrk", "Mk", "Mr"]),
   nt("luke", 24, "Luke", ["Luk", "Lk"]),

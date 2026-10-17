@@ -267,10 +267,9 @@ is copied from the app. Replace or delete each one when real content arrives.
 - `<Scripture>` resolves `passage` through `/lib/scripture` and puts the
   canonical reference and deep link on data attributes. The deep links stay
   data only until the Scripture Index pages exist (stage two).
-- `/lib/scripture` covers the 27 New Testament books with chapter counts.
-  Verse counts per chapter are not checked yet, so `John 6:99` passes.
-  Old Testament books are not in the module yet; a body that quotes one
-  fails validation until they are added.
+- `/lib/scripture` covers all 66 books with chapter counts. Verse counts
+  per chapter are not checked yet, so `John 6:99` passes. Book pages
+  (`content/books`) accept New Testament ids only.
 - Reading time on teachings is still a bracketed placeholder.
 
 ## Brand
