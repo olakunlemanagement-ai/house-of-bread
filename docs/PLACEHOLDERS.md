@@ -280,6 +280,25 @@ pipeline`. Sample entries carry `sample: true` and render a "Sample" badge.
   code. Swap in real screenshots when supplied.
 - **Favicon.** `app/favicon.ico` is the Next.js default.
 
+## Design work deferred
+
+From the design upgrade of 17 October 2026. Each waits on something the
+site does not have yet.
+
+- **Duration badges on video cards.** The channel feed carries no duration.
+  Needs the YouTube Data API, which needs a key and a quota decision.
+- **Teacher panel.** The one deep feature panel on Home or About, with the
+  teacher's portrait beside a ScriptureBlock. Needs the portrait and an
+  approved bio.
+- **Numbered FAQ.** A native details and summary list with Literata numbers.
+  Needs the questions and answers.
+- **Store badges.** Official App Store and Google Play badges in the footer.
+  Needs the store links (, ).
+- **Copy buttons.** Copy a session link or calendar link from a session card.
+  Needs real session links and calendar files first.
+- **Topic chips in the Media Library.** Left out: videos carry no topics.
+  Add a sideways scroll-snap chip row, CSS only, once videos are tagged.
+
 ## Known behaviour to revisit
 
 - **Unknown slugs.** With Cache Components on, `dynamicParams = false` is not
