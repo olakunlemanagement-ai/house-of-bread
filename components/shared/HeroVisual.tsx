@@ -3,7 +3,7 @@ import { LocalTime } from "./LocalTime";
 import { PhoneFrame } from "./PhoneFrame";
 import { Placeholder } from "./Placeholder";
 
-// Glass over the hero tint and the phone. White at 84% keeps ink-muted
+// Translucent white over the hero tint and the phone. 84% keeps ink-muted
 // above 4.5:1 even where the card overlaps the dark phone frame.
 const floating = "glass-card absolute z-10 rounded-tile border border-white/70 p-4";
 

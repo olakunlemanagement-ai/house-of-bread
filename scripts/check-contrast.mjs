@@ -13,61 +13,84 @@ const tokens = {
   cream: "#fbf8f1",
   mint50: "#eef6e8",
   gold50: "#fdf3d6",
+  tint: "#edf3ef",
   ink: "#0b2412",
   inkMuted: "#3d5a46",
   emerald: "#1b6b33",
   emeraldDeep: "#14602f",
-  greenRich: "#0f4a22",
   greenDeep: "#0a3616",
   greenNight: "#04290e",
-  glow: "#1e7b3a",
   lime: "#a6c859",
-  limeBright: "#b7d86a",
+  gold: "#e9b949",
+  goldSoft: "#f3d98b",
   offWhite: "#f8f9f8",
   black: "#000000",
 };
 
-// Thresholds: text 4.5, large text 3, non-text UI (rings, glyphs) 3.
+// Thresholds: text 4.5, non-text UI (rings, glyphs) 3. Large text (3) has no pairing now.
 const TEXT = 4.5;
-const LARGE = 3;
 const UI = 3;
 
 /** [label, foreground, background stack bottom first, threshold] */
 const pairings = [
-  // Eyebrow pill, light surfaces. Mint sections use a white pill.
-  ["Eyebrow pill: emerald-deep on mint pill over white", "emeraldDeep", ["white", "mint50"], TEXT],
-  ["Eyebrow pill: emerald-deep on mint pill over cream", "emeraldDeep", ["cream", "mint50"], TEXT],
-  ["Eyebrow pill: emerald-deep on white pill over mint", "emeraldDeep", ["mint50", "white"], TEXT],
-  // Eyebrow pill, green surfaces: white text in a 12% white pill.
-  ["Eyebrow pill: white on 12% white over green-rich", "white", ["greenRich", "white/0.12"], TEXT],
-  ["Eyebrow pill: white on 12% white over emerald-deep", "white", ["emeraldDeep", "white/0.12"], TEXT],
-  ["Eyebrow pill: white on 12% white over glow end (never placed there)", "white", ["glow", "white/0.12"], TEXT, "not used"],
-  ["Eyebrow pill: white on 12% white over green-deep", "white", ["greenDeep", "white/0.12"], TEXT],
-  // Hero emphasis, large Literata 600 text, green-rich end only.
-  ["Hero phrase: lime-bright on green-rich", "limeBright", ["greenRich"], LARGE],
-  ["Hero phrase: lime-bright on emerald-deep (not used)", "limeBright", ["emeraldDeep"], LARGE, "reference"],
-  // Scroll reveal: text at its 0.7 starting opacity, transient only.
-  ["Reveal 0.7: ink on white", "ink/0.7", ["white"], TEXT],
-  ["Reveal 0.7: ink on mint", "ink/0.7", ["mint50"], TEXT],
-  ["Reveal 0.7: emerald-deep on white", "emeraldDeep/0.7", ["white"], TEXT, "transient"],
-  ["Reveal 0.7: ink-muted on white", "inkMuted/0.7", ["white"], TEXT, "transient"],
-  ["Reveal 0.7: white on glow end", "white/0.7", ["glow"], TEXT, "transient"],
-  // Play chip on a thumbnail: white text on green-night at 85%, worst cases.
+  // Light surfaces.
+  ["Body: ink on white", "ink", ["white"], TEXT],
+  ["Muted: ink-muted on white", "inkMuted", ["white"], TEXT],
+  ["Muted: ink-muted on cream", "inkMuted", ["cream"], TEXT],
+  ["Muted: ink-muted on mint", "inkMuted", ["mint50"], TEXT],
+  ["Accent: emerald-deep on white (links, eyebrows, H1 phrase)", "emeraldDeep", ["white"], TEXT],
+  ["Accent: emerald-deep on cream", "emeraldDeep", ["cream"], TEXT],
+  ["Accent: emerald-deep on mint", "emeraldDeep", ["mint50"], TEXT],
+  // Hero and page header tints: emerald at 10% at the peak.
+  ["Hero tint peak: ink on 10% emerald over white", "ink", ["white", "emerald/0.1"], TEXT],
+  ["Hero tint peak: ink-muted on 10% emerald over white", "inkMuted", ["white", "emerald/0.1"], TEXT],
+  ["Hero tint peak: emerald-deep on 10% emerald over white", "emeraldDeep", ["white", "emerald/0.1"], TEXT],
+  // Buttons.
+  ["Primary: white on emerald", "white", ["emerald"], TEXT],
+  ["Primary hover: white on emerald-deep", "white", ["emeraldDeep"], TEXT],
+  ["Secondary: emerald-deep on white", "emeraldDeep", ["white"], TEXT],
+  ["Secondary hover: emerald-deep on tint", "emeraldDeep", ["tint"], TEXT],
+  ["Footer primary: green-deep on white", "greenDeep", ["white"], TEXT],
+  ["Footer primary hover: green-deep on mint", "greenDeep", ["mint50"], TEXT],
+  ["Footer secondary: white on 12% white over green-deep", "white", ["greenDeep", "white/0.12"], TEXT],
+  // Icon tiles: emerald glyph on tint.
+  ["Icon glyph: emerald on tint", "emerald", ["tint"], UI],
+  // Header, white at 96%. Worst case: a black thumbnail scrolled under it.
+  ["Header: ink over black", "ink", ["black", "white/0.96"], TEXT],
+  ["Header: emerald-deep over black", "emeraldDeep", ["black", "white/0.96"], TEXT],
+  ["Header: ink over a green-night phone frame", "ink", ["greenNight", "white/0.96"], TEXT],
+  ["Nav current: emerald-deep on tint pill over the header over black", "emeraldDeep", ["black", "white/0.96", "emerald/0.08"], TEXT],
+  // Hero floating cards, translucent white at 84%. Worst case: over the green-night phone frame.
+  ["Hero card: ink-muted over green-night", "inkMuted", ["greenNight", "white/0.84"], TEXT],
+  ["Hero card: emerald-deep over green-night", "emeraldDeep", ["greenNight", "white/0.84"], TEXT],
+  ["Hero card: ink-muted over hero tint", "inkMuted", ["white", "emerald/0.12", "white/0.84"], TEXT],
+  // Newsletter card, translucent white at 84% over the gold and mint tints.
+  ["Newsletter card: ink-muted over gold-50", "inkMuted", ["gold50", "white/0.84"], TEXT],
+  ["Newsletter card: ink-muted over mint-50", "inkMuted", ["mint50", "white/0.84"], TEXT],
+  ["Newsletter card: emerald-deep over gold-50", "emeraldDeep", ["gold50", "white/0.84"], TEXT],
+  // Footer, deep green.
+  ["Footer: off-white on green-night", "offWhite", ["greenNight"], TEXT],
+  ["Footer: off-white on green-deep", "offWhite", ["greenDeep"], TEXT],
+  ["Footer muted: 80% off-white over green-deep", "offWhite/0.8", ["greenDeep"], TEXT],
+  ["Footer current pill: off-white on 15% white over green-deep", "offWhite", ["greenDeep", "white/0.15"], TEXT],
+  // Gold, always with ink text.
+  ["Live: ink on gold", "ink", ["gold"], TEXT],
+  ["Badge: ink on gold-soft", "ink", ["goldSoft"], TEXT],
+  // Play chip on thumbnails: white on 85% green-night, worst cases.
   ["Play chip: white on 85% green-night over a white image", "white", ["white", "greenNight/0.85"], TEXT],
   ["Play chip: white on 85% green-night over a black image", "white", ["black", "greenNight/0.85"], TEXT],
-  ["Play chip edge: 85% green-night against a white image", "greenNight/0.85", ["white"], UI],
-  // Region band frames.
-  ["Region frame: ink on mint", "ink", ["mint50"], TEXT],
-  ["Region frame: ink-muted on mint", "inkMuted", ["mint50"], TEXT],
-  ["Region frame: emerald-deep on cream", "emeraldDeep", ["cream"], TEXT],
+  // Scroll reveal: text at its 0.85 starting opacity, transient only.
+  ["Reveal 0.85: ink on white", "ink/0.85", ["white"], TEXT],
+  ["Reveal 0.85: ink-muted on white", "inkMuted/0.85", ["white"], TEXT],
+  ["Reveal 0.85: ink-muted on mint", "inkMuted/0.85", ["mint50"], TEXT],
+  ["Reveal 0.85: emerald-deep on cream", "emeraldDeep/0.85", ["cream"], TEXT],
   // Focus rings.
   ["Focus ring: emerald-deep on white", "emeraldDeep", ["white"], UI],
   ["Focus ring: emerald-deep on mint", "emeraldDeep", ["mint50"], UI],
-  ["Focus ring: white on glow end", "white", ["glow"], UI],
-  ["Focus ring: lime on green-deep", "lime", ["greenDeep"], UI],
-  ["Focus ring: emerald-deep around a card over a white page", "emeraldDeep", ["white"], UI],
-  // Nav labels on the header gradient, full opacity.
-  ["Nav label: off-white on header emerald end", "offWhite", ["emerald"], TEXT],
+  ["Focus ring: emerald-deep on the header over black", "emeraldDeep", ["black", "white/0.96"], UI],
+  ["Focus ring: white on green-deep", "white", ["greenDeep"], UI],
+  // Never used: lime is a decorative dot only.
+  ["Lime on white (never used for text or meaning)", "lime", ["white"], TEXT, "not used"],
 ];
 
 function parse(spec) {

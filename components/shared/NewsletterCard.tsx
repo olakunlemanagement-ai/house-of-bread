@@ -3,7 +3,7 @@ import type { NewsletterSource } from "@/lib/newsletter/schema";
 import { IconTile } from "./icons";
 import { NewsletterForm } from "./NewsletterForm";
 
-// Radial tints behind the card: what the glass softens. No blur filter here.
+// Radial tints behind the translucent card. No blur filter.
 const tint = {
   gold: "[background-image:radial-gradient(40rem_22rem_at_15%_30%,var(--surface-gold),transparent_70%),radial-gradient(36rem_22rem_at_90%_80%,var(--surface-mint),transparent_70%)]",
   mint: "[background-image:radial-gradient(40rem_22rem_at_15%_30%,var(--surface-mint),transparent_70%),radial-gradient(36rem_22rem_at_90%_80%,var(--tint),transparent_70%)]",
@@ -14,12 +14,12 @@ type NewsletterCardProps = {
   heading?: string;
   text?: string;
   source?: NewsletterSource;
-  /** The tint behind the glass card. Gold by default, mint where gold sits next to a live state. */
+  /** The tint behind the card. Gold by default, mint where gold sits next to a live state. */
   surface?: "gold" | "mint";
 };
 
 /**
- * The closing signup: a light glass card over soft gold or mint radial
+ * The closing signup: a translucent white card over soft gold or mint radial
  * tints, with an emerald button. Never a green band. data-newsletter lets
  * the footer hide its own "Stay close to the ministry" strip on pages that
  * already end with this card.

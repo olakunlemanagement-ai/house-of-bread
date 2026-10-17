@@ -4,8 +4,8 @@ export type NavLayout = "inline" | "stacked" | "footer" | "legal";
  * Shared by the client nav and its static fallback. No underlines: hover is
  * a soft pill, and the current page is marked by aria-current plus a tint
  * pill with an inset emerald ring and heavier weight, not colour alone.
- * Header and menu are light (emerald-deep on the tint pill, 5.33:1 over the
- * glass header's worst background). Footer and legal sit on deep green.
+ * Header and menu are light (emerald-deep on the tint pill, 6.25:1 over the
+ * header's worst background). Footer and legal sit on deep green.
  */
 const lightState = (current: boolean) =>
   current
