@@ -16,7 +16,7 @@ const golden: [input: string, canonical: string][] = [
   ["JOHN 6 : 35", "John 6:35"],
   ["John6:35", "John 6:35"],
   ["  John   6:33 - 35 ", "John 6:33-35"],
-  ["John 6:33–35", "John 6:33-35"],
+  [`John 6:33${String.fromCharCode(0x2013)}35`, "John 6:33-35"],
   ["Matt 5:3-12", "Matthew 5:3-12"],
   ["Mt 28:19", "Matthew 28:19"],
   ["Rom 8:28", "Romans 8:28"],
