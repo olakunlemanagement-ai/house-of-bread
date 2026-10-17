@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { ButtonLink } from "@/components/shared/Button";
 import { CTACard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
@@ -11,7 +11,7 @@ import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
 import { YouTubeChannelButton } from "@/components/shared/SocialLinks";
 import { TextCTA } from "@/components/shared/TextCTA";
-import { VideoGrid } from "@/components/shared/VideoGrid";
+import { VideoGrid, VideoGridSkeleton } from "@/components/shared/VideoGrid";
 import { getAll, upcomingEvents } from "@/lib/content";
 import { siteConfig } from "@/lib/site-config";
 
@@ -37,7 +37,7 @@ function SectionChips() {
           <li key={section.id}>
             <a
               href={`#${section.id}`}
-              className="inline-flex min-h-11 items-center rounded-full border border-white/40 bg-white/10 px-4 font-semibold text-on-green hover:bg-white/20"
+              className="inline-flex min-h-11 items-center rounded-full border border-border bg-surface px-4 text-[0.95rem] font-semibold text-emerald-deep hover:border-border-strong hover:bg-tint"
             >
               {section.label}
             </a>
@@ -130,7 +130,9 @@ export default function MediaPage() {
         intro="Teaching videos from House of Bread Global, on YouTube."
         tone="warm"
       >
-        <VideoGrid />
+        <Suspense fallback={<VideoGridSkeleton />}>
+          <VideoGrid />
+        </Suspense>
       </Section>
 
       <Section
