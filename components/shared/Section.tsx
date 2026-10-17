@@ -11,7 +11,7 @@ export type SectionTone = "white" | "warm" | "mint" | "green";
 const toneClass: Record<SectionTone, string> = {
   white: "bg-surface",
   warm: "bg-surface-warm",
-  mint: "bg-surface-mint",
+  mint: "tone-mint bg-surface-mint",
   green: "tone-green bg-green-band relative overflow-hidden",
 };
 
@@ -62,7 +62,7 @@ export function Section({
 
 /**
  * The recurring motif: a short rule above the heading, lime on green
- * surfaces and deep green on white, then an optional eyebrow and intro.
+ * surfaces and deep green on white, then an optional eyebrow pill and intro.
  */
 export function SectionHeader({
   id,
@@ -89,7 +89,11 @@ export function SectionHeader({
         aria-hidden="true"
         className={`block h-1 w-12 rounded-full bg-fg-accent ${centred ? "mx-auto" : ""}`}
       />
-      {eyebrow ? <p className="eyebrow mt-5">{eyebrow}</p> : null}
+      {eyebrow ? (
+        <p className="mt-5">
+          <span className="eyebrow eyebrow-pill">{eyebrow}</span>
+        </p>
+      ) : null}
       <Heading
         id={id}
         className={`${eyebrow ? "mt-3" : "mt-5"} ${size === "large" ? "text-h2" : "text-3xl leading-tight"}`}

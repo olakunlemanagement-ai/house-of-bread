@@ -36,8 +36,10 @@ export function PageHeader({
         }`}
       >
         <div className={visual ? "lg:col-span-7" : ""}>
-          {/* Lime text sits only at the dark top left of the gradient (6.45:1). */}
-          <p className="eyebrow rise [--fg-accent:var(--lime-bright)]">{eyebrow}</p>
+          {/* White in a 12% white pill at the dark top left of the gradient (7.41:1). */}
+          <p className="rise">
+            <span className="eyebrow eyebrow-pill">{eyebrow}</span>
+          </p>
           <h1 className="rise-text rise-1 mt-5 max-w-4xl text-display">{title}</h1>
           {lead ? <p className="rise rise-2 mt-6 max-w-2xl text-lead text-on-green">{lead}</p> : null}
           {meta ? <div className="rise rise-2 mt-6 text-on-green">{meta}</div> : null}

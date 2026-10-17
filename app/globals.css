@@ -90,6 +90,9 @@
   --ring: var(--emerald-deep);
   /* Chip fill. Plain rgb, so no colour-mix fallback can turn it solid. */
   --chip-fill: var(--surface-mint);
+  /* Eyebrow pill: emerald-deep on mint (6.92:1). Mint sections swap to white. */
+  --pill-fill: var(--surface-mint);
+  --pill-fg: var(--emerald-deep);
   /* Body link underline: emerald at 50%, solid on hover. */
   --link-line: rgb(27 107 51 / 0.5);
   --link-line-hover: var(--emerald);
@@ -122,6 +125,8 @@
   --fg-accent: var(--on-green);
   --ring: var(--on-green);
   --chip-fill: rgb(255 255 255 / 0.1);
+  --pill-fill: rgb(255 255 255 / 0.12);
+  --pill-fg: var(--on-green);
   --link-line: rgb(255 255 255 / 0.5);
   --link-line-hover: var(--on-green);
   --cta-label: var(--on-green);
@@ -138,9 +143,16 @@
   one feature panel per page. Lime accents and muted text are safe here.
 */
 .tone-deep {
+  --pill-fill: rgb(255 255 255 / 0.12);
+  --pill-fg: var(--on-green);
   --fg-muted: var(--on-green-muted);
   --fg-accent: var(--lime);
   --ring: var(--lime);
+}
+
+/* Mint sections: a mint pill would vanish, so the pill turns white (7.65:1). */
+.tone-mint {
+  --pill-fill: var(--surface);
 }
 
 /* A light card inside a green surface returns to the light roles. */
@@ -152,6 +164,8 @@
   --fg-accent: var(--emerald-deep);
   --ring: var(--emerald-deep);
   --chip-fill: var(--surface-mint);
+  --pill-fill: var(--surface-mint);
+  --pill-fg: var(--emerald-deep);
   --link-line: rgb(27 107 51 / 0.5);
   --link-line-hover: var(--emerald);
   --cta-label: var(--emerald-deep);
@@ -293,6 +307,20 @@
   line-height: 1.4;
   text-transform: uppercase;
   color: var(--fg-accent);
+}
+
+/*
+  Eyebrow above a section title, set in a pill: emerald-deep on mint on
+  light surfaces, white in a 12% white pill on green. Pair with .eyebrow.
+  It sets --fg-accent rather than color, so it wins whatever the utility order.
+*/
+@utility eyebrow-pill {
+  --fg-accent: var(--pill-fg);
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  padding: 0.375rem 0.875rem;
+  background-color: var(--pill-fill);
 }
 
 html {

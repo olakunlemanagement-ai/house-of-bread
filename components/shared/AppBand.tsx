@@ -46,7 +46,9 @@ export function AppBand({
       <div className="container-page relative grid items-center gap-12 py-18 md:py-28 lg:grid-cols-12">
         <div className="reveal lg:col-span-7">
           <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-fg-accent" />
-          <p className="eyebrow mt-5">{eyebrow}</p>
+          <p className="mt-5">
+            <span className="eyebrow eyebrow-pill">{eyebrow}</span>
+          </p>
           <h2 id={headingId} className="mt-3 text-h2">
             {heading}
           </h2>

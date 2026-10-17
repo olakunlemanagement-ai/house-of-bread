@@ -24,7 +24,11 @@ export function ClosingBand({
       <CrossWatermark className="left-1/2 top-1/2 h-96 w-64 -translate-x-1/2 -translate-y-1/2 opacity-[0.05]" />
       <div className="container-page reveal relative py-18 text-center md:py-24">
         <span aria-hidden="true" className="mx-auto block h-1 w-12 rounded-full bg-fg-accent" />
-        {eyebrow ? <p className="eyebrow mt-5">{eyebrow}</p> : null}
+        {eyebrow ? (
+          <p className="mt-5">
+            <span className="eyebrow eyebrow-pill">{eyebrow}</span>
+          </p>
+        ) : null}
         <h2 id={`${id}-heading`} className="mx-auto mt-4 max-w-3xl text-h2">
           {title}
         </h2>
