@@ -1,15 +1,15 @@
 import Link from "next/link";
+import { Suspense } from "react";
 import { ButtonLink } from "./Button";
 import { CrossWatermark, Grain } from "./Decor";
 import { footerNav } from "./nav-links";
+import { navLinkClass } from "./nav-styles";
+import { NavLinks, StaticNavLinks } from "./NavLinks";
 import { RegionChips } from "./RegionChips";
 import { SocialLinks } from "./SocialLinks";
 import { Wordmark } from "./Wordmark";
 
-const linkClass =
-  "inline-flex min-h-10 items-center text-lime underline decoration-1 underline-offset-4 hover:decoration-2";
-
-const columnHeading = "font-sans text-sm font-semibold uppercase tracking-[0.18em] text-on-green";
+const columnHeading = "font-sans text-sm font-semibold uppercase tracking-[0.18em] text-lime";
 
 export function SiteFooter() {
   return (
@@ -18,8 +18,12 @@ export function SiteFooter() {
       <CrossWatermark className="-right-10 top-24 h-96 w-64 opacity-[0.04]" />
 
       <div className="container-page relative">
-        {/* Closing call to action. */}
-        <div className="flex flex-col gap-6 border-b border-white/15 py-12 sm:flex-row sm:items-center sm:justify-between md:py-14">
+        {/*
+          Closing call to action, only on pages that do not already end with
+          the newsletter card. Hidden by .footer-cta in globals.css when the
+          page holds [data-newsletter]. Without :has support it simply shows.
+        */}
+        <div className="footer-cta flex flex-col gap-6 border-b border-white/15 py-12 sm:flex-row sm:items-center sm:justify-between md:py-14">
           <p className="font-serif text-3xl font-semibold leading-tight text-on-green sm:text-4xl">
             Stay close to the ministry
           </p>
@@ -47,15 +51,9 @@ export function SiteFooter() {
               <h2 id={`footer-${column.heading.toLowerCase()}`} className={columnHeading}>
                 {column.heading}
               </h2>
-              <ul className="mt-4 space-y-1">
-                {column.links.map((item) => (
-                  <li key={item.href}>
-                    <Link href={item.href} className={linkClass}>
-                      {item.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <Suspense fallback={<StaticNavLinks layout="footer" items={column.links} />}>
+                <NavLinks layout="footer" items={column.links} />
+              </Suspense>
             </nav>
           ))}
 
@@ -69,7 +67,7 @@ export function SiteFooter() {
 
         <div className="flex flex-col gap-3 border-t border-white/15 py-6 text-sm text-on-green-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 House of Bread Global</p>
-          <Link href="/privacy" className={linkClass}>
+          <Link href="/privacy" className={`${navLinkClass("footer", false)} sm:mx-0`}>
             Privacy
           </Link>
           <p className="font-semibold uppercase tracking-[0.3em] text-lime">Study . Pray . Grow</p>

@@ -7,15 +7,17 @@ export type NavLink = {
   also?: string[];
 };
 
-/** Main navigation, ministry first (CONTENT-PACK section 2). */
+/**
+ * Main navigation. Subscribe and Get the app sit apart from this list, as
+ * buttons on the right of the header.
+ */
 export const primaryNav: NavLink[] = [
-  { href: "/events", label: "Live" },
-  { href: "/academy", label: "Academy" },
-  { href: "/teachings", label: "Teachings" },
-  { href: "/new-testament", label: "Study" },
-  // New Testament journeys live in the official app.
-  { href: "/app", label: "The App", also: ["/plans"] },
+  { href: "/", label: "Home" },
   { href: "/about", label: "About" },
+  { href: "/academy", label: "Academy" },
+  // Live sessions are part of the Media Library.
+  { href: "/media", label: "Media Library", also: ["/events"] },
+  { href: "/contact", label: "Contact" },
 ];
 
 /** Footer link columns. The Follow column is rendered from SocialLinks. */
@@ -24,8 +26,9 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
     heading: "Ministry",
     links: [
       { href: "/about", label: "About" },
-      { href: "/events", label: "Live sessions" },
       { href: "/academy", label: "Academy" },
+      { href: "/media", label: "Media Library" },
+      { href: "/events", label: "Live sessions" },
       { href: "/contact", label: "Contact" },
     ],
   },
@@ -41,6 +44,8 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
 ];
 
 export function isCurrent(item: NavLink, pathname: string): boolean {
+  // Home is current only on the home page itself.
+  if (item.href === "/") return pathname === "/";
   return [item.href, ...(item.also ?? [])].some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );

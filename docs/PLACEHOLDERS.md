@@ -290,11 +290,11 @@ pipeline`. Sample entries carry `sample: true` and render a "Sample" badge.
   sessions. With no dated session, nothing renders and no script runs. A
   scheduled session already under way counts as live. Logic and tests:
   `lib/content/announcement.ts`.
-- **Footer closing strip repeats the newsletter band.** The pack puts "Stay
-  close to the ministry" with a Subscribe button at the top of the footer,
-  and most pages close with a newsletter band of the same heading directly
-  above it. Built as written. Consider hiding the strip on pages that end with
-  the band.
+- **Footer closing strip.** "Stay close to the ministry" shows only on pages
+  that do not end with the newsletter card: `/about`, `/new-testament`,
+  book pages, `/plans`, journey pages, `/subscribe`, check-email and the
+  404 page. The CSS rule `body:has(main [data-newsletter]) .footer-cta` hides
+  it. Browsers without `:has` show it on every page, which is harmless.
 - **Lighthouse.** The 95 target is measured on a Vercel preview (pack section
   15). It has not been measured on this branch.
 

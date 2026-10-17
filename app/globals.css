@@ -390,6 +390,14 @@ h4 {
 }
 
 /*
+  The footer's "Stay close to the ministry" strip repeats the newsletter
+  card, so it shows only on pages that do not end with one.
+*/
+body:has(main [data-newsletter]) .footer-cta {
+  display: none;
+}
+
+/*
   Cards that lift on hover and focus. Only transform and opacity animate: the
   raised shadow sits on a pseudo element and fades in.
 */

@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, type MouseEvent } from "react";
-import { isCurrent, primaryNav } from "./nav-links";
-import { navLinkClass } from "./nav-styles";
+import { isCurrent, primaryNav, type NavLink } from "./nav-links";
+import { navLinkClass, navListClass, type NavLayout } from "./nav-styles";
 
 /** The mobile menu is a details element. Close it after a client side navigation. */
 function closeMenu(event: MouseEvent<HTMLAnchorElement>) {
@@ -14,7 +14,7 @@ function closeMenu(event: MouseEvent<HTMLAnchorElement>) {
 // Client only to mark the current page and close the mobile menu. The links
 // themselves are plain anchors in the server HTML, so navigation works
 // without JavaScript.
-export function NavLinks({ layout }: { layout: "inline" | "stacked" }) {
+export function NavLinks({ layout, items = primaryNav }: { layout: NavLayout; items?: NavLink[] }) {
   const pathname = usePathname();
 
   // Any client side navigation, including the menu's Subscribe and app
@@ -24,8 +24,8 @@ export function NavLinks({ layout }: { layout: "inline" | "stacked" }) {
   }, [pathname]);
 
   return (
-    <ul className={layout === "inline" ? "flex items-center gap-1" : "flex flex-col"}>
-      {primaryNav.map((item) => {
+    <ul className={navListClass[layout]}>
+      {items.map((item) => {
         const current = isCurrent(item, pathname);
         return (
           <li key={item.href}>
@@ -40,6 +40,21 @@ export function NavLinks({ layout }: { layout: "inline" | "stacked" }) {
           </li>
         );
       })}
+    </ul>
+  );
+}
+
+/** Shown while the current path is unresolved. Same links, no current marker. */
+export function StaticNavLinks({ layout, items = primaryNav }: { layout: NavLayout; items?: NavLink[] }) {
+  return (
+    <ul className={navListClass[layout]}>
+      {items.map((item) => (
+        <li key={item.href}>
+          <Link href={item.href} className={navLinkClass(layout, false)}>
+            {item.label}
+          </Link>
+        </li>
+      ))}
     </ul>
   );
 }

@@ -13,7 +13,7 @@ export type PlainHref = `#${string}` | `https://${string}`;
 
 // 48px tall on mobile, 52px from sm. Hover lifts 2px. No button is underlined.
 const base =
-  "group/button inline-flex min-h-12 items-center justify-center gap-2 rounded-button px-6 py-3 text-base font-semibold leading-tight no-underline transition-transform duration-200 sm:min-h-13 motion-safe:hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:hover:translate-y-0";
+  "group/button inline-flex min-h-12 items-center justify-center gap-2 rounded-button py-3 font-semibold leading-tight no-underline transition-transform duration-200 sm:min-h-13 motion-safe:hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:hover:translate-y-0";
 
 // Pairings and ratios are logged in docs/PLACEHOLDERS.md.
 const styles: Record<ButtonTone, Record<ButtonVariant, string>> = {
@@ -35,12 +35,21 @@ const styles: Record<ButtonTone, Record<ButtonVariant, string>> = {
   },
 };
 
+/** Compact is for the mobile header only: same 48px height, tighter sides. */
+export type ButtonSize = "default" | "compact";
+
+const sizes: Record<ButtonSize, string> = {
+  default: "px-6 text-base",
+  compact: "px-3.5 text-sm",
+};
+
 export function buttonClasses(
   variant: ButtonVariant = "primary",
   tone: ButtonTone = "light",
   className = "",
+  size: ButtonSize = "default",
 ) {
-  return `${base} ${styles[tone][variant]} ${className}`;
+  return `${base} ${sizes[size]} ${styles[tone][variant]} ${className}`;
 }
 
 /** Arrow for "go to" buttons. It nudges 4px right on hover. */
@@ -57,6 +66,7 @@ type ButtonLinkProps = {
   href: Route | PlainHref;
   variant?: ButtonVariant;
   tone?: ButtonTone;
+  size?: ButtonSize;
   arrow?: boolean;
   className?: string;
   children: ReactNode;
@@ -66,11 +76,12 @@ export function ButtonLink({
   href,
   variant = "primary",
   tone = "light",
+  size = "default",
   arrow = false,
   className,
   children,
 }: ButtonLinkProps) {
-  const classes = buttonClasses(variant, tone, className);
+  const classes = buttonClasses(variant, tone, className, size);
   const content = (
     <>
       {children}

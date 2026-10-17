@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import type { Route } from "next";
 import { AnnouncementBar } from "@/components/shared/AnnouncementBar";
-import { Icon, IconTile } from "@/components/shared/icons";
+import { IconTile } from "@/components/shared/icons";
 import { SiteFooter } from "@/components/shared/SiteFooter";
 import { SiteHeader } from "@/components/shared/SiteHeader";
+import { TextCTA } from "@/components/shared/TextCTA";
 
 export const metadata: Metadata = {
   title: "Page not found",
@@ -13,8 +13,9 @@ export const metadata: Metadata = {
 
 const links: { href: Route; label: string }[] = [
   { href: "/", label: "Home" },
-  { href: "/events", label: "Live sessions" },
   { href: "/academy", label: "Academy" },
+  { href: "/media", label: "Media Library" },
+  { href: "/events", label: "Live sessions" },
   { href: "/teachings", label: "Teachings" },
   { href: "/app", label: "The official app" },
 ];
@@ -35,16 +36,15 @@ export default function NotFound() {
               instead.
             </p>
           </div>
-          <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <ul className="mt-12 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {links.map((item) => (
-              <li key={item.href} className="lift rounded-tile">
-                <Link
-                  href={item.href}
-                  className="flex min-h-16 items-center justify-between gap-2 rounded-tile border border-border-strong bg-surface px-5 font-semibold text-emerald-deep shadow-soft"
-                >
+              <li
+                key={item.href}
+                className="lift cta-host flex min-h-16 items-center rounded-tile border border-border bg-surface px-5 shadow-soft"
+              >
+                <TextCTA href={item.href} stretch className="w-full justify-between">
                   {item.label}
-                  <Icon name="arrow-right" className="size-5 shrink-0" />
-                </Link>
+                </TextCTA>
               </li>
             ))}
           </ul>
