@@ -6,18 +6,17 @@
   TODO: replace the brand primitives with official brand hex values, then
   rerun the contrast checks recorded in docs/PLACEHOLDERS.md.
 
+  The site is white with green built around it. Green carries structure and
+  accent: headings rules, links, icons, primary buttons and soft tints.
+  Deep green is the footer and small elements only.
+
   Three layers:
   - Brand primitives (--brand-*) hold raw values. Components never use them.
-  - Palette tokens (--surface, --ink, --emerald and so on) follow the names
-    in the content pack.
+  - Palette tokens (--surface, --ink, --emerald and so on).
   - Contextual tokens (--fg, --fg-muted, --fg-heading, --fg-link, --fg-accent,
     --ring and the --cta-* set) describe the role of a colour on the current
-    surface. They default to the light surfaces and are redefined by
-    .tone-green and .tone-deep, so a link, eyebrow, TextCTA or focus ring is
-    correct on every surface without per component overrides.
-
-  Ship light only. A dark theme later redefines the palette and contextual
-  tokens under :root[data-theme="dark"], without touching components.
+    surface. They default to light and are redefined by .tone-deep (the
+    footer), so links, TextCTAs and focus rings are right on both.
 */
 :root {
   --brand-white: #ffffff;
@@ -29,71 +28,58 @@
   --brand-emerald: #1b6b33;
   --brand-emerald-deep: #14602f;
   --brand-leaf: #2e9e4f;
-  --brand-green-rich: #0f4a22;
   --brand-green-deep: #0a3616;
   --brand-green-night: #04290e;
-  /* The light end of the hero and app band gradients only. Never under text. */
-  --brand-green-glow: #1e7b3a;
   --brand-lime: #a6c859;
-  --brand-lime-bright: #b7d86a;
   --brand-gold: #e9b949;
   --brand-gold-soft: #f3d98b;
-  --brand-mint: #05d47c;
   --brand-off-white: #f8f9f8;
 
   color-scheme: light;
 
-  /* Palette: surfaces */
+  /* Surfaces. White carries the page; warm and mint alternate as bands. */
   --surface: var(--brand-white);
   --surface-warm: var(--brand-cream);
   --surface-mint: var(--brand-mint-50);
   --surface-gold: var(--brand-gold-50);
+  /* Emerald at 8% over white: the nav pill, icon tiles, skeletons. */
+  --tint: #edf3ef;
   --ink: var(--brand-ink);
   --ink-muted: var(--brand-ink-muted);
 
-  /* Palette: greens. Emerald fills on light, emerald-deep for text on light. */
+  /* Greens. Emerald fills on light, emerald-deep for text on light. */
   --emerald: var(--brand-emerald);
   --emerald-deep: var(--brand-emerald-deep);
-  /* Decorative gradient start only. White on leaf is 3.43:1, glyphs only. */
   --leaf: var(--brand-leaf);
-  --green-rich: var(--brand-green-rich);
-  /* Footer, and one feature panel per page. */
+  /* The footer and small elements (the phone frame) only. */
   --green-deep: var(--brand-green-deep);
   --green-night: var(--brand-green-night);
 
-  /* Palette: accents. Lime only on green, gold always with ink text. */
+  /* Accents. Lime is a 6px decorative dot at most. Gold always with ink text. */
   --lime: var(--brand-lime);
-  --lime-bright: var(--brand-lime-bright);
   --gold: var(--brand-gold);
   --gold-soft: var(--brand-gold-soft);
-  --mint: var(--brand-mint);
   --on-green: var(--brand-off-white);
-  /* Deep surfaces only. It fails on emerald and the light gradient ends. */
   --on-green-muted: color-mix(in srgb, var(--brand-off-white) 80%, var(--brand-green-deep));
 
   /*
-    Lines. Card borders are decorative (14%). The hover and focus edge must
-    reach 3:1 on white, which emerald does at 80% (3.43:1). Input borders use
-    ink-muted (7.64:1).
+    Lines. Hairlines are decorative (12% emerald). Hover deepens the edge to
+    35%; keyboard focus carries its own ring. Input borders use ink-muted
+    (7.64:1).
   */
-  --border: color-mix(in srgb, var(--emerald) 14%, var(--surface));
-  --border-strong: color-mix(in srgb, var(--emerald) 80%, var(--surface));
+  --border: color-mix(in srgb, var(--emerald) 12%, var(--surface));
+  --border-strong: color-mix(in srgb, var(--emerald) 35%, var(--surface));
   --input-border: var(--ink-muted);
 
-  /* Contextual tokens, light surfaces (white, cream, mint, gold). */
+  /* Contextual tokens, light surfaces. */
   --fg: var(--ink);
   --fg-muted: var(--ink-muted);
   --fg-heading: var(--ink);
   --fg-link: var(--emerald-deep);
-  /* Eyebrows and the short rule above headings. */
   --fg-accent: var(--emerald-deep);
   --ring: var(--emerald-deep);
-  /* Chip fill. Plain rgb, so no colour-mix fallback can turn it solid. */
-  --chip-fill: var(--surface-mint);
-  /* Eyebrow pill: emerald-deep on mint (6.92:1). Mint sections swap to white. */
-  --pill-fill: var(--surface-mint);
-  --pill-fg: var(--emerald-deep);
-  /* Body link underline: emerald at 50%, solid on hover. */
+  --chip-fill: var(--surface);
+  --chip-hover: var(--tint);
   --link-line: rgb(27 107 51 / 0.5);
   --link-line-hover: var(--emerald);
 
@@ -105,9 +91,20 @@
   --cta-chip-hover-bg: var(--emerald);
   --cta-arrow-hover: var(--brand-white);
 
-  /* Two layer shadows, tinted deep green. */
-  --elev-soft: 0 1px 2px rgb(10 54 22 / 0.06), 0 12px 32px rgb(10 54 22 / 0.08);
-  --elev-raised: 0 2px 4px rgb(10 54 22 / 0.08), 0 24px 48px rgb(10 54 22 / 0.14);
+  /* Soft, low opacity shadows tinted ink. */
+  --elev-soft: 0 1px 2px rgb(11 36 18 / 0.04), 0 8px 24px rgb(11 36 18 / 0.05);
+  --elev-raised: 0 2px 6px rgb(11 36 18 / 0.05), 0 16px 40px rgb(11 36 18 / 0.08);
+
+  /*
+    Glass, scoped to the header, the hero floating cards and the newsletter
+    card. Opacity is set so text keeps AA over the worst background behind
+    it (a black thumbnail under the header). See docs/PLACEHOLDERS.md.
+  */
+  --glass-bar: rgb(255 255 255 / 0.88);
+  --glass-card: rgb(255 255 255 / 0.84);
+  --glass-solid: rgb(255 255 255 / 0.98);
+  --glass-blur: blur(10px) saturate(1.2);
+  --glass-edge: inset 0 1px 0 rgb(255 255 255 / 0.6);
 
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
   /* Buttons: 300ms on the standard curve for the lift and arrow nudge. */
@@ -115,67 +112,26 @@
 }
 
 /*
-  Any green surface: header, hero, page header, app band. Text and accents
-  go white, because the lighter gradient ends (emerald, #1e7b3a) fail lime
-  and muted text. White passes on every stop (5.32:1 at the lightest).
+  The footer: green-deep to green-night. White text and links, white focus
+  ring (13.53:1). Muted text is safe here. No lime text.
 */
-.tone-green {
+.tone-deep {
   --fg: var(--on-green);
-  --fg-muted: var(--on-green);
+  --fg-muted: var(--on-green-muted);
   --fg-heading: var(--on-green);
   --fg-link: var(--on-green);
   --fg-accent: var(--on-green);
   --ring: var(--on-green);
-  --chip-fill: rgb(255 255 255 / 0.1);
-  --pill-fill: rgb(255 255 255 / 0.12);
-  --pill-fg: var(--on-green);
+  --chip-fill: rgb(255 255 255 / 0.08);
+  --chip-hover: rgb(255 255 255 / 0.12);
   --link-line: rgb(255 255 255 / 0.5);
   --link-line-hover: var(--on-green);
   --cta-label: var(--on-green);
   --cta-chip-bg: rgb(255 255 255 / 0.15);
   --cta-chip-border: transparent;
   --cta-arrow: var(--on-green);
-  --cta-chip-hover-bg: var(--lime-bright);
-  --cta-arrow-hover: var(--ink);
-  color: var(--fg);
-}
-
-/*
-  Deep green surfaces only (green-deep to green-night): the footer and the
-  one feature panel per page. Lime accents and muted text are safe here.
-*/
-.tone-deep {
-  --pill-fill: rgb(255 255 255 / 0.12);
-  --pill-fg: var(--on-green);
-  --fg-muted: var(--on-green-muted);
-  --fg-accent: var(--lime);
-  --ring: var(--lime);
-}
-
-/* Mint sections: a mint pill would vanish, so the pill turns white (7.65:1). */
-.tone-mint {
-  --pill-fill: var(--surface);
-}
-
-/* A light card inside a green surface returns to the light roles. */
-.tone-light {
-  --fg: var(--ink);
-  --fg-muted: var(--ink-muted);
-  --fg-heading: var(--ink);
-  --fg-link: var(--emerald-deep);
-  --fg-accent: var(--emerald-deep);
-  --ring: var(--emerald-deep);
-  --chip-fill: var(--surface-mint);
-  --pill-fill: var(--surface-mint);
-  --pill-fg: var(--emerald-deep);
-  --link-line: rgb(27 107 51 / 0.5);
-  --link-line-hover: var(--emerald);
-  --cta-label: var(--emerald-deep);
-  --cta-chip-bg: transparent;
-  --cta-chip-border: rgb(27 107 51 / 0.25);
-  --cta-arrow: var(--emerald);
-  --cta-chip-hover-bg: var(--emerald);
-  --cta-arrow-hover: var(--brand-white);
+  --cta-chip-hover-bg: var(--brand-white);
+  --cta-arrow-hover: var(--green-deep);
   color: var(--fg);
 }
 
@@ -187,19 +143,17 @@
   --color-surface-warm: var(--surface-warm);
   --color-surface-mint: var(--surface-mint);
   --color-surface-gold: var(--surface-gold);
+  --color-tint: var(--tint);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-emerald: var(--emerald);
   --color-emerald-deep: var(--emerald-deep);
   --color-leaf: var(--leaf);
-  --color-green-rich: var(--green-rich);
   --color-green-deep: var(--green-deep);
   --color-green-night: var(--green-night);
   --color-lime: var(--lime);
-  --color-lime-bright: var(--lime-bright);
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
-  --color-mint: var(--mint);
   --color-on-green: var(--on-green);
   --color-on-green-muted: var(--on-green-muted);
   --color-border: var(--border);
@@ -215,146 +169,159 @@
   --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   --font-serif: var(--font-literata), Georgia, "Times New Roman", serif;
 
-  /* Type scale. Display is the H1, h2 the section heading. */
-  --text-display: clamp(2.75rem, 6vw, 5rem);
-  --text-display--line-height: 1.05;
-  --text-display--letter-spacing: -0.02em;
-  --text-h2: clamp(2rem, 4vw, 3rem);
-  --text-h2--line-height: 1.1;
-  --text-h2--letter-spacing: -0.015em;
-  --text-lead: 1.25rem;
-  --text-lead--line-height: 1.6;
+  /* Type scale. Display is the H1 (36 to 56px), h2 the section heading. */
+  --text-display: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
+  --text-display--line-height: 1.1;
+  --text-display--letter-spacing: -0.015em;
+  --text-h2: clamp(1.75rem, 1.35rem + 1.2vw, 2.25rem);
+  --text-h2--line-height: 1.2;
+  --text-h2--letter-spacing: -0.01em;
+  --text-lead: 1.125rem;
+  --text-lead--line-height: 1.65;
 
   --shadow-soft: var(--elev-soft);
   --shadow-raised: var(--elev-raised);
 
-  /* Radii: buttons 14px, inputs 12px, icon tiles 16px, cards 24px. */
-  --radius-button: 14px;
-  --radius-input: 12px;
-  --radius-tile: 16px;
-  --radius-card: 24px;
+  /* Radii: buttons 12px, inputs 10px, icon tiles 14px, cards 20px. */
+  --radius-button: 12px;
+  --radius-input: 10px;
+  --radius-tile: 14px;
+  --radius-card: 20px;
 }
 
-/*
-  Green surfaces. Every text pairing against every stop is logged in
-  docs/PLACEHOLDERS.md. Text sits on the dark start of each gradient; the
-  light end (#1e7b3a) holds visuals, never lime text.
-*/
-@utility bg-green-header {
-  background-color: var(--green-rich);
-  background-image: linear-gradient(100deg, var(--green-rich), var(--emerald));
-}
-
-/*
-  The hero holds green-rich to 30%, so the lime-bright closing phrase of the
-  H1 sits on the green-rich end at every width (measured at 375 and 1280).
-*/
-@utility bg-green-hero {
-  background-color: var(--emerald-deep);
-  background-image: linear-gradient(
-    135deg,
-    var(--green-rich),
-    var(--green-rich) 30%,
-    var(--emerald-deep) 65%,
-    var(--brand-green-glow)
-  );
-}
-
-/* The lighter feature band: the app band and short closing bands. */
-@utility bg-green-band {
-  background-color: var(--emerald-deep);
-  background-image: linear-gradient(135deg, var(--emerald-deep), var(--brand-green-glow));
-}
-
-/* Deep green: the footer and at most one feature panel per page. */
-@utility bg-green-feature {
-  background-color: var(--green-deep);
-  background-image: linear-gradient(160deg, var(--green-deep), var(--green-night));
-}
-
+/* Deep green: the footer only. */
 @utility bg-green-footer {
   background-color: var(--green-night);
   background-image: linear-gradient(180deg, var(--green-deep), var(--green-night));
 }
 
-/* Icon tiles: leaf to emerald, white glyphs, a subtle inner highlight. */
-@utility bg-green-tile {
-  background-color: var(--emerald);
-  background-image: linear-gradient(135deg, var(--leaf), var(--emerald));
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18);
+/*
+  Soft emerald light behind the hero and page headers. Radial gradients
+  only, no blur filters. Peaks at 10% emerald, so ink text over any part
+  stays above 14:1.
+*/
+@utility bg-hero-tint {
+  background-color: var(--surface);
+  background-image:
+    radial-gradient(60rem 32rem at 85% -10%, rgb(27 107 51 / 0.1), transparent 70%),
+    radial-gradient(40rem 28rem at -10% 110%, rgb(27 107 51 / 0.06), transparent 70%);
 }
 
-/* Faint grain for green surfaces. Inline SVG noise, under 2KB, tiled. */
-@utility grain {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  opacity: 0.05;
+@utility bg-page-tint {
+  background-color: var(--surface);
+  background-image: radial-gradient(56rem 26rem at 90% -20%, rgb(27 107 51 / 0.08), transparent 70%);
 }
 
-/* Hero glow. Peak 18% lime, fading to nothing. Placed behind the visual. */
-@utility hero-glow {
-  background-image: radial-gradient(
-    closest-side,
-    color-mix(in srgb, var(--lime) 18%, transparent) 0%,
-    transparent 100%
-  );
+/* A soft tinted panel: the app band and closing bands. */
+@utility bg-panel-tint {
+  background-color: var(--surface-mint);
+  background-image:
+    radial-gradient(40rem 24rem at 100% 0%, rgb(255 255 255 / 0.7), transparent 70%),
+    radial-gradient(36rem 24rem at 0% 100%, rgb(27 107 51 / 0.06), transparent 70%);
+}
+
+/*
+  Glass. Allowed on the header, the hero floating cards and the newsletter
+  card only, never on full width sections or long lists. Blur stays at 10px.
+  Without backdrop-filter, or when the visitor asks for less transparency,
+  the surface turns near solid.
+*/
+@utility glass-bar {
+  background-color: var(--glass-bar);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+}
+
+@utility glass-card {
+  background-color: var(--glass-card);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-edge), var(--elev-raised);
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass-bar,
+  .glass-card {
+    background-color: var(--glass-solid);
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .glass-bar,
+  .glass-card {
+    background-color: var(--surface);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }
 
 @utility container-page {
   width: 100%;
-  max-width: calc(75rem + 3rem);
+  max-width: calc(72rem + 3rem);
   margin-inline: auto;
   padding-inline: 1.5rem;
 }
 
 @utility eyebrow {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.14em;
   line-height: 1.4;
   text-transform: uppercase;
   color: var(--fg-accent);
 }
 
-/*
-  Eyebrow above a section title, set in a pill: emerald-deep on mint on
-  light surfaces, white in a 12% white pill on green. Pair with .eyebrow.
-  It sets --fg-accent rather than color, so it wins whatever the utility order.
-*/
-@utility eyebrow-pill {
-  --fg-accent: var(--pill-fg);
+/* Eyebrow led by a 6px emerald dot with a faint lime halo. Decorative. */
+@utility eyebrow-dot {
   display: inline-flex;
   align-items: center;
-  border-radius: 9999px;
-  padding: 0.375rem 0.875rem;
-  background-color: var(--pill-fill);
+  gap: 0.625rem;
+
+  &::before {
+    content: "";
+    flex-shrink: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background-color: var(--emerald);
+    box-shadow: 0 0 0 3px rgb(166 200 89 / 0.35);
+  }
 }
 
-html {
-  scroll-padding-top: 6rem;
-}
+@layer base {
+  html {
+    scroll-padding-top: 6rem;
+  }
 
-body {
-  background: var(--surface);
-  color: var(--fg);
-  font-family: var(--font-sans);
-  font-size: 1.125rem;
-  line-height: 1.7;
-}
+  body {
+    background: var(--surface);
+    color: var(--fg);
+    font-family: var(--font-sans);
+    font-size: 1.125rem;
+    line-height: 1.7;
+  }
 
-h1,
-h2,
-h3,
-h4 {
-  color: var(--fg-heading);
-  font-family: var(--font-serif);
-  font-weight: 600;
-  text-wrap: balance;
-}
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: var(--fg-heading);
+    font-family: var(--font-serif);
+    font-weight: 600;
+    text-wrap: balance;
+  }
 
-:focus-visible {
-  outline: 3px solid var(--ring);
-  outline-offset: 3px;
+  /* Display and section headings are set lighter, which reads calmer. */
+  h1,
+  h2 {
+    font-weight: 500;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--ring);
+    outline-offset: 3px;
+  }
 }
 
 /*
@@ -380,9 +347,9 @@ h4 {
 
 /*
   TextCTA: a weight 600 label followed by a 28px circular arrow chip, never
-  underlined. Colours come from the --cta-* tokens, so it is correct on
-  light and green surfaces alike. A card that stretches a TextCTA over itself
-  carries .cta-host, so hovering anywhere on the card moves the chip.
+  underlined. Colours come from the --cta-* tokens. A card that stretches a
+  TextCTA over itself carries .cta-host, so hovering anywhere on the card
+  moves the chip.
 */
 .text-cta {
   display: inline-flex;
@@ -466,12 +433,12 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
 
 /*
   "Watch" chip on cards with something to watch. Decorative: the card's own
-  button or link carries the action. It fades in and rises 8px with the
+  button or link carries the action. It fades in and rises 6px with the
   card's lift. Touch screens have no hover, so there it simply shows.
 */
 .play-chip {
   opacity: 0;
-  transform: translateY(8px);
+  transform: translateY(6px);
   transition:
     opacity 300ms var(--ease-standard),
     transform 300ms var(--ease-standard);
@@ -492,49 +459,64 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
 }
 
 /*
+  Skeleton: a neutral tint with a gentle shimmer. The shimmer moves a
+  pseudo element with transform only, and stays still under reduced motion.
+  Size each skeleton exactly like the content it stands in for.
+*/
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: var(--tint);
+}
+
+.skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  transform: translateX(-100%);
+}
+
+/*
   Motion, CSS only. Everything here is opt in through no-preference, so a
   visitor who asks for reduced motion gets none of it.
 */
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(8px);
   }
 }
 
 /* The H1 rises without fading, so the largest text paints at once. */
 @keyframes rise-only {
   from {
-    transform: translateY(16px);
+    transform: translateY(8px);
   }
 }
 
 /*
-  Scroll reveal: a section fades from 0.7 and rises 16px, once. At 0.7 some
-  text dips below 4.5:1, so the range ends 120px into entry: any section
-  with 120px on screen is fully opaque, and one straddling the fold at load
-  never rests part faded. See docs/PLACEHOLDERS.md, Motion and contrast.
+  Scroll reveal: a section fades from 0.85 and rises 10px, once. At 0.85
+  every text pairing still passes 4.5:1, and the range ends 120px into
+  entry. See docs/PLACEHOLDERS.md, Motion and contrast.
 */
 @keyframes reveal {
   from {
-    opacity: 0.7;
-    transform: translateY(16px);
+    opacity: 0.85;
+    transform: translateY(10px);
   }
 }
 
-@keyframes drift {
-  from {
-    transform: translate3d(0, 0, 0) scale(1);
-  }
+@keyframes shimmer {
   to {
-    transform: translate3d(-3rem, 2rem, 0) scale(1.08);
+    transform: translateX(100%);
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .lift:hover,
   .lift:focus-within {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
   }
 
   /* The TextCTA arrow slides 3px, backwards for a "back" link. */
@@ -551,18 +533,22 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
   }
 
   .rise {
-    animation: rise 600ms var(--ease-out) both;
+    animation: rise 500ms var(--ease-out) both;
   }
 
   .rise-text {
-    animation: rise-only 600ms var(--ease-out) both;
+    animation: rise-only 500ms var(--ease-out) both;
   }
 
-  .rise-1 { animation-delay: 80ms; }
-  .rise-2 { animation-delay: 160ms; }
-  .rise-3 { animation-delay: 240ms; }
-  .rise-4 { animation-delay: 320ms; }
-  .rise-5 { animation-delay: 400ms; }
+  .rise-1 { animation-delay: 60ms; }
+  .rise-2 { animation-delay: 120ms; }
+  .rise-3 { animation-delay: 180ms; }
+  .rise-4 { animation-delay: 240ms; }
+  .rise-5 { animation-delay: 300ms; }
+
+  .skeleton::after {
+    animation: shimmer 1.6s ease-in-out infinite;
+  }
 
   @supports (animation-timeline: view()) {
     .reveal {
@@ -584,12 +570,6 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
     @starting-style {
       opacity: 0;
     }
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
-  .drift {
-    animation: drift 30s ease-in-out infinite alternate;
   }
 }
 
@@ -620,13 +600,13 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
 }
 
 .prose h2 {
-  font-size: 1.75rem;
+  font-size: 1.625rem;
   line-height: 1.25;
   margin-top: 2em;
 }
 
 .prose h3 {
-  font-size: 1.375rem;
+  font-size: 1.3125rem;
   margin-top: 1.75em;
 }
 

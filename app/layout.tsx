@@ -8,11 +8,11 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 
-// Serif for long reading and scripture. Latin only, two weights.
+// Serif for long reading and scripture. Latin only: 500 for display, 600 for small headings.
 const literata = Literata({
   variable: "--font-literata",
   subsets: ["latin"],
-  weight: ["400", "600"],
+  weight: ["400", "500", "600"],
 });
 
 export const metadata: Metadata = {
