@@ -44,8 +44,8 @@ const pairings = [
   ["Eyebrow pill: white on 12% white over glow end (never placed there)", "white", ["glow", "white/0.12"], TEXT, "not used"],
   ["Eyebrow pill: white on 12% white over green-deep", "white", ["greenDeep", "white/0.12"], TEXT],
   // Hero emphasis, large Literata 600 text, green-rich end only.
-  ["Hero phrase: lime-bright on green-rich", "limeBright", ["greenRich"], TEXT],
-  ["Hero phrase: lime-bright on emerald-deep (not used)", "limeBright", ["emeraldDeep"], TEXT, "reference"],
+  ["Hero phrase: lime-bright on green-rich", "limeBright", ["greenRich"], LARGE],
+  ["Hero phrase: lime-bright on emerald-deep (not used)", "limeBright", ["emeraldDeep"], LARGE, "reference"],
   // Scroll reveal: text at its 0.7 starting opacity, transient only.
   ["Reveal 0.7: ink on white", "ink/0.7", ["white"], TEXT],
   ["Reveal 0.7: ink on mint", "ink/0.7", ["mint50"], TEXT],
