@@ -1,15 +1,46 @@
 "use client";
 
 import { useState, type MouseEvent } from "react";
+import { LoadingRegion, Skeleton } from "./Skeleton";
+
+export type YouTubeSource =
+  /** One video. The id must already be validated (isVideoId) by the caller. */
+  | { kind: "video"; id: string }
+  /** Whatever the channel is streaming live right now. */
+  | { kind: "live"; channelId: string };
+
+const EMBED = "https://www.youtube-nocookie.com/embed";
+
+function embedUrl(source: YouTubeSource): string {
+  return source.kind === "video"
+    ? `${EMBED}/${source.id}?autoplay=1&rel=0`
+    : `${EMBED}/live_stream?channel=${source.channelId}&autoplay=1&rel=0`;
+}
+
+function watchUrl(source: YouTubeSource): string {
+  return source.kind === "video"
+    ? `https://www.youtube.com/watch?v=${source.id}`
+    : `https://www.youtube.com/channel/${source.channelId}/live`;
+}
 
 /**
- * Click to load YouTube. Until the visitor asks, this is a plain link to the
- * video on YouTube with a thumbnail, so nothing from YouTube runs and it
- * works without JavaScript. On click it swaps in a youtube-nocookie.com
- * player. The id must already be validated (isVideoId) by the caller.
+ * Click to load YouTube. Until the visitor asks, this is a plain link to
+ * YouTube (with the video's thumbnail, or a still panel for a live stream),
+ * so nothing from YouTube runs and it works without JavaScript. On click it
+ * swaps in a youtube-nocookie.com player. `autoStart` renders the player at
+ * once, for when the visitor has already asked (a video card's Play button).
+ * Give it a `key` per video so a new source starts from the facade.
  */
-export function YouTubeFacade({ videoId, title }: { videoId: string; title: string }) {
-  const [playing, setPlaying] = useState(false);
+export function YouTubeFacade({
+  source,
+  title,
+  autoStart = false,
+}: {
+  source: YouTubeSource;
+  title: string;
+  autoStart?: boolean;
+}) {
+  const [playing, setPlaying] = useState(autoStart);
 
   function play(event: MouseEvent<HTMLAnchorElement>) {
     // Let modified clicks open YouTube in a new tab as usual.
@@ -22,7 +53,7 @@ export function YouTubeFacade({ videoId, title }: { videoId: string; title: stri
     return (
       <div className="relative aspect-video overflow-hidden rounded-card bg-green-night shadow-raised">
         <iframe
-          src={`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`}
+          src={embedUrl(source)}
           title={title}
           allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
           allowFullScreen
@@ -32,32 +63,49 @@ export function YouTubeFacade({ videoId, title }: { videoId: string; title: stri
     );
   }
 
+  const live = source.kind === "live";
   return (
     <a
-      href={`https://www.youtube.com/watch?v=${videoId}`}
+      href={watchUrl(source)}
       onClick={play}
-      className="group relative block aspect-video overflow-hidden rounded-card bg-surface-mint shadow-raised"
+      className={`group relative block aspect-video overflow-hidden rounded-card shadow-raised ${
+        live ? "bg-panel-tint border border-border" : "bg-surface-mint"
+      }`}
     >
-      {/* A plain img: the thumbnail loads only when this element renders, and needs no optimiser. */}
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
-        src={`https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`}
-        alt=""
-        loading="lazy"
-        className="absolute inset-0 size-full object-cover"
-      />
+      {live ? null : (
+        // A plain img: the thumbnail loads only when this element renders, and needs no optimiser.
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={`https://i.ytimg.com/vi/${source.id}/hqdefault.jpg`}
+          alt=""
+          loading="lazy"
+          className="absolute inset-0 size-full object-cover"
+        />
+      )}
       <span
         aria-hidden="true"
-        className="bg-emerald absolute left-1/2 top-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-raised transition-transform duration-200 motion-safe:group-hover:scale-105"
+        className={`absolute left-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-emerald text-white shadow-raised transition-transform duration-200 motion-safe:group-hover:scale-105 ${
+          live ? "top-[42%]" : "top-1/2"
+        }`}
       >
         <svg viewBox="0 0 24 24" className="ml-1 size-8" fill="currentColor" focusable="false">
           <path d="M7 4.5v15l12-7.5z" />
         </svg>
       </span>
       <span className="absolute inset-x-0 bottom-0 bg-white/95 px-5 py-3 font-semibold text-ink">
-        Play: {title}
+        {live ? "Watch live: " : "Play: "}
+        {title}
         <span className="sr-only"> (loads YouTube)</span>
       </span>
     </a>
+  );
+}
+
+/** Stands in for the facade while its video loads: the same 16:9 box. */
+export function YouTubeFacadeSkeleton({ label = "Loading video" }: { label?: string }) {
+  return (
+    <LoadingRegion label={label}>
+      <Skeleton className="aspect-video rounded-card shadow-raised" />
+    </LoadingRegion>
   );
 }

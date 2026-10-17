@@ -1,9 +1,11 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { AppBand } from "@/components/shared/AppBand";
 import { BentoGrid, BentoTile } from "@/components/shared/BentoGrid";
 import { ButtonLink } from "@/components/shared/Button";
 import { TextCTA } from "@/components/shared/TextCTA";
-import { YouTubeFacade } from "@/components/shared/YouTubeFacade";
+import { WelcomeVideo } from "@/components/shared/WelcomeVideo";
+import { YouTubeFacadeSkeleton } from "@/components/shared/YouTubeFacade";
 import { CTACard, FeatureCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Hero } from "@/components/shared/Hero";
@@ -19,7 +21,6 @@ import { homeStats, StatStrip } from "@/components/shared/StatStrip";
 import { nameText } from "@/lib/content/copy";
 import { getAll, upcomingEvents } from "@/lib/content";
 import { placeholderPlans } from "@/lib/content/placeholder-data";
-import { isVideoId } from "@/lib/media/youtube-feed";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -29,8 +30,6 @@ export const metadata: Metadata = {
 
 export default function HomePage() {
   const next = upcomingEvents(getAll("event"))[0];
-  // Validated here, so a malformed id falls back to the placeholder frame.
-  const welcomeVideoId = isVideoId(siteConfig.links.welcomeVideoId) ? siteConfig.links.welcomeVideoId : null;
 
   return (
     <main id="main" tabIndex={-1}>
@@ -49,15 +48,9 @@ export default function HomePage() {
               <SectionHeader id="start-heading">New here? Start here.</SectionHeader>
             </div>
             <div className="lg:col-span-7">
-              {welcomeVideoId ? (
-                <YouTubeFacade videoId={welcomeVideoId} title="A welcome from House of Bread Global" />
-              ) : (
-                <PhotoFrame
-                  media="video"
-                  label="Photo and video to come"
-                  subject="A 60 to 90 second welcome from the ministry"
-                />
-              )}
+              <Suspense fallback={<YouTubeFacadeSkeleton />}>
+                <WelcomeVideo />
+              </Suspense>
             </div>
           </div>
           <ul className="mt-10 grid gap-5 md:mt-14 lg:grid-cols-3">
