@@ -37,7 +37,16 @@ export const appAudience = [
 export const nameText =
   "The name comes from Bethlehem, the house of bread, and from the One who claimed the title for himself. The aim is not information for its own sake, but Scripture read well, understood clearly, and allowed to feed.";
 
-export const regions = ["United Kingdom", "Africa", "United States"] as const;
+/**
+ * The three countries the region chips and the About page name, each with
+ * its flag. Nigeria stands for the ministry's work in Africa; prose that
+ * says "Africa" stays as written.
+ */
+export const regions = [
+  { name: "United Kingdom", flag: "gb" },
+  { name: "Nigeria", flag: "ng" },
+  { name: "United States", flag: "us" },
+] as const;
 
 /**
  * Where live sessions are watched, with the IANA zone each region's time is
@@ -45,9 +54,9 @@ export const regions = ["United Kingdom", "Africa", "United States"] as const;
  * (docs/PLACEHOLDERS.md).
  */
 export const sessionRegions = [
-  { name: "United Kingdom", timeZone: "Europe/London", zoneLabel: "UK time" },
-  { name: "Nigeria", timeZone: "Africa/Lagos", zoneLabel: "Lagos time" },
-  { name: "United States", timeZone: "America/New_York", zoneLabel: "Eastern time" },
+  { name: "United Kingdom", flag: "gb", timeZone: "Europe/London", zoneLabel: "UK time" },
+  { name: "Nigeria", flag: "ng", timeZone: "Africa/Lagos", zoneLabel: "Lagos time" },
+  { name: "United States", flag: "us", timeZone: "America/New_York", zoneLabel: "Eastern time" },
 ] as const;
 
 export const newsletterCopy = {

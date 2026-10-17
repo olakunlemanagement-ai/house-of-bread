@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ButtonLink } from "@/components/shared/Button";
 import { FeatureCard } from "@/components/shared/Card";
 import { ClosingBand } from "@/components/shared/ClosingBand";
-import { IconTile } from "@/components/shared/icons";
+import { Flag } from "@/components/shared/Flags";
 import { StepList } from "@/components/shared/Lists";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge, PhotoFrame } from "@/components/shared/Placeholder";
@@ -92,9 +92,9 @@ export default function AboutPage() {
       >
         <ul className="grid gap-5 md:grid-cols-3">
           {regions.map((region) => (
-            <li key={region} className="rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8">
-              <IconTile name="globe" />
-              <h3 className="mt-6 text-2xl">{region}</h3>
+            <li key={region.name} className="rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8">
+              <Flag code={region.flag} className="w-10" />
+              <h3 className="mt-6 text-2xl">{region.name}</h3>
               <p className="mt-3 text-sm">
                 <Placeholder>[LOCAL DETAILS TO BE SUPPLIED]</Placeholder>
               </p>

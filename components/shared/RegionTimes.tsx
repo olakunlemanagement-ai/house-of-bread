@@ -1,6 +1,6 @@
 import { sessionRegions } from "@/lib/content/copy";
 import { siteConfig } from "@/lib/site-config";
-import { Icon } from "./icons";
+import { Flag } from "./Flags";
 import { Placeholder } from "./Placeholder";
 
 const formatIn = (iso: string, timeZone: string) =>
@@ -35,8 +35,8 @@ export function RegionTimes({ headingId }: { headingId: string }) {
               className="absolute inset-0 opacity-[0.07] [background-image:repeating-linear-gradient(135deg,var(--emerald)_0_1px,transparent_1px_14px)]"
             />
             <div className="relative">
-              <p className="flex items-center gap-2 font-semibold text-ink">
-                <Icon name="pin" className="size-4 text-emerald-deep" />
+              <p className="flex items-center gap-2.5 font-semibold text-ink">
+                <Flag code={region.flag} className="w-8" />
                 {region.name}
               </p>
               {iso ? (
