@@ -27,7 +27,7 @@ export function BookGrid({ groups, books }: BookGridProps) {
                   <li key={book.slug} className="lift rounded-tile">
                     <Link
                       href={`/new-testament/${book.slug}` as Route}
-                      className="flex min-h-18 items-center justify-between gap-2 rounded-tile border border-border-strong bg-surface px-4 py-3 font-serif text-lg font-semibold text-green shadow-soft"
+                      className="flex min-h-18 items-center justify-between gap-2 rounded-tile border border-border-strong bg-surface px-4 py-3 font-serif text-lg font-semibold text-emerald-deep shadow-soft"
                     >
                       {book.name}
                       <Icon name="arrow-right" className="size-4 shrink-0" />
@@ -36,7 +36,7 @@ export function BookGrid({ groups, books }: BookGridProps) {
                 ) : (
                   <li
                     key={book.slug}
-                    className="flex min-h-18 flex-col justify-center rounded-tile border border-dashed border-border-strong bg-surface-tint px-4 py-3"
+                    className="flex min-h-18 flex-col justify-center rounded-tile border border-dashed border-border-strong bg-surface-mint px-4 py-3"
                   >
                     <span className="font-serif text-lg font-semibold text-ink">{book.name}</span>
                     <span className="text-sm text-ink-muted">Coming soon</span>

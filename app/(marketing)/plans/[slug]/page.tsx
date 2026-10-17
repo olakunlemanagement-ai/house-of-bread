@@ -49,12 +49,12 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
         title={plan.name}
         meta={
           <dl className="flex flex-wrap gap-3 text-on-green">
-            <div className="flex gap-2 rounded-full border border-lime/40 px-4 py-1.5">
-              <dt className="text-on-green-muted">Days</dt>
+            <div className="flex gap-2 rounded-full border border-on-green/40 px-4 py-1.5">
+              <dt className="text-on-green">Days</dt>
               <dd className="font-semibold">{plan.days}</dd>
             </div>
-            <div className="flex gap-2 rounded-full border border-lime/40 px-4 py-1.5">
-              <dt className="text-on-green-muted">Pace</dt>
+            <div className="flex gap-2 rounded-full border border-on-green/40 px-4 py-1.5">
+              <dt className="text-on-green">Pace</dt>
               <dd className="font-semibold">{plan.pace}</dd>
             </div>
           </dl>
@@ -79,12 +79,12 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
         </p>
       </Section>
 
-      <Section id="day-one" title="A look at day one" tone="tint" width="narrow">
+      <Section id="day-one" title="A look at day one" tone="warm" width="narrow">
         {dayOne ? (
           <div className="rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8">
             <div className="flex flex-wrap items-center gap-3">
               <IconTile name="book" />
-              <p className="font-serif text-3xl font-semibold text-green">Day 1</p>
+              <p className="font-serif text-3xl font-semibold text-emerald-deep">Day 1</p>
               <PlaceholderBadge label="Sample, confirm against the app" />
             </div>
             <dl className="mt-7 space-y-5 text-lg">
@@ -107,7 +107,7 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
         <StepList steps={journeySteps} />
       </Section>
 
-      <Section id="faq" title="Frequently asked" tone="tint" width="narrow">
+      <Section id="faq" title="Frequently asked" tone="mint" width="narrow">
         <Placeholder block>[FREQUENTLY ASKED QUESTIONS TO BE SUPPLIED]</Placeholder>
       </Section>
 

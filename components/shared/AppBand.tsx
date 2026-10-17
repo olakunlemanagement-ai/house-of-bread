@@ -45,7 +45,7 @@ export function AppBand({
       <CrossWatermark className="-left-8 bottom-0 h-72 w-52 opacity-[0.05]" />
       <div className="container-page relative grid items-center gap-12 py-18 md:py-28 lg:grid-cols-12">
         <div className="reveal lg:col-span-7">
-          <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-lime" />
+          <span aria-hidden="true" className="block h-1 w-12 rounded-full bg-fg-accent" />
           <p className="eyebrow mt-5">{eyebrow}</p>
           <h2 id={headingId} className="mt-3 text-h2">
             {heading}

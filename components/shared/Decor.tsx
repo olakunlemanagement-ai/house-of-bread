@@ -48,16 +48,22 @@ export function Grain() {
  * Soft curved edge from a green band into the white page below. `tone`
  * matches the colour of the section that follows.
  */
-export function CurveEdge({ tone = "white" }: { tone?: "white" | "tint" }) {
+export type EdgeTone = "white" | "warm" | "mint";
+
+const edgeClass: Record<EdgeTone, string> = {
+  white: "text-surface",
+  warm: "text-surface-warm",
+  mint: "text-surface-mint",
+};
+
+export function CurveEdge({ tone = "white" }: { tone?: EdgeTone }) {
   return (
     <svg
       viewBox="0 0 1440 64"
       preserveAspectRatio="none"
       aria-hidden="true"
       focusable="false"
-      className={`pointer-events-none absolute inset-x-0 -bottom-px block h-10 w-full sm:h-16 ${
-        tone === "tint" ? "text-surface-tint" : "text-surface"
-      }`}
+      className={`pointer-events-none absolute inset-x-0 -bottom-px block h-10 w-full sm:h-16 ${edgeClass[tone]}`}
     >
       <path d="M0 64V32C240 0 480 0 720 16s480 48 720 16v32z" fill="currentColor" />
     </svg>

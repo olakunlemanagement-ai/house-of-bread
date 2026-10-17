@@ -14,7 +14,7 @@ export function BentoGrid({ children }: { children: ReactNode }) {
 
 type BentoTileProps = {
   size: "large" | "medium" | "small";
-  surface: "green" | "white" | "tint";
+  surface: "green" | "white" | "warm" | "mint";
   icon: IconName;
   title: string;
   children: ReactNode;
@@ -28,9 +28,10 @@ const placement = {
 };
 
 const surfaceClass = {
-  green: "tone-green bg-green-band border-green-deep",
+  green: "tone-green bg-green-band border-transparent",
   white: "bg-surface border-border",
-  tint: "bg-surface-tint border-border",
+  warm: "bg-surface-warm border-border",
+  mint: "bg-surface-mint border-border",
 };
 
 /**
@@ -54,7 +55,7 @@ export function BentoTile({ size, surface, icon, title, children, cta }: BentoTi
           <CrossWatermark className="-bottom-10 -right-6 h-80 w-56 opacity-[0.07]" />
           <Icon
             name={icon}
-            className="pointer-events-none absolute right-8 top-8 size-28 text-lime opacity-[0.12]"
+            className="pointer-events-none absolute right-8 top-8 size-28 text-on-green opacity-[0.12]"
           />
         </div>
       ) : null}
@@ -79,8 +80,8 @@ export function BentoTile({ size, surface, icon, title, children, cta }: BentoTi
               href={cta.href}
               className={`group/button inline-flex items-center gap-2 text-base font-semibold after:absolute after:inset-0 after:rounded-card after:content-[''] focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring ${
                 large
-                  ? "min-h-12 rounded-button bg-lime px-6 py-3 text-on-lime sm:min-h-13"
-                  : "text-green underline decoration-2 underline-offset-4"
+                  ? "min-h-12 rounded-button bg-lime-bright px-6 py-3 text-ink hover:bg-white sm:min-h-13"
+                  : "text-emerald-deep underline decoration-2 underline-offset-4"
               }`}
             >
               {cta.label}

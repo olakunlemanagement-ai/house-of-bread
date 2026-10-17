@@ -29,10 +29,10 @@ export default function NewTestamentPage() {
             Browse all 27 books
           </ButtonLink>
         }
-        next="tint"
+        next="mint"
       />
 
-      <Section id="covers" title="What each introduction covers" tone="tint">
+      <Section id="covers" title="What each introduction covers" tone="mint">
         <StepList
           columns={5}
           steps={introductionHeadings.map((text, index) => ({ text, icon: headingIcons[index] }))}

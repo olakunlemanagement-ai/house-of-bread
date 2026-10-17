@@ -6,7 +6,7 @@ import { FeatureCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Hero } from "@/components/shared/Hero";
 import { LiveSessionCard } from "@/components/shared/LiveSessionCard";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PhotoFrame } from "@/components/shared/Placeholder";
 import { PlanCard } from "@/components/shared/PlanCard";
 import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
@@ -34,7 +34,7 @@ export default function HomePage() {
         <StatStrip stats={homeStats} className="lg:w-7/12" />
       </div>
 
-      <section id="ways" aria-labelledby="ways-heading" className="bg-surface">
+      <section id="ways" aria-labelledby="ways-heading" className="bg-surface-warm">
         <div className="container-page reveal pb-18 pt-18 md:pb-28 md:pt-24 lg:pt-36">
           <SectionHeader id="ways-heading">Four ways to be fed</SectionHeader>
           <div className="mt-10 md:mt-14">
@@ -61,7 +61,7 @@ export default function HomePage() {
               </BentoTile>
               <BentoTile
                 size="medium"
-                surface="tint"
+                surface="mint"
                 icon="phone"
                 title="The official app"
                 cta={{ href: "/app", label: "Get the app" }}
@@ -115,7 +115,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <Section id="stands-for" title="What the ministry stands for" tone="tint">
+      <Section id="stands-for" title="What the ministry stands for" tone="mint">
         <ul className="grid gap-5 md:grid-cols-3">
           <FeatureCard icon="cross" title="Doctrinal clarity">
             Teaching that says plainly what Scripture says, and shows how the argument is built.
@@ -151,7 +151,7 @@ export default function HomePage() {
         id="journeys"
         title="A journey through the New Testament"
         intro="Three guided routes from Matthew to Revelation, in the order the books were written."
-        tone="tint"
+        tone="warm"
       >
         <ul className="grid gap-5 md:grid-cols-3">
           {placeholderPlans.map((plan) => (
@@ -173,7 +173,7 @@ export default function HomePage() {
         <SocialLinks />
       </Section>
 
-      <NewsletterBand idPrefix="home-newsletter" />
+      <NewsletterCard idPrefix="home-newsletter" />
     </main>
   );
 }

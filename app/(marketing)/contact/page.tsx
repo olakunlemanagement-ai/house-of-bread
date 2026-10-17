@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { ContactForm } from "@/components/shared/ContactForm";
 import { IconTile } from "@/components/shared/icons";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder } from "@/components/shared/Placeholder";
 import { Section, SectionHeader } from "@/components/shared/Section";
@@ -35,7 +35,7 @@ export default function ContactPage() {
 
           <aside
             aria-labelledby="reach-heading"
-            className="space-y-6 rounded-card bg-surface-tint p-6 sm:p-10 lg:col-span-5"
+            className="space-y-6 rounded-card bg-surface-mint p-6 sm:p-10 lg:col-span-5"
           >
             <IconTile name="mail" size="lg" />
             <SectionHeader id="reach-heading" size="compact">
@@ -50,12 +50,12 @@ export default function ContactPage() {
         id="follow"
         title="Follow the ministry"
         intro="Live sessions stream on YouTube, and the ministry shares teaching on its social pages."
-        tone="tint"
+        tone="warm"
       >
         <SocialLinks />
       </Section>
 
-      <NewsletterBand idPrefix="contact-newsletter" />
+      <NewsletterCard idPrefix="contact-newsletter" />
     </main>
   );
 }

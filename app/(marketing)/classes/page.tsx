@@ -4,7 +4,7 @@ import { ButtonLink } from "@/components/shared/Button";
 import { LinkCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { FeatureList } from "@/components/shared/Lists";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge, PhotoFrame } from "@/components/shared/Placeholder";
 import { Section, SectionHeader } from "@/components/shared/Section";
@@ -47,7 +47,7 @@ export default function ClassesPage() {
                   href={`/classes/${entry.slug}` as Route}
                   title={entry.title}
                   eyebrow={entry.sample ? <PlaceholderBadge label="Sample" /> : null}
-                  footer={<span className="font-semibold text-green">View class</span>}
+                  footer={<span className="font-semibold text-emerald-deep">View class</span>}
                 >
                   <dl className="space-y-2">
                     <div>
@@ -74,7 +74,7 @@ export default function ClassesPage() {
         )}
       </Section>
 
-      <section id="for" aria-labelledby="for-heading" className="bg-surface-tint">
+      <section id="for" aria-labelledby="for-heading" className="bg-surface-warm">
         <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div className="lg:col-span-7">
             <SectionHeader id="for-heading">Who classes are for</SectionHeader>
@@ -93,11 +93,11 @@ export default function ClassesPage() {
         </div>
       </section>
 
-      <Section id="join" title="How to join" width="narrow">
+      <Section id="join" title="How to join" tone="mint" width="narrow">
         <Placeholder block>[JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email]</Placeholder>
       </Section>
 
-      <NewsletterBand idPrefix="classes-newsletter" />
+      <NewsletterCard idPrefix="classes-newsletter" />
     </main>
   );
 }

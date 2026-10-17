@@ -35,29 +35,33 @@ export function Placeholder({
   );
 }
 
+/** Gold-soft badge with ink text (11.85:1). Readable on every surface. */
 export function PlaceholderBadge({ label = "Placeholder" }: { label?: string }) {
   return (
-    <span className="inline-block rounded-full bg-lime px-2.5 py-0.5 font-sans text-xs font-bold uppercase tracking-wider text-on-lime">
+    <span className="inline-block rounded-full bg-gold-soft px-2.5 py-0.5 font-sans text-xs font-bold uppercase tracking-wider text-ink">
       {label}
     </span>
   );
 }
 
 /**
- * Art directed frame where real photography belongs. Gradient, a subtle
- * pattern and a small "Photo to come" label. No stock photos.
+ * Art directed frame where real photography or video belongs. A light mint
+ * to cream wash, an emerald pinstripe and a small label. No stock photos.
  * TODO: replace with next/image, explicit dimensions, once photos arrive.
  */
 export function PhotoFrame({
   ratio = "16/9",
   subject,
   label = "Photo to come",
+  media = "photo",
   className = "",
 }: {
   ratio?: "16/9" | "4/5";
   /** What the photo will show. Read by screen readers and logged. */
   subject: string;
   label?: string;
+  /** Video frames show a play mark in the centre. */
+  media?: "photo" | "video";
   className?: string;
 }) {
   return (
@@ -65,33 +69,38 @@ export function PhotoFrame({
       role="img"
       aria-label={`${label}: ${subject}`}
       data-placeholder
-      className={`relative overflow-hidden rounded-card bg-green-hero shadow-raised ${
+      className={`relative overflow-hidden rounded-card border border-border bg-surface-mint shadow-soft [background-image:linear-gradient(135deg,var(--surface-mint),var(--surface-warm)_70%)] ${
         ratio === "4/5" ? "aspect-[4/5]" : "aspect-video"
       } ${className}`}
     >
-      {/* Diagonal pinstripe and a soft lime corner, drawn in CSS. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 opacity-[0.07] [background-image:repeating-linear-gradient(135deg,var(--lime)_0_1px,transparent_1px_14px)]"
-      />
-      <div
-        aria-hidden="true"
-        className="absolute -right-1/4 -top-1/4 size-3/4 rounded-full [background-image:radial-gradient(closest-side,color-mix(in_srgb,var(--lime)_14%,transparent),transparent)]"
+        className="absolute inset-0 opacity-[0.08] [background-image:repeating-linear-gradient(135deg,var(--emerald)_0_1px,transparent_1px_14px)]"
       />
       <svg
         viewBox="0 0 200 280"
         aria-hidden="true"
         focusable="false"
-        className="absolute bottom-6 right-6 h-20 w-14 text-lime opacity-20"
+        className="absolute right-6 top-6 h-20 w-14 text-emerald opacity-15"
       >
         <path d="M85 0h30v80h85v30h-85v170H85V110H0V80h85z" fill="currentColor" />
       </svg>
+      {media === "video" ? (
+        <span
+          aria-hidden="true"
+          className="bg-green-tile absolute left-1/2 top-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full text-white shadow-raised sm:size-20"
+        >
+          <svg viewBox="0 0 24 24" className="ml-1 size-7 sm:size-8" fill="currentColor" focusable="false">
+            <path d="M7 4.5v15l12-7.5z" />
+          </svg>
+        </span>
+      ) : null}
       <div aria-hidden="true" className="absolute inset-x-0 bottom-0 p-5">
-        <span className="inline-flex items-center gap-2 rounded-full bg-green-night/80 px-3 py-1.5 font-sans text-xs font-semibold uppercase tracking-[0.16em] text-on-green">
-          <span className="size-1.5 rounded-full bg-lime" />
+        <span className="inline-flex items-center gap-2 rounded-full bg-white px-3 py-1.5 font-sans text-xs font-semibold uppercase tracking-[0.16em] text-ink shadow-soft">
+          <span className="size-1.5 rounded-full bg-emerald" />
           {label}
         </span>
-        <p className="mt-2 max-w-xs font-sans text-sm text-on-green-muted">{subject}</p>
+        <p className="mt-2 max-w-xs font-sans text-sm text-ink-muted">{subject}</p>
       </div>
     </div>
   );

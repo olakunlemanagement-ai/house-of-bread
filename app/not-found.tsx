@@ -40,7 +40,7 @@ export default function NotFound() {
               <li key={item.href} className="lift rounded-tile">
                 <Link
                   href={item.href}
-                  className="flex min-h-16 items-center justify-between gap-2 rounded-tile border border-border-strong bg-surface px-5 font-semibold text-green shadow-soft"
+                  className="flex min-h-16 items-center justify-between gap-2 rounded-tile border border-border-strong bg-surface px-5 font-semibold text-emerald-deep shadow-soft"
                 >
                   {item.label}
                   <Icon name="arrow-right" className="size-5 shrink-0" />

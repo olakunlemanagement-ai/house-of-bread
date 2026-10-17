@@ -46,14 +46,14 @@ export function StepList({ steps, columns = 4 }: { steps: Step[]; columns?: 2 | 
               className={
                 step.icon
                   ? "font-serif text-3xl font-semibold text-border-strong"
-                  : "bg-green-tile inline-flex size-12 items-center justify-center rounded-tile font-serif text-xl font-semibold text-lime"
+                  : "inline-flex size-12 items-center justify-center rounded-tile bg-emerald font-serif text-xl font-semibold text-white"
               }
             >
               {String(index + 1).padStart(step.icon ? 2 : 1, "0")}
             </span>
           </div>
           <p className="mt-5 text-lg leading-relaxed text-ink">
-            {step.title ? <strong className="font-semibold text-green">{step.title} </strong> : null}
+            {step.title ? <strong className="font-semibold text-emerald-deep">{step.title} </strong> : null}
             {step.text}
           </p>
         </li>

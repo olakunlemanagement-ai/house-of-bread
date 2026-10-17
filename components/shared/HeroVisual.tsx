@@ -46,7 +46,7 @@ export function HeroVisual({
             </div>
             {nextEvent ? (
               <>
-                <p className="mt-3 font-serif text-base font-semibold leading-snug text-green">
+                <p className="mt-3 font-serif text-base font-semibold leading-snug text-emerald-deep">
                   {nextEvent.title}
                 </p>
                 <p className="mt-1 text-xs leading-snug text-ink-muted">
@@ -65,10 +65,10 @@ export function HeroVisual({
 
         {/* Illustrative progress card overlapping the phone's lower right. */}
         <div className={`${floating} bottom-10 right-0 w-48 sm:-right-4 sm:w-56`}>
-          <p className="font-serif text-base font-semibold leading-snug text-green">30 Day NT Journey</p>
+          <p className="font-serif text-base font-semibold leading-snug text-emerald-deep">30 Day NT Journey</p>
           <p className="mt-1 text-sm text-ink-muted">Day 1 of 30</p>
-          <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface-tint">
-            <div className="h-full w-[8%] rounded-full bg-success-on-white" />
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface-mint">
+            <div className="h-full w-[8%] rounded-full bg-emerald" />
           </div>
         </div>
       </div>

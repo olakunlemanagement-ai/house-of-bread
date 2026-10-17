@@ -3,7 +3,7 @@ import { ButtonLink } from "@/components/shared/Button";
 import { HeroVisual } from "@/components/shared/HeroVisual";
 import { IconTile, type IconName } from "@/components/shared/icons";
 import { FeatureList } from "@/components/shared/Lists";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { PhotoFrame } from "@/components/shared/Placeholder";
 import { Section, SectionHeader } from "@/components/shared/Section";
@@ -75,7 +75,7 @@ export default function AppPage() {
               key={feature.id}
               id={feature.id}
               aria-labelledby={`${feature.id}-heading`}
-              className={flip ? "bg-surface-tint" : "bg-surface"}
+              className={flip ? "bg-surface-warm" : "bg-surface"}
             >
               <div className="container-page reveal grid items-center gap-10 py-18 md:py-28 lg:grid-cols-12 lg:gap-16">
                 <div className={`lg:col-span-7 ${flip ? "lg:order-2" : ""}`}>
@@ -107,11 +107,11 @@ export default function AppPage() {
         />
       </Section>
 
-      <Section id="for" title="Who it is for" tone="tint">
+      <Section id="for" title="Who it is for" tone="mint">
         <FeatureList items={appAudience} />
       </Section>
 
-      <NewsletterBand idPrefix="app-newsletter" heading="Hear about new features and sessions" />
+      <NewsletterCard idPrefix="app-newsletter" heading="Hear about new features and sessions" />
     </main>
   );
 }

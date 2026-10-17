@@ -192,23 +192,23 @@ export function Icon({
   );
 }
 
-/** Icon inside a rounded square with a green gradient fill and an inner highlight. */
+/**
+ * Icon inside a rounded square, leaf to emerald, white glyph. White on leaf
+ * is 3.43:1, enough for a glyph (3:1) but not for small text, so text tiles
+ * use solid emerald instead.
+ */
 export function IconTile({
   name,
-  glyph = "lime",
   size = "md",
 }: {
   name: IconName;
-  glyph?: "lime" | "white";
   size?: "sm" | "md" | "lg";
 }) {
   const box = { sm: "size-9 rounded-xl", md: "size-12 rounded-tile", lg: "size-16 rounded-tile" }[size];
   const icon = { sm: "size-4", md: "size-6", lg: "size-8" }[size];
   return (
     <span
-      className={`bg-green-tile inline-flex shrink-0 items-center justify-center ${box} ${
-        glyph === "lime" ? "text-lime" : "text-white"
-      }`}
+      className={`bg-green-tile inline-flex shrink-0 items-center justify-center text-white ${box}`}
     >
       <Icon name={name} className={icon} />
     </span>

@@ -22,7 +22,8 @@ export function Hero({ nextEvent }: { nextEvent?: DatedEvent }) {
 
       <div className="container-page relative grid items-center gap-8 pb-36 pt-14 sm:pt-20 lg:grid-cols-12 lg:gap-12 lg:pb-40 lg:pt-24">
         <div className="lg:col-span-7">
-          <p className="eyebrow rise">House of Bread Global</p>
+          {/* Lime text sits only at the dark top left of the gradient (6.45:1). */}
+          <p className="eyebrow rise [--fg-accent:var(--lime-bright)]">House of Bread Global</p>
           <h1 id="hero-heading" className="rise-text rise-1 mt-5 text-display">
             Come and be fed by the Word.
           </h1>

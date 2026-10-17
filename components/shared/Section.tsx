@@ -1,11 +1,17 @@
 import type { ReactNode } from "react";
 import { Grain } from "./Decor";
 
-export type SectionTone = "white" | "tint" | "green";
+/**
+ * Section surfaces. Light pages alternate white, warm (cream) and mint.
+ * Green is the lighter feature band. Deep green is reserved for the footer
+ * and one feature panel per page, so it is not a section tone.
+ */
+export type SectionTone = "white" | "warm" | "mint" | "green";
 
 const toneClass: Record<SectionTone, string> = {
   white: "bg-surface",
-  tint: "bg-surface-tint",
+  warm: "bg-surface-warm",
+  mint: "bg-surface-mint",
   green: "tone-green bg-green-band relative overflow-hidden",
 };
 

@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { CrossWatermark, CurveEdge, Grain, Leaves } from "./Decor";
+import { CrossWatermark, CurveEdge, Grain, Leaves, type EdgeTone } from "./Decor";
 
 type PageHeaderProps = {
   eyebrow: string;
@@ -12,7 +12,7 @@ type PageHeaderProps = {
   /** Optional visual on the right on desktop, below on mobile. */
   visual?: ReactNode;
   /** Colour of the section that follows, so the curved edge blends in. */
-  next?: "white" | "tint";
+  next?: EdgeTone;
 };
 
 /** Green gradient band that opens every inner page. */
@@ -36,10 +36,11 @@ export function PageHeader({
         }`}
       >
         <div className={visual ? "lg:col-span-7" : ""}>
-          <p className="eyebrow rise">{eyebrow}</p>
+          {/* Lime text sits only at the dark top left of the gradient (6.45:1). */}
+          <p className="eyebrow rise [--fg-accent:var(--lime-bright)]">{eyebrow}</p>
           <h1 className="rise-text rise-1 mt-5 max-w-4xl text-display">{title}</h1>
           {lead ? <p className="rise rise-2 mt-6 max-w-2xl text-lead text-on-green">{lead}</p> : null}
-          {meta ? <div className="rise rise-2 mt-6 text-on-green-muted">{meta}</div> : null}
+          {meta ? <div className="rise rise-2 mt-6 text-on-green">{meta}</div> : null}
           {actions ? (
             <div className="rise rise-3 mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center [&>*]:w-full sm:[&>*]:w-auto">
               {actions}

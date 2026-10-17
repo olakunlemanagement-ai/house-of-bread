@@ -3,7 +3,7 @@ import type { Route } from "next";
 import { notFound } from "next/navigation";
 import { LinkCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Prose } from "@/components/shared/Prose";
@@ -70,7 +70,7 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
         </div>
       </article>
 
-      <Section id="related" title="Related teachings" tone="tint">
+      <Section id="related" title="Related teachings" tone="warm">
         {related.length > 0 ? (
           <ul className="grid gap-5 md:grid-cols-2">
             {related.map((other) => (
@@ -92,7 +92,7 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
         )}
       </Section>
 
-      <NewsletterBand idPrefix="teaching-newsletter" />
+      <NewsletterCard idPrefix="teaching-newsletter" />
     </main>
   );
 }

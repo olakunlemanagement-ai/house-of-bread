@@ -48,7 +48,7 @@ export default function SubscribePage({ searchParams }: PageProps<"/subscribe">)
 
           <aside
             aria-labelledby="expect-heading"
-            className="rounded-card bg-surface-tint p-6 sm:p-10 lg:col-span-5"
+            className="rounded-card bg-surface-mint p-6 sm:p-10 lg:col-span-5"
           >
             <SectionHeader id="expect-heading" size="compact" as="h2">
               What to expect
@@ -69,7 +69,7 @@ export default function SubscribePage({ searchParams }: PageProps<"/subscribe">)
         id="follow"
         title="Follow the ministry"
         intro="Live sessions stream on YouTube, and the ministry shares teaching on its social pages."
-        tone="tint"
+        tone="warm"
       >
         <SocialLinks />
       </Section>

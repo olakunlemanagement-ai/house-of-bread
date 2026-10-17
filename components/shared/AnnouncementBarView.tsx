@@ -3,8 +3,9 @@ import type { PlaceholderEvent } from "@/lib/content/placeholder-data";
 import { Icon } from "./icons";
 
 /**
- * The announcement bar itself. Lime with deep green text (7.10:1). Muted
- * text is pinned to deep green too, because ink-muted fails on lime.
+ * The announcement bar itself. Gold is the live colour: gold while a session
+ * is live (ink 9.02:1), gold-soft when one starts within 24 hours (ink
+ * 11.85:1). Muted text is pinned to ink, because ink-muted fails on gold.
  */
 export function AnnouncementBarView({
   kind,
@@ -17,10 +18,10 @@ export function AnnouncementBarView({
 }) {
   const href = event.youtubeUrl ?? `/events/${event.slug}`;
   return (
-    <div className="bg-lime text-on-lime [--fg-muted:var(--on-lime)] [--fg:var(--on-lime)]">
+    <div className={`text-ink [--fg-muted:var(--ink)] ${kind === "live" ? "bg-gold" : "bg-gold-soft"}`}>
       <p className="container-page flex min-h-11 flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-center text-sm font-semibold sm:text-base">
         <span className="inline-flex flex-wrap items-center justify-center gap-x-2">
-          <span aria-hidden="true" className="size-2 rounded-full bg-green" />
+          <span aria-hidden="true" className="size-2 rounded-full bg-ink" />
           {kind === "live" ? (
             <>Live now: {event.title}.</>
           ) : (

@@ -1,73 +1,106 @@
 @import "tailwindcss";
 
 /*
-  Design tokens, light first. Source: docs/CONTENT-PACK.md section 1.
+  Design tokens, light first. Source: docs/CONTENT-PACK.md section 1 and the
+  Design system section of CLAUDE.md.
   TODO: replace the brand primitives with official brand hex values, then
   rerun the contrast checks recorded in docs/PLACEHOLDERS.md.
 
   Three layers:
   - Brand primitives (--brand-*) hold raw values. Components never use them.
-  - Palette tokens (--surface, --ink, --green and so on) follow the names in
-    the content pack.
+  - Palette tokens (--surface, --ink, --emerald and so on) follow the names
+    in the content pack.
   - Contextual tokens (--fg, --fg-muted, --fg-heading, --fg-link, --fg-accent,
-    --ring) describe the role of a colour on the current surface. They default
-    to the white surface and are redefined by .tone-green, so a link, eyebrow
-    or focus ring is correct on both surfaces without per component overrides.
+    --ring and the --cta-* set) describe the role of a colour on the current
+    surface. They default to the light surfaces and are redefined by
+    .tone-green and .tone-deep, so a link, eyebrow, TextCTA or focus ring is
+    correct on every surface without per component overrides.
 
   Ship light only. A dark theme later redefines the palette and contextual
   tokens under :root[data-theme="dark"], without touching components.
 */
 :root {
   --brand-white: #ffffff;
-  --brand-green-50: #f3f8ec;
-  --brand-green-ink: #0b2412;
-  --brand-green-ink-muted: #3d5a46;
-  --brand-green-700: #0f4a22;
-  --brand-green-800: #0a3616;
-  --brand-green-900: #04290e;
-  --brand-green-950: #011f0b;
+  --brand-cream: #fbf8f1;
+  --brand-mint-50: #eef6e8;
+  --brand-gold-50: #fdf3d6;
+  --brand-ink: #0b2412;
+  --brand-ink-muted: #3d5a46;
+  --brand-emerald: #1b6b33;
+  --brand-emerald-deep: #14602f;
+  --brand-leaf: #2e9e4f;
+  --brand-green-rich: #0f4a22;
+  --brand-green-deep: #0a3616;
+  --brand-green-night: #04290e;
+  /* The light end of the hero and app band gradients only. Never under text. */
+  --brand-green-glow: #1e7b3a;
   --brand-lime: #a6c859;
+  --brand-lime-bright: #b7d86a;
+  --brand-gold: #e9b949;
+  --brand-gold-soft: #f3d98b;
   --brand-mint: #05d47c;
-  --brand-green-success: #0b7a45;
   --brand-off-white: #f8f9f8;
 
   color-scheme: light;
 
-  /* Palette */
+  /* Palette: surfaces */
   --surface: var(--brand-white);
-  --surface-tint: var(--brand-green-50);
-  --ink: var(--brand-green-ink);
-  --ink-muted: var(--brand-green-ink-muted);
-  --green-rich: var(--brand-green-700);
-  --green: var(--brand-green-800);
-  --green-deep: var(--brand-green-900);
-  --green-night: var(--brand-green-950);
+  --surface-warm: var(--brand-cream);
+  --surface-mint: var(--brand-mint-50);
+  --surface-gold: var(--brand-gold-50);
+  --ink: var(--brand-ink);
+  --ink-muted: var(--brand-ink-muted);
+
+  /* Palette: greens. Emerald fills on light, emerald-deep for text on light. */
+  --emerald: var(--brand-emerald);
+  --emerald-deep: var(--brand-emerald-deep);
+  /* Decorative gradient start only. White on leaf is 3.43:1, glyphs only. */
+  --leaf: var(--brand-leaf);
+  --green-rich: var(--brand-green-rich);
+  /* Footer, and one feature panel per page. */
+  --green-deep: var(--brand-green-deep);
+  --green-night: var(--brand-green-night);
+
+  /* Palette: accents. Lime only on green, gold always with ink text. */
   --lime: var(--brand-lime);
+  --lime-bright: var(--brand-lime-bright);
+  --gold: var(--brand-gold);
+  --gold-soft: var(--brand-gold-soft);
   --mint: var(--brand-mint);
-  --success-on-white: var(--brand-green-success);
   --on-green: var(--brand-off-white);
-  --on-green-muted: color-mix(in srgb, var(--brand-off-white) 80%, var(--brand-green-800));
-  --on-lime: var(--brand-green-800);
+  /* Deep surfaces only. It fails on emerald and the light gradient ends. */
+  --on-green-muted: color-mix(in srgb, var(--brand-off-white) 80%, var(--brand-green-deep));
 
   /*
-    Lines. Card borders are decorative (12%). The hover and focus edge is 55%,
-    not the pack's 50%, because 50% measures 2.98:1 on white and non-text UI
-    needs 3:1. Input borders must reach 3:1 and use ink-muted.
+    Lines. Card borders are decorative (14%). The hover and focus edge must
+    reach 3:1 on white, which emerald does at 80% (3.43:1). Input borders use
+    ink-muted (7.64:1).
   */
-  --border: color-mix(in srgb, var(--green) 12%, var(--surface));
-  --border-strong: color-mix(in srgb, var(--green) 55%, var(--surface));
+  --border: color-mix(in srgb, var(--emerald) 14%, var(--surface));
+  --border-strong: color-mix(in srgb, var(--emerald) 80%, var(--surface));
   --input-border: var(--ink-muted);
 
-  /* Contextual tokens, white surface */
+  /* Contextual tokens, light surfaces (white, cream, mint, gold). */
   --fg: var(--ink);
   --fg-muted: var(--ink-muted);
-  --fg-heading: var(--green);
-  --fg-link: var(--green);
+  --fg-heading: var(--ink);
+  --fg-link: var(--emerald-deep);
   /* Eyebrows and the short rule above headings. */
-  --fg-accent: var(--green);
-  --ring: var(--green);
+  --fg-accent: var(--emerald-deep);
+  --ring: var(--emerald-deep);
   /* Chip fill. Plain rgb, so no colour-mix fallback can turn it solid. */
-  --chip-fill: var(--surface-tint);
+  --chip-fill: var(--surface-mint);
+  /* Body link underline: emerald at 50%, solid on hover. */
+  --link-line: rgb(27 107 51 / 0.5);
+  --link-line-hover: var(--emerald);
+
+  /* TextCTA: label, then a 28px circular chip with an arrow. */
+  --cta-label: var(--emerald-deep);
+  --cta-chip-bg: transparent;
+  --cta-chip-border: rgb(27 107 51 / 0.25);
+  --cta-arrow: var(--emerald);
+  --cta-chip-hover-bg: var(--emerald);
+  --cta-arrow-hover: var(--brand-white);
 
   /* Two layer shadows, tinted deep green. */
   --elev-soft: 0 1px 2px rgb(10 54 22 / 0.06), 0 12px 32px rgb(10 54 22 / 0.08);
@@ -76,27 +109,57 @@
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-/* Any green gradient surface. Text goes white, links, accents and focus go lime. */
+/*
+  Any green surface: header, hero, page header, app band. Text and accents
+  go white, because the lighter gradient ends (emerald, #1e7b3a) fail lime
+  and muted text. White passes on every stop (5.32:1 at the lightest).
+*/
 .tone-green {
   --fg: var(--on-green);
-  --fg-muted: var(--on-green-muted);
+  --fg-muted: var(--on-green);
   --fg-heading: var(--on-green);
-  --fg-link: var(--lime);
-  --fg-accent: var(--lime);
-  --ring: var(--lime);
-  --chip-fill: rgb(248 249 248 / 0.1);
+  --fg-link: var(--on-green);
+  --fg-accent: var(--on-green);
+  --ring: var(--on-green);
+  --chip-fill: rgb(255 255 255 / 0.1);
+  --link-line: rgb(255 255 255 / 0.5);
+  --link-line-hover: var(--on-green);
+  --cta-label: var(--on-green);
+  --cta-chip-bg: rgb(255 255 255 / 0.15);
+  --cta-chip-border: transparent;
+  --cta-arrow: var(--on-green);
+  --cta-chip-hover-bg: var(--lime-bright);
+  --cta-arrow-hover: var(--ink);
   color: var(--fg);
 }
 
-/* A white card inside a green surface returns to the white surface roles. */
+/*
+  Deep green surfaces only (green-deep to green-night): the footer and the
+  one feature panel per page. Lime accents and muted text are safe here.
+*/
+.tone-deep {
+  --fg-muted: var(--on-green-muted);
+  --fg-accent: var(--lime);
+  --ring: var(--lime);
+}
+
+/* A light card inside a green surface returns to the light roles. */
 .tone-light {
   --fg: var(--ink);
   --fg-muted: var(--ink-muted);
-  --fg-heading: var(--green);
-  --fg-link: var(--green);
-  --fg-accent: var(--green);
-  --ring: var(--green);
-  --chip-fill: var(--surface-tint);
+  --fg-heading: var(--ink);
+  --fg-link: var(--emerald-deep);
+  --fg-accent: var(--emerald-deep);
+  --ring: var(--emerald-deep);
+  --chip-fill: var(--surface-mint);
+  --link-line: rgb(27 107 51 / 0.5);
+  --link-line-hover: var(--emerald);
+  --cta-label: var(--emerald-deep);
+  --cta-chip-bg: transparent;
+  --cta-chip-border: rgb(27 107 51 / 0.25);
+  --cta-arrow: var(--emerald);
+  --cta-chip-hover-bg: var(--emerald);
+  --cta-arrow-hover: var(--brand-white);
   color: var(--fg);
 }
 
@@ -105,19 +168,24 @@
   --color-*: initial;
   --color-white: var(--brand-white);
   --color-surface: var(--surface);
-  --color-surface-tint: var(--surface-tint);
+  --color-surface-warm: var(--surface-warm);
+  --color-surface-mint: var(--surface-mint);
+  --color-surface-gold: var(--surface-gold);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
+  --color-emerald: var(--emerald);
+  --color-emerald-deep: var(--emerald-deep);
+  --color-leaf: var(--leaf);
   --color-green-rich: var(--green-rich);
-  --color-green: var(--green);
   --color-green-deep: var(--green-deep);
   --color-green-night: var(--green-night);
   --color-lime: var(--lime);
+  --color-lime-bright: var(--lime-bright);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
   --color-mint: var(--mint);
-  --color-success-on-white: var(--success-on-white);
   --color-on-green: var(--on-green);
   --color-on-green-muted: var(--on-green-muted);
-  --color-on-lime: var(--on-lime);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-input-border: var(--input-border);
@@ -152,31 +220,35 @@
 }
 
 /*
-  Green gradient surfaces. Stops: green-rich, green, green-deep and
-  green-night. On-green text passes on all four and on the glow. Lime and
-  mint text pass on all four stops but not on the 18% glow, so the hero glow
-  sits behind the hero visual only, and bands carry an 8% glow in a corner.
-  Every pairing is logged in docs/PLACEHOLDERS.md.
+  Green surfaces. Every text pairing against every stop is logged in
+  docs/PLACEHOLDERS.md. Text sits on the dark start of each gradient; the
+  light end (#1e7b3a) holds visuals, never lime text.
 */
 @utility bg-green-header {
-  background-color: var(--green-deep);
-  background-image: linear-gradient(90deg, var(--green), var(--green-deep));
+  background-color: var(--green-rich);
+  background-image: linear-gradient(100deg, var(--green-rich), var(--emerald));
 }
 
 @utility bg-green-hero {
-  background-color: var(--green);
-  background-image: linear-gradient(135deg, var(--green-rich) 0%, var(--green) 45%, var(--green-deep) 100%);
+  background-color: var(--emerald-deep);
+  background-image: linear-gradient(
+    135deg,
+    var(--green-rich),
+    var(--emerald-deep) 50%,
+    var(--brand-green-glow)
+  );
 }
 
+/* The lighter feature band: the app band and short closing bands. */
 @utility bg-green-band {
-  background-color: var(--green);
-  background-image:
-    radial-gradient(
-      ellipse at 100% 0%,
-      color-mix(in srgb, var(--lime) 8%, transparent),
-      transparent 45%
-    ),
-    linear-gradient(135deg, var(--green-rich) 0%, var(--green) 45%, var(--green-deep) 100%);
+  background-color: var(--emerald-deep);
+  background-image: linear-gradient(135deg, var(--emerald-deep), var(--brand-green-glow));
+}
+
+/* Deep green: the footer and at most one feature panel per page. */
+@utility bg-green-feature {
+  background-color: var(--green-deep);
+  background-image: linear-gradient(160deg, var(--green-deep), var(--green-night));
 }
 
 @utility bg-green-footer {
@@ -184,11 +256,11 @@
   background-image: linear-gradient(180deg, var(--green-deep), var(--green-night));
 }
 
-/* Icon tiles: green gradient with a subtle inner highlight. */
+/* Icon tiles: leaf to emerald, white glyphs, a subtle inner highlight. */
 @utility bg-green-tile {
-  background-color: var(--green);
-  background-image: linear-gradient(135deg, var(--green-rich), var(--green-night));
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.14);
+  background-color: var(--emerald);
+  background-image: linear-gradient(135deg, var(--leaf), var(--emerald));
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.18);
 }
 
 /* Faint grain for green surfaces. Inline SVG noise, under 2KB, tiled. */

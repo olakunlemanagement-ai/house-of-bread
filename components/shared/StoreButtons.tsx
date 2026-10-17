@@ -13,7 +13,7 @@ const pending = `${button} flex-wrap border-2 border-dashed border-fg-link font-
  */
 export function StoreButtons({ confirmLabel = "CONFIRM WITH APP DEVELOPER" }: { confirmLabel?: string }) {
   const { googlePlay, appStore } = siteConfig.links;
-  const live = `${button} bg-fg-link font-semibold text-surface hover:opacity-90 [.tone-green_&]:text-on-lime`;
+  const live = `${button} bg-fg-link font-semibold text-surface hover:opacity-90 [.tone-green_&]:text-ink`;
 
   return (
     <ul className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">

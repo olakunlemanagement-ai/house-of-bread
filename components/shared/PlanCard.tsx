@@ -33,7 +33,8 @@ export function PlanCard({
       } ${href ? interactiveCardClass : ""} flex flex-col`}
     >
       <div className="flex items-end justify-between gap-3">
-        <span className="bg-green-tile inline-flex size-20 flex-col items-center justify-center rounded-tile text-lime">
+        {/* Solid emerald, not the leaf gradient: the small label needs 4.5:1 (6.57:1 here). */}
+        <span className="inline-flex size-20 flex-col items-center justify-center rounded-tile bg-emerald text-white shadow-[inset_0_1px_0_rgb(255_255_255/0.18)]">
           <span className="font-serif text-3xl font-semibold leading-none">{days}</span>
           <span className="mt-1 text-[0.65rem] font-semibold uppercase tracking-[0.18em]">days</span>
         </span>

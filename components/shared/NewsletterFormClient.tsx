@@ -99,7 +99,7 @@ export function NewsletterFormClient({
   const linkClass =
     tone === "green"
       ? "font-semibold text-lime underline underline-offset-4"
-      : "font-semibold text-green underline underline-offset-4";
+      : "font-semibold text-emerald-deep underline underline-offset-4";
 
   return (
     <form
@@ -147,7 +147,7 @@ export function NewsletterFormClient({
             name="liveNotify"
             type="checkbox"
             value="live-notify"
-            className="mt-0.5 size-6 shrink-0 accent-green"
+            className="mt-0.5 size-6 shrink-0 accent-emerald"
           />
           <label htmlFor={id("live-notify")} className="text-lg text-fg">
             Remind me before each live session

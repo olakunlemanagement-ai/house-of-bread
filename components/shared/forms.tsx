@@ -1,15 +1,15 @@
 import type { ComponentProps, ReactNode } from "react";
 import { Icon } from "./icons";
 
-// Shared form field styling. On white, inputs use the tint fill with an
-// ink-muted border (7.6:1). On green surfaces they are plain white, which
-// stands out from every gradient stop.
+// Shared form field styling. On light surfaces, inputs are white with an
+// ink-muted border (7.6:1 on white, 6.9:1 on mint and gold). On green
+// surfaces they are plain white, which stands out from every gradient stop.
 
 export type FieldTone = "light" | "green";
 
 export function inputClass(tone: FieldTone) {
-  return `block w-full min-h-13 rounded-input border-2 px-4 py-3 text-base text-ink placeholder:text-ink-muted ${
-    tone === "green" ? "border-white bg-white" : "border-input-border bg-surface-tint"
+  return `block w-full min-h-13 rounded-input border-2 bg-white px-4 py-3 text-base text-ink placeholder:text-ink-muted ${
+    tone === "green" ? "border-white" : "border-input-border"
   }`;
 }
 
@@ -63,7 +63,7 @@ export function FormError({ id, children }: { id: string; children: ReactNode })
       role="alert"
       className="flex items-start gap-3 rounded-input border-2 border-ink-muted bg-white px-4 py-3 font-semibold text-ink"
     >
-      <Icon name="alert" className="mt-0.5 size-5 shrink-0 text-green" />
+      <Icon name="alert" className="mt-0.5 size-5 shrink-0 text-emerald-deep" />
       {children}
     </p>
   );
@@ -74,7 +74,7 @@ export function OpensSoonNote({ id, children }: { id: string; children: ReactNod
   return (
     <p
       id={id}
-      className="inline-flex items-center gap-2 rounded-full bg-lime px-3 py-1 text-sm font-bold text-on-lime"
+      className="inline-flex items-center gap-2 rounded-full bg-gold-soft px-3 py-1 text-sm font-bold text-ink"
     >
       {children}
     </p>

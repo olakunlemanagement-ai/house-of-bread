@@ -1,7 +1,7 @@
 # Placeholders register
 
 Date: 17 October 2026
-Branch: `feat/ministry-redesign`
+Branch: `feat/palette-nav-media` (from `feat/ministry-redesign`)
 
 Everything listed here is temporary. Each item must be replaced or confirmed
 before launch. Remove a line once its item is done.
@@ -246,7 +246,8 @@ pipeline`. Sample entries carry `sample: true` and render a "Sample" badge.
 ## Brand
 
 - **Colour values.** The brand primitives in `app/globals.css` (`--brand-*`)
-  are approximate values from the banner. Replace them with official hex
+  come from the palette revision of 17 October 2026 and are not yet
+  confirmed against official brand files. Replace them with official hex
   values, then rerun the contrast checks below.
 - **Logo.** The header and footer show a text wordmark (`Wordmark.tsx`),
   marked TODO until the logo SVG arrives.
@@ -283,118 +284,154 @@ pipeline`. Sample entries carry `sample: true` and render a "Sample" badge.
 
 ---
 
-## Colour token migration
+## Colour token migration (palette revision 3)
 
-The site moved from dark first to light first. The old names described the
-dark theme, so they were removed rather than given flipped values. Every use
-was rewritten. Only `surface` survives as a name, deliberately reassigned to
-white because the content pack's token table uses it that way.
+Branch `feat/palette-nav-media`, 17 October 2026. Dark green had spread to
+almost every surface. The palette now has cream, mint and gold light
+surfaces, an emerald primary, and deep green kept for the footer and one
+feature panel per page. Old names were removed or remapped, and every use
+was rewritten. Tailwind's default palette stays switched off, so only these
+tokens exist as colour utilities.
 
-| Old token | Old value | Replacement |
+| Old token | Old value | Now |
 |---|---|---|
-| `surface` | `#0a3616` dark green page background | `surface` is now `#ffffff`. Dark green is `green` |
-| `surface-deep` | `#011f0b` | Removed. Use `green-deep` or `green-night` |
-| `text` | `#f8f9f8` | `ink` on white, `on-green` on green. Contextual `fg` picks the right one |
-| `text-muted` | 80% white mix | `ink-muted` on white, `on-green-muted` on green. Contextual `fg-muted` |
-| `heading` | lime | `green` on white, `on-green` on green. Contextual `fg-heading` |
-| `link` | lime | `green` on white, `lime` on green. Contextual `fg-link` |
-| `accent` | lime | `lime`, only on green surfaces or as a fill |
-| `on-accent` | `#011f0b` | `on-lime` (`#0a3616`) |
-| `success` | mint | `success-on-white` on white, `mint` on green |
-| `progress` | mint | `mint` on green surfaces |
-| `border` | 60% lime mix | `border`, 15% green (decorative card edges). `border-strong`, 60% green (hover, focus). `input-border`, ink-muted |
-| `focus-ring` | lime | Contextual `ring`: `green` on white, `lime` on green |
+| `surface-tint` | `#f3f8ec` | Removed. Use `surface-mint` `#eef6e8`, or `surface-warm` (cream) `#fbf8f1` |
+| `green` | `#0a3616` | Removed. Fills on light are `emerald` `#1b6b33`, text on light is `emerald-deep` `#14602f`, dark fills are `green-deep` (same `#0a3616`) |
+| `green-deep` | `#04290e` | Name kept, value now `#0a3616`. The old value is now `green-night` |
+| `green-night` | `#011f0b` | Name kept, value now `#04290e`. `#011f0b` is retired |
+| `green-rich` | `#0f4a22` | Unchanged |
+| `success-on-white` | `#0b7a45` | Removed. Use `emerald` |
+| `on-lime` | `#0a3616` | Removed. Text on lime, gold and mint fills is `ink` |
+| `on-green-muted` | 80% white over green | Kept, deep surfaces only (`.tone-deep`). It fails on emerald and the light gradient ends |
+| `border` | 12% green | 14% `emerald` (decorative) |
+| `border-strong` | 55% green | 80% `emerald`, 4.19:1 on white |
+| Headings on white | `green` | `ink` (contextual `fg-heading`) |
+| Links, eyebrows, focus on white | `green` | `emerald-deep` (contextual `fg-link`, `fg-accent`, `ring`) |
+| Accents on green | `lime` | White on every green surface. Lime only on deep surfaces (`.tone-deep`) and at the dark top left of the hero and page header |
+| Icon tiles | rich green to night, lime glyph | `leaf` to `emerald`, white glyph |
+| Badges, "opens soon" notes | `lime` | `gold-soft` with ink text |
+| Announcement bar | `lime` | `gold` while live, `gold-soft` when a session is within 24 hours |
+| `NewsletterBand` (green band) | | `NewsletterCard`: a light card on `surface-gold` with an emerald button |
+| `Button` variant `ghost` | | Removed (its hover underline broke the no underline rule). Variant `live` added: gold fill, ink text |
 
-Contextual tokens (`fg`, `fg-muted`, `fg-heading`, `fg-link`, `ring`) default
-to the white surface and are redefined by the `.tone-green` class, which every
-green gradient surface carries. Tailwind's default palette is switched off
-(`--color-*: initial`), so only brand tokens exist as colour utilities.
+New tokens: `surface-warm`, `surface-mint`, `surface-gold`, `emerald`,
+`emerald-deep`, `leaf`, `lime-bright`, `gold`, `gold-soft`, and the brand
+primitive `--brand-green-glow` `#1e7b3a`, the light end of the hero and app
+band gradients, used in gradients only.
+
+New gradients: `bg-green-header` (100deg, green-rich to emerald),
+`bg-green-hero` (135deg, `#0f4a22`, `#14602f` at 50%, `#1e7b3a`),
+`bg-green-band` (135deg, `#14602f` to `#1e7b3a`, the app band),
+`bg-green-feature` (green-deep to green-night, one feature panel per page)
+and `bg-green-tile` (leaf to emerald).
+
+New contextual sets: `.tone-green` makes text, accents, links, rings and
+the TextCTA white on any green surface. `.tone-deep` adds lime accents and
+muted text where the surface is green-deep or darker. `.tone-light` resets
+a light card inside a green surface.
+
+### Surface rhythm
+
+Pages run hero, then white, cream and mint sections in turn, the app band
+(the one lighter green feature band), cream, the newsletter card, then the
+dark footer. Apart from the footer, no page has more than one deep green
+element: the dark scripture panel on Home and About. Gold appears only for
+live states, badges and small highlights.
 
 ## Colour contrast, WCAG 2.2 AA
 
-Measured on 17 October 2026 against the approximate brand values, for the
-revision 2 palette. Normal text needs 4.5:1. Large text and non-text UI need
-3:1. Rerun when official hex values arrive.
+Measured on 17 October 2026 against the approximate brand values. Normal
+text needs 4.5:1. Large text and non-text UI need 3:1. Rerun when official
+hex values arrive.
 
-### Gradient stops and decorative layers
+### Gradient stops
 
-Green surfaces use four stops: `green-rich` `#0f4a22` (the lightest, top left
-of the hero and band gradient), `green` `#0a3616`, `green-deep` `#04290e` and
-`green-night` `#011f0b` (footer). Interpolated colours lie between stops, so
-the lightest stop is the worst case. Decorative layers are checked at their
-strongest point over `green-rich`, which is worse than over any other stop.
-
-| Surface | on-green `#f8f9f8` | on-green-muted `#c8d2cb` | lime `#a6c859` | mint `#05d47c` |
+| Surface and stops | White text | lime-bright `#b7d86a` | lime `#a6c859` | Other |
 |---|---|---|---|---|
-| green-rich `#0f4a22` | 9.84 | 6.69 | 5.45 | 5.30 |
-| green `#0a3616` | 12.82 | 8.72 | 7.10 | 6.90 |
-| green-deep `#04290e` | 14.98 | 10.19 | 8.30 | 8.06 |
-| green-night `#011f0b` | 16.55 | 11.26 | 9.17 | 8.91 |
-| Band glow, 8% lime over rich `#1b5426` | 8.49 | 5.78 | 4.71 | 4.57 |
-| Watermark, 7% lime over rich `#1a5326` | 8.62 | 5.86 | 4.78 | 4.64 |
-| Chip fill, 10% white over rich `#265c37` | 7.46 | 5.07 | 4.13 (icon only, 3:1 needed) | not used |
-| Newsletter form panel, deep at 60% over rich `#083616` | 12.84 | 8.74 | 7.12 | 6.91 |
-| Hero glow, 18% lime over rich `#2a612c` | 6.99 | 4.76 | **3.88, fails** | **3.77, fails** |
+| Header: green-rich `#0f4a22` | 10.38 | 6.45 | 5.45 | |
+| Header: emerald `#1b6b33` | 6.57 | 4.08 (fill, non-text) | 3.45, not used | |
+| Hero and page header: green-rich `#0f4a22` | 10.38 | 6.45 | 5.45 | |
+| Hero: emerald-deep `#14602f` (50%) | 7.65 | 4.75 | **4.02, fails** | |
+| Hero and app band: glow `#1e7b3a` | 5.32 | **3.30, fails** | **2.79, fails** | |
+| App band start: emerald-deep `#14602f` | 7.65 | 4.75 | **4.02, fails** | |
+| Deep: green-deep `#0a3616` | 13.53 | 8.40 | 7.10 | on-green-muted 8.72 |
+| Deep: green-night `#04290e` | 15.81 | 9.82 | 8.30 | on-green-muted 10.19 |
+| Hero glow, 18% lime over the glow end `#368940` | 4.37 | | | Behind the phone only, no text over it |
 
-Result: every text pairing passes on all four stops and on every decorative
-layer except the hero glow, where lime and mint text fail. The hero glow
-(`.hero-glow`) is therefore placed only behind the phone in `HeroVisual`, on
-Home, `/app` and every AppBand, and is sized so its visible edge stays clear of
-the text column on desktop and of the text above it on mobile. Its 30 second
-drift moves it at most 3rem. No lime or mint text sits over it: the floating
-cards on the phone are white with ink text.
+Result: white text passes on every stop. Lime text is used only where it
+passes: the eyebrow at the dark top left of the hero and page header
+(lime-bright, 6.45:1), and the footer and dark scripture panel (lime, 7.10:1
+or more). Lime text on emerald-deep measures 4.02:1, so the brief's "lime
+text only on `#14602f` or darker" is tightened to green-rich or darker. The
+app band carries no lime text at all. Muted text on green is white except on
+deep surfaces.
 
-Grain (`.grain`) is white noise at 5% opacity, too fine to change any measured
-pairing.
+### Fills on green
 
-### White and tint surfaces
-
-| Text or element | White `#ffffff` | Tint `#f3f8ec` | Result |
+| Element | Pairing | Ratio | Result |
 |---|---|---|---|
-| ink `#0b2412` (body text) | 16.47 | 15.25 | Pass |
-| ink-muted `#3d5a46` (secondary text, input borders) | 7.64 | 7.07 | Pass |
-| green `#0a3616` (headings, links, eyebrows, focus ring, button fill) | 13.53 | 12.53 | Pass |
-| success-on-white `#0b7a45` | 5.41 | 5.01 | Pass |
-| border-strong, 55% green `#78907f` (hover and focus edge, non-text) | 3.45 | 3.19 | Pass |
-| border, 12% green `#e2e7e3` (decorative card edge only) | 1.25 | | Decorative, not relied on |
+| Primary on green | ink on lime-bright | 10.23 | Pass |
+| Secondary on green | white on 12% white over emerald | 5.01 | Pass |
+| | over emerald-deep | 5.72 | Pass |
+| | over the glow end `#1e7b3a` | **4.21** | **Fails.** Never placed there: the app band has no secondary button, and the About closing band uses the hero gradient so its centred buttons sit on emerald-deep |
+| Nav hover pill, 8% white | white text over emerald | 5.48 | Pass |
+| Nav current pill, 15% white | white text over emerald | 4.71 | Pass |
+| Region and anchor chips, 10% white | white text over the glow end | 4.39 | Large or bold text only: chips sit near the top of the band, over 7.85 or more |
+| TextCTA chip on green, 15% white | white arrow over the glow end | 3.97 | Pass (non-text, 3:1) |
+| TextCTA hover on green | ink arrow on lime-bright | 10.23 | Pass |
+| Live button | ink on gold | 9.02 | Pass |
 
-The pack asks for a 50% hover border. That measures 2.98:1 on white, just
-under 3:1, so the token is 55%.
+### Light surfaces
 
-### Fills
+| Text | White `#ffffff` | Cream `#fbf8f1` | Mint `#eef6e8` | surface-gold `#fdf3d6` | gold-soft `#f3d98b` | gold `#e9b949` |
+|---|---|---|---|---|---|---|
+| ink `#0b2412` | 16.47 | 15.52 | 14.88 | 14.87 | 11.85 | 9.02 |
+| ink-muted `#3d5a46` | 7.64 | 7.20 | 6.90 | 6.90 | 5.50 | **4.18, not used** |
+| emerald `#1b6b33` | 6.57 | 6.19 | 5.94 | 5.93 | 4.73 | **3.60, not used** |
+| emerald-deep `#14602f` | 7.65 | 7.22 | 6.92 | 6.91 | 5.51 | 4.19 (large only) |
 
-| Text | Fill | Ratio | Result |
+### Buttons, links and details on light
+
+| Element | Pairing | Ratio | Result |
 |---|---|---|---|
-| on-lime `#0a3616` | lime `#a6c859` (green surface buttons, badges, announcement bar) | 7.10 | Pass |
-| on-lime `#0a3616` | mint `#05d47c` | 6.90 | Pass |
-| White | green `#0a3616` (primary button on white) | 13.53 | Pass |
-| White | ink-muted `#3d5a46` (disabled primary button) | 7.64 | Pass |
-| ink-muted `#3d5a46` | White (disabled secondary and ghost buttons) | 7.64 | Pass |
-| on-lime `#0a3616` | on-green-muted `#c8d2cb` (disabled lime button) | 8.72 | Pass |
-| ink `#0b2412` | white input on a green band | 16.47 | Pass |
+| Primary on light | white on emerald, hover emerald-deep | 6.57, 7.65 | Pass |
+| Secondary on light | emerald text and 2px border on white, hover on mint | 6.57, 5.94 | Pass |
+| Disabled primary | white on ink-muted | 7.64 | Pass |
+| TextCTA label | emerald-deep on white, cream, mint, gold-soft | 7.65 to 5.51 | Pass |
+| TextCTA arrow | emerald on white, white on emerald (hover) | 6.57 | Pass |
+| TextCTA chip ring, emerald at 25% | on white | 1.47 | Decorative. The arrow carries the 3:1 |
+| Body link underline, emerald at 50% | on white | 2.28 | Decorative. The link text is emerald-deep (7.65:1) and the underline marks it as a link. Solid emerald on hover |
+| Card hover edge, `border-strong` | on white, cream | 4.19, 3.95 | Pass |
+| Card edge, `border` | on white | 1.23 | Decorative only |
+| Input border, ink-muted | on white | 7.64 | Pass |
+| Icon tile glyph | white on leaf, on emerald | 3.43, 6.57 | Pass (non-text) |
+| Text in tiles (plan days, step numbers) | white on solid emerald | 6.57 | Pass. These tiles do not use the leaf gradient |
+| Badges and notes | ink on gold-soft | 11.85 | Pass |
 
 ### Focus rings
 
 | Ring | Against | Ratio | Result |
 |---|---|---|---|
-| green, 3px, on white surfaces | White, tint | 13.53, 12.53 | Pass |
-| lime, 3px, on green surfaces | green-rich, the lightest stop | 5.45 | Pass |
-| lime ring around a white input on a green band | the green surface outside the 3px offset | 5.45 or more | Pass. The ring sits outside the input, not on it |
-| green ring on the lime announcement bar | lime | 7.10 | Pass |
+| emerald-deep, 3px, on light surfaces | white, cream, mint, gold | 7.65 to 6.91 | Pass |
+| White, 3px, on green surfaces | green-rich to the glow end | 10.38 to 5.32 | Pass |
+| lime, 3px, on deep surfaces | green-deep, green-night | 7.10, 8.30 | Pass |
 
 ### Failing pairings, never used
 
-| Text | Background | Ratio |
-|---|---|---|
-| lime `#a6c859` | White | 1.90 |
-| mint `#05d47c` | White | 1.96 |
-| White | lime `#a6c859` | 1.90 |
-| White | mint `#05d47c` | 1.96 |
-| ink-muted `#3d5a46` | lime | 4.01. The announcement bar pins its muted text to deep green for this reason |
-| lime or mint | hero glow peak | 3.88 and 3.77. See above |
+| Pairing | Ratio |
+|---|---|
+| lime text on emerald-deep, emerald or the glow end | 4.02, 3.45, 2.79 |
+| lime-bright text on the glow end | 3.30 |
+| on-green-muted on emerald, on the glow end | 4.23, 3.43 |
+| White text on leaf | 3.43 (glyphs only) |
+| White on 12% white over the glow end (secondary on green) | 4.21 |
+| mint on the glow end, gold on the glow end | 2.71, 2.91 |
+| ink-muted or emerald text on gold | 4.18, 3.60 |
+| lime, mint or gold on white, either way round | 1.90, 1.96, 1.83 |
 
-The rule above each section heading is lime on green surfaces (5.45:1 or
-more) and deep green on white. It is decorative only.
+Mint `#05d47c` is kept as a token for progress accents on green. It passes
+on green-rich (5.30) and emerald (3.35, non-text) but not on the glow end,
+so progress marks on green sit on the dark start of a gradient.
 
 ### Motion and contrast
 

@@ -13,13 +13,13 @@ const columnHeading = "font-sans text-sm font-semibold uppercase tracking-[0.18e
 
 export function SiteFooter() {
   return (
-    <footer className="tone-green bg-green-footer relative mt-auto overflow-hidden">
+    <footer className="tone-green tone-deep bg-green-footer relative mt-auto overflow-hidden">
       <Grain />
       <CrossWatermark className="-right-10 top-24 h-96 w-64 opacity-[0.04]" />
 
       <div className="container-page relative">
         {/* Closing call to action. */}
-        <div className="flex flex-col gap-6 border-b border-green py-12 sm:flex-row sm:items-center sm:justify-between md:py-14">
+        <div className="flex flex-col gap-6 border-b border-white/15 py-12 sm:flex-row sm:items-center sm:justify-between md:py-14">
           <p className="font-serif text-3xl font-semibold leading-tight text-on-green sm:text-4xl">
             Stay close to the ministry
           </p>
@@ -67,7 +67,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="flex flex-col gap-3 border-t border-green py-6 text-sm text-on-green-muted sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-3 border-t border-white/15 py-6 text-sm text-on-green-muted sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 House of Bread Global</p>
           <Link href="/privacy" className={linkClass}>
             Privacy

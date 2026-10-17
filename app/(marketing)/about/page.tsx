@@ -50,7 +50,7 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <section id="the-name" aria-labelledby="the-name-heading" className="bg-surface-tint">
+      <section id="the-name" aria-labelledby="the-name-heading" className="bg-surface-warm">
         <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div className="lg:col-span-6">
             <SectionHeader id="the-name-heading">The name</SectionHeader>
@@ -87,7 +87,7 @@ export default function AboutPage() {
         id="regions"
         title="Where the ministry serves"
         intro="Serving believers across three regions, with sessions and teaching open to all."
-        tone="tint"
+        tone="mint"
       >
         <ul className="grid gap-5 md:grid-cols-3">
           {regions.map((region) => (
@@ -125,7 +125,7 @@ export default function AboutPage() {
         />
       </Section>
 
-      <section id="leadership" aria-labelledby="leadership-heading" className="bg-surface-tint">
+      <section id="leadership" aria-labelledby="leadership-heading" className="bg-surface-warm">
         <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
           <PhotoFrame
             className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"

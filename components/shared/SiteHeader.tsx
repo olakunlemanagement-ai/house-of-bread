@@ -28,7 +28,7 @@ export function SiteHeader() {
     <header className="tone-green bg-green-header sticky top-0 z-40 border-b border-green-night shadow-[0_1px_0_rgb(166_200_89/0.18)]">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-button focus:bg-lime focus:px-5 focus:py-3 focus:font-semibold focus:text-on-lime"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-button focus:bg-lime focus:px-5 focus:py-3 focus:font-semibold focus:text-ink"
       >
         Skip to main content
       </a>
@@ -83,7 +83,7 @@ export function SiteHeader() {
               </Link>
             </nav>
             {/* The app button stays pinned to the bottom of the menu. */}
-            <div className="bg-green-footer sticky bottom-0 mt-auto border-t border-green">
+            <div className="bg-green-footer sticky bottom-0 mt-auto border-t border-white/15">
               <div className="container-page py-4">
                 <ButtonLink href="/app" tone="green" arrow className="w-full">
                   Get the app

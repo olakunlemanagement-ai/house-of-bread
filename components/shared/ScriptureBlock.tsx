@@ -7,7 +7,7 @@ type ScriptureBlockProps = {
   version?: ScriptureVersion;
   /** Optional label above the text, such as "The name behind the ministry". */
   label?: string;
-  /** Light for teaching text, dark for feature moments on Home and About. */
+  /** Light for teaching text. Dark is the deep green feature panel: one per page at most. */
   variant?: "light" | "dark";
   /** One string per verse, so each verse keeps its own line. */
   verses: ReactNode[];
@@ -24,10 +24,10 @@ export function ScriptureBlock({
 
   const caption = (
     <span className="mt-7 flex flex-wrap items-center gap-3 font-sans text-sm font-semibold uppercase tracking-[0.16em]">
-      <cite className={`not-italic ${dark ? "text-lime" : "text-green"}`}>{passage}</cite>
+      <cite className={`not-italic ${dark ? "text-lime" : "text-emerald-deep"}`}>{passage}</cite>
       <span
         className={`rounded-full px-2.5 py-0.5 text-xs ${
-          dark ? "bg-lime text-on-lime" : "bg-green text-white"
+          dark ? "bg-lime text-ink" : "bg-emerald text-white"
         }`}
       >
         {version}
@@ -39,8 +39,8 @@ export function ScriptureBlock({
     <div
       className={
         dark
-          ? "tone-green bg-green-band relative overflow-hidden rounded-card p-8 shadow-raised sm:p-12"
-          : "rounded-r-card border-l-4 border-green bg-surface-tint px-6 py-7 sm:px-9"
+          ? "tone-green tone-deep bg-green-feature relative overflow-hidden rounded-card p-8 shadow-raised sm:p-12"
+          : "rounded-r-card border-l-4 border-emerald bg-surface-mint px-6 py-7 sm:px-9"
       }
     >
       {dark ? (

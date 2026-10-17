@@ -41,7 +41,7 @@ export default function PlansPage() {
         </ul>
       </Section>
 
-      <Section id="how" title="How a journey works" tone="tint">
+      <Section id="how" title="How a journey works" tone="warm">
         <StepList
           steps={journeySteps.map((step, index) => ({
             ...step,

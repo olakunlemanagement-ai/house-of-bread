@@ -76,7 +76,7 @@ export function LinkCard({
         {footer}
         <span
           aria-hidden="true"
-          className="bg-green-tile ml-auto inline-flex size-10 items-center justify-center rounded-xl text-lime"
+          className="bg-green-tile ml-auto inline-flex size-10 items-center justify-center rounded-xl text-white"
         >
           <Icon name="arrow-right" className="size-5" />
         </span>

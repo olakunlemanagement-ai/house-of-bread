@@ -52,12 +52,12 @@ function Neighbour({ book, direction }: { book: PlaceholderBook; direction: "pre
   return book.hasPage ? (
     <Link
       href={`/new-testament/${book.slug}` as Route}
-      className={`lift block rounded-card border border-border-strong bg-surface p-6 text-green shadow-soft ${align}`}
+      className={`lift block rounded-card border border-border-strong bg-surface p-6 text-emerald-deep shadow-soft ${align}`}
     >
       {content}
     </Link>
   ) : (
-    <div className={`rounded-card border border-dashed border-border-strong bg-surface-tint p-6 text-ink ${align}`}>
+    <div className={`rounded-card border border-dashed border-border-strong bg-surface-mint p-6 text-ink ${align}`}>
       {content}
       <span className="mt-1 block text-sm text-ink-muted">Coming soon</span>
     </div>
@@ -96,7 +96,7 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
           key={heading}
           id={`part-${position + 1}`}
           title={heading}
-          tone={position % 2 === 0 ? "white" : "tint"}
+          tone={position % 2 === 0 ? "white" : "warm"}
           width="narrow"
         >
           <Prose>

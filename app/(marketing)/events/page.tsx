@@ -3,7 +3,7 @@ import { ButtonLink } from "@/components/shared/Button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { StepList } from "@/components/shared/Lists";
 import { EventCard, LiveSessionCard } from "@/components/shared/LiveSessionCard";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PhotoFrame } from "@/components/shared/Placeholder";
 import { Section, SectionHeader } from "@/components/shared/Section";
@@ -47,7 +47,7 @@ export default function EventsPage() {
         )}
       </Section>
 
-      <section id="how" aria-labelledby="how-heading" className="bg-surface-tint">
+      <section id="how" aria-labelledby="how-heading" className="bg-surface-warm">
         <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-14">
           <div className="lg:col-span-8">
             <SectionHeader id="how-heading">How it works</SectionHeader>
@@ -86,7 +86,7 @@ export default function EventsPage() {
         )}
       </Section>
 
-      <Section id="rhythm" title="Weekly rhythm" tone="tint" width="narrow">
+      <Section id="rhythm" title="Weekly rhythm" tone="mint" width="narrow">
         <Placeholder block>[WEEKLY SCHEDULE AND MINISTRY TIME ZONE TO BE SUPPLIED]</Placeholder>
       </Section>
 
@@ -102,7 +102,7 @@ export default function EventsPage() {
         )}
       </Section>
 
-      <NewsletterBand
+      <NewsletterCard
         idPrefix="events-newsletter"
         heading="Get a reminder before each session"
         source="live-notify"

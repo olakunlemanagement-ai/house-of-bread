@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { Button, ButtonLink, textLinkClass } from "@/components/shared/Button";
 import { Icon } from "@/components/shared/icons";
 import { EventDuration, EventWhen, eventKindLabel } from "@/components/shared/LiveSessionCard";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
@@ -44,11 +44,11 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
           <div className="space-y-3">
             {event.sample ? <PlaceholderBadge label="Sample" /> : null}
             <p className="flex flex-wrap items-center gap-2 text-lg text-on-green">
-              <Icon name="calendar" className="size-5 text-lime" />
+              <Icon name="calendar" className="size-5 text-on-green" />
               <EventWhen event={event} />
             </p>
             <p className="flex flex-wrap items-center gap-2 text-on-green">
-              <Icon name="clock" className="size-5 text-lime" />
+              <Icon name="clock" className="size-5 text-on-green" />
               <EventDuration event={event} />
             </p>
           </div>
@@ -69,7 +69,7 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
               <Icon name="calendar" className="size-5" />
               Add to calendar
             </Button>
-            <div className="basis-full space-y-1 text-sm text-on-green-muted">
+            <div className="basis-full space-y-1 text-sm text-on-green">
               {event.youtubeUrl ? null : (
                 <p id="youtube-note">
                   <Placeholder>[YOUTUBE LINK TO BE SUPPLIED]</Placeholder>
@@ -87,11 +87,11 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         <Placeholder block>[SESSION DESCRIPTION TO BE SUPPLIED]</Placeholder>
       </Section>
 
-      <Section id="passages" title="Passages" tone="tint" width="narrow">
+      <Section id="passages" title="Passages" tone="mint" width="narrow">
         <Placeholder block>[PASSAGES TO BE SUPPLIED, LINKED THROUGH /lib/scripture]</Placeholder>
       </Section>
 
-      <NewsletterBand
+      <NewsletterCard
         idPrefix="event-newsletter"
         heading="Get a reminder before each session"
         source="live-notify"

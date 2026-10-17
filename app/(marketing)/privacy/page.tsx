@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 
@@ -83,12 +83,12 @@ export default function PrivacyPage() {
       <div className="bg-surface">
         <div className="container-page grid gap-12 py-18 md:py-24 lg:grid-cols-[16rem_1fr]">
           <nav aria-label="Policy sections" className="lg:sticky lg:top-24 lg:self-start">
-            <ol className="space-y-1 rounded-card bg-surface-tint p-5 text-sm">
+            <ol className="space-y-1 rounded-card bg-surface-mint p-5 text-sm">
               {sections.map((section, index) => (
                 <li key={section.id}>
                   <a
                     href={`#${section.id}`}
-                    className="block rounded-lg px-2 py-1.5 text-green underline-offset-4 hover:underline"
+                    className="block rounded-lg px-2 py-1.5 text-emerald-deep underline-offset-4 hover:underline"
                   >
                     {index + 1}. {section.title}
                   </a>
@@ -113,7 +113,7 @@ export default function PrivacyPage() {
         </div>
       </div>
 
-      <NewsletterBand idPrefix="privacy-newsletter" />
+      <NewsletterCard idPrefix="privacy-newsletter" />
     </main>
   );
 }

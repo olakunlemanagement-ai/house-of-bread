@@ -19,7 +19,7 @@ export function StatStrip({ stats, className = "" }: { stats: Stat[]; className?
     >
       {stats.map((stat, index) => (
         <li key={index} className="bg-surface p-5 sm:p-7">
-          <span className="block font-serif text-4xl font-semibold leading-none text-green sm:text-5xl">
+          <span className="block font-serif text-4xl font-semibold leading-none text-emerald-deep sm:text-5xl">
             {stat.value}
           </span>
           <span className="mt-3 block text-sm leading-snug text-ink-muted sm:text-base">

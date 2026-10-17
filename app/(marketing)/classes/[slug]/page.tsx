@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/shared/Button";
 import { IconTile, type IconName } from "@/components/shared/icons";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { SectionHeader } from "@/components/shared/Section";
@@ -68,7 +68,7 @@ export default async function ClassPage({ params }: PageProps<"/classes/[slug]">
               id={item.id}
               aria-labelledby={`${item.id}-heading`}
               className={`reveal rounded-card border border-border p-6 shadow-soft sm:p-8 ${
-                index % 2 === 0 ? "bg-surface" : "bg-surface-tint"
+                index % 2 === 0 ? "bg-surface" : "bg-surface-mint"
               } ${index === 0 ? "md:col-span-2" : ""}`}
             >
               <div className="flex items-start gap-5">
@@ -87,7 +87,7 @@ export default async function ClassPage({ params }: PageProps<"/classes/[slug]">
         </div>
       </div>
 
-      <NewsletterBand idPrefix="class-newsletter" />
+      <NewsletterCard idPrefix="class-newsletter" />
     </main>
   );
 }

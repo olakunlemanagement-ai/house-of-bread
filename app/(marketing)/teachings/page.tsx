@@ -3,7 +3,7 @@ import type { Route } from "next";
 import { ButtonLink } from "@/components/shared/Button";
 import { FeatureCard, LinkCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { NewsletterBand } from "@/components/shared/NewsletterBand";
+import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
@@ -44,7 +44,7 @@ export default function TeachingsPage() {
         </ul>
       </Section>
 
-      <Section id="latest" title="Latest teachings" tone="tint">
+      <Section id="latest" title="Latest teachings" tone="warm">
         {placeholderTeachings.length > 0 ? (
           <ul className="grid gap-5 md:grid-cols-2">
             {placeholderTeachings.map((entry) => (
@@ -72,7 +72,7 @@ export default function TeachingsPage() {
         )}
       </Section>
 
-      <NewsletterBand idPrefix="teachings-newsletter" />
+      <NewsletterCard idPrefix="teachings-newsletter" />
     </main>
   );
 }
