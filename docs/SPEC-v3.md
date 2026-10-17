@@ -54,7 +54,8 @@ The website is where the ministry is found, understood and joined.
 
 ### In at launch
 
-- Content website: home, about, live sessions and events, classes and training,
+- Content website: home, about, live sessions and events, House of Bread
+  Academy (the classes and training), the Media Library,
   teachings, New Testament books, reading plan landing pages, app page,
   contact, privacy
 - Newsletter signup with double opt-in and a notify me option for live
@@ -234,7 +235,9 @@ click to join.
 
 ---
 
-## 7. Classes and training
+## 7. House of Bread Academy (classes and training)
+
+The training classes are named House of Bread Academy, at `/academy`.
 
 Stage one provides information pages only: what the class covers, who it is
 for, when it runs, how to join, and any cost. Joining uses a method the CEO
@@ -349,7 +352,7 @@ consent, a privacy policy update, and read only scope.
 - MDX pipeline with Zod frontmatter validation
 - Canonical scripture module with golden tests
 - Newsletter flow, end to end
-- Home, about, events, classes, app page, contact, privacy
+- Home, about, events, Academy, Media Library, app page, contact, privacy
 - Teaching archive, New Testament book pages, plan landing pages
 - Sitemap, robots.txt, `llms.txt`, Open Graph images, Plausible
 - Security headers, `.ics` generation, click to load YouTube facade

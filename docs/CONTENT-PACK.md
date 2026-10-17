@@ -1,9 +1,9 @@
 # House of Bread Global: Content Pack and Layout Brief
 
-Date: 16 October 2026
-Revision: 2 (ministry first, premium UI). Replaces docs/CONTENT-PACK.md.
+Date: 17 October 2026
+Revision: 3 (lighter palette, buttons and TextCTA, navigation, House of Bread Academy, Media Library). Revision 2 was ministry first, premium UI.
 Use with: CLAUDE.md and docs/SPEC-v3.md
-Purpose: real copy and layout direction for all 17 stage-one routes.
+Purpose: real copy and layout direction for all stage-one routes.
 
 Rules for using this file:
 - Copy below is final unless it contains [SQUARE BRACKETS]. Brackets mark facts nobody has supplied yet. Render them as clearly marked placeholders and list each in docs/PLACEHOLDERS.md.
@@ -23,7 +23,7 @@ The House of Bread app is the official app of the ministry. It carries the minis
 
 ### Order of importance on the site
 1. Live teaching (YouTube sessions)
-2. Classes and training
+2. House of Bread Academy (the training classes)
 3. The official app, including the New Testament journeys
 4. Written teaching and New Testament study
 5. Connecting: social pages and the newsletter
@@ -42,34 +42,44 @@ The House of Bread app is the official app of the ministry. It carries the minis
 The site must feel like a confident, modern global ministry. Alive, warm and polished, never a template. Fast on a mid range Android phone.
 
 ### 1.1 Feel
-- White is the base. Page backgrounds and reading areas are white or a very light green tint.
-- Green carries the brand: the header, hero, inner page headers, bands, footer, buttons and icon tiles use green blends. Lime and mint are accents on green surfaces only.
-- Lime and mint have about 1.9:1 contrast on white, so they are never used as text or thin lines on white. On white use deep green.
+- White is the base, with cream (surface-warm), mint and gold light surfaces for rhythm. Most of every page is light.
+- Green carries the brand in a few deliberate places: the header, the hero and inner page headers, one lighter feature band (the app band), icon tiles and buttons. Deep green is kept for the footer and at most one feature panel per page.
+- Lime, mint and gold are accents. Lime and mint only on green surfaces. Gold only for live states, badges and small highlights, always with ink text.
 - Premium comes from scale, spacing, depth and detail: large type, generous space, layered surfaces, consistent radii, soft layered shadows, and small hover and focus moments.
 
 ### 1.2 Colour tokens (light first)
-Approximate values from the brand banner, all marked TODO until official hex values arrive. Keep names semantic so a dark theme can be added later, but ship light only.
+Values from the palette revision of 17 October 2026, not yet confirmed against official brand files. Keep names semantic so a dark theme can be added later, but ship light only. Every pairing is logged in docs/PLACEHOLDERS.md.
 
 | Token | Value | Use |
 |---|---|---|
 | surface | #ffffff | page background |
-| surface-tint | #f3f8ec | alternate sections, scripture panels, input backgrounds |
-| ink | #0b2412 | body text on white |
-| ink-muted | #3d5a46 | secondary text on white |
-| green | #0a3616 | headings on white, links, primary button fill on white, icon tiles |
-| green-rich | #0f4a22 | lightest gradient stop on green surfaces |
-| green-deep | #04290e | gradient end, header, footer |
-| green-night | #011f0b | darkest gradient stop |
-| lime | #a6c859 | accent on green surfaces, button fill on green surfaces |
-| mint | #05d47c | progress and success accents on green surfaces |
-| success-on-white | #0b7a45 | success text on white |
-| on-green | #f8f9f8 | text on green surfaces |
-| on-lime | #0a3616 | text on lime or mint |
+| surface-warm | #fbf8f1 | cream sections |
+| surface-mint | #eef6e8 | mint sections, scripture panels in teaching text |
+| surface-gold | #fdf3d6 | the newsletter card, live highlights |
+| ink | #0b2412 | body text and headings on light |
+| ink-muted | #3d5a46 | secondary text on light |
+| emerald | #1b6b33 | primary fill on light |
+| emerald-deep | #14602f | hover, links, eyebrows and TextCTA labels on light |
+| leaf | #2e9e4f | decorative gradient start only (icon tiles) |
+| green-rich | #0f4a22 | the dark start of the header and hero gradients |
+| green-deep | #0a3616 | the footer and one feature panel per page |
+| green-night | #04290e | the footer and one feature panel per page |
+| lime | #a6c859 | accents on deep green |
+| lime-bright | #b7d86a | button fills on green, the hero eyebrow |
+| gold | #e9b949 | live fills and badges, with ink text |
+| gold-soft | #f3d98b | badges and soft highlights, with ink text |
+| mint | #05d47c | progress accents on green |
 
 Gradients:
-- Hero and bands: linear-gradient(135deg, green-rich 0%, green 45%, green-deep 100%), plus a radial lime glow at no more than 18% opacity placed away from body text.
-- Footer: green-deep to green-night.
-Check every text pairing against every gradient stop. Log results in docs/PLACEHOLDERS.md.
+- Header: linear-gradient(100deg, green-rich, emerald).
+- Hero and inner page headers: linear-gradient(135deg, #0f4a22, #14602f 50%, #1e7b3a).
+- App band (the one lighter feature band per page): #14602f to #1e7b3a.
+- Footer and the feature panel: green-deep to green-night.
+- Icon tiles: leaf to emerald, white glyph.
+Rules: lime text only where the background is #14602f or darker, and in practice green-rich or darker, because lime on #14602f measures 4.02:1. Never put text on the light end of a gradient.
+
+### 1.2a Rhythm
+Hero, white, cream, mint, the app band, cream, the newsletter card, then the dark footer. Apart from the footer, at most one deep green section or panel per page (on Home and About it is the dark scripture panel). The newsletter closes as a light rounded card on surface-gold or surface-mint with an emerald button, not a green band.
 
 ### 1.3 Typography
 - Display and headings: the serif already installed (Literata) at weight 600, used large. This gives the site gravitas that a plain sans cannot.
@@ -88,10 +98,10 @@ Check every text pairing against every gradient stop. Log results in docs/PLACEH
 ### 1.5 Depth, shape and detail
 - Radii: cards 24px, buttons 14px, inputs 12px, icon tiles 16px.
 - Shadows, two layers: soft = 0 1px 2px rgba(10,54,22,0.06), 0 12px 32px rgba(10,54,22,0.08). Raised = 0 2px 4px rgba(10,54,22,0.08), 0 24px 48px rgba(10,54,22,0.14).
-- Cards on white: white surface, 1px border at 12% deep green, soft shadow. Hover and focus: lift 4px, raised shadow, border at 50%.
-- Icon tiles: rounded square, green gradient fill, white or lime glyph, subtle inner highlight.
+- Cards on light: white surface, 1px border at 14% emerald, soft shadow. Hover and focus: lift 4px, raised shadow, border at 80% emerald.
+- Icon tiles: rounded square, leaf to emerald gradient, white glyph, subtle inner highlight. Tiles holding text (plan days, step numbers) use solid emerald, because white on leaf is only 3.43:1.
 - Texture: a very faint inline SVG grain on green surfaces (under 2KB), a large cross watermark and leaf shapes at low opacity. No stock photos.
-- A short lime rule above section headings on green surfaces, deep green on white.
+- A short rule above section headings: emerald-deep on light, white on green.
 
 ### 1.6 Motion (CSS only)
 - No JavaScript for decoration. Use CSS transitions and keyframes on transform and opacity only.
@@ -102,33 +112,37 @@ Check every text pairing against every gradient stop. Log results in docs/PLACEH
 - No backdrop-filter, large blurs or full-screen animated gradients. They cost frames on mid range Android.
 
 ### 1.7 Imagery
-- Real photography is the biggest single lift for "alive". Until it arrives, use art directed placeholder frames (gradient, subtle pattern, a small "Photo to come" label, 4:5 and 16:9 ratios).
+- Real photography is the biggest single lift for "alive". Until it arrives, use art directed placeholder frames (a light mint to cream wash, a subtle emerald pattern, a small "Photo to come" label, 4:5 and 16:9 ratios). The welcome video frame reads "Photo and video to come".
 - Ask the ministry for: a portrait of the teacher, 10 to 15 photos of sessions and gatherings, a 60 to 90 second welcome video, real app screenshots, the logo SVG (mark and wordmark), and a social share image.
 - The welcome video loads behind a click to load facade (youtube-nocookie.com).
 - Use next/image with explicit dimensions and modern formats when photos arrive.
 
 ### 1.8 Components to build
-- AnnouncementBar: appears only when a session is live or starts within 24 hours. Lime background, deep green text, "Live now: {title}. Watch on YouTube". Hidden otherwise.
-- SiteHeader: green gradient bar, sticky.
+- AnnouncementBar: appears only when a session is live or starts within 24 hours. Gold while live, gold-soft when coming up, ink text, "Live now: {title}." and a "Watch on YouTube" TextCTA. Hidden otherwise.
+- SiteHeader: green gradient bar, sticky, 72px.
 - Hero with HeroVisual: phone mock in CSS plus two floating cards.
-- Button (primary, secondary, ghost, on-white, on-green) with an optional arrow icon.
-- BentoGrid and BentoTile, FeatureCard, IconTile.
+- Button (primary, secondary, live; light and green tones) with an optional arrow icon.
+- TextCTA: label and arrow chip, the text form of a call to action.
+- BentoGrid and BentoTile, FeatureCard, CTACard, IconTile.
 - StatStrip, RegionChips, SocialLinks.
 - Section, SectionHeader, PageHeader (green gradient band), StepList.
-- ScriptureBlock, light and dark variants.
-- PlanCard, BookGrid, LiveSessionCard, EventCard.
-- NewsletterBand, AppBand, StoreButtons, EmptyState.
+- ScriptureBlock, light and dark variants. The dark variant is the page's deep feature panel.
+- PlanCard, BookGrid, LiveSessionCard, EventCard, VideoGrid.
+- NewsletterCard, AppBand, StoreButtons, EmptyState, YouTubeFacade.
 - Prose for MDX body text.
 
 ### 1.9 Buttons and links
-- Minimum height 52px desktop and 48px mobile, horizontal padding 24px, font weight 600, radius 14px.
-- Primary on white: deep green fill, white text.
-- Primary on green: lime fill, deep green text.
-- Secondary on white: transparent, 2px deep green border, deep green text.
-- Secondary on green: transparent, 2px lime border, white text.
-- Text links: deep green underlined on white, lime underlined on green, with an arrow for "go to" links.
-- Never white text on lime or mint. Never lime or mint text on white.
-- Focus ring 3px, deep green on white and lime on green, with 3:1 contrast against its surroundings.
+- Every call to action is a real button or a TextCTA. No call to action is underlined.
+- Buttons: minimum height 52px desktop and 48px mobile, horizontal padding 24px, font weight 600, radius 14px. Hover lifts 2px and the arrow nudges 4px.
+- Primary on light: emerald fill, white text, soft shadow. Hover darkens to emerald-deep.
+- Primary on green: lime-bright fill, ink text.
+- Secondary on light: white fill, 2px emerald border, emerald text. Hover fills surface-mint.
+- Secondary on green: white at 12% fill, 1.5px white border, white text.
+- Live emphasis: gold fill, ink text, only while a session is live.
+- TextCTA: label weight 600, then a 28px circular arrow chip, no underline. On light: label emerald-deep, chip with a 1px emerald border at 25% and an emerald arrow; hover fills the chip emerald, the arrow turns white and slides 3px. On green: white label, chip white at 15%; hover fills lime-bright with an ink arrow.
+- Links inside paragraphs and teaching body text keep a thin underline: offset 3px, skip-ink, emerald at 50% opacity, solid on hover. This is required for accessibility.
+- Nav and footer link lists have no underline. Hover is a pill background. The current page uses aria-current plus a stronger pill, not colour alone.
+- Focus ring 3px: emerald-deep on light, white on green, lime on deep green, each with 3:1 contrast against its surroundings.
 - On mobile, hero and band buttons are full width and stacked.
 
 ### 1.10 CTA system
@@ -136,36 +150,38 @@ One primary action per section, written as a verb that says what happens next. N
 
 | Page | Primary CTA | Secondary CTA |
 |---|---|---|
-| Home hero | Join the next live session | Get the official app |
-| Home bento | See upcoming sessions, Explore classes, Get the app, Read the teachings | none |
+| Home hero | Join the next live session | Get the official app, then TextCTA "Explore the Academy" |
+| Home, Start here | Open the Media Library, Choose a journey, Explore the Academy (TextCTAs) | none |
+| Home bento | See upcoming sessions, Explore the Academy, Get the app, Read the teachings | none |
 | About | Join a live session | Contact the ministry |
 | Live | Set a reminder | Subscribe on YouTube |
-| Classes | See how to join | Hear when enrolment opens |
+| Academy | See how to join | Hear when enrolment opens |
+| Media Library | Set a reminder, or Watch live on YouTube while live | TextCTA "See the full schedule" |
 | Teachings | Subscribe for new teaching | none |
 | Study | Read this book in the app | Browse all 27 books |
 | Journeys | Start a journey in the app | Compare the three paces |
 | App | Get the app | See what is inside |
-| Closing bands | Subscribe | none |
+| Closing newsletter card | Subscribe | none |
 
 ### 1.11 Surface map
 
 | Element | Surface |
 |---|---|
-| Announcement bar | lime, deep green text |
-| Header and nav | green gradient, white wordmark, lime primary button |
-| Home hero | rich green gradient with glow, grain and watermark, white text, lime accents |
-| Inner page header | shorter green gradient band, white text, lime eyebrow |
+| Announcement bar | gold (live) or gold-soft (within 24 hours), ink text |
+| Header and nav | green-rich to emerald gradient, white wordmark, lime-bright primary button |
+| Home hero | hero gradient with glow, grain and watermark, white text, lime-bright eyebrow |
+| Inner page header | the hero gradient, shorter, white text, lime-bright eyebrow |
 | Stat strip | white, overlapping the hero edge, soft shadow |
-| Bento tiles | one deep green gradient tile, others white or surface-tint |
-| Feature and plan cards | white on white or tint sections |
-| Split text sections, steps, FAQ | surface-tint |
-| Feature scripture panel (Home, About) | green gradient, serif white text, lime reference label |
-| Scripture inside teaching text | surface-tint panel, deep green left rule, serif ink text |
-| App band | green gradient with phone frame |
-| Newsletter band | green gradient, white inputs, lime button |
+| Bento tiles | one lighter green band tile, others white or mint |
+| Feature and plan cards | white on white, cream or mint sections |
+| Split text sections, steps, FAQ | cream or mint, alternating with white |
+| Feature scripture panel (Home, About) | deep green, the page's one deep panel, serif white text, lime reference label |
+| Scripture inside teaching text | mint panel, emerald left rule, serif ink text |
+| App band | the lighter green band (#14602f to #1e7b3a) with phone frame, no lime text |
+| Newsletter | a light card on surface-gold (or surface-mint), emerald button |
 | Teaching and book body | white, serif, ink |
-| Footer | green-deep to green-night, white text, lime links |
-| 404, error, check-email | white page with a green icon tile and deep green heading |
+| Footer | green-deep to green-night, white text and links, lime headings |
+| 404, error, check-email | white page with an icon tile and ink heading |
 
 ---
 
@@ -175,17 +191,20 @@ One primary action per section, written as a verb that says what happens next. N
 - Content driven from event data. Hidden when no session is live or within 24 hours.
 
 ### Header
-- Wordmark left. Nav: Live, Classes, Teachings, Study, The App, About.
-- Right: primary button "Get the app" and a text link "Subscribe".
-- Current page has a lime underline. Mobile: details and summary menu, full width, large tap targets, the app button pinned at the bottom of the menu.
+- Sticky, 72px, the green-rich to emerald gradient.
+- Left: wordmark, then Home, About, Academy, Media Library, Contact.
+- Right: Subscribe (secondary on green) and Get the app (primary on green).
+- Current page: aria-current and a stronger pill, not colour alone.
+- Mobile: wordmark left, a compact "Get app" button and a "Menu" button on the right, both always visible. The menu is a details element and works without JavaScript. It lists Home, About, Academy, Media Library, Contact as large tap targets, then a full width Subscribe button.
 
 ### Footer
-- Top strip: a closing CTA row with the headline "Stay close to the ministry" and a Subscribe button.
+- Top strip: "Stay close to the ministry" and a Subscribe button, only on pages that do not already offer signup (pages without the newsletter card, plus /subscribe and check-email are excluded).
 - Columns:
   - Brand: wordmark and "A teaching ministry committed to doctrinal clarity and careful handling of Scripture, serving believers across the United Kingdom, Africa and the United States." Region chips: United Kingdom, Africa, United States.
-  - Ministry: About, Live sessions, Classes and training, Contact
+  - Ministry: About, Academy, Media Library, Live sessions, Contact
   - Learn: Teachings, Study the New Testament, New Testament journeys, The official app
   - Follow: YouTube [CHANNEL LINK], [OTHER SOCIAL PLATFORMS AND LINKS TO BE SUPPLIED]
+- Link lists have no underline: hover pill, current page pill.
 - Bottom line: "© 2026 House of Bread Global", a Privacy link, and "Study . Pray . Grow".
 
 ---
@@ -193,15 +212,15 @@ One primary action per section, written as a verb that says what happens next. N
 ## 3. Home (/)
 
 Metadata title: House of Bread Global | A teaching ministry
-Metadata description: A global teaching ministry serving believers across the UK, Africa and the United States. Live teaching, classes and training, written teaching, and the official House of Bread app.
+Metadata description: A global teaching ministry serving believers across the UK, Africa and the United States. Live teaching, House of Bread Academy, written teaching, and the official House of Bread app.
 
 ### Hero
 - Eyebrow: HOUSE OF BREAD GLOBAL
 - H1: Come and be fed by the Word.
-- Lead: A global teaching ministry serving believers across the United Kingdom, Africa and the United States, through live teaching, classes and training, written teaching and the official House of Bread app.
+- Lead: A global teaching ministry serving believers across the United Kingdom, Africa and the United States, through live teaching, House of Bread Academy, written teaching and the official House of Bread app.
 - Primary button: Join the next live session (to /events), with arrow
 - Secondary button: Get the official app (to /app)
-- Text link: Explore classes and training (to /classes)
+- TextCTA: Explore the Academy (to /academy). Two buttons and one TextCTA, no more.
 - Under the buttons: RegionChips (United Kingdom, Africa, United States) and the line STUDY . PRAY . GROW
 - HeroVisual (right on desktop, below on mobile): a CSS phone showing the app reading screen, a floating LiveSessionCard ("Next live session", time placeholder or empty state) overlapping the phone's left edge, and a floating progress card ("30 Day NT Journey, Day 1 of 30") overlapping its lower right. Illustrative, marked as such in code comments.
 - Background: rich green gradient, lime glow, grain, cross watermark, leaf shapes. The hero ends with a curved edge into white.
@@ -212,11 +231,19 @@ Metadata description: A global teaching ministry serving believers across the UK
 - 6 translations in the app
 - 3 New Testament journeys: 30, 60 and 90 days
 
-### Ways to be fed (bento, four tiles)
+### Start here (right after the stat strip, white)
+- H2: New here? Start here.
+- Welcome video slot beside the heading: a click to load YouTube facade (youtube-nocookie.com). Until the video is supplied, a "Photo and video to come" frame.
+- Three cards, each with a TextCTA:
+  - Hear the teaching: "Watch live sessions and replays, or listen on audio." TextCTA "Open the Media Library" (to /media)
+  - Read with guidance: "Follow a 30, 60 or 90 day journey through the New Testament in the official app." TextCTA "Choose a journey" (to /plans)
+  - Go deeper: "Join House of Bread Academy, Bible classes for believers taught by the ministry." TextCTA "Explore the Academy" (to /academy)
+
+### Ways to be fed (bento, four tiles, cream)
 - Heading H2: Four ways to be fed
-- Large tile, deep green gradient, icon: Live teaching. "House of Bread Global teaches live on YouTube, with reminders so no session is missed." CTA: See upcoming sessions (to /events)
-- Medium tile, white: Classes and training. "Structured teaching for believers who want to go deeper, taught with care for context and doctrine." CTA: Explore classes (to /classes)
-- Medium tile, tint: The official app. "Daily reading, New Testament journeys, six translations and the ministry's teaching, in your pocket." CTA: Get the app (to /app)
+- Large tile, the lighter green band, icon: Live teaching. "House of Bread Global teaches live on YouTube, with reminders so no session is missed." CTA: See upcoming sessions (to /events)
+- Medium tile, white: House of Bread Academy. "Equipped in the truth. Bible classes that give believers a structured place to study the Word, taught with care for context and doctrine." CTA: Explore the Academy (to /academy)
+- Medium tile, mint: The official app. "Daily reading, New Testament journeys, six translations and the ministry's teaching, in your pocket." CTA: Get the app (to /app)
 - Small tile, white: Written teaching. "Doctrine, interpretation and the questions believers actually ask." CTA: Read the teachings (to /teachings)
 
 ### Next live session
@@ -224,7 +251,7 @@ Metadata description: A global teaching ministry serving believers across the UK
 - LiveSessionCard from content, or empty state: Sessions are announced here and by email. Ask for a reminder and the next date arrives in your inbox.
 - Buttons: Set a reminder (to /subscribe), Subscribe on YouTube [CHANNEL LINK]
 
-### What the ministry stands for (three FeatureCards on surface-tint)
+### What the ministry stands for (three FeatureCards on mint)
 - Doctrinal clarity: Teaching that says plainly what Scripture says, and shows how the argument is built.
 - Scripture in context: Passages are read with the background that makes them land, and quoted in full with the verses either side.
 - Plain, warm and rigorous: Written to be understood. Rigorous without being academic.
@@ -235,7 +262,7 @@ Metadata description: A global teaching ministry serving believers across the UK
 - Link: About the ministry (to /about), with arrow
 - Right: dark ScriptureBlock, John 6:33-35 KJV
 
-### The official app (green band, phone frame)
+### The official app (the lighter green band, phone frame)
 - Eyebrow: THE OFFICIAL APP
 - H2: The ministry in your pocket
 - Text: The official House of Bread app brings the ministry's teaching and study tools together on your phone, so the Word goes where you go.
@@ -253,7 +280,8 @@ Metadata description: A global teaching ministry serving believers across the UK
 - Text: Live sessions stream on YouTube, and the ministry shares teaching on its social pages.
 - SocialLinks: YouTube [CHANNEL LINK], [OTHER PLATFORMS AND LINKS TO BE SUPPLIED]
 
-### Newsletter band
+### Newsletter card
+- A light rounded card on surface-gold with an emerald button.
 - H2: Stay close to the ministry
 - Text: Reminders before each live session, new teaching, and news from House of Bread Global, sent to your inbox.
 - Form: first name (optional), email, button "Subscribe"
@@ -280,7 +308,7 @@ Metadata description: House of Bread Global is a teaching ministry committed to 
 
 ### What the ministry offers (five cards with icon tiles)
 - Live teaching: Sessions streamed on YouTube, with reminders by email.
-- Classes and training: Structured learning for those who want to go further than reading alone.
+- House of Bread Academy: Bible classes that equip believers with knowledge of the truth, for those who want to go further than reading alone.
 - Written teaching: Doctrine, interpretation and the questions believers actually ask.
 - New Testament study: An introduction to every New Testament book, and three guided journeys through the whole.
 - The official app: The ministry's teaching, journeys and six translations on your phone.
@@ -337,7 +365,7 @@ Metadata description: House of Bread Global teaches live on YouTube. See what is
 - Empty state: Replays will appear here after each session.
 
 ### Closing band
-- Newsletter band with tag live-notify and the heading "Get a reminder before each session".
+- Newsletter card with tag live-notify and the heading "Get a reminder before each session".
 
 ### Event detail (/events/[slug])
 - Header band: kind label (Live, Training or Meeting), title, date and time in local time plus ministry zone, duration.
@@ -347,21 +375,64 @@ Metadata description: House of Bread Global teaches live on YouTube. See what is
 
 ---
 
-## 6. Classes and training (/classes)
+## 5A. Media Library (/media)
 
-Metadata title: Classes and training
-Metadata description: Structured teaching from House of Bread Global for believers who want to go deeper. See what each class covers, who it is for and how to join.
+Metadata title: Media Library | House of Bread Global
+Metadata description: Live sessions, replays, audio and the ministry's social pages, all in one place.
+
+### Header band
+- Eyebrow: MEDIA LIBRARY
+- H1: Everything the ministry shares, in one place
+- Lead: Live sessions, replays, audio teaching and social pages. Watch, listen and follow wherever you are.
+- Anchor chips: Live and replays, Video, Audio, Social, Read and study
+
+### Live and replays (#live)
+- The next session card from event data, or the empty state: The next session will be announced here and by email.
+- Buttons: Watch live on YouTube [CHANNEL LINK] (gold only while live), Set a reminder
+- TextCTA: See the full schedule (to /events)
+
+### Video (#video)
+- H2: Watch on YouTube
+- Text: Teaching videos from House of Bread Global, on YouTube.
+- Grid of the latest 6 videos: thumbnail, title, date, Watch button that opens YouTube. From the channel's public feed, fetched on the server at build and revalidated hourly (YOUTUBE_CHANNEL_ID).
+- Fallback when the variable is missing or the fetch fails: "Videos will appear here soon" with the Subscribe on YouTube button.
+
+### Audio (#audio)
+- H2: Listen on the go
+- Text: Audio teaching for the car, the walk or low data.
+- A card per platform with a "Listen on {platform}" button. [AUDIO PLATFORMS AND LINKS TO BE SUPPLIED]
+
+### Social (#social)
+- H2: Follow the ministry
+- Text: Teaching clips, announcements and updates from the ministry. [CONFIRM CONTENT]
+- Cards for YouTube [CHANNEL LINK] and [OTHER PLATFORMS AND LINKS TO BE SUPPLIED], each with a Follow button.
+
+### Read and study (#written)
+- H2: Read and study
+- Three cards, each with a TextCTA: Teachings (to /teachings), Study the New Testament (to /new-testament), New Testament journeys (to /plans).
+
+### Closing
+- Newsletter card.
+
+---
+
+## 6. House of Bread Academy (/academy)
+
+The training classes are named House of Bread Academy ("Academy" in the nav), tagline "Equipped in the truth.": the believers' Bible classes that equip believers with knowledge of the truth. /classes and /classes/[slug] redirect permanently to /academy and /academy/[slug].
+
+Metadata title: House of Bread Academy
+Metadata description: House of Bread Academy: the believers' Bible classes of House of Bread Global, equipping believers with knowledge of the truth. See what each class covers, who it is for and how to join.
 
 ### PageHeader
-- Eyebrow: CLASSES AND TRAINING
-- H1: Go deeper in the Word
-- Lead: Structured teaching from the ministry, taught with the same care for context and doctrine as everything else here.
+- Eyebrow: HOUSE OF BREAD ACADEMY
+- H1: Be equipped in the truth.
+- Lead: House of Bread Academy gives believers a structured place to study the Bible, so they are equipped with knowledge of the truth and ready to stand in it.
 
 ### Class list
 - Cards from content: title, one line summary, who it is for, when it runs, a "View class" link.
 - Empty state: Class details are being prepared. Subscribe to hear when enrolment opens.
 
-### Who classes are for (four icon items)
+### Who the Academy is for (four icon items)
 - New believers who want a structured way into the New Testament
 - Readers who have started and stalled before
 - Students and teachers who want to handle Scripture with more care
@@ -370,9 +441,9 @@ Metadata description: Structured teaching from House of Bread Global for believe
 ### How to join
 - [JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email]
 
-### Class detail (/classes/[slug])
+### Class detail (/academy/[slug])
 - Sections: What it covers, Who it is for, When it runs, How to join, Cost, [CLASS DETAILS TO BE SUPPLIED]
-- Closing band: newsletter
+- Closing: newsletter card
 
 ---
 
@@ -396,12 +467,12 @@ Metadata description: Written teaching from House of Bread Global on doctrine, i
 - Empty state: The first teachings are being prepared. Subscribe to be told when they are published.
 
 ### Closing band
-- Newsletter
+- Newsletter card
 
 ### Teaching detail (/teachings/[slug])
 - Header band: title, date, reading time, passages as linked chips
 - Body in Prose with serif text and light ScriptureBlocks for every quotation
-- Footer: Related teachings (empty state allowed), newsletter band
+- Footer: Related teachings (empty state allowed), newsletter card
 - Sample content is marked draft and placeholder.
 
 ---
@@ -508,7 +579,7 @@ Metadata description: The official app of House of Bread Global. New Testament j
 - Anyone who wants to know the Scriptures rather than simply own one
 
 ### Closing band
-- Newsletter band, heading "Hear about new features and sessions".
+- Newsletter card, heading "Hear about new features and sessions".
 
 ---
 
@@ -540,8 +611,8 @@ Metadata description: Get in touch with House of Bread Global.
 
 - Eyebrow: CONTACT
 - H1: Get in touch
-- Lead: Questions about the ministry, live sessions, classes or the app are welcome.
-- Form: name, email, topic (General question, Live sessions, Classes and training, The app, Something else), message, honeypot field, button "Send message". Form UI is real, action disabled with note "Messaging opens soon" until the contact slice.
+- Lead: Questions about the ministry, live sessions, the Academy or the app are welcome.
+- Form: name, email, topic (General question, Live sessions, Academy, The app, Something else), message, honeypot field, button "Send message". Form UI is real, action disabled with note "Messaging opens soon" until the contact slice.
 - Side panel: [RESPONSE TIME, EMAIL ADDRESS AND SOCIAL LINKS TO BE SUPPLIED]
 
 ---
@@ -572,7 +643,7 @@ Sections:
 ### 404
 - H1: This page could not be found
 - Text: The link may be old, or the address may have been typed differently. Try one of these instead.
-- Links: Home, Live sessions, Classes, Teachings, The official app
+- Links: Home, Academy, Media Library, Live sessions, Teachings, The official app
 - Permanent noindex.
 
 ### Error
@@ -587,10 +658,10 @@ Sections:
 
 ## 15. Acceptance checks for this pass
 
-- No page reads as a Bible study website. Live teaching, classes and the ministry lead on Home, About and the header. The New Testament material sits under Study and the app.
-- Home has a hero with a visual, a stat strip, a bento grid, at least one dark scripture panel, an app band, a social row and a newsletter band.
+- No page reads as a Bible study website. Live teaching, the Academy and the ministry lead on Home, About and the header. The New Testament material sits under Study and the app.
+- Home has a hero with a visual, a stat strip, a Start here section, a bento grid, one dark scripture panel, an app band, a social row and a newsletter card.
 - Every page has a header band, at least three sections and a closing call to action, and each section has one clear primary CTA from the CTA system.
-- White is the page background except for the green surfaces in the surface map.
+- Light surfaces carry every page. Apart from the footer, no page has more than one deep green section or panel. No call to action is underlined.
 - Every text and background pairing, including each gradient stop, passes WCAG 2.2 AA and is logged in docs/PLACEHOLDERS.md. Lime or mint text never appears on white.
 - Motion is CSS only, respects prefers-reduced-motion, and adds no backdrop-filter.
 - Works at 375px with no horizontal scroll, keyboard only, and with JavaScript disabled for navigation.

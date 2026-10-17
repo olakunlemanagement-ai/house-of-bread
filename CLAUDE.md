@@ -3,7 +3,7 @@
 Operating instructions for Claude Code on the House of Bread Global website.
 Read this file at the start of every session. Follow it over general defaults.
 
-Last updated: 16 October 2026
+Last updated: 17 October 2026
 
 ---
 
@@ -102,6 +102,7 @@ declaring any task complete.
   /content              MDX loading, parsing, schemas
   /scripture            canonical reference module, framework free
   /newsletter           Kit client and subscribe logic
+  /media                YouTube feed parser and the cached video fetch
   /app-integration      future app link, interface and no-op provider only
 /docs                   SPEC-v3.md and supporting design notes
 /public
@@ -260,7 +261,84 @@ app. Write accordingly:
 
 ---
 
-## 7. Accessibility and performance
+## 7. Design system
+
+Tokens live in `app/globals.css`. Every value and every contrast pairing is
+logged in `docs/PLACEHOLDERS.md`. Check any new pairing, including each
+gradient stop, before it ships, and log it.
+
+### Palette
+
+- Light surfaces carry the page: white, `surface-warm` (cream), `surface-mint`
+  and `surface-gold`. Sections alternate white, cream and mint.
+- Text on light is `ink` and `ink-muted`. Links, eyebrows, TextCTA labels and
+  focus rings on light are `emerald-deep`. `emerald` is the primary fill.
+  `leaf` is a decorative gradient start only.
+- Green surfaces: the header, the hero and inner page headers, and one
+  lighter feature band per page (the app band). Text on them is white.
+- Deep green (`green-deep`, `green-night`) is for the footer and one feature
+  panel per page. Apart from the footer, a page has at most one deep green
+  section or panel.
+- `lime` and `lime-bright` are accents and button fills on green only. Lime
+  text only where the background is green-rich or darker. Lime on
+  emerald-deep measures 4.02:1 and fails.
+- `gold` and `gold-soft` are fills for live states, badges and small
+  highlights, always with ink text. Use them sparingly.
+- Never put text on the light end of a gradient. Never lime, mint or gold on
+  white, either way round.
+
+### Buttons and calls to action
+
+- Every call to action is a `Button`, a `ButtonLink` or a `TextCTA`. No call to
+  action is underlined.
+- Buttons: 14px radius, at least 48px tall on mobile and 52px from `sm`, full
+  width and stacked in heroes and bands on mobile. Hover lifts 2px and the
+  arrow nudges 4px.
+  - Primary on light: emerald fill, white text, soft shadow, emerald-deep on
+    hover.
+  - Primary on green: lime-bright fill, ink text.
+  - Secondary on light: white fill, 2px emerald border, emerald text, mint on
+    hover.
+  - Secondary on green: white at 12% fill, 1.5px white border, white text.
+    Keep it off the light end of a gradient (4.21:1 there).
+  - Live: gold fill, ink text, only while a session is live.
+- `TextCTA`: a weight 600 label and a 28px circular arrow chip. On light the
+  label is emerald-deep and the chip has an emerald border at 25%; on hover
+  the chip fills emerald and the arrow turns white and slides 3px. On green
+  the label is white, the chip white at 15%, and hover fills it lime-bright
+  with an ink arrow. A card that stretches a TextCTA over itself carries
+  `.cta-host`.
+- Every interactive element has a visible focus ring.
+
+### Links
+
+- Links inside paragraphs and teaching body text keep a thin underline:
+  offset 3px, skip-ink, emerald at 50% opacity, solid on hover. Use
+  `.link-inline`, or `.prose a` in body text. This is required for
+  accessibility.
+- Nav and footer link lists have no underline. Hover is a pill background.
+  The current page has `aria-current="page"` plus a stronger pill with an
+  inset ring and heavier type, never colour alone.
+
+### Navigation
+
+- Header: sticky, 72px, gradient from green-rich to emerald. Left: wordmark,
+  Home, About, Academy, Media Library, Contact. Right: Subscribe (secondary
+  on green) and Get the app (primary on green).
+- Below `xl`: wordmark, a compact "Get app" button and a "Menu" button, all
+  always visible. The menu is a `details` element and works without
+  JavaScript: the five links as large tap targets, then a full width
+  Subscribe button.
+- Footer: Ministry (About, Academy, Media Library, Live sessions, Contact),
+  Learn (Teachings, Study the New Testament, New Testament journeys, The
+  official app), Follow. The "Stay close to the ministry" strip shows only
+  on pages that do not already offer signup (`[data-newsletter]`).
+- Pages close with the newsletter card: a light card on `surface-gold` or
+  `surface-mint` with an emerald button, never a green band.
+
+---
+
+## 8. Accessibility and performance
 
 - Semantic HTML first. Reach for ARIA only when semantics cannot express it.
 - All interactive elements reachable and operable by keyboard.
@@ -276,7 +354,7 @@ app. Write accordingly:
 
 ---
 
-## 8. Git
+## 9. Git
 
 - Branch per feature, named `feat/`, `fix/` or `content/`.
 - Small commits with clear messages. One logical change per commit.
@@ -286,7 +364,7 @@ app. Write accordingly:
 
 ---
 
-## 9. How to work with me
+## 10. How to work with me
 
 - Use plan mode for anything larger than a small fix. Present the plan, wait
   for approval, then build.
@@ -300,7 +378,7 @@ app. Write accordingly:
 
 ---
 
-## 10. Definition of done
+## 11. Definition of done
 
 A task is complete when all of the following hold:
 
