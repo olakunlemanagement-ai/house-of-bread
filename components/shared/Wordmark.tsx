@@ -1,4 +1,4 @@
-// TODO: replace with the official logo SVG once supplied.
+// The name beside the logo mark (Logo.tsx). The supplied logo is the mark only.
 /** Pass a tracking class to override the default wide letter spacing. */
 export function Wordmark({ className = "tracking-[0.22em]" }: { className?: string }) {
   return (
