@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { CrossWatermark, Grain } from "./Decor";
-import { Scripture, type ScriptureVersion } from "./Scripture";
+import { resolvePassage, Scripture, type ScriptureVersion } from "./Scripture";
 
 type ScriptureBlockProps = {
   passage: string;
@@ -10,7 +10,9 @@ type ScriptureBlockProps = {
   /** Light for teaching text. Dark is the deep green feature panel: one per page at most. */
   variant?: "light" | "dark";
   /** One string per verse, so each verse keeps its own line. */
-  verses: ReactNode[];
+  verses?: ReactNode[];
+  /** Paragraphs from MDX, used when `verses` is not given. */
+  children?: ReactNode;
 };
 
 export function ScriptureBlock({
@@ -19,12 +21,14 @@ export function ScriptureBlock({
   label,
   variant = "light",
   verses,
+  children,
 }: ScriptureBlockProps) {
   const dark = variant === "dark";
+  const { canonical } = resolvePassage(passage);
 
   const caption = (
     <span className="mt-7 flex flex-wrap items-center gap-3 font-sans text-sm font-semibold uppercase tracking-[0.16em]">
-      <cite className={`not-italic ${dark ? "text-lime" : "text-emerald-deep"}`}>{passage}</cite>
+      <cite className={`not-italic ${dark ? "text-lime" : "text-emerald-deep"}`}>{canonical}</cite>
       <span
         className={`rounded-full px-2.5 py-0.5 text-xs ${
           dark ? "bg-lime text-ink" : "bg-emerald text-white"
@@ -69,9 +73,7 @@ export function ScriptureBlock({
             dark ? "text-xl leading-relaxed text-on-green sm:text-2xl sm:leading-relaxed" : "text-lg leading-[1.7] text-ink"
           }`}
         >
-          {verses.map((verse, index) => (
-            <p key={index}>{verse}</p>
-          ))}
+          {verses ? verses.map((verse, index) => <p key={index}>{verse}</p>) : children}
         </div>
       </Scripture>
     </div>

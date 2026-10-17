@@ -4,7 +4,7 @@ import { describe, expect, it } from "vitest";
 
 // CLAUDE.md section 6: no em dash, no en dash, no bullet symbol, in any
 // user facing copy. Every page and component is checked as source.
-const roots = ["app", "components", "lib"];
+const roots = ["app", "components", "lib", "content"];
 const forbidden = [
   { name: "em dash", char: String.fromCharCode(0x2014) },
   { name: "en dash", char: String.fromCharCode(0x2013) },
