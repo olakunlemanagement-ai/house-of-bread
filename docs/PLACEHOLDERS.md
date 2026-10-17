@@ -451,9 +451,29 @@ Mint `#05d47c` is kept as a token for progress accents on green. It passes
 on green-rich (5.30) and emerald (3.35, non-text) but not on the glow end,
 so progress marks on green sit on the dark start of a gradient.
 
+### Design upgrade pairings (17 October 2026)
+
+Measured with `npm run contrast` (`scripts/check-contrast.mjs`), which
+composites alpha layers and fails any pairing in use below its threshold.
+Rerun it for every new pairing and add the row here.
+
+| Element | Pairing | Ratio | Result |
+|---|---|---|---|
+| Eyebrow pill on light | emerald-deep on a mint pill over white or cream | 6.92 | Pass |
+| Eyebrow pill in mint sections | emerald-deep on a white pill over mint | 7.65 | Pass |
+| Eyebrow pill on green | white on 12% white over green-rich, emerald-deep, green-deep | 7.41, 5.71, 9.43 | Pass |
+| | over the glow end `#1e7b3a` | **4.22** | **Fails.** Never placed there: section headers sit at the emerald-deep start of the band |
+| Hero emphasis | lime-bright on green-rich | 6.45 | Pass. Placed only over the green-rich end |
+| Play chip on thumbnails | white on 85% green-night over a white or black image | 10.01, 16.82 | Pass |
+| Region band frames | ink, ink-muted on mint; emerald-deep on cream | 14.88, 6.90, 7.22 | Pass |
+| Nav labels | off-white on the header's emerald end, full opacity | 6.22 | Pass |
+
 ### Motion and contrast
 
-The scroll reveal moves sections up 32px without fading them. A fade would
-leave any section straddling the fold partly transparent at load, which would
-lower its measured contrast. The hero entrance does fade, but it is time based
-and finishes within 1 second of load. The H1 rises without fading.
+The scroll reveal fades sections from 0.7 opacity and moves them up 16px.
+At 0.7, ink stays at 6.15:1 on white, but emerald-deep (3.73), ink-muted
+(3.62) and white on the glow end (3.46) dip below 4.5:1. The dip is
+transient: the reveal's range is `entry 0% entry 120px`, so a section is
+fully opaque once 120px of it is on screen, and a section straddling the fold
+at load never rests part faded. The hero entrance is time based and finishes
+within 1 second of load. The H1 rises without fading.
