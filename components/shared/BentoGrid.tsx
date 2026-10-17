@@ -7,8 +7,10 @@ import { Icon, IconTile, type IconName } from "./icons";
 import { TextCTA } from "./TextCTA";
 
 /**
- * Asymmetric grid: one large tile on the left spanning three rows, and three
- * tiles stacked on the right. Stacks to one column on mobile.
+ * Asymmetric grid: one large tile on the left spanning two rows beside two
+ * stacked tiles, then a small tile across the full width. The large tile is
+ * sized by its neighbours, not a minimum height, so it holds no empty void.
+ * Stacks to one column on mobile.
  */
 export function BentoGrid({ children }: { children: ReactNode }) {
   return <ul className="grid gap-5 md:grid-cols-2 lg:grid-cols-12">{children}</ul>;
@@ -24,9 +26,9 @@ type BentoTileProps = {
 };
 
 const placement = {
-  large: "md:col-span-2 lg:col-span-7 lg:row-span-3",
+  large: "md:col-span-2 lg:col-span-7 lg:row-span-2",
   medium: "lg:col-span-5",
-  small: "md:col-span-2 lg:col-span-5",
+  small: "md:col-span-2 lg:col-span-12",
 };
 
 const surfaceClass = {
@@ -46,7 +48,7 @@ export function BentoTile({ size, surface, icon, title, children, cta }: BentoTi
   return (
     <li
       className={`lift cta-host isolate flex flex-col rounded-card border shadow-soft ${placement[size]} ${surfaceClass[surface]} ${
-        large ? "p-6 sm:p-10 lg:min-h-[34rem]" : small ? "p-6 sm:p-7" : "p-6 sm:p-8"
+        large ? "p-6 sm:p-10" : small ? "p-6 sm:p-7" : "p-6 sm:p-8"
       }`}
     >
       {large ? (

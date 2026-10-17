@@ -87,7 +87,7 @@ export default function EventsPage() {
         )}
       </Section>
 
-      <Section id="rhythm" title="Weekly rhythm" tone="mint" width="narrow">
+      <Section id="rhythm" title="Weekly rhythm" tone="mint">
         <Placeholder block>[WEEKLY SCHEDULE AND MINISTRY TIME ZONE TO BE SUPPLIED]</Placeholder>
         <div className="mt-10">
           <RegionTimes headingId="events-region-times" />

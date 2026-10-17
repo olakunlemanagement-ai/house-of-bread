@@ -100,7 +100,10 @@ export function SectionHeader({
       >
         {children}
       </Heading>
-      {intro ? <div className="mt-5 text-lead text-fg-muted">{intro}</div> : null}
+      {/* Body text stays left aligned on phones, even under a centred heading. */}
+      {intro ? (
+        <div className={`mt-5 text-lead text-fg-muted ${centred ? "text-left sm:text-center" : ""}`}>{intro}</div>
+      ) : null}
     </div>
   );
 }
