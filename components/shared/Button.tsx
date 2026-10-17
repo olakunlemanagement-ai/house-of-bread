@@ -11,9 +11,10 @@ export type ButtonTone = "light" | "green";
 /** An in-page anchor or an external address. Rendered as a plain anchor. */
 export type PlainHref = `#${string}` | `https://${string}`;
 
-// 48px tall on mobile, 52px from sm. Hover lifts 2px. No button is underlined.
+// 48px tall on mobile, 52px from sm. Hover lifts 2px over 300ms. No button is underlined.
+// Only the transform animates: colour changes are instant.
 const base =
-  "group/button inline-flex min-h-12 items-center justify-center gap-2 rounded-button py-3 font-semibold leading-tight no-underline transition-transform duration-200 sm:min-h-13 motion-safe:hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:hover:translate-y-0";
+  "group/button inline-flex min-h-12 items-center justify-center gap-2 rounded-button py-3 font-semibold leading-tight no-underline transition-transform duration-300 ease-(--ease-standard) sm:min-h-13 motion-safe:hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:hover:translate-y-0";
 
 // Pairings and ratios are logged in docs/PLACEHOLDERS.md.
 const styles: Record<ButtonTone, Record<ButtonVariant, string>> = {
@@ -57,7 +58,7 @@ function Arrow() {
   return (
     <Icon
       name="arrow-right"
-      className="size-5 shrink-0 transition-transform duration-200 motion-safe:group-hover/button:translate-x-1"
+      className="size-5 shrink-0 transition-transform duration-300 ease-(--ease-standard) motion-safe:group-hover/button:translate-x-1"
     />
   );
 }

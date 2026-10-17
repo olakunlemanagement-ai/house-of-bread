@@ -110,6 +110,8 @@
   --elev-raised: 0 2px 4px rgb(10 54 22 / 0.08), 0 24px 48px rgb(10 54 22 / 0.14);
 
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  /* Buttons: 300ms on the standard curve for the lift and arrow nudge. */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /*
