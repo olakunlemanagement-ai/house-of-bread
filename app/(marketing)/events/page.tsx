@@ -9,7 +9,7 @@ import { Placeholder, PhotoFrame } from "@/components/shared/Placeholder";
 import { RegionTimes } from "@/components/shared/RegionTimes";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
-import { placeholderEvents, replayEvents, upcomingEvents } from "@/lib/content/placeholder-data";
+import { getAll, replayEvents, upcomingEvents } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "Live sessions and events",
@@ -18,8 +18,9 @@ export const metadata: Metadata = {
 };
 
 export default function EventsPage() {
-  const [next, ...rest] = upcomingEvents(placeholderEvents);
-  const replays = replayEvents(placeholderEvents);
+  const events = getAll("event");
+  const [next, ...rest] = upcomingEvents(events);
+  const replays = replayEvents(events);
 
   return (
     <main id="main" tabIndex={-1}>

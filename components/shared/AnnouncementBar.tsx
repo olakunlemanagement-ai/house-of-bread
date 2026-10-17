@@ -1,5 +1,5 @@
 import { announcementCandidates } from "@/lib/content/announcement";
-import { placeholderEvents, type PlaceholderEvent } from "@/lib/content/placeholder-data";
+import { getAll, type EventData } from "@/lib/content";
 import { AnnouncementBarClient } from "./AnnouncementBarClient";
 import { AnnouncementBarView } from "./AnnouncementBarView";
 
@@ -11,7 +11,7 @@ import { AnnouncementBarView } from "./AnnouncementBarView";
  *   visitor's clock against it;
  * - with no candidates, nothing renders and no script runs.
  */
-export function AnnouncementBar({ events = placeholderEvents }: { events?: PlaceholderEvent[] }) {
+export function AnnouncementBar({ events = getAll("event") }: { events?: EventData[] }) {
   const live = events.find((event) => event.status === "live");
   if (live) return <AnnouncementBarView kind="live" event={live} />;
 

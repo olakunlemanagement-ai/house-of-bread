@@ -9,7 +9,7 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge, PhotoFrame } from "@/components/shared/Placeholder";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { classAudience } from "@/lib/content/copy";
-import { placeholderClasses } from "@/lib/content/placeholder-data";
+import { getAll } from "@/lib/content";
 
 export const metadata: Metadata = {
   title: "House of Bread Academy",
@@ -20,6 +20,7 @@ export const metadata: Metadata = {
 const audienceIcons = ["people", "route", "search", "book"] as const;
 
 export default function AcademyPage() {
+  const classes = getAll("class");
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
@@ -39,28 +40,28 @@ export default function AcademyPage() {
       />
 
       <Section id="list" title="Classes">
-        {placeholderClasses.length > 0 ? (
+        {classes.length > 0 ? (
           <ul className="grid gap-5 md:grid-cols-2">
-            {placeholderClasses.map((entry) => (
+            {classes.map((entry) => (
               <li key={entry.slug} className="flex">
                 <LinkCard
                   href={`/academy/${entry.slug}` as Route}
                   title={entry.title}
-                  eyebrow={entry.sample ? <PlaceholderBadge label="Sample" /> : null}
+                  eyebrow={entry.placeholder ? <PlaceholderBadge label="Sample" /> : null}
                   cta="View class"
                 >
                   <dl className="space-y-2">
                     <div>
                       <dt className="sr-only">Summary</dt>
-                      <dd><Placeholder>[ONE LINE SUMMARY]</Placeholder></dd>
+                      <dd>{entry.description}</dd>
                     </div>
                     <div>
                       <dt className="inline font-semibold text-ink">Who it is for: </dt>
-                      <dd className="inline"><Placeholder>[AUDIENCE]</Placeholder></dd>
+                      <dd className="inline">{entry.audience ?? <Placeholder>[AUDIENCE]</Placeholder>}</dd>
                     </div>
                     <div>
                       <dt className="inline font-semibold text-ink">When it runs: </dt>
-                      <dd className="inline"><Placeholder>[DATES]</Placeholder></dd>
+                      <dd className="inline">{entry.schedule ?? <Placeholder>[DATES]</Placeholder>}</dd>
                     </div>
                   </dl>
                 </LinkCard>

@@ -1,4 +1,4 @@
-import type { DatedEvent } from "@/lib/content/placeholder-data";
+import type { DatedEvent } from "@/lib/content/events";
 import { IconTile } from "./icons";
 import { LocalTime } from "./LocalTime";
 import { PhoneFrame } from "./PhoneFrame";

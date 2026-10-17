@@ -1,4 +1,5 @@
-import { upcomingEvents, type PlaceholderEvent } from "./placeholder-data";
+import { upcomingEvents } from "./events.ts";
+import type { EventData } from "./schemas.ts";
 
 export const ANNOUNCE_WINDOW_MS = 24 * 60 * 60 * 1000;
 /** Assumed length of a session whose duration is not supplied. */
@@ -6,7 +7,7 @@ const DEFAULT_DURATION_MS = 2 * 60 * 60 * 1000;
 
 export type Announcement = {
   kind: "live" | "soon";
-  event: PlaceholderEvent;
+  event: EventData;
 };
 
 /**
@@ -16,7 +17,7 @@ export type Announcement = {
  *   cannot wait for someone to change its status.
  * - Otherwise the soonest event starting within 24 hours.
  */
-export function announcementFor(events: PlaceholderEvent[], now: number): Announcement | null {
+export function announcementFor(events: EventData[], now: number): Announcement | null {
   const live = events.find((event) => event.status === "live");
   if (live) return { kind: "live", event: live };
 
@@ -31,7 +32,7 @@ export function announcementFor(events: PlaceholderEvent[], now: number): Announ
 }
 
 /** Events that could ever trigger the bar. Empty means the bar never renders. */
-export function announcementCandidates(events: PlaceholderEvent[]): PlaceholderEvent[] {
+export function announcementCandidates(events: EventData[]): EventData[] {
   return events.filter(
     (event) => event.status === "live" || (event.status === "scheduled" && event.startsAtUtc !== null),
   );

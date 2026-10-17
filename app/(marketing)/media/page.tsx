@@ -12,7 +12,7 @@ import { Section } from "@/components/shared/Section";
 import { YouTubeChannelButton } from "@/components/shared/SocialLinks";
 import { TextCTA } from "@/components/shared/TextCTA";
 import { VideoGrid } from "@/components/shared/VideoGrid";
-import { placeholderEvents, upcomingEvents } from "@/lib/content/placeholder-data";
+import { getAll, upcomingEvents } from "@/lib/content";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -87,7 +87,7 @@ function PendingPlatformCard({ icon, children }: { icon: IconName; children: Rea
 }
 
 export default function MediaPage() {
-  const next = upcomingEvents(placeholderEvents)[0];
+  const next = upcomingEvents(getAll("event"))[0];
   const live = next?.status === "live";
   const { audio, social } = siteConfig.links;
 

@@ -8,32 +8,32 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
 import { TextCTA } from "@/components/shared/TextCTA";
-import { findBySlug, placeholderEvents } from "@/lib/content/placeholder-data";
+import { MdxBody } from "@/components/shared/MdxBody";
+import { PassageList } from "@/components/shared/PassageList";
+import { getAll, getEntry } from "@/lib/content";
 
 // Render the full page before responding, so an unknown slug returns a real
 // 404 status rather than a 200 shell with not found content streamed in.
 export const ensureStatic = "navigation";
 
 export function generateStaticParams() {
-  return placeholderEvents.map((entry) => ({ slug: entry.slug }));
+  return getAll("event").map((entry) => ({ slug: entry.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps<"/events/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const entry = findBySlug(placeholderEvents, slug);
+  const entry = getEntry("event", slug);
   if (!entry) return {};
-  return {
-    title: entry.title,
-    description: `${eventKindLabel[entry.kind]} session from House of Bread Global. Sample entry, details to be supplied.`,
-  };
+  return { title: entry.data.title, description: entry.data.description };
 }
 
 export default async function EventPage({ params }: PageProps<"/events/[slug]">) {
   const { slug } = await params;
-  const event = findBySlug(placeholderEvents, slug);
-  if (!event) notFound();
+  const entry = getEntry("event", slug);
+  if (!entry) notFound();
+  const event = entry.data;
 
   return (
     <main id="main" tabIndex={-1}>
@@ -42,7 +42,7 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         title={event.title}
         meta={
           <div className="space-y-3">
-            {event.sample ? <PlaceholderBadge label="Sample" /> : null}
+            {event.placeholder ? <PlaceholderBadge label="Sample" /> : null}
             <p className="flex flex-wrap items-center gap-2 text-lg text-on-green">
               <Icon name="calendar" className="size-5 text-on-green" />
               <EventWhen event={event} />
@@ -84,11 +84,15 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
       />
 
       <Section id="about" title="About this session" width="narrow">
-        <Placeholder block>[SESSION DESCRIPTION TO BE SUPPLIED]</Placeholder>
+        <MdxBody source={entry.body} />
       </Section>
 
       <Section id="passages" title="Passages" tone="mint" width="narrow">
-        <Placeholder block>[PASSAGES TO BE SUPPLIED, LINKED THROUGH /lib/scripture]</Placeholder>
+        {event.passages.length > 0 ? (
+          <PassageList passages={event.passages} />
+        ) : (
+          <Placeholder block>[PASSAGES TO BE SUPPLIED]</Placeholder>
+        )}
       </Section>
 
       <nav aria-label="Sessions" className="bg-surface">

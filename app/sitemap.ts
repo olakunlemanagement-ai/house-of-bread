@@ -1,11 +1,6 @@
 import type { MetadataRoute } from "next";
-import {
-  placeholderBooks,
-  placeholderClasses,
-  placeholderEvents,
-  placeholderPlans,
-  placeholderTeachings,
-} from "@/lib/content/placeholder-data";
+import { getAll } from "@/lib/content";
+import { placeholderPlans } from "@/lib/content/placeholder-data";
 import { siteConfig } from "@/lib/site-config";
 
 // Public, indexable pages only. /subscribe/check-email and the 404 page are
@@ -29,10 +24,10 @@ const staticPaths = [
 export default function sitemap(): MetadataRoute.Sitemap {
   const paths = [
     ...staticPaths,
-    ...placeholderClasses.map((entry) => `/academy/${entry.slug}`),
-    ...placeholderEvents.map((entry) => `/events/${entry.slug}`),
-    ...placeholderTeachings.map((entry) => `/teachings/${entry.slug}`),
-    ...placeholderBooks.filter((book) => book.hasPage).map((book) => `/new-testament/${book.slug}`),
+    ...getAll("class").map((entry) => `/academy/${entry.slug}`),
+    ...getAll("event").map((entry) => `/events/${entry.slug}`),
+    ...getAll("teaching").map((entry) => `/teachings/${entry.slug}`),
+    ...getAll("book").map((entry) => `/new-testament/${entry.slug}`),
     ...placeholderPlans.map((entry) => `/plans/${entry.slug}`),
   ];
   return paths.map((path) => ({ url: new URL(path, siteConfig.url).toString() }));

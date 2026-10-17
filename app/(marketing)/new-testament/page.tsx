@@ -7,7 +7,8 @@ import { StepList } from "@/components/shared/Lists";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Section } from "@/components/shared/Section";
 import { introductionHeadings } from "@/lib/content/copy";
-import { bookGroups, placeholderBooks } from "@/lib/content/placeholder-data";
+import { getAll } from "@/lib/content";
+import { bookGroups, bookListings } from "@/lib/content/book-groups";
 
 export const metadata: Metadata = {
   title: "Study the New Testament, book by book",
@@ -40,7 +41,7 @@ export default function NewTestamentPage() {
       </Section>
 
       <Section id="books" title="Book index">
-        <BookGrid groups={bookGroups} books={placeholderBooks} />
+        <BookGrid groups={bookGroups} books={bookListings(new Set(getAll("book").map((book) => book.slug)))} />
       </Section>
 
       <AppBand

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
-import type { EventKind, PlaceholderEvent } from "@/lib/content/placeholder-data";
+import type { EventData, EventKind } from "@/lib/content/schemas";
 import { Button, ButtonLink } from "./Button";
 import { cardClass, interactiveCardClass } from "./Card";
 import { Icon, IconTile } from "./icons";
@@ -16,14 +16,14 @@ export const eventKindLabel: Record<EventKind, string> = {
 };
 
 /** Event date and time, or a marked placeholder when none is supplied. */
-export function EventWhen({ event }: { event: PlaceholderEvent }) {
+export function EventWhen({ event }: { event: EventData }) {
   if (!event.startsAtUtc || !event.timeZone) {
     return <Placeholder>[DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED]</Placeholder>;
   }
   return <LocalTime iso={event.startsAtUtc} timeZone={event.timeZone} />;
 }
 
-export function EventDuration({ event }: { event: PlaceholderEvent }) {
+export function EventDuration({ event }: { event: EventData }) {
   if (event.durationMinutes === null) {
     return <Placeholder>[DURATION TO BE SUPPLIED]</Placeholder>;
   }
@@ -45,7 +45,7 @@ export function LiveBadge() {
   );
 }
 
-export function LiveSessionCard({ event, idPrefix }: { event: PlaceholderEvent; idPrefix: string }) {
+export function LiveSessionCard({ event, idPrefix }: { event: EventData; idPrefix: string }) {
   const youtubeNote = `${idPrefix}-youtube-note`;
   const calendarNote = `${idPrefix}-calendar-note`;
   const live = event.status === "live";
@@ -69,7 +69,7 @@ export function LiveSessionCard({ event, idPrefix }: { event: PlaceholderEvent; 
           </p>
         </div>
         <div className="p-6 sm:p-8 lg:col-span-8">
-          {event.sample ? <PlaceholderBadge label="Sample" /> : null}
+          {event.placeholder ? <PlaceholderBadge label="Sample" /> : null}
           <h3 className="mt-3 text-3xl leading-tight">
             <Link href={`/events/${event.slug}` as Route} className="rounded hover:text-emerald-deep">
               {event.title}
@@ -124,14 +124,14 @@ export function LiveSessionCard({ event, idPrefix }: { event: PlaceholderEvent; 
 }
 
 /** A session in a list. The whole card links to the session page. */
-export function EventCard({ event }: { event: PlaceholderEvent }) {
+export function EventCard({ event }: { event: EventData }) {
   return (
     <li className={`${cardClass} ${interactiveCardClass} cta-host flex flex-col gap-5 sm:flex-row sm:items-center`}>
       <IconTile name={event.kind === "live" ? "live" : "calendar"} size="lg" />
       <div className="flex-1">
         <p className="flex flex-wrap items-center gap-2">
           <span className="eyebrow">{eventKindLabel[event.kind]}</span>
-          {event.sample ? <PlaceholderBadge label="Sample" /> : null}
+          {event.placeholder ? <PlaceholderBadge label="Sample" /> : null}
         </p>
         <h3 className="mt-2 text-2xl leading-snug">{event.title}</h3>
         <p className="mt-2 text-ink">

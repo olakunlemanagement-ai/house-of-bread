@@ -1,11 +1,11 @@
 import Link from "next/link";
 import type { Route } from "next";
-import type { BookGroup, PlaceholderBook } from "@/lib/content/placeholder-data";
+import type { BookGroup, BookListing } from "@/lib/content/book-groups";
 import { Icon } from "./icons";
 
 type BookGridProps = {
   groups: BookGroup[];
-  books: PlaceholderBook[];
+  books: BookListing[];
 };
 
 /** The New Testament index, grouped. Books without a page are not links. */

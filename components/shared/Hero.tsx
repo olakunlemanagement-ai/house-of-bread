@@ -1,4 +1,4 @@
-import type { DatedEvent } from "@/lib/content/placeholder-data";
+import type { DatedEvent } from "@/lib/content/events";
 import { ButtonLink } from "./Button";
 import { TextCTA } from "./TextCTA";
 import { CrossWatermark, CurveEdge, Grain, Leaves } from "./Decor";

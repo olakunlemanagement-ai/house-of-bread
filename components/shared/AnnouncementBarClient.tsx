@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import { announcementFor } from "@/lib/content/announcement";
-import type { PlaceholderEvent } from "@/lib/content/placeholder-data";
+import type { EventData } from "@/lib/content/schemas";
 import { AnnouncementBarView } from "./AnnouncementBarView";
 import { LocalTime } from "./LocalTime";
 
@@ -13,7 +13,7 @@ const subscribe = () => () => {};
  * hours. Renders nothing on the server, so the static HTML never shows a
  * stale announcement.
  */
-export function AnnouncementBarClient({ events }: { events: PlaceholderEvent[] }) {
+export function AnnouncementBarClient({ events }: { events: EventData[] }) {
   // A string snapshot, so React compares by value between renders.
   const key = useSyncExternalStore(
     subscribe,

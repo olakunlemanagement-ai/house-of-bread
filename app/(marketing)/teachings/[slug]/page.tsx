@@ -6,37 +6,36 @@ import { EmptyState } from "@/components/shared/EmptyState";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
-import { Prose } from "@/components/shared/Prose";
-import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
+import { MdxBody } from "@/components/shared/MdxBody";
 import { Section } from "@/components/shared/Section";
-import { findBySlug, placeholderTeachings } from "@/lib/content/placeholder-data";
+import { getAll, getEntry } from "@/lib/content";
+import { formatContentDate } from "@/lib/content/dates";
+import { canonicalise } from "@/lib/scripture";
 
 // Render the full page before responding, so an unknown slug returns a real
 // 404 status rather than a 200 shell with not found content streamed in.
 export const ensureStatic = "navigation";
 
 export function generateStaticParams() {
-  return placeholderTeachings.map((entry) => ({ slug: entry.slug }));
+  return getAll("teaching").map((entry) => ({ slug: entry.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps<"/teachings/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const entry = findBySlug(placeholderTeachings, slug);
+  const entry = getEntry("teaching", slug);
   if (!entry) return {};
-  return {
-    title: entry.title,
-    description: "Teaching from House of Bread Global. Sample draft, content to be supplied.",
-  };
+  return { title: entry.data.title, description: entry.data.description };
 }
 
 export default async function TeachingPage({ params }: PageProps<"/teachings/[slug]">) {
   const { slug } = await params;
-  const entry = findBySlug(placeholderTeachings, slug);
-  if (!entry) notFound();
+  const found = getEntry("teaching", slug);
+  if (!found) notFound();
+  const entry = found.data;
 
-  const related = placeholderTeachings.filter((other) => other.slug !== entry.slug);
+  const related = getAll("teaching").filter((other) => other.slug !== entry.slug);
 
   return (
     <main id="main" tabIndex={-1}>
@@ -45,10 +44,10 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
         title={entry.title}
         meta={
           <div className="flex flex-wrap items-center gap-3 text-sm">
-            {entry.sample ? <PlaceholderBadge label="Sample, draft" /> : null}
-            <Placeholder>[DATE]</Placeholder>
+            {entry.placeholder ? <PlaceholderBadge label="Sample, draft" /> : null}
+            <time dateTime={entry.date}>{formatContentDate(entry.date)}</time>
             <Placeholder>[READING TIME]</Placeholder>
-            <Placeholder>[PASSAGES AS LINKED CHIPS]</Placeholder>
+            {entry.passages.length > 0 ? <span>{entry.passages.map(canonicalise).join(", ")}</span> : null}
           </div>
         }
       />
@@ -59,13 +58,7 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
             <h2 id="body-heading" className="sr-only">
               {entry.title}
             </h2>
-            <Prose>
-              <Placeholder block>
-                [TEACHING BODY TO BE SUPPLIED. Sample layout only: body text in serif, with every
-                quotation in a ScriptureBlock as below.]
-              </Placeholder>
-              <ScriptureBlock passage="John 6:33-35" verses={john6_33to35} />
-            </Prose>
+            <MdxBody source={found.body} />
           </div>
         </div>
       </article>
@@ -78,9 +71,9 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
                 <LinkCard
                   href={`/teachings/${other.slug}` as Route}
                   title={other.title}
-                  eyebrow={other.sample ? <PlaceholderBadge label="Sample, draft" /> : null}
+                  eyebrow={other.placeholder ? <PlaceholderBadge label="Sample, draft" /> : null}
                 >
-                  <Placeholder>[SUMMARY TO BE SUPPLIED]</Placeholder>
+                  {other.description}
                 </LinkCard>
               </li>
             ))}

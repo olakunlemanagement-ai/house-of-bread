@@ -17,7 +17,8 @@ import { Section, SectionHeader } from "@/components/shared/Section";
 import { SocialLinks, YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
 import { homeStats, StatStrip } from "@/components/shared/StatStrip";
 import { nameText } from "@/lib/content/copy";
-import { placeholderEvents, placeholderPlans, upcomingEvents } from "@/lib/content/placeholder-data";
+import { getAll, upcomingEvents } from "@/lib/content";
+import { placeholderPlans } from "@/lib/content/placeholder-data";
 import { isVideoId } from "@/lib/media/youtube-feed";
 import { siteConfig } from "@/lib/site-config";
 
@@ -27,7 +28,7 @@ export const metadata: Metadata = {
 };
 
 export default function HomePage() {
-  const next = upcomingEvents(placeholderEvents)[0];
+  const next = upcomingEvents(getAll("event"))[0];
   // Validated here, so a malformed id falls back to the placeholder frame.
   const welcomeVideoId = isVideoId(siteConfig.links.welcomeVideoId) ? siteConfig.links.welcomeVideoId : null;
 

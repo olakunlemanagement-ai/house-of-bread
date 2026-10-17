@@ -1,20 +1,23 @@
 import { describe, expect, it } from "vitest";
 import { announcementCandidates, announcementFor } from "./announcement";
-import type { PlaceholderEvent } from "./placeholder-data";
+import type { EventData } from "./schemas.ts";
 
 const HOUR = 60 * 60 * 1000;
 const now = Date.parse("2026-10-16T12:00:00Z");
 
-const event = (overrides: Partial<PlaceholderEvent>): PlaceholderEvent => ({
+const event = (overrides: Partial<EventData>): EventData => ({
   slug: "test",
   title: "Test session",
+  description: "Test.",
+  date: "2026-10-16",
+  passages: [],
   kind: "live",
   startsAtUtc: null,
   timeZone: "Europe/London",
   durationMinutes: 60,
   youtubeUrl: null,
   status: "scheduled",
-  sample: true,
+  placeholder: true,
   ...overrides,
 });
 

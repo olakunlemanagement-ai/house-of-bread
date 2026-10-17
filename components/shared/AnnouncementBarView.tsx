@@ -1,6 +1,6 @@
 import type { Route } from "next";
 import type { ReactNode } from "react";
-import type { PlaceholderEvent } from "@/lib/content/placeholder-data";
+import type { EventData } from "@/lib/content/schemas";
 import type { PlainHref } from "./Button";
 import { TextCTA } from "./TextCTA";
 
@@ -15,7 +15,7 @@ export function AnnouncementBarView({
   when,
 }: {
   kind: "live" | "soon";
-  event: PlaceholderEvent;
+  event: EventData;
   when?: ReactNode;
 }) {
   const href = event.youtubeUrl ?? `/events/${event.slug}`;

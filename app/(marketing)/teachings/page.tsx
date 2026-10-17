@@ -7,7 +7,8 @@ import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
-import { placeholderTeachings } from "@/lib/content/placeholder-data";
+import { getAll } from "@/lib/content";
+import { canonicalise } from "@/lib/scripture";
 
 export const metadata: Metadata = {
   title: "Teachings",
@@ -16,6 +17,7 @@ export const metadata: Metadata = {
 };
 
 export default function TeachingsPage() {
+  const teachings = getAll("teaching");
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
@@ -45,22 +47,24 @@ export default function TeachingsPage() {
       </Section>
 
       <Section id="latest" title="Latest teachings" tone="warm">
-        {placeholderTeachings.length > 0 ? (
+        {teachings.length > 0 ? (
           <ul className="grid gap-5 md:grid-cols-2">
-            {placeholderTeachings.map((entry) => (
+            {teachings.map((entry) => (
               <li key={entry.slug} className="flex">
                 <LinkCard
                   href={`/teachings/${entry.slug}` as Route}
                   title={entry.title}
-                  eyebrow={entry.sample ? <PlaceholderBadge label="Sample, draft" /> : null}
+                  eyebrow={entry.placeholder ? <PlaceholderBadge label="Sample, draft" /> : null}
                   footer={
                     <span className="flex flex-wrap gap-2 text-sm">
                       <Placeholder>[READING TIME]</Placeholder>
-                      <Placeholder>[PASSAGES]</Placeholder>
+                      {entry.passages.length > 0 ? (
+                        <span>{entry.passages.map(canonicalise).join(", ")}</span>
+                      ) : null}
                     </span>
                   }
                 >
-                  <Placeholder>[SUMMARY TO BE SUPPLIED]</Placeholder>
+                  {entry.description}
                 </LinkCard>
               </li>
             ))}

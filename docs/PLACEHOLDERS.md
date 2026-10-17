@@ -242,27 +242,36 @@ None states a fact. Confirm or replace.
 
 ## Placeholder data
 
-`lib/content/placeholder-data.ts` is marked `TODO: replace with MDX content
-pipeline`. Sample entries carry `sample: true` and render a "Sample" badge.
+Events, classes, teachings and books come from MDX in `/content`, through
+`lib/content`. Each sample file has `placeholder: true` in its frontmatter,
+a bracketed `[PLACEHOLDER ...]` body, and renders a "Sample" badge. Nothing
+is copied from the app. Replace or delete each one when real content arrives.
 
-| Route | Sample slugs |
-|---|---|
-| `/events/[slug]` | `sample-event-one`, `sample-event-two` |
-| `/academy/[slug]` | `sample-class-one`, `sample-class-two` |
-| `/teachings/[slug]` | `sample-teaching-one`, `sample-teaching-two` (marked draft) |
-| `/new-testament/[book]` | `matthew`, `mark` |
-| `/plans/[slug]` | `30-day-plan`, `60-day-plan`, `90-day-plan` |
+| Route | Source | Sample |
+|---|---|---|
+| `/events/[slug]` | `content/events` | `sample-live-session` |
+| `/academy/[slug]` | `content/classes` | `sample-class` |
+| `/teachings/[slug]` | `content/teachings` | `sample-teaching` (marked draft) |
+| `/new-testament/[book]` | `content/books` | `matthew` |
+| `/plans/[slug]` | `lib/content/placeholder-data.ts` | `30-day-plan`, `60-day-plan`, `90-day-plan` |
 
-- The sample events have no date, so the home page and `/events` show their
-  empty states. Which events count as upcoming or replay comes from the
-  event `status` field, not the build time clock, because pages are static.
-  The event pages exist for layout review and are reachable by URL only.
-- The 27 book slugs are generated from book names and are temporary.
-  Canonical identifiers must come from `/lib/scripture`, because they become
-  part of deep links. Books other than Matthew and Mark show "Coming soon"
-  and are not links.
-- `Scripture` passes the `passage` string through unparsed, with a TODO to
-  resolve it through `/lib/scripture` once that module exists.
+- Plans stay in `placeholder-data.ts` until their identifiers are confirmed
+  against the app (SPEC-v3 section 13). The `plan` schema already exists.
+- The sample event has no date, time zone, duration or YouTube link. The
+  schema allows those as null only on a placeholder event. The home page and
+  `/events` show their empty states. Which events count as upcoming or replay
+  comes from the event `status` field, not the build time clock.
+- Book slugs are canonical ids from `/lib/scripture`. A book links from the
+  index only when `content/books/<id>.mdx` exists. Mark no longer has a
+  sample page.
+- `<Scripture>` resolves `passage` through `/lib/scripture` and puts the
+  canonical reference and deep link on data attributes. The deep links stay
+  data only until the Scripture Index pages exist (stage two).
+- `/lib/scripture` covers the 27 New Testament books with chapter counts.
+  Verse counts per chapter are not checked yet, so `John 6:99` passes.
+  Old Testament books are not in the module yet; a body that quotes one
+  fails validation until they are added.
+- Reading time on teachings is still a bracketed placeholder.
 
 ## Brand
 

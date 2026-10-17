@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/shared/Button";
 import { IconTile, type IconName } from "@/components/shared/icons";
@@ -6,29 +7,29 @@ import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { SectionHeader } from "@/components/shared/Section";
-import { findBySlug, placeholderClasses } from "@/lib/content/placeholder-data";
+import { MdxBody } from "@/components/shared/MdxBody";
+import { getAll, getEntry } from "@/lib/content";
 
 // Render the full page before responding, so an unknown slug returns a real
 // 404 status rather than a 200 shell with not found content streamed in.
 export const ensureStatic = "navigation";
 
 export function generateStaticParams() {
-  return placeholderClasses.map((entry) => ({ slug: entry.slug }));
+  return getAll("class").map((entry) => ({ slug: entry.slug }));
 }
 
 export async function generateMetadata({
   params,
 }: PageProps<"/academy/[slug]">): Promise<Metadata> {
   const { slug } = await params;
-  const entry = findBySlug(placeholderClasses, slug);
+  const entry = getEntry("class", slug);
   if (!entry) return {};
-  return {
-    title: entry.title,
-    description: "A class from House of Bread Academy. Sample entry, details to be supplied.",
-  };
+  return { title: entry.data.title, description: entry.data.description };
 }
 
-const details: { id: string; title: string; icon: IconName }[] = [
+type DetailId = "covers" | "who" | "when" | "join" | "cost";
+
+const details: { id: DetailId; title: string; icon: IconName }[] = [
   { id: "covers", title: "What it covers", icon: "book" },
   { id: "who", title: "Who it is for", icon: "people" },
   { id: "when", title: "When it runs", icon: "calendar" },
@@ -38,16 +39,28 @@ const details: { id: string; title: string; icon: IconName }[] = [
 
 export default async function ClassPage({ params }: PageProps<"/academy/[slug]">) {
   const { slug } = await params;
-  const entry = findBySlug(placeholderClasses, slug);
-  if (!entry) notFound();
+  const found = getEntry("class", slug);
+  if (!found) notFound();
+  const entry = found.data;
+  const detail: Record<DetailId, ReactNode> = {
+    covers: <MdxBody source={found.body} />,
+    who: entry.audience,
+    when: entry.schedule,
+    join: entry.joinUrl ? (
+      <ButtonLink href={entry.joinUrl as `https://${string}`} arrow>
+        Join this class
+      </ButtonLink>
+    ) : undefined,
+    cost: entry.cost,
+  };
 
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
         eyebrow="House of Bread Academy"
         title={entry.title}
-        lead={<Placeholder>[ONE LINE SUMMARY]</Placeholder>}
-        meta={entry.sample ? <PlaceholderBadge label="Sample" /> : null}
+        lead={entry.description}
+        meta={entry.placeholder ? <PlaceholderBadge label="Sample" /> : null}
         actions={
           <>
             <ButtonLink href="#join" tone="green" arrow>
@@ -78,7 +91,7 @@ export default async function ClassPage({ params }: PageProps<"/academy/[slug]">
                     {item.title}
                   </SectionHeader>
                   <div className="mt-6">
-                    <Placeholder block>[CLASS DETAILS TO BE SUPPLIED]</Placeholder>
+                    {detail[item.id] ?? <Placeholder block>[CLASS DETAILS TO BE SUPPLIED]</Placeholder>}
                   </div>
                 </div>
               </div>
