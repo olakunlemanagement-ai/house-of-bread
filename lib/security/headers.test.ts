@@ -48,6 +48,17 @@ describe("securityHeaders", () => {
     expect(directive(cspFor(rules, "/(.*)"), "frame-src")).toBe("'none'");
   });
 
+  it("lists exactly the routes that render an embed", () => {
+    expect([...EMBED_ROUTES]).toEqual(["/", "/media", "/events"]);
+  });
+
+  it("gives no other rule a YouTube frame", () => {
+    const embed = new Set<string>(EMBED_ROUTES);
+    for (const rule of rules.filter((r) => !embed.has(r.source))) {
+      expect(directive(cspFor(rules, rule.source), "frame-src")).toBe("'none'");
+    }
+  });
+
   it("allows only youtube-nocookie on embed routes", () => {
     for (const route of EMBED_ROUTES) {
       expect(directive(cspFor(rules, route), "frame-src")).toBe("https://www.youtube-nocookie.com");

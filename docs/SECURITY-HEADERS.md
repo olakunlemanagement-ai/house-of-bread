@@ -25,7 +25,7 @@ The policy still blocks external script hosts, limits where data can be sent (`c
 ## Policy
 
 - Site wide: `default-src 'self'`; `img-src` adds `data:` and `i.ytimg.com`; `connect-src` adds `plausible.io`; `frame-src 'none'`; `object-src 'none'`; `base-uri 'self'`; `form-action 'self'`; `frame-ancestors 'none'`.
-- Embed routes (`EMBED_ROUTES`, currently `/` only): `frame-src https://www.youtube-nocookie.com`. Add a path to the list when a page gains an embed.
+- Embed routes (`EMBED_ROUTES`: `/`, `/media`, `/events`): `frame-src https://www.youtube-nocookie.com`. Add a path to the list when a page gains an embed.
 - Other headers: `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `X-Frame-Options`. Vercel sends `Strict-Transport-Security` itself.
 - When the Plausible script is added, `script-src` needs `https://plausible.io`, or Plausible can be proxied through a rewrite so it stays `'self'`.
 
