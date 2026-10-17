@@ -85,14 +85,15 @@ export function YouTubeFacade({
       <span
         aria-hidden="true"
         className={`absolute left-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-emerald text-white shadow-raised transition-transform duration-200 motion-safe:group-hover:scale-105 ${
-          live ? "top-[42%]" : "top-1/2"
+          live ? "top-[42%]" : "top-[44%] sm:top-1/2"
         }`}
       >
         <svg viewBox="0 0 24 24" className="ml-1 size-8" fill="currentColor" focusable="false">
           <path d="M7 4.5v15l12-7.5z" />
         </svg>
       </span>
-      <span className="absolute inset-x-0 bottom-0 bg-white/95 px-5 py-3 font-semibold text-ink">
+      {/* One line, truncated, so a long title never covers the play button. The full title stays in the link's name. */}
+      <span className="absolute inset-x-0 bottom-0 truncate bg-white/95 px-4 py-2.5 text-base font-semibold text-ink sm:px-5 sm:py-3">
         {live ? "Watch live: " : "Play: "}
         {title}
         <span className="sr-only"> (loads YouTube)</span>
