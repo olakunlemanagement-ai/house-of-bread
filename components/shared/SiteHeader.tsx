@@ -5,7 +5,7 @@ import { Logo } from "./Logo";
 import { NavLinks, StaticNavLinks } from "./NavLinks";
 
 /**
- * Sticky 72px header: a white glass bar with a hairline bottom border.
+ * Sticky 72px header: white at 96% with a hairline bottom border.
  * Wide screens: logo and the five nav links on the left, Subscribe
  * (secondary) and Get the app (emerald primary) on the right.
  * Narrow screens: logo, a compact Get app button and a Menu button, all
@@ -25,9 +25,9 @@ export function SiteHeader() {
         <Link
           href="/"
           aria-label="House of Bread Global, home"
-          className="shrink-0 rounded-lg py-2 text-[0.8rem] text-ink min-[400px]:text-sm sm:text-base"
+          className="shrink-0 rounded-lg py-2 text-sm text-ink sm:text-base"
         >
-          <Logo priority />
+          <Logo priority compact />
         </Link>
 
         <nav aria-label="Main" className="hidden xl:block">

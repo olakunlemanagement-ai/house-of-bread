@@ -11,12 +11,15 @@ export function Logo({
   priority = false,
   onDeep = false,
   className = "",
+  compact = false,
 }: {
   /** True in the header, so the mark loads first. */
   priority?: boolean;
   /** The footer: the mark sits in a white rounded tile. */
   onDeep?: boolean;
   className?: string;
+  /** Hide the name on very narrow screens (the header), keeping the mark. */
+  compact?: boolean;
 }) {
   return (
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
@@ -27,7 +30,9 @@ export function Logo({
       >
         <Image src={mark} alt="" priority={priority} sizes="36px" className="h-full w-auto" />
       </span>
-      <Wordmark className="tracking-[0.14em] sm:tracking-[0.18em]" />
+      <span className={compact ? "hidden min-[420px]:inline" : ""}>
+        <Wordmark className="tracking-[0.14em] sm:tracking-[0.18em]" />
+      </span>
     </span>
   );
 }
