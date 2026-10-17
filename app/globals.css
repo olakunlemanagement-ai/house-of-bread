@@ -476,12 +476,15 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
 }
 
 /*
-  Scroll reveal rises without fading. A fade would leave any section that
-  straddles the fold partly transparent at load, lowering its contrast.
+  Scroll reveal: a section fades from 0.7 and rises 16px, once. At 0.7 some
+  text dips below 4.5:1, so the range ends 120px into entry: any section
+  with 120px on screen is fully opaque, and one straddling the fold at load
+  never rests part faded. See docs/PLACEHOLDERS.md, Motion and contrast.
 */
 @keyframes reveal {
   from {
-    transform: translateY(32px);
+    opacity: 0.7;
+    transform: translateY(16px);
   }
 }
 
@@ -531,7 +534,7 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
     .reveal {
       animation: reveal linear both;
       animation-timeline: view();
-      animation-range: entry 0% entry 100%;
+      animation-range: entry 0% entry 120px;
     }
   }
 }
