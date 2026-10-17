@@ -47,7 +47,7 @@ export default function ClassesPage() {
                   href={`/classes/${entry.slug}` as Route}
                   title={entry.title}
                   eyebrow={entry.sample ? <PlaceholderBadge label="Sample" /> : null}
-                  footer={<span className="font-semibold text-emerald-deep">View class</span>}
+                  cta="View class"
                 >
                   <dl className="space-y-2">
                     <div>

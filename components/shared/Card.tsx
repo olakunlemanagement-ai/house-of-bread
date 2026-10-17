@@ -1,9 +1,10 @@
 import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
-import { Icon, IconTile, type IconName } from "./icons";
+import { IconTile, type IconName } from "./icons";
+import { TextCTAChip, TextCTALabel } from "./TextCTA";
 
-/** Card on white or tint: white surface, 12% green edge, soft shadow, 24px radius. */
+/** Card on light surfaces: white, 14% emerald edge, soft shadow, 24px radius. */
 export const cardClass = "rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8";
 
 /** Lift 4px, raised shadow and a stronger edge on hover and focus. See .lift. */
@@ -53,15 +54,18 @@ export function LinkCard({
   eyebrow,
   children,
   footer,
+  cta,
 }: {
   href: Route;
   title: string;
   eyebrow?: ReactNode;
   children?: ReactNode;
   footer?: ReactNode;
+  /** Visible call to action label, such as "View class". The title is the link. */
+  cta?: string;
 }) {
   return (
-    <Card as="article" className={`flex w-full flex-col ${interactiveCardClass}`}>
+    <Card as="article" className={`cta-host flex w-full flex-col ${interactiveCardClass}`}>
       {eyebrow ? <div className="mb-4 flex flex-wrap items-center gap-2 text-sm">{eyebrow}</div> : null}
       <h3 className="text-2xl leading-snug">
         <Link
@@ -74,12 +78,7 @@ export function LinkCard({
       {children ? <div className="mt-3 leading-relaxed text-ink-muted">{children}</div> : null}
       <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
         {footer}
-        <span
-          aria-hidden="true"
-          className="bg-green-tile ml-auto inline-flex size-10 items-center justify-center rounded-xl text-white"
-        >
-          <Icon name="arrow-right" className="size-5" />
-        </span>
+        <span className="ml-auto">{cta ? <TextCTALabel>{cta}</TextCTALabel> : <TextCTAChip />}</span>
       </div>
     </Card>
   );

@@ -88,7 +88,7 @@ export default function PrivacyPage() {
                 <li key={section.id}>
                   <a
                     href={`#${section.id}`}
-                    className="block rounded-lg px-2 py-1.5 text-emerald-deep underline-offset-4 hover:underline"
+                    className="block rounded-lg px-2 py-1.5 font-medium text-ink hover:bg-white"
                   >
                     {index + 1}. {section.title}
                   </a>

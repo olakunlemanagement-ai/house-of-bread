@@ -49,7 +49,7 @@ export function ContactForm() {
 
       <p className="text-sm leading-relaxed text-ink-muted">
         <Placeholder>[CONTACT FORM PRIVACY WORDING TO BE SUPPLIED]</Placeholder>{" "}
-        <Link href="/privacy" className="font-semibold text-emerald-deep underline underline-offset-4">
+        <Link href="/privacy" className="link-inline font-semibold">
           Read the privacy policy.
         </Link>
       </p>

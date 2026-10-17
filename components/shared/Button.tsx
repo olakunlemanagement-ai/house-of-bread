@@ -113,30 +113,3 @@ export function Button({
     </button>
   );
 }
-
-/** Underlined text link. Deep green on white, lime on green surfaces. */
-export const textLinkClass =
-  "font-semibold text-fg-link underline underline-offset-4 decoration-2 hover:decoration-[3px]";
-
-/** Text link with a trailing arrow, for "go to" links. */
-export function ArrowLink({ href, children }: { href: Route | PlainHref; children: ReactNode }) {
-  const className = `group/button inline-flex items-center gap-2 py-2 ${textLinkClass}`;
-  const content = (
-    <>
-      {children}
-      <Arrow />
-    </>
-  );
-  if (href.startsWith("#") || href.startsWith("https://")) {
-    return (
-      <a href={href} className={className}>
-        {content}
-      </a>
-    );
-  }
-  return (
-    <Link href={href as Route} className={className}>
-      {content}
-    </Link>
-  );
-}

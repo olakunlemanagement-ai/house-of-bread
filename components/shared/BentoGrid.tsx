@@ -2,7 +2,9 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
 import { CrossWatermark, Grain } from "./Decor";
+import { buttonClasses } from "./Button";
 import { Icon, IconTile, type IconName } from "./icons";
+import { TextCTA } from "./TextCTA";
 
 /**
  * Asymmetric grid: one large tile on the left spanning three rows, and three
@@ -43,7 +45,7 @@ export function BentoTile({ size, surface, icon, title, children, cta }: BentoTi
   const small = size === "small";
   return (
     <li
-      className={`lift isolate flex flex-col rounded-card border shadow-soft ${placement[size]} ${surfaceClass[surface]} ${
+      className={`lift cta-host isolate flex flex-col rounded-card border shadow-soft ${placement[size]} ${surfaceClass[surface]} ${
         large ? "p-6 sm:p-10 lg:min-h-[34rem]" : small ? "p-6 sm:p-7" : "p-6 sm:p-8"
       }`}
     >
@@ -75,21 +77,24 @@ export function BentoTile({ size, surface, icon, title, children, cta }: BentoTi
           >
             {children}
           </p>
-          <div className={large ? "mt-8" : "mt-auto pt-6"}>
-            <Link
-              href={cta.href}
-              className={`group/button inline-flex items-center gap-2 text-base font-semibold after:absolute after:inset-0 after:rounded-card after:content-[''] focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring ${
-                large
-                  ? "min-h-12 rounded-button bg-lime-bright px-6 py-3 text-ink hover:bg-white sm:min-h-13"
-                  : "text-emerald-deep underline decoration-2 underline-offset-4"
-              }`}
-            >
-              {cta.label}
-              <Icon
-                name="arrow-right"
-                className="size-5 transition-transform duration-200 motion-safe:group-hover/button:translate-x-1"
-              />
-            </Link>
+          <div className={large ? "mt-8" : "mt-auto pt-5"}>
+            {large ? (
+              // Primary on green: lime-bright with ink text, stretched over the tile.
+              <Link
+                href={cta.href}
+                className={`${buttonClasses("primary", "green")} after:absolute after:inset-0 after:rounded-card after:content-[''] focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring`}
+              >
+                {cta.label}
+                <Icon
+                  name="arrow-right"
+                  className="size-5 transition-transform duration-200 motion-safe:group-hover/button:translate-x-1"
+                />
+              </Link>
+            ) : (
+              <TextCTA href={cta.href} stretch>
+                {cta.label}
+              </TextCTA>
+            )}
           </div>
         </div>
       </div>

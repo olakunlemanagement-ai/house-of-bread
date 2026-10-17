@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Button, ButtonLink, textLinkClass } from "@/components/shared/Button";
+import { Button, ButtonLink } from "@/components/shared/Button";
 import { Icon } from "@/components/shared/icons";
 import { EventDuration, EventWhen, eventKindLabel } from "@/components/shared/LiveSessionCard";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
+import { TextCTA } from "@/components/shared/TextCTA";
 import { findBySlug, placeholderEvents } from "@/lib/content/placeholder-data";
 
 // Render the full page before responding, so an unknown slug returns a real
@@ -98,10 +98,9 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
       />
 
       <nav aria-label="Sessions" className="container-page py-10">
-        <Link href="/events" className={`${textLinkClass} inline-flex items-center gap-2 py-2`}>
-          <Icon name="arrow-left" className="size-5" />
+        <TextCTA href="/events" direction="back">
           Back to all sessions
-        </Link>
+        </TextCTA>
       </nav>
     </main>
   );

@@ -6,6 +6,7 @@ import { cardClass, interactiveCardClass } from "./Card";
 import { Icon, IconTile } from "./icons";
 import { LocalTime } from "./LocalTime";
 import { Placeholder, PlaceholderBadge } from "./Placeholder";
+import { TextCTA } from "./TextCTA";
 
 export const eventKindLabel: Record<EventKind, string> = {
   live: "Live",
@@ -124,7 +125,7 @@ export function LiveSessionCard({ event, idPrefix }: { event: PlaceholderEvent; 
 /** A session in a list. The whole card links to the session page. */
 export function EventCard({ event }: { event: PlaceholderEvent }) {
   return (
-    <li className={`${cardClass} ${interactiveCardClass} flex flex-col gap-5 sm:flex-row sm:items-center`}>
+    <li className={`${cardClass} ${interactiveCardClass} cta-host flex flex-col gap-5 sm:flex-row sm:items-center`}>
       <IconTile name={event.kind === "live" ? "live" : "calendar"} size="lg" />
       <div className="flex-1">
         <p className="flex flex-wrap items-center gap-2">
@@ -139,13 +140,9 @@ export function EventCard({ event }: { event: PlaceholderEvent }) {
           <EventDuration event={event} />
         </p>
       </div>
-      <Link
-        href={`/events/${event.slug}` as Route}
-        className="inline-flex items-center gap-2 font-semibold text-emerald-deep underline underline-offset-4 after:absolute after:inset-0 after:rounded-card after:content-['']"
-      >
+      <TextCTA href={`/events/${event.slug}` as Route} stretch>
         Details<span className="sr-only">: {event.title}</span>
-        <Icon name="arrow-right" className="size-5" />
-      </Link>
+      </TextCTA>
     </li>
   );
 }

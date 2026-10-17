@@ -96,11 +96,6 @@ export function NewsletterFormClient({
 
   const submitting = state.kind === "submitting";
   const error = state.kind === "error" ? state : null;
-  const linkClass =
-    tone === "green"
-      ? "font-semibold text-lime underline underline-offset-4"
-      : "font-semibold text-emerald-deep underline underline-offset-4";
-
   return (
     <form
       action="/api/subscribe"
@@ -187,7 +182,7 @@ export function NewsletterFormClient({
         {consent === "standard"
           ? "By subscribing you agree to receive emails from House of Bread Global. You will be asked to confirm your address, and you can unsubscribe at any time. "
           : "By subscribing you agree to receive emails from House of Bread Global. You will be asked to confirm your address. "}
-        <Link href="/privacy" className={linkClass}>
+        <Link href="/privacy" className="link-inline font-semibold">
           Read the privacy policy.
         </Link>
       </p>

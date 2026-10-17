@@ -1,6 +1,8 @@
+import type { Route } from "next";
 import type { ReactNode } from "react";
 import type { PlaceholderEvent } from "@/lib/content/placeholder-data";
-import { Icon } from "./icons";
+import type { PlainHref } from "./Button";
+import { TextCTA } from "./TextCTA";
 
 /**
  * The announcement bar itself. Gold is the live colour: gold while a session
@@ -32,10 +34,13 @@ export function AnnouncementBarView({
             </>
           )}
         </span>
-        <a href={href} className="inline-flex items-center gap-1 underline decoration-2 underline-offset-4">
+        {/* Light TextCTA: emerald-deep label on gold 4.19:1 is large text only, so pin it to ink. */}
+        <TextCTA
+          href={href as Route | PlainHref}
+          className="min-h-9 [--cta-arrow:var(--ink)] [--cta-chip-border:var(--ink)] [--cta-label:var(--ink)] [--cta-chip-hover-bg:var(--ink)] [--cta-arrow-hover:var(--gold-soft)]"
+        >
           Watch on YouTube
-          <Icon name="arrow-right" className="size-4" />
-        </a>
+        </TextCTA>
       </p>
     </div>
   );

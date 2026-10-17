@@ -323,6 +323,73 @@ h4 {
 }
 
 /*
+  Links inside paragraphs and teaching body text keep a thin underline:
+  offset 3px, skip-ink, emerald at 50%, solid on hover. Required for
+  accessibility, because colour alone must not mark a link. Calls to action
+  are never underlined; they use Button or TextCTA.
+*/
+.link-inline,
+.prose a {
+  color: var(--fg-link);
+  text-decoration-line: underline;
+  text-decoration-thickness: 1px;
+  text-decoration-color: var(--link-line);
+  text-decoration-skip-ink: auto;
+  text-underline-offset: 3px;
+}
+
+.link-inline:hover,
+.prose a:hover {
+  text-decoration-color: var(--link-line-hover);
+}
+
+/*
+  TextCTA: a weight 600 label followed by a 28px circular arrow chip, never
+  underlined. Colours come from the --cta-* tokens, so it is correct on
+  light and green surfaces alike. A card that stretches a TextCTA over itself
+  carries .cta-host, so hovering anywhere on the card moves the chip.
+*/
+.text-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  border-radius: 0.75rem;
+  color: var(--cta-label);
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+}
+
+.text-cta-chip {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--cta-chip-border);
+  border-radius: 9999px;
+  background-color: var(--cta-chip-bg);
+  color: var(--cta-arrow);
+}
+
+.text-cta-chip > svg {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 200ms var(--ease-out);
+}
+
+.text-cta:hover .text-cta-chip,
+.text-cta:focus-visible .text-cta-chip,
+.cta-host:hover .text-cta-chip,
+.cta-host:focus-within .text-cta-chip {
+  border-color: var(--cta-chip-hover-bg);
+  background-color: var(--cta-chip-hover-bg);
+  color: var(--cta-arrow-hover);
+}
+
+/*
   Cards that lift on hover and focus. Only transform and opacity animate: the
   raised shadow sits on a pseudo element and fades in.
 */
@@ -395,6 +462,19 @@ h4 {
     transform: translateY(-4px);
   }
 
+  /* The TextCTA arrow slides 3px, backwards for a "back" link. */
+  .text-cta:hover .text-cta-chip > svg,
+  .text-cta:focus-visible .text-cta-chip > svg,
+  .cta-host:hover .text-cta-chip > svg,
+  .cta-host:focus-within .text-cta-chip > svg {
+    transform: translateX(3px);
+  }
+
+  .text-cta:hover .text-cta-chip[data-back] > svg,
+  .text-cta:focus-visible .text-cta-chip[data-back] > svg {
+    transform: translateX(-3px);
+  }
+
   .rise {
     animation: rise 600ms var(--ease-out) both;
   }
@@ -459,12 +539,6 @@ h4 {
 .prose h3 {
   font-size: 1.375rem;
   margin-top: 1.75em;
-}
-
-.prose a {
-  color: var(--fg-link);
-  text-decoration: underline;
-  text-underline-offset: 4px;
 }
 
 .prose ul {

@@ -1,5 +1,6 @@
 import type { DatedEvent } from "@/lib/content/placeholder-data";
-import { ArrowLink, ButtonLink } from "./Button";
+import { ButtonLink } from "./Button";
+import { TextCTA } from "./TextCTA";
 import { CrossWatermark, CurveEdge, Grain, Leaves } from "./Decor";
 import { HeroVisual } from "./HeroVisual";
 import { RegionChips } from "./RegionChips";
@@ -41,7 +42,7 @@ export function Hero({ nextEvent }: { nextEvent?: DatedEvent }) {
             </ButtonLink>
           </div>
           <p className="rise rise-3 mt-4">
-            <ArrowLink href="/classes">Explore classes and training</ArrowLink>
+            <TextCTA href="/classes">Explore classes and training</TextCTA>
           </p>
           <div className="rise rise-4 mt-10 space-y-5">
             <RegionChips />

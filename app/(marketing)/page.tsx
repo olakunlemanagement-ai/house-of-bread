@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import { AppBand } from "@/components/shared/AppBand";
 import { BentoGrid, BentoTile } from "@/components/shared/BentoGrid";
-import { ArrowLink, ButtonLink } from "@/components/shared/Button";
+import { ButtonLink } from "@/components/shared/Button";
+import { TextCTA } from "@/components/shared/TextCTA";
 import { FeatureCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { Hero } from "@/components/shared/Hero";
@@ -136,7 +137,7 @@ export default function HomePage() {
             <SectionHeader id="name-heading">Why House of Bread?</SectionHeader>
             <p className="mt-7 max-w-2xl font-serif text-2xl leading-relaxed text-ink">{nameText}</p>
             <p className="mt-8">
-              <ArrowLink href="/about">About the ministry</ArrowLink>
+              <TextCTA href="/about">About the ministry</TextCTA>
             </p>
           </div>
           <div className="lg:col-span-5">

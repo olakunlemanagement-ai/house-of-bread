@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ArrowLink } from "@/components/shared/Button";
+import { TextCTA } from "@/components/shared/TextCTA";
 import { IconTile } from "@/components/shared/icons";
 import { newsletterMessages } from "@/lib/newsletter/messages";
 
@@ -21,7 +21,9 @@ export default function CheckEmailPage() {
           <h1 className="rise-text mt-8 text-display">{newsletterMessages.successHeading}</h1>
           <p className="mt-6 text-lead text-ink">{newsletterMessages.success}</p>
           <p className="mt-10">
-            <ArrowLink href="/">Back to the home page</ArrowLink>
+            <TextCTA href="/" direction="back">
+              Back to the home page
+            </TextCTA>
           </p>
         </div>
       </div>
