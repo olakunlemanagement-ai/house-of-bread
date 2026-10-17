@@ -6,6 +6,7 @@ import { EventCard, LiveSessionCard } from "@/components/shared/LiveSessionCard"
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PhotoFrame } from "@/components/shared/Placeholder";
+import { RegionTimes } from "@/components/shared/RegionTimes";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
 import { placeholderEvents, replayEvents, upcomingEvents } from "@/lib/content/placeholder-data";
@@ -88,6 +89,9 @@ export default function EventsPage() {
 
       <Section id="rhythm" title="Weekly rhythm" tone="mint" width="narrow">
         <Placeholder block>[WEEKLY SCHEDULE AND MINISTRY TIME ZONE TO BE SUPPLIED]</Placeholder>
+        <div className="mt-10">
+          <RegionTimes headingId="events-region-times" />
+        </div>
       </Section>
 
       <Section id="replays" title="Replays">

@@ -173,6 +173,7 @@ These set their own robots metadata and ignore the global flag.
 | `/plans/[slug]`, Frequently asked | [FREQUENTLY ASKED QUESTIONS TO BE SUPPLIED] |
 | `/privacy`, section 8 | [HOW TO EXERCISE THESE RIGHTS TO BE SUPPLIED] |
 | `/contact`, under the form | [CONTACT FORM PRIVACY WORDING TO BE SUPPLIED] |
+| Home, Next live session, and `/events`, Weekly rhythm: region band | [SESSION TIME TO BE SUPPLIED] in each of the UK, Nigeria and US frames. Set `siteConfig.links.weeklySessionUtc` to one occurrence of the regular session in UTC and the band shows it in each region's time |
 
 ## Photo frames
 
@@ -221,6 +222,9 @@ None states a fact. Confirm or replace.
 
 ## Values to confirm
 
+- **US time zone for the region band.** The band shows Eastern time
+  (America/New_York). Confirm which zone the ministry's US audience uses, or
+  whether the band should show more than one US zone.
 - **Day one sample.** `/plans/30-day-plan` shows Day 1, James 1-5 and
   Galatians 1-3, theme "Living faith and justification by faith." It is
   labelled as a sample. Confirm against the app.

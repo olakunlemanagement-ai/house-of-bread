@@ -39,6 +39,17 @@ export const nameText =
 
 export const regions = ["United Kingdom", "Africa", "United States"] as const;
 
+/**
+ * Where live sessions are watched, with the IANA zone each region's time is
+ * shown in. The US zone is Eastern until the ministry confirms otherwise
+ * (docs/PLACEHOLDERS.md).
+ */
+export const sessionRegions = [
+  { name: "United Kingdom", timeZone: "Europe/London", zoneLabel: "UK time" },
+  { name: "Nigeria", timeZone: "Africa/Lagos", zoneLabel: "Lagos time" },
+  { name: "United States", timeZone: "America/New_York", zoneLabel: "Eastern time" },
+] as const;
+
 export const newsletterCopy = {
   heading: "Stay close to the ministry",
   text: "Reminders before each live session, new teaching, and news from House of Bread Global, sent to your inbox.",

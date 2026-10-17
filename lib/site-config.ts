@@ -10,6 +10,11 @@ export type SiteLinks = {
    * renders a "Photo and video to come" frame.
    */
   welcomeVideoId: string | null;
+  /**
+   * One occurrence of the regular live session, as ISO 8601 in UTC. The
+   * region band shows it in each region's zone. Null renders a placeholder.
+   */
+  weeklySessionUtc: string | null;
   /** Store links. Null renders a marked placeholder in the button's place. */
   googlePlay: string | null;
   appStore: string | null;
@@ -37,6 +42,7 @@ export const siteConfig = {
     social: [],
     audio: [],
     welcomeVideoId: null,
+    weeklySessionUtc: null,
     googlePlay: null,
     appStore: null,
   } satisfies SiteLinks as SiteLinks,

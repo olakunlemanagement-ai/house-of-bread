@@ -12,6 +12,7 @@ import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PhotoFrame } from "@/components/shared/Placeholder";
 import { PlanCard } from "@/components/shared/PlanCard";
 import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
+import { RegionTimes } from "@/components/shared/RegionTimes";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { SocialLinks, YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
 import { homeStats, StatStrip } from "@/components/shared/StatStrip";
@@ -150,6 +151,9 @@ export default function HomePage() {
             ratio="4/5"
             subject="A live teaching session, the teacher and those gathered"
           />
+          <div className="lg:col-span-12">
+            <RegionTimes headingId="home-region-times" />
+          </div>
         </div>
       </section>
 
