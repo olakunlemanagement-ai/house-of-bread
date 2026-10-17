@@ -307,11 +307,11 @@ ships.
 
 ### Translucent surfaces and glass
 
-- Translucent white (`glass-bar`, `glass-card`) is allowed ONLY on the
-  header, the hero floating cards (next live session chip, phone card) and
-  the newsletter card. Never on full width sections or long lists.
+- Translucent white (`glass-card`) is allowed ONLY on the hero floating
+  cards (next live session chip, phone card) and the newsletter card. Never
+  on full width sections or long lists. The header has no surface at all.
 - Opacity is set so text keeps AA over the worst background behind it:
-  the header is white at 96%, cards at 84%. Under
+  cards are white at 84%. Under
   `prefers-reduced-transparency` they turn solid white.
 - `backdrop-filter` is allowed on those surfaces only, with blur at 12px or
   less, a solid or near solid fallback inside
@@ -374,7 +374,9 @@ ships.
 
 ### Navigation
 
-- Header: sticky, 72px, white at 96% with a hairline bottom border. Left:
+- Header: 72px, not sticky. It scrolls away with the page and floats,
+  transparent with no border, over the hero or page header tint (a -72px
+  bottom margin; Hero and PageHeader add 72px to their top padding). Left:
   logo, then Home, About, Academy, Media Library, Contact in ink, the
   current page in a tint pill with an inset emerald ring. Right: Subscribe
   (secondary) and Get the app (primary).

@@ -98,7 +98,7 @@ Hero, the stat row, white, cream, white, mint, white, the app panel, cream, whit
 - Cards: white, 1px hairline at 12% emerald, soft shadow. Hover and focus: lift 2px, raised shadow, edge at 35% emerald.
 - Icon tiles: tint fill, emerald glyph, a faint inner emerald ring. Tiles holding text (plan days, step numbers) use solid emerald with white text.
 - A short emerald rule above section headings.
-- Translucent white surfaces, scoped: the header (white at 96%), the hero floating cards and the newsletter card (white at 84%). Never on full width sections or long lists. Solid white under prefers-reduced-transparency. Backdrop blur is allowed on these surfaces only, at 12px or less with a near solid fallback, but ships off until a real device check shows it costs no more than a few fps.
+- Translucent white surfaces, scoped: the hero floating cards and the newsletter card (white at 84%). The header has no surface. Never on full width sections or long lists. Solid white under prefers-reduced-transparency. Backdrop blur is allowed on these surfaces only, at 12px or less with a near solid fallback, but ships off until a real device check shows it costs no more than a few fps.
 
 ### 1.6 Motion (CSS only)
 - No JavaScript for decoration. Transitions and keyframes on transform and opacity only.
@@ -115,7 +115,7 @@ Hero, the stat row, white, cream, white, mint, white, the app panel, cream, whit
 
 ### 1.8 Components to build
 - AnnouncementBar: appears only when a session is live or starts within 24 hours. Gold while live, gold-soft when coming up, ink text, "Live now: {title}." and a "Watch on YouTube" TextCTA. Hidden otherwise.
-- SiteHeader: white bar at 96%, hairline bottom border, sticky, 72px, logo left.
+- SiteHeader: 72px, not sticky, transparent over the hero or page header tint, no border, logo left.
 - Hero with HeroVisual: phone mock in CSS plus two floating cards.
 - Button (primary, secondary, live; light and green tones) with an optional arrow icon.
 - TextCTA: label and arrow chip, the text form of a call to action.
@@ -164,7 +164,7 @@ One primary action per section, written as a verb that says what happens next. N
 | Element | Surface |
 |---|---|
 | Announcement bar | gold (live) or gold-soft (within 24 hours), ink text |
-| Header and nav | white at 96%, hairline border, ink nav, tint pill for the current page, emerald primary button |
+| Header and nav | transparent over the hero tint, no border, scrolls away, ink nav, tint pill for the current page, emerald primary button |
 | Home hero | white with soft emerald radials, ink type, emerald-deep accent phrase, translucent floating cards |
 | Inner page header | white with one emerald radial, hairline below, ink type |
 | Stat strip | white row under the hero, hairline dividers, soft shadow |
@@ -187,7 +187,7 @@ One primary action per section, written as a verb that says what happens next. N
 - Content driven from event data. Hidden when no session is live or within 24 hours.
 
 ### Header
-- Sticky, 72px, white at 96% with a hairline bottom border.
+- 72px, not sticky: it scrolls away with the page. Transparent over the hero or page header tint, with no bar or border.
 - Left: logo, then Home, About, Academy, Media Library, Contact.
 - Right: Subscribe (secondary) and Get the app (primary).
 - Current page: aria-current and a stronger pill, not colour alone.

@@ -82,7 +82,7 @@ export default function PrivacyPage() {
 
       <div className="bg-surface">
         <div className="container-page grid gap-12 py-18 md:py-24 lg:grid-cols-[16rem_1fr]">
-          <nav aria-label="Policy sections" className="lg:sticky lg:top-24 lg:self-start">
+          <nav aria-label="Policy sections" className="lg:sticky lg:top-6 lg:self-start">
             <ol className="space-y-1 rounded-card bg-surface-mint p-5 text-sm">
               {sections.map((section, index) => (
                 <li key={section.id}>
@@ -100,7 +100,7 @@ export default function PrivacyPage() {
           <ol className="max-w-[68ch] space-y-12">
             {sections.map((section, index) => (
               <li key={section.id}>
-                <section id={section.id} aria-labelledby={`${section.id}-heading`} className="scroll-mt-24">
+                <section id={section.id} aria-labelledby={`${section.id}-heading`} className="scroll-mt-6">
                   <h2 id={`${section.id}-heading`} className="flex items-baseline gap-3 text-3xl">
                     <span className="font-sans text-base text-ink-muted">{index + 1}.</span>
                     {section.title}

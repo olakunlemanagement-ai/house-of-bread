@@ -5,7 +5,10 @@ import { Logo } from "./Logo";
 import { NavLinks, StaticNavLinks } from "./NavLinks";
 
 /**
- * Sticky 72px header: white at 96% with a hairline bottom border.
+ * 72px header that scrolls away with the page. It floats, transparent, over
+ * the hero or page header tint: the negative bottom margin pulls the next
+ * section up beneath it, and Hero and PageHeader add 72px to their top
+ * padding. No bar or border, as nothing ever scrolls under it.
  * Wide screens: logo and the five nav links on the left, Subscribe
  * (secondary) and Get the app (emerald primary) on the right.
  * Narrow screens: logo, a compact Get app button and a Menu button, all
@@ -14,7 +17,7 @@ import { NavLinks, StaticNavLinks } from "./NavLinks";
  */
 export function SiteHeader() {
   return (
-    <header className="glass-bar sticky top-0 z-40 border-b border-border">
+    <header className="relative z-40 -mb-18">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-button focus:bg-emerald focus:px-5 focus:py-3 focus:font-semibold focus:text-white"

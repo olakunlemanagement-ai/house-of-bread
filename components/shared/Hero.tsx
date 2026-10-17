@@ -6,13 +6,13 @@ import { RegionChips } from "./RegionChips";
 
 /**
  * Home hero. White with two soft emerald radial tints, ink type and an
- * emerald accent phrase. Top padding keeps the eyebrow clear of the sticky
- * header at every width.
+ * emerald accent phrase. The header floats over this section, so the top
+ * padding is its 72px plus 64px or more of clear space above the eyebrow.
  */
 export function Hero({ nextEvent }: { nextEvent?: DatedEvent }) {
   return (
     <section aria-labelledby="hero-heading" className="bg-hero-tint relative overflow-x-clip">
-      <div className="container-page relative grid items-center gap-12 pb-16 pt-20 sm:pt-24 lg:grid-cols-12 lg:gap-12 lg:pb-24 lg:pt-28">
+      <div className="container-page relative grid items-center gap-12 pb-16 pt-38 sm:pt-42 lg:grid-cols-12 lg:gap-12 lg:pb-24 lg:pt-46">
         <div className="lg:col-span-7">
           <p className="rise eyebrow eyebrow-dot">House of Bread Global</p>
           <h1 id="hero-heading" className="rise-text rise-1 mt-6 text-display">

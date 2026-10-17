@@ -55,11 +55,9 @@ const pairings = [
   ["Footer secondary: white on 12% white over green-deep", "white", ["greenDeep", "white/0.12"], TEXT],
   // Icon tiles: emerald glyph on tint.
   ["Icon glyph: emerald on tint", "emerald", ["tint"], UI],
-  // Header, white at 96%. Worst case: a black thumbnail scrolled under it.
-  ["Header: ink over black", "ink", ["black", "white/0.96"], TEXT],
-  ["Header: emerald-deep over black", "emeraldDeep", ["black", "white/0.96"], TEXT],
-  ["Header: ink over a green-night phone frame", "ink", ["greenNight", "white/0.96"], TEXT],
-  ["Nav current: emerald-deep on tint pill over the header over black", "emeraldDeep", ["black", "white/0.96", "emerald/0.08"], TEXT],
+  // Header, transparent over the hero or page header tint (10% emerald at the peak).
+  ["Header: ink nav over the hero tint peak", "ink", ["white", "emerald/0.1"], TEXT],
+  ["Nav current: emerald-deep on tint pill over the hero tint peak", "emeraldDeep", ["white", "emerald/0.1", "emerald/0.08"], TEXT],
   // Hero floating cards, translucent white at 84%. Worst case: over the green-night phone frame.
   ["Hero card: ink-muted over green-night", "inkMuted", ["greenNight", "white/0.84"], TEXT],
   ["Hero card: emerald-deep over green-night", "emeraldDeep", ["greenNight", "white/0.84"], TEXT],
@@ -87,7 +85,7 @@ const pairings = [
   // Focus rings.
   ["Focus ring: emerald-deep on white", "emeraldDeep", ["white"], UI],
   ["Focus ring: emerald-deep on mint", "emeraldDeep", ["mint50"], UI],
-  ["Focus ring: emerald-deep on the header over black", "emeraldDeep", ["black", "white/0.96"], UI],
+  ["Focus ring: emerald-deep on the header over the hero tint peak", "emeraldDeep", ["white", "emerald/0.1"], UI],
   ["Focus ring: white on green-deep", "white", ["greenDeep"], UI],
   // Never used: lime is a decorative dot only.
   ["Lime on white (never used for text or meaning)", "lime", ["white"], TEXT, "not used"],

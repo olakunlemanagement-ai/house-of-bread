@@ -6,7 +6,7 @@ export default function Loading() {
     <main id="main">
       <LoadingRegion>
         <div className="bg-page-tint border-b border-border">
-          <div className="container-page pb-16 pt-16 sm:pb-20 sm:pt-24">
+          <div className="container-page pb-16 pt-34 sm:pb-20 sm:pt-42">
             <Skeleton className="h-3 w-36 rounded-full" />
             <Skeleton className="mt-6 h-10 w-3/4 max-w-2xl rounded-xl sm:h-12" />
             <Skeleton className="mt-3 h-10 w-1/2 max-w-xl rounded-xl sm:h-12" />

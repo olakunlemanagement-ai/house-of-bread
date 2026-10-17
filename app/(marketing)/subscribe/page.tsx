@@ -29,7 +29,7 @@ export default function SubscribePage({ searchParams }: PageProps<"/subscribe">)
         lead="Reminders before each live session, new teaching and news from House of Bread Global, sent to your inbox. No spam, and you can leave at any time."
       />
 
-      <section id="signup" data-newsletter aria-labelledby="signup-heading" className="scroll-mt-24 bg-surface">
+      <section id="signup" data-newsletter aria-labelledby="signup-heading" className="scroll-mt-6 bg-surface">
         <div className="container-page grid gap-8 py-18 md:py-24 lg:grid-cols-12 lg:gap-10">
           <div className="rounded-card border border-border bg-surface p-6 shadow-raised sm:p-10 lg:col-span-7">
             <h2 id="signup-heading" className="mb-8 text-3xl">

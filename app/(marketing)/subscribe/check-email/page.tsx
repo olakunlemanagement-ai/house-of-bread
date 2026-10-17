@@ -16,7 +16,7 @@ export default function CheckEmailPage() {
   return (
     // data-newsletter: the visitor has just signed up, so the footer strip stays hidden.
     <main id="main" data-newsletter tabIndex={-1} className="bg-surface">
-      <div className="container-page py-20 md:py-32">
+      <div className="container-page pb-20 pt-38 md:pb-32 md:pt-50">
         <div className="max-w-2xl">
           <IconTile name="mail" size="lg" />
           <h1 className="rise-text mt-8 text-display">{newsletterMessages.successHeading}</h1>

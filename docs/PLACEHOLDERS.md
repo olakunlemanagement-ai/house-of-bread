@@ -431,16 +431,15 @@ Measured with `npm run contrast`. All pass.
 | Secondary button | emerald-deep on white, on tint (hover) | 7.65, 6.80 |
 | Footer buttons | green-deep on white, on mint (hover); white on 12% white over green-deep | 13.53, 12.23, 9.43 |
 | Icon glyph (UI, 3:1) | emerald on tint | 5.84 |
-| Header, white at 96%, worst case | ink, emerald-deep over a black thumbnail | 15.08, 7.01 |
-| | ink over the green-night phone frame | 15.24 |
-| Nav current pill | emerald-deep on tint over the header over black | 6.25 |
+| Header, transparent over the hero tint peak (revision 5) | ink nav | 14.21 |
+| Nav current pill | emerald-deep on tint over the hero tint peak | 5.91 |
 | Hero floating cards, white at 84%, worst case | ink-muted, emerald-deep over the green-night phone frame | 5.53, 5.54 |
 | | ink-muted over the hero tint | 7.43 |
 | Newsletter card, white at 84% | ink-muted over gold, mint; emerald-deep over gold | 7.51, 7.52, 7.53 |
 | Footer | off-white on green-night, green-deep; 80% muted; current pill | 14.98, 12.82, 8.73, 8.12 |
 | Live and badges | ink on gold, gold-soft | 9.02, 11.85 |
 | Play chip | white on 85% green-night over white, black images | 10.01, 16.82 |
-| Focus rings (3:1) | emerald-deep on white, mint, the header over black; white on green-deep | 7.65, 6.92, 7.01, 13.53 |
+| Focus rings (3:1) | emerald-deep on white, mint, the header over the hero tint; white on green-deep | 7.65, 6.92, 6.60, 13.53 |
 | Never used | lime on white | **1.90**, so lime is a decorative dot halo only |
 
 ### Glass and scroll performance

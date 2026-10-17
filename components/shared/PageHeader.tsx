@@ -14,14 +14,14 @@ type PageHeaderProps = {
 
 /**
  * Opens every inner page: white with a soft emerald light at the top right,
- * a hairline below. Generous top padding keeps the eyebrow well clear of the
- * sticky header.
+ * a hairline below. The header floats over it, so top padding is its 72px
+ * plus 64px or more of clear space above the eyebrow.
  */
 export function PageHeader({ eyebrow, title, lead, meta, actions, visual }: PageHeaderProps) {
   return (
     <div className="bg-page-tint border-b border-border">
       <div
-        className={`container-page pb-16 pt-16 sm:pb-20 sm:pt-24 ${
+        className={`container-page pb-16 pt-34 sm:pb-20 sm:pt-42 ${
           visual ? "grid items-center gap-12 lg:grid-cols-12" : ""
         }`}
       >
