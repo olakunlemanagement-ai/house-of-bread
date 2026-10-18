@@ -205,7 +205,7 @@ label naming what the photo will show.
 | `/about`, Mission | 16:9 | Believers gathered for teaching |
 | `/about`, Leadership | 4:5 | Portrait of the teacher |
 | `/events`, How it works | 4:5 | A session streaming live, seen from the room |
-| `/academy`, Who the Academy is for | 4:5 | A class in progress, believers with open Bibles |
+| `/academy`, Who the Academy is for | 4:5 | Now the open Bible loop (see "Motion loops" below). A class photo can replace it later |
 | `/app`, four feature sections | 16:9 | "Screenshot to come": a journey, a book introduction, switching translations, the teaching library |
 
 Assets to request from the ministry (CONTENT-PACK 1.7): a portrait of the
@@ -631,3 +631,92 @@ Branch `feat/come-alive`, 17 October 2026. Measured with `npm run contrast`.
 | TikTok and X marks | black on white | 21.00 |
 | Linktree mark | darkened Linktree green #1e7a35 on white | 5.40 |
 | Not used | Linktree brand green #43e55e on white | **1.67**, so the mark uses the darker green |
+
+## Motion loops (revision 6)
+
+Branch `feat/motion-loops`, 19 October 2026. Short silent decorative loops,
+built by `npm run loops:build` from raw clips kept outside the repo in
+`house-of-bread-assets/animations-raw`.
+
+### For the ministry to confirm
+
+- **AI generated visuals.** Every loop was generated with Google Flow, an AI
+  video tool. The ministry should confirm it is happy to use AI generated
+  imagery, and whether and where to say so (for example a line on the About
+  page or in the footer).
+- **The open Bible loop shows pseudo text.** Its pages carry blurred lines
+  that look like print but are not real words. Kept by decision on 18
+  October 2026. Regenerate with blank or out of focus pages if anyone reads
+  it as garbled Scripture.
+- **The Bible loaf loop is not shipped.** The loop point shows a rotation
+  jump, and the paper mat under the loaf survived the white key as a hard
+  edged grey shape. Regenerate it in Flow on a seamless pure white
+  background with one full, even turn, then run `npm run loops:build
+  bible-loaf` and `npm run loops:verify bible-loaf`. On the first attempt
+  the frame edge decoded to 248 to 252, short of the 253 the check needs, so
+  the white may need lifting slightly above video white before encoding.
+
+### Where they play
+
+Phones play no loop and show posters only. The hero's 640 wide version was
+dropped after Lighthouse mobile showed it cost Home about 10 points (1 s of
+blocking time), so the first video weight on phones is 0. On desktop each
+page loads at most one loop first; the rest load as they near the viewport
+and pause offscreen. Sizes in KB of 1000 bytes.
+
+| Loop | Where | Loads first | WebM | MP4 | Poster |
+|---|---|---|---|---|---|
+| ambient-light | Home hero, under an 80% white scrim | Desktop Home | 152 | 550 | 7 |
+| dust-light | Inner page headers without a visual, lg and up | Desktop inner pages | 746 | 766 | 18 |
+| wheat-field | `/about`, The name | No | 748 | 740 | 50 |
+| bread-steam | Behind the newsletter card (11 pages) | No | 576 | 751 | 49 |
+| open-bible | `/academy`, Who the Academy is for | No | 346 | 744 | 23 |
+| water-light | Behind the phone in the app band (6 pages) | No | 743 | 776 | 28 |
+| green-mesh | `/about` closing band, lg and up | No | 750 | 757 | 29 |
+
+### Quality given up to meet 800 KB
+
+Each file was first encoded at a quality target. These went over budget and
+were re-encoded at the budget bitrate. SSIM compares the shipped file with
+the quality target encode (1 is identical). No denoise was needed: the
+shipped files are slightly softer, with no blocking, and play in panels
+about 40% of the screen wide.
+
+| File | Quality target | Shipped | SSIM |
+|---|---|---|---|
+| dust-light.webm | 1988 KB | 746 KB | 0.975 |
+| dust-light.mp4 | 3366 KB | 766 KB | 0.965 |
+| wheat-field.webm | 1937 KB | 748 KB | 0.976 |
+| wheat-field.mp4 | 2391 KB | 740 KB | 0.963 |
+| water-light.webm | 1335 KB | 743 KB | 0.980 |
+| water-light.mp4 | 2937 KB | 776 KB | 0.959 |
+| green-mesh.webm | 870 KB | 750 KB | 0.989 |
+| green-mesh.mp4 | 1683 KB | 757 KB | 0.980 |
+| bread-steam.mp4 | 867 KB | 751 KB | 0.993 |
+| open-bible.mp4 | 803 KB | 744 KB | 0.992 |
+
+### Contrast over video, WCAG 2.2 AA
+
+Measured with `npm run contrast` against each loop's darkest single pixel
+across every frame of the final WebM (`npm run loops:sample`), since dark
+text is at its worst there. The brightest pixel was checked too.
+
+| Element | Pairing | Ratio |
+|---|---|---|
+| Hero heading | ink, darkest pixel, 80% scrim | 11.31 |
+| Hero lead and eyebrow | ink-muted, emerald-deep, darkest pixel, 80% scrim | 5.25, 5.26 |
+| Hero heading | ink, brightest pixel, 80% scrim | 16.47 |
+| Header nav current pill | emerald-deep on tint, darkest pixel, 80% scrim | 4.75 (4.31 at 75%, so the scrim is 80%) |
+| Focus ring over the hero (3:1) | emerald-deep, darkest pixel, 80% scrim | 5.26 |
+| Hero floating cards | ink-muted, emerald-deep on 84% white, 20% scrim | 6.04, 6.06 |
+| App band card over water | ink-muted, emerald-deep on 84% white | 5.83, 5.84 |
+| Newsletter card over steam | ink, ink-muted, emerald-deep on 84% white over black | 11.35, 5.27, 5.28 |
+| Newsletter card over steam | ink-muted, brightest pixel | 7.64 |
+| Pause/Play control (3:1) | emerald-deep glyph on 90% white over black | 6.10 |
+
+### Lighthouse mobile on this machine
+
+Interleaved runs against a build of `main`, three each. Home: `main` 61 to
+74, branch 66 to 76. About: `main` 69 to 72, branch 70 to 76. Accessibility
+100 and CLS 0 throughout. `main` itself misses 95 here, so the absolute
+score needs a rerun on CI or a real mid range Android phone.
