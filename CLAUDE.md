@@ -176,7 +176,10 @@ declaring any task complete.
 
 ### Live sessions
 
-- Live streaming runs on YouTube. The site never hosts video.
+- Live streaming runs on YouTube. No hosted long form video. Short silent
+  decorative loops are allowed: 800 KB each or less, with a poster, lazy
+  loaded, paused offscreen, never with sound, and off under reduced motion
+  and Save-Data.
 - Embeds use `youtube-nocookie.com` behind a click to load facade, so no
   YouTube code loads until the visitor asks for it.
 - Event times are stored as UTC plus an IANA time zone in frontmatter, and

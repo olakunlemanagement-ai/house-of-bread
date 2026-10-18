@@ -40,3 +40,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw motion loop clips live outside the repo (house-of-bread-assets)
+/public/animations/

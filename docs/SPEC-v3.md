@@ -72,7 +72,10 @@ The website is where the ministry is found, understood and joined.
 ### Non goals
 
 - No content management system. The repository is the source.
-- No video hosting and no live streaming from the site. YouTube does this.
+- No live streaming from the site. YouTube does this.
+- No hosted long form video. Short silent decorative loops are allowed: 800 KB
+  each or less, with a poster, lazy loaded, paused offscreen, never with
+  sound, and off under reduced motion and Save-Data.
 - No community forum or live chat.
 - No embedded social feeds. Link to the pages instead.
 - No custom payment processing, ever. Hosted checkout only when giving returns.
