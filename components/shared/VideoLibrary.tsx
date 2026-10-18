@@ -7,6 +7,7 @@ import { Button } from "./Button";
 import { Icon } from "./icons";
 import { PlayChip } from "./PlayChip";
 import { TextCTA } from "./TextCTA";
+import { VideoTitle } from "./VideoTitle";
 import { YouTubeFacade } from "./YouTubeFacade";
 
 // Dates in the ministry's own style, fixed to UTC so server and browser agree.
@@ -63,7 +64,9 @@ function VideoCard({
         )}
       </div>
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="text-xl leading-snug">{video.title}</h3>
+        <h3 className="text-xl leading-snug">
+          <VideoTitle video={video} />
+        </h3>
         <p className="mt-2 text-sm text-ink-muted">
           <PublishedDate video={video} />
         </p>
@@ -84,14 +87,26 @@ function VideoCard({
 }
 
 /**
- * The Media Library player and the latest videos. The newest video waits in
- * the click to load facade at the top. A card's Play button (or its
- * thumbnail) loads that video into the player and starts it, scrolls the
- * player into view and moves focus to it. Every card keeps a plain link to
- * YouTube, which also works without JavaScript.
+ * The Media Library player and the latest videos. The lead video (the
+ * featured video, or the newest) waits in the click to load facade at the
+ * top. A card's Play button (or its thumbnail) loads that video into the
+ * player and starts it, scrolls the player into view and moves focus to it.
+ * Every card keeps a plain link to YouTube, which also works without
+ * JavaScript.
  */
-export function VideoLibrary({ videos }: { videos: FeedVideo[] }) {
-  const [selected, setSelected] = useState(videos[0]);
+export function VideoLibrary({
+  lead,
+  leadLabel,
+  videos,
+}: {
+  /** The video in the player before the visitor picks one. */
+  lead: FeedVideo;
+  /** Its eyebrow, such as "Featured video" or "Latest video". */
+  leadLabel: string;
+  /** The feed. May be empty when only the featured video is known. */
+  videos: FeedVideo[];
+}) {
+  const [selected, setSelected] = useState(lead);
   const [started, setStarted] = useState(false);
   const [request, setRequest] = useState(0);
   const playerRef = useRef<HTMLDivElement>(null);
@@ -129,8 +144,10 @@ export function VideoLibrary({ videos }: { videos: FeedVideo[] }) {
           />
         </div>
         <div className="lg:col-span-4">
-          <p className="eyebrow">{started ? "Now playing" : "Latest video"}</p>
-          <h3 className="mt-3 text-2xl leading-snug">{selected.title}</h3>
+          <p className="eyebrow">{started ? "Now playing" : leadLabel}</p>
+          <h3 className="mt-3 text-2xl leading-snug">
+            <VideoTitle video={selected} />
+          </h3>
           <p className="mt-2 text-sm text-ink-muted">
             <PublishedDate video={selected} />
           </p>
@@ -140,17 +157,19 @@ export function VideoLibrary({ videos }: { videos: FeedVideo[] }) {
         </div>
       </div>
 
-      <ul className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-        {videos.map((video, index) => (
-          <VideoCard
-            key={video.id}
-            video={video}
-            index={index}
-            current={started && video.id === selected.id}
-            onPlay={() => play(video)}
-          />
-        ))}
-      </ul>
+      {videos.length > 0 ? (
+        <ul className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {videos.map((video, index) => (
+            <VideoCard
+              key={video.id}
+              video={video}
+              index={index}
+              current={started && video.id === selected.id}
+              onPlay={() => play(video)}
+            />
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }
