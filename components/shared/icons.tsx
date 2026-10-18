@@ -32,7 +32,9 @@ export type IconName =
   | "share"
   | "heart"
   | "headphones"
-  | "video";
+  | "video"
+  | "pause"
+  | "resume";
 
 const paths: Record<IconName, ReactNode> = {
   book: (
@@ -182,6 +184,8 @@ const paths: Record<IconName, ReactNode> = {
       <path d="m17 10 4-2.5v9L17 14" />
     </>
   ),
+  pause: <path d="M9 6v12M15 6v12" />,
+  resume: <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" />,
 };
 
 export function Icon({
