@@ -129,9 +129,19 @@ export function LoopVideoClient({
   const state = useSyncExternalStore(motion.subscribe, motion.get, motion.server);
   const pausedRef = useRef(state.paused);
 
+  // A loop keeps the control until it unmounts or may no longer move.
+  useEffect(() => {
+    if (!eligible) return;
+    return () => motion.unregister(id);
+  }, [eligible, id]);
+
   // Load on approach, play while visible, pause offscreen. The first loop to
   // come near the viewport claims the page's Pause/Play control, so a loop
   // hidden by CSS (display: none never intersects) never holds it.
+  // Strings, not the source objects, so a re-render never restarts this.
+  const src = phone && mobile ? mobile : full;
+  const webm = src.webm;
+  const mp4 = src.mp4;
   useEffect(() => {
     const video = videoRef.current;
     if (!eligible || !video) return;
@@ -141,9 +151,7 @@ export function LoopVideoClient({
         visibleRef.current = entry.isIntersecting;
         if (entry.isIntersecting) {
           motion.register(id);
-          if (!video.getAttribute("src")) {
-            video.src = pickSource(video, phone && mobile ? mobile : full);
-          }
+          if (!video.getAttribute("src")) video.src = pickSource(video, { webm, mp4 });
           if (!pausedRef.current) video.play().catch(() => {});
         } else {
           video.pause();
@@ -155,9 +163,8 @@ export function LoopVideoClient({
     return () => {
       observer.disconnect();
       video.pause();
-      motion.unregister(id);
     };
-  }, [eligible, phone, full, mobile, id]);
+  }, [eligible, webm, mp4, id]);
 
   // Follow the page wide Pause/Play choice.
   useEffect(() => {
