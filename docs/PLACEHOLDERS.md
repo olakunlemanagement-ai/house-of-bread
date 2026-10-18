@@ -179,7 +179,7 @@ No email address is published anywhere on the site.
 
 | Where | Placeholder |
 |---|---|
-| Home, Start here | Welcome video. `siteConfig.links.welcomeVideoId` is null, so a "Photo and video to come" frame shows. Supply a YouTube id and it loads behind the click to load facade |
+| Home, Start here; Media Library, Video; `/events`, Watch | [VIDEO TITLE TO BE SUPPLIED]. `welcomeVideoId` and `featuredVideoId` in `siteConfig.links` are both `wpNuDtvzMzs` (set 18 October 2026). Its title and date come from the channel feed when the video is among the latest six; on 18 October it was not, so the thumbnail is `i.ytimg.com/vi/wpNuDtvzMzs/hqdefault.jpg` and the title is this placeholder (also the player's accessible name). Confirm the title, or replace the id with one from the feed. On `/events` it shows as "Latest session" until a session is live or a dated replay exists |
 | Home hero visual, floating session card | [DATE AND TIME TO BE SUPPLIED] (until a session is dated) |
 | Event cards, featured session card and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
 | Featured session card and `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED] |
