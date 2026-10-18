@@ -25,6 +25,13 @@ export type SiteLinks = {
    */
   welcomeVideoId: string | null;
   /**
+   * The featured video, as a YouTube video id. It leads the Media Library
+   * player ahead of the feed, and fills the Events Watch panel as the latest
+   * session until a session is live or a dated replay exists. Change this
+   * one value to replace it. Null puts the newest feed video in the lead.
+   */
+  featuredVideoId: string | null;
+  /**
    * One occurrence of the regular live session, as ISO 8601 in UTC. The
    * region band shows it in each region's zone. Null renders a placeholder.
    */
@@ -70,7 +77,8 @@ export const siteConfig = {
       { platform: "linktree", href: "https://linktr.ee/brotherola", owner: "pastor" },
     ],
     audio: [],
-    welcomeVideoId: null,
+    welcomeVideoId: "wpNuDtvzMzs",
+    featuredVideoId: "wpNuDtvzMzs",
     weeklySessionUtc: null,
     googlePlay: null,
     appStore: null,
