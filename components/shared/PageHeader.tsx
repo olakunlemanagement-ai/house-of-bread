@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { LoopVideo } from "./LoopVideo";
 
 type PageHeaderProps = {
   eyebrow: string;
@@ -10,6 +11,11 @@ type PageHeaderProps = {
   actions?: ReactNode;
   /** Optional visual on the right on desktop, below on mobile. */
   visual?: ReactNode;
+  /**
+   * Without a visual, desktop shows the dust in sunlight loop in a framed
+   * panel on the right. Phones never see it. False turns it off.
+   */
+  motion?: boolean;
 };
 
 /**
@@ -17,15 +23,16 @@ type PageHeaderProps = {
  * a hairline below. The header floats over it, so top padding is its 72px
  * plus 64px or more of clear space above the eyebrow.
  */
-export function PageHeader({ eyebrow, title, lead, meta, actions, visual }: PageHeaderProps) {
+export function PageHeader({ eyebrow, title, lead, meta, actions, visual, motion = true }: PageHeaderProps) {
+  const loopPanel = !visual && motion;
   return (
     <div className="bg-page-tint border-b border-border">
       <div
         className={`container-page pb-16 pt-34 sm:pb-20 sm:pt-42 ${
-          visual ? "grid items-center gap-12 lg:grid-cols-12" : ""
+          visual || loopPanel ? "grid items-center gap-12 lg:grid-cols-12" : ""
         }`}
       >
-        <div className={visual ? "lg:col-span-7" : ""}>
+        <div className={visual || loopPanel ? "lg:col-span-7" : ""}>
           <p className="rise eyebrow eyebrow-dot">{eyebrow}</p>
           <h1 className="rise-text rise-1 mt-5 max-w-3xl text-display">{title}</h1>
           {lead ? <p className="rise rise-2 mt-5 max-w-2xl text-lead text-ink-muted">{lead}</p> : null}
@@ -37,6 +44,15 @@ export function PageHeader({ eyebrow, title, lead, meta, actions, visual }: Page
           ) : null}
         </div>
         {visual ? <div className="rise rise-3 lg:col-span-5">{visual}</div> : null}
+        {loopPanel ? (
+          <div className="rise rise-3 hidden lg:col-span-5 lg:block">
+            <LoopVideo
+              id="dust-light"
+              sizes="(min-width: 1024px) 40vw, 1px"
+              className="aspect-[4/3] overflow-hidden rounded-card border border-border shadow-soft"
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );

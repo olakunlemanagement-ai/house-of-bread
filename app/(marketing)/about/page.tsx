@@ -3,6 +3,7 @@ import { ButtonLink } from "@/components/shared/Button";
 import { FeatureCard } from "@/components/shared/Card";
 import { ClosingBand } from "@/components/shared/ClosingBand";
 import { Flag } from "@/components/shared/Flags";
+import { LoopVideo } from "@/components/shared/LoopVideo";
 import { StepList } from "@/components/shared/Lists";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge, PhotoFrame } from "@/components/shared/Placeholder";
@@ -59,6 +60,11 @@ export default function AboutPage() {
           <div className="lg:col-span-6">
             <ScriptureBlock variant="feature" passage="John 6:33-35" verses={john6_33to35} />
           </div>
+          <LoopVideo
+            id="wheat-field"
+            sizes="(min-width: 1280px) 1200px, 100vw"
+            className="aspect-video overflow-hidden rounded-card border border-border shadow-soft lg:col-span-12 lg:aspect-[21/8]"
+          />
         </div>
       </section>
 

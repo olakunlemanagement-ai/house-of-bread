@@ -2,17 +2,26 @@ import type { DatedEvent } from "@/lib/content/events";
 import { ButtonLink } from "./Button";
 import { TextCTA } from "./TextCTA";
 import { HeroVisual } from "./HeroVisual";
+import { LoopVideo } from "./LoopVideo";
 import { RegionChips } from "./RegionChips";
 
 /**
- * Home hero. White with two soft emerald radial tints, ink type and an
- * emerald accent phrase. The header floats over this section, so the top
- * padding is its 72px plus 64px or more of clear space above the eyebrow.
+ * Home hero. A pale ambient light loop behind ink type and an emerald accent
+ * phrase, under a white scrim so every text pairing keeps AA against the
+ * darkest frame (logged in docs/PLACEHOLDERS.md). The header floats over
+ * this section, so the top padding is its 72px plus 64px or more of clear
+ * space above the eyebrow.
  */
 export function Hero({ nextEvent }: { nextEvent?: DatedEvent }) {
   return (
     <section aria-labelledby="hero-heading" className="bg-hero-tint relative overflow-x-clip">
-      <div className="container-page relative grid items-center gap-12 pb-16 pt-38 sm:pt-42 lg:grid-cols-12 lg:gap-12 lg:pb-24 lg:pt-46">
+      <LoopVideo id="ambient-light" fill priority sizes="100vw" />
+      {/* Scrim: white at 80% across the text side and the header, easing off behind the phone. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 bg-white/80 lg:bg-transparent lg:[background-image:linear-gradient(to_right,rgb(255_255_255/0.8)_0%,rgb(255_255_255/0.8)_60%,rgb(255_255_255/0.2)_100%)]"
+      />
+      <div className="container-page relative z-10 grid items-center gap-12 pb-16 pt-38 sm:pt-42 lg:grid-cols-12 lg:gap-12 lg:pb-24 lg:pt-46">
         <div className="lg:col-span-7">
           <p className="rise eyebrow eyebrow-dot">House of Bread Global</p>
           <h1 id="hero-heading" className="rise-text rise-1 mt-6 text-display">

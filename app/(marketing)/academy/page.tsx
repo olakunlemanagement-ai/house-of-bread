@@ -4,9 +4,10 @@ import { ButtonLink } from "@/components/shared/Button";
 import { LinkCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { FeatureList } from "@/components/shared/Lists";
+import { LoopVideo } from "@/components/shared/LoopVideo";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { Placeholder, PlaceholderBadge, PhotoFrame } from "@/components/shared/Placeholder";
+import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { classAudience } from "@/lib/content/copy";
 import { getAll } from "@/lib/content";
@@ -86,10 +87,10 @@ export default function AcademyPage() {
               />
             </div>
           </div>
-          <PhotoFrame
-            className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
-            ratio="4/5"
-            subject="A class in progress, believers with open Bibles"
+          <LoopVideo
+            id="open-bible"
+            sizes="(min-width: 1024px) 40vw, (min-width: 640px) 384px, 100vw"
+            className="mx-auto aspect-[4/5] w-full max-w-sm overflow-hidden rounded-card border border-border shadow-soft lg:col-span-5 lg:max-w-none"
           />
         </div>
       </section>

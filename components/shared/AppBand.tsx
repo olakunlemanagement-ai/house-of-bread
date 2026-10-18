@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { ButtonLink } from "./Button";
 import { HeroVisual } from "./HeroVisual";
 import { FeatureList, type FeatureItem } from "./Lists";
+import { LoopVideo } from "./LoopVideo";
 import { StoreButtons } from "./StoreButtons";
 
 /** What the official app carries. CONTENT-PACK section 3. */
@@ -61,8 +62,17 @@ export function AppBand({
           </div>
           {note ? <div className="mt-6">{note}</div> : null}
         </div>
-        <div className="reveal lg:col-span-5">
-          <HeroVisual showSession={false} />
+        {/* Light on water in a framed panel behind the phone. Only the glass card's text sits over it. */}
+        <div className="reveal relative lg:col-span-5">
+          <LoopVideo
+            id="water-light"
+            fill
+            sizes="(min-width: 1024px) 40vw, 100vw"
+            className="overflow-hidden rounded-card border border-border shadow-soft"
+          />
+          <div className="relative px-4 py-6">
+            <HeroVisual showSession={false} />
+          </div>
         </div>
       </div>
     </section>
