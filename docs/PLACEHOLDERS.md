@@ -162,7 +162,6 @@ No email address is published anywhere on the site.
 | Same places | [APP STORE LINK OR "COMING SOON", CONFIRM WITH APP DEVELOPER] |
 | `/app` header | [GOOGLE PLAY LINK], [APP STORE LINK OR "COMING SOON", CONFIRM] (shortened as written in the pack) |
 | `/about`, Mission | [MISSION STATEMENT TO BE SUPPLIED BY THE MINISTRY]. The pack's interim wording is shown beside it with an "Interim wording" badge |
-| `/about`, Where the ministry serves, all three region cards | [LOCAL DETAILS TO BE SUPPLIED] |
 | `/about`, Leadership | [TEACHER NAME, PHOTO AND SHORT BIOGRAPHY TO BE SUPPLIED] |
 | `/about`, Doctrinal position | [DOCTRINAL STATEMENT TO BE SUPPLIED BY THE MINISTRY] |
 | `/events`, Weekly rhythm | [WEEKLY SCHEDULE AND MINISTRY TIME ZONE TO BE SUPPLIED] |
@@ -201,15 +200,15 @@ label naming what the photo will show.
 
 | Where | Ratio | Subject |
 |---|---|---|
-| Home, Next live session | 4:5 | A live teaching session, the teacher and those gathered |
-| `/about`, Mission | 16:9 | Believers gathered for teaching |
+| Home, Next live session | 4:5 | The teacher leading a live session online |
+| `/about`, Mission | 16:9 | Believers following a live teaching online, with open Bibles |
 | `/about`, Leadership | 4:5 | Portrait of the teacher |
-| `/events`, How it works | 4:5 | A session streaming live, seen from the room |
-| `/academy`, Who the Academy is for | 4:5 | A class in progress, believers with open Bibles |
+| `/events`, How it works | 4:5 | A session streaming live, the teacher on camera |
+| `/academy`, Who the Academy is for | 4:5 | An online class in progress, believers with open Bibles |
 | `/app`, four feature sections | 16:9 | "Screenshot to come": a journey, a book introduction, switching translations, the teaching library |
 
 Assets to request from the ministry (CONTENT-PACK 1.7): a portrait of the
-teacher, 10 to 15 photos of sessions and gatherings, a 60 to 90 second
+teacher, 10 to 15 stills from live sessions and online classes, a 60 to 90 second
 welcome video (to load behind a click to load `youtube-nocookie.com` facade),
 real app screenshots, the logo SVG (mark and wordmark), and a social share
 image. Swap each frame for `next/image` with explicit dimensions.
@@ -231,9 +230,12 @@ None states a fact. Confirm or replace.
   {title}, {local time}. Watch on YouTube".
 - **About, closing band heading.** Reuses the Home H1, "Come and be fed by the
   Word.", with the "Study . Pray . Grow" eyebrow.
-- **Region cards on About.** The pack asks for "one line plus [LOCAL DETAILS]".
-  The one line was not supplied, so each card shows the region name and the
-  placeholder only.
+- **Region cards on About and the region band.** The ministry is online only
+  (18 October 2026), so the [LOCAL DETAILS] placeholder is gone. Each card
+  reads "Join live sessions and classes online. Session times are shown in
+  {zone}." The band heading reads "Session times for joining online". Both
+  are built from the online only fact and the zone labels. Confirm the
+  wording, and that Academy classes run online.
 - **UI headings.** "Subscribe" above the `/subscribe` form, "Send a message"
   and "Other ways to reach the ministry" on `/contact`, "Classes" and "Choose a
   pace" as section headings, "Next up" empty state reused on Upcoming.

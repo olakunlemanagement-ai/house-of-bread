@@ -10,6 +10,15 @@ Rules for using this file:
 - Do not invent facts to fill brackets: no founding story, attendance figures, teacher name, event times, class details, social links, store links, contact details or doctrinal statements.
 - Copy follows CLAUDE.md section 6: no em or en dashes, hyphen bullets, no first person in marketing copy.
 - All scripture is KJV, quoted in full with surrounding verses, through the Scripture component.
+- The ministry is online only at launch. It has no local centres, campuses, branches or venues. Copy never implies a physical location: no addresses, maps, "visit us", "in person", "find a location" or "near you". Believers join online, watch live and learn online. The United Kingdom, Nigeria and United States appear only as the regions the ministry serves and the time zones sessions are shown in.
+
+### Online only changes (18 October 2026)
+
+- Region band (Home, `/events`): heading "Session times by region" became "Session times for joining online", with the line "Every session is online. These are the times for believers joining from the United Kingdom, Nigeria and the United States."
+- `/about`, Where the ministry serves: the lead line now opens "The ministry is online". Each region card's [LOCAL DETAILS TO BE SUPPLIED] became "Join live sessions and classes online. Session times are shown in {UK time, Lagos time, Eastern time}."
+- Photo frame subjects: Home "the teacher and those gathered" became "The teacher leading a live session online"; `/about` Mission "Believers gathered for teaching" became "Believers following a live teaching online, with open Bibles"; `/events` "seen from the room" became "the teacher on camera"; `/academy` "A class in progress" became "An online class in progress".
+- Assets to request: "photos of sessions and gatherings" became "stills from live sessions and online classes".
+- Checked and kept: the hero line "serving believers across the United Kingdom, Africa and the United States" and the region chips name regions served, not places. `/privacy` keeps [LEGAL NAME, ADDRESS AND CONTACT EMAIL OF THE MINISTRY], because the privacy notice must name the data controller; it is not shown as a place to visit.
 
 ---
 
@@ -109,7 +118,7 @@ Hero, the stat row, white, cream, white, mint, white, the app panel, cream, whit
 
 ### 1.7 Imagery
 - Real photography is the biggest single lift for "alive". Until it arrives, use art directed placeholder frames (a light mint to cream wash, a subtle emerald pattern, a small "Photo to come" label, 4:5 and 16:9 ratios). The welcome video frame reads "Photo and video to come".
-- Ask the ministry for: a portrait of the teacher, 10 to 15 photos of sessions and gatherings, a 60 to 90 second welcome video, real app screenshots, the logo SVG (mark and wordmark), and a social share image.
+- Ask the ministry for: a portrait of the teacher, 10 to 15 stills from live sessions and online classes, a 60 to 90 second welcome video, real app screenshots, the logo SVG (mark and wordmark), and a social share image.
 - The welcome video loads behind a click to load facade (youtube-nocookie.com).
 - Use next/image with explicit dimensions and modern formats when photos arrive.
 
@@ -310,8 +319,8 @@ Metadata description: House of Bread Global is a teaching ministry committed to 
 - The official app: The ministry's teaching, journeys and six translations on your phone.
 
 ### Where the ministry serves
-- Three region cards: United Kingdom, Africa, United States. Each: one line plus [LOCAL DETAILS TO BE SUPPLIED].
-- Lead line: Serving believers across three regions, with sessions and teaching open to all.
+- Three region cards: United Kingdom, Nigeria, United States, each with its flag. Each: "Join live sessions and classes online. Session times are shown in {UK time, Lagos time, Eastern time}." No local details: the ministry is online only.
+- Lead line: The ministry is online, serving believers across three regions, with sessions and teaching open to all.
 
 ### How Scripture is handled (numbered, four items)
 1. Context first. Who wrote it, who received it, and what prompted it, before any verse is applied.

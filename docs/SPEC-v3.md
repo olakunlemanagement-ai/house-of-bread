@@ -81,6 +81,18 @@ The website is where the ministry is found, understood and joined.
 
 ## 3. Information architecture
 
+### Online only at launch
+
+Updated 18 October 2026. The ministry is online only at launch. It has no
+local centres, campuses, branches or venues, so the site has no location
+pages, addresses, maps or "find a location" feature, and no copy implies
+one. Visitors join online: they watch live on YouTube, join classes online
+and read the teaching here. The United Kingdom, Nigeria and United States
+appear only as the regions the ministry serves and as the time zones the
+region band shows session times in, for people joining from there. The
+changes made for this are listed in `docs/CONTENT-PACK.md`, "Online only
+changes".
+
 ### Stage one pages
 
 ```
@@ -123,7 +135,10 @@ One page for everything the ministry shares, in five anchored sections:
   rebuilt from the validated video id; thumbnails load from `i.ytimg.com`.
   If the variable is missing or the request fails (the endpoint returns 404
   intermittently), the page shows "Videos will appear here soon" and a
-  Subscribe on YouTube button. Videos open on YouTube; nothing is embedded.
+  Subscribe on YouTube button. A player sits above the cards behind the
+  click to load `youtube-nocookie.com` facade. The featured video
+  (`siteConfig.links.featuredVideoId`) leads it when set, ahead of the feed;
+  otherwise the newest feed video does. Every card also links to YouTube.
 - Audio (`#audio`): a card and a "Listen on {platform}" button per platform,
   from `siteConfig.links.audio`.
 - Social (`#social`): a card and a Follow button per platform. Links, not
