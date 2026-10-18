@@ -25,6 +25,9 @@ const tokens = {
   goldSoft: "#f3d98b",
   offWhite: "#f8f9f8",
   black: "#000000",
+  // Darkest pixels of the decorative loops, from npm run loops:sample.
+  loopLightDark: "#00402b",
+  loopWaterDark: "#48422f",
 };
 
 // Thresholds: text 4.5, non-text UI (rings, glyphs) 3. Large text (3) has no pairing now.
@@ -62,10 +65,29 @@ const pairings = [
   ["Hero card: ink-muted over green-night", "inkMuted", ["greenNight", "white/0.84"], TEXT],
   ["Hero card: emerald-deep over green-night", "emeraldDeep", ["greenNight", "white/0.84"], TEXT],
   ["Hero card: ink-muted over hero tint", "inkMuted", ["white", "emerald/0.12", "white/0.84"], TEXT],
-  // Newsletter card, translucent white at 84% over the gold and mint tints.
-  ["Newsletter card: ink-muted over gold-50", "inkMuted", ["gold50", "white/0.84"], TEXT],
-  ["Newsletter card: ink-muted over mint-50", "inkMuted", ["mint50", "white/0.84"], TEXT],
-  ["Newsletter card: emerald-deep over gold-50", "emeraldDeep", ["gold50", "white/0.84"], TEXT],
+  // Text over decorative loops. Backgrounds are each loop's darkest and
+  // brightest single pixel over every frame of the final WebM (npm run
+  // loops:sample, 18 October 2026). Dark text is worst over the darkest pixel.
+  // Home hero: ambient light under an 80% white scrim (header and text side).
+  ["Hero loop: ink over darkest frame pixel, 80% scrim", "ink", ["loopLightDark", "white/0.8"], TEXT],
+  ["Hero loop: ink-muted over darkest frame pixel, 80% scrim", "inkMuted", ["loopLightDark", "white/0.8"], TEXT],
+  ["Hero loop: emerald-deep over darkest frame pixel, 80% scrim", "emeraldDeep", ["loopLightDark", "white/0.8"], TEXT],
+  ["Hero loop: ink over brightest frame pixel, 80% scrim", "ink", ["white", "white/0.8"], TEXT],
+  ["Hero loop: nav current pill over darkest pixel, 80% scrim", "emeraldDeep", ["loopLightDark", "white/0.8", "emerald/0.08"], TEXT],
+  ["Hero loop: focus ring over darkest pixel, 80% scrim", "emeraldDeep", ["loopLightDark", "white/0.8"], UI],
+  // Hero floating cards (84% white) where the scrim is lightest (20%).
+  ["Hero card over loop: ink-muted, darkest pixel, 20% scrim", "inkMuted", ["loopLightDark", "white/0.2", "white/0.84"], TEXT],
+  ["Hero card over loop: emerald-deep, darkest pixel, 20% scrim", "emeraldDeep", ["loopLightDark", "white/0.2", "white/0.84"], TEXT],
+  // App band: progress card (84% white) over light on water.
+  ["App band card over water: ink-muted, darkest pixel", "inkMuted", ["loopWaterDark", "white/0.84"], TEXT],
+  ["App band card over water: emerald-deep, darkest pixel", "emeraldDeep", ["loopWaterDark", "white/0.84"], TEXT],
+  // Newsletter card (84% white) over bread steam, whose darkest pixel is black.
+  ["Newsletter card over steam: ink, darkest pixel", "ink", ["black", "white/0.84"], TEXT],
+  ["Newsletter card over steam: ink-muted, darkest pixel", "inkMuted", ["black", "white/0.84"], TEXT],
+  ["Newsletter card over steam: emerald-deep, darkest pixel", "emeraldDeep", ["black", "white/0.84"], TEXT],
+  ["Newsletter card over steam: ink-muted, brightest pixel", "inkMuted", ["white", "white/0.84"], TEXT],
+  // Pause/Play control: emerald-deep glyph on 90% white over any loop (UI).
+  ["Motion control: emerald-deep glyph over black, 90% white", "emeraldDeep", ["black", "white/0.9"], UI],
   // Footer, deep green.
   ["Footer: off-white on green-night", "offWhite", ["greenNight"], TEXT],
   ["Footer: off-white on green-deep", "offWhite", ["greenDeep"], TEXT],

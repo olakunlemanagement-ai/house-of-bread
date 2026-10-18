@@ -334,6 +334,20 @@ ships.
   moves by transform only and stays still under reduced motion. Size every
   skeleton like the real content, so nothing shifts.
 
+### Decorative motion loops
+
+- Every loop renders through `components/shared/LoopVideo.tsx` and is listed
+  in `lib/media/loops.ts`. Files in `public/media/loops` are built by
+  `npm run loops:build` from raw clips kept outside the repo, never by hand.
+- At most one loop above the fold per page. Loops sit in framed panels
+  (20px radius), never behind text, except the Home hero, which has a
+  white scrim checked against the darkest frame.
+- Phones play only loops with a 640 wide rendition. Every page with a
+  playing loop shows one Pause/Play control, placed by the first loop to
+  come into view.
+- A loop blended with `multiply` must be keyed to pure white and pass
+  `npm run loops:verify`.
+
 ### Logo
 
 - `public/logo-mark.png` is the mark, trimmed and whitened from the
