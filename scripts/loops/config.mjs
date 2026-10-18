@@ -34,7 +34,8 @@ export const clips = [
     loop: "xfade",
     // The ribbon changes shape across the seam. A 2 s dissolve reads as drift.
     xfade: 48,
-    mobile: true,
+    // No 640 rendition: on phones it cost Home about 10 Lighthouse points,
+    // so phones show the poster (19 October 2026).
   },
   {
     id: "dust-light",

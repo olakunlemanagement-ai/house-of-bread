@@ -30,8 +30,13 @@ export const LOOP_IDS = [
 
 export type LoopId = (typeof LOOP_IDS)[number];
 
-/** Loops that have a 640 wide rendition and so may play on phones. */
-const WITH_MOBILE: ReadonlySet<LoopId> = new Set<LoopId>(["ambient-light"]);
+/**
+ * Loops that have a 640 wide rendition and so may play on phones. Empty
+ * since 19 October 2026: the hero loop cost Home about 10 Lighthouse mobile
+ * points (1 s of blocking time under 4x CPU throttling), so phones show
+ * posters only. Add an id back only with a Lighthouse A/B against main.
+ */
+const WITH_MOBILE: ReadonlySet<LoopId> = new Set<LoopId>([]);
 
 function source(id: LoopId, suffix = ""): LoopSource {
   return { webm: `${LOOP_DIR}/${id}${suffix}.webm`, mp4: `${LOOP_DIR}/${id}${suffix}.mp4` };
