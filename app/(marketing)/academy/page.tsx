@@ -89,7 +89,7 @@ export default function AcademyPage() {
           <PhotoFrame
             className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
             ratio="4/5"
-            subject="A class in progress, believers with open Bibles"
+            subject="An online class in progress, believers with open Bibles"
           />
         </div>
       </section>

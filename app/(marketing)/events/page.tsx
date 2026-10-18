@@ -101,7 +101,7 @@ export default function EventsPage() {
           <PhotoFrame
             className="mx-auto w-full max-w-sm lg:col-span-4 lg:max-w-none"
             ratio="4/5"
-            subject="A session streaming live, seen from the room"
+            subject="A session streaming live, the teacher on camera"
           />
         </div>
       </section>
