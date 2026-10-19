@@ -3,9 +3,12 @@ import mark from "@/public/logo-mark.png";
 import { Wordmark } from "./Wordmark";
 
 /**
- * The House of Bread mark beside the text wordmark. The mark is a trimmed
- * PNG on white with no transparency, so on the deep green footer it sits in
- * a small white tile. TODO: swap for the SVG once the ministry supplies it.
+ * The House of Bread mark beside the text wordmark. The mark is a PNG with
+ * alpha, cut from the supplied logo by scripts/logo/make-transparent.mjs, so
+ * in the header it sits straight on the hero tint with no tile. On the deep
+ * green footer the lid's dark green falls to about 1.9:1, so there it sits in
+ * a small white tile that keeps its true colours.
+ * TODO: swap for the SVG once the ministry supplies it.
  */
 export function Logo({
   priority = false,
@@ -15,7 +18,7 @@ export function Logo({
 }: {
   /** True in the header, so the mark loads first. */
   priority?: boolean;
-  /** The footer: the mark sits in a white rounded tile. */
+  /** The footer: the mark sits in a white rounded tile (see above). */
   onDeep?: boolean;
   className?: string;
   /** Hide the name on very narrow screens (the header), keeping the mark. */

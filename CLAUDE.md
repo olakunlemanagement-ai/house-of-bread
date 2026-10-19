@@ -350,10 +350,12 @@ ships.
 
 ### Logo
 
-- `public/logo-mark.png` is the mark, trimmed and whitened from the
-  supplied PNG (no transparency), shown with `next/image` beside the text
-  wordmark (`Logo.tsx`), with `priority` in the header. On the footer it
-  sits in a white tile. `app/icon.png`, `app/apple-icon.png` and
+- `public/logo-mark.png` is the mark with alpha, cut from the supplied PNG
+  by `node scripts/logo/make-transparent.mjs` (edge connected fill, so the
+  white cross stays; 1px feathered and defringed), shown with `next/image`
+  beside the text wordmark (`Logo.tsx`), with `priority` in the header,
+  straight on the hero tint with no tile. On the footer it sits in a white
+  tile, because the lid falls to about 1.9:1 on green-deep. `app/icon.png`, `app/apple-icon.png` and
   `app/opengraph-image.png` come from the same source. Replace all of them
   when the SVG arrives.
 
