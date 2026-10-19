@@ -1,4 +1,4 @@
-import { resolveVideo } from "@/lib/media/featured";
+import { resolveVideoWithTitle } from "@/lib/media/oembed";
 import { getLatestVideos } from "@/lib/media/videos";
 import { siteConfig } from "@/lib/site-config";
 import { IconTile } from "./icons";
@@ -27,7 +27,7 @@ function NoVideosYet({ className = "" }: { className?: string }) {
 export async function VideoGrid() {
   const feed = await getLatestVideos();
   const videos = feed.status === "ok" ? feed.videos : [];
-  const featured = resolveVideo(siteConfig.links.featuredVideoId, videos);
+  const featured = await resolveVideoWithTitle(siteConfig.links.featuredVideoId, videos);
   const lead = featured ?? videos[0];
 
   if (!lead) return <NoVideosYet />;

@@ -21,12 +21,6 @@ export type SiteLinks = {
   /** Audio platforms (podcast and similar), in display order. Empty renders a placeholder. */
   audio: { label: string; href: string }[];
   /**
-   * The 60 to 90 second welcome video on Home, as a YouTube video id. Null
-   * falls back to the latest video from the channel feed, then to a "Photo
-   * and video to come" frame.
-   */
-  welcomeVideoId: string | null;
-  /**
    * The featured video, as a YouTube video id. It leads the Media Library
    * player ahead of the feed, and fills the Events Watch panel as the latest
    * session until a session is live or a dated replay exists. Change this
@@ -58,6 +52,13 @@ export const siteConfig = {
    */
   noindex: true,
   /**
+   * The video in Home's "New here? Start here." slot, as a YouTube video id.
+   * It plays behind the click to load facade. Its title comes from the feed,
+   * then YouTube oEmbed, then a placeholder. Null falls back to the latest
+   * feed video, then to an image slot.
+   */
+  startHereVideoId: "wpNuDtvzMzs" as string | null,
+  /**
    * The regular live session: every Monday at 8:00 pm Lagos time (19:00 UTC).
    * Every page works out the next occurrence and each region's local time
    * from this one rule (lib/schedule). The duration is a placeholder until
@@ -86,7 +87,6 @@ export const siteConfig = {
       { platform: "linktree", href: "https://linktr.ee/brotherola", owner: "pastor" },
     ],
     audio: [],
-    welcomeVideoId: "wpNuDtvzMzs",
     featuredVideoId: "wpNuDtvzMzs",
     googlePlay: null,
     appStore: null,

@@ -178,7 +178,7 @@ No email address is published anywhere on the site.
 
 | Where | Placeholder |
 |---|---|
-| Home, Start here; Media Library, Video; `/events`, Watch | [VIDEO TITLE TO BE SUPPLIED]. `welcomeVideoId` and `featuredVideoId` in `siteConfig.links` are both `wpNuDtvzMzs` (set 18 October 2026). Its title and date come from the channel feed when the video is among the latest six; on 18 October it was not, so the thumbnail is `i.ytimg.com/vi/wpNuDtvzMzs/hqdefault.jpg` and the title is this placeholder (also the player's accessible name). Confirm the title, or replace the id with one from the feed. On `/events` it shows as "Latest session" until a session is live or a dated replay exists |
+| Home, Start here; Media Library, Video; `/events`, Watch | Fallback title [VIDEO TITLE TO BE SUPPLIED]. `siteConfig.startHereVideoId` and `siteConfig.links.featuredVideoId` are both `wpNuDtvzMzs`. The video is on the pastor's channel (@TheBrotherOla), not in the ministry feed, so its title comes from YouTube oEmbed on the server (cached for days): "Christianity is the slave master's tool?" on 19 October 2026. If oEmbed is unreachable the placeholder shows and retries within the hour. Thumbnail `i.ytimg.com/vi/wpNuDtvzMzs/hqdefault.jpg`. On `/events` it shows as "Latest session" until a session is live or a dated replay exists |
 | Home hero visual, floating session card | None. It shows the next weekly session from `siteConfig.liveSession`, the same occurrence as the Next live session card |
 | Event cards, featured session card and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
 | Featured session card and `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED] |

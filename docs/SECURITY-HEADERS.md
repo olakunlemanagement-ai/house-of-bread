@@ -41,7 +41,7 @@ The Vercel preview checks below have not been run yet, because no remote or prev
 
 1. Run `scripts/check-headers.mjs` against the preview URL. Also confirm that `strict-transport-security` is present and that `x-vercel-cache` shows the pages are served static.
 2. Turn off the Vercel Toolbar for previews, so its `vercel.live` scripts do not show up as violations. Then load Home, Media, Events, App, Contact and Subscribe with the console open and confirm there are no Content-Security-Policy violations. Navigate between pages with the header links as well.
-3. With `welcomeVideoId` set, click Play on the Home facade and confirm the player loads with no violation.
+3. With `siteConfig.startHereVideoId` set, click Play on the Home facade and confirm the player loads with no violation.
 4. With `YOUTUBE_CHANNEL_ID` set, confirm that the Media thumbnails load with no `img-src` or `style-src` violation.
 5. With `KIT_API_KEY` and `KIT_FORM_ID` set, submit the newsletter form on `/subscribe`. Confirm the success message appears and there is no `connect-src` violation. Then repeat the submission with JavaScript off.
 6. Frame the preview from another origin and confirm the browser refuses to show it.

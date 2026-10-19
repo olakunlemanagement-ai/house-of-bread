@@ -4,7 +4,7 @@ import { AppBand } from "@/components/shared/AppBand";
 import { BentoGrid, BentoTile } from "@/components/shared/BentoGrid";
 import { ButtonLink } from "@/components/shared/Button";
 import { TextCTA } from "@/components/shared/TextCTA";
-import { WelcomeVideo } from "@/components/shared/WelcomeVideo";
+import { StartHereVideo } from "@/components/shared/StartHereVideo";
 import { YouTubeFacadeSkeleton } from "@/components/shared/YouTubeFacade";
 import { CTACard, FeatureCard } from "@/components/shared/Card";
 import { Hero } from "@/components/shared/Hero";
@@ -43,14 +43,14 @@ export default async function HomePage() {
 
       <section id="start" aria-labelledby="start-heading" className="bg-surface">
         <div className="container-page reveal py-20 md:py-30">
-          {/* Heading beside the welcome video on desktop, the three first steps below. */}
+          {/* Heading beside the start here video on desktop, the first steps below. */}
           <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
             <div className="lg:col-span-5">
               <SectionHeader id="start-heading">New here? Start here.</SectionHeader>
             </div>
             <div className="lg:col-span-7">
               <Suspense fallback={<YouTubeFacadeSkeleton />}>
-                <WelcomeVideo />
+                <StartHereVideo />
               </Suspense>
             </div>
           </div>

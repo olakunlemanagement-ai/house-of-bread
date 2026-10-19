@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { resolveVideo } from "@/lib/media/featured";
+import { resolveVideoWithTitle } from "@/lib/media/oembed";
 import { getLatestVideos } from "@/lib/media/videos";
 import { isVideoId } from "@/lib/media/youtube-feed";
 import { siteConfig, YOUTUBE_CHANNEL_ID } from "@/lib/site-config";
@@ -33,7 +33,7 @@ function Layout({ player, children }: { player: ReactNode; children: ReactNode }
  */
 export async function LatestSession() {
   const feed = await getLatestVideos();
-  const video = resolveVideo(siteConfig.links.featuredVideoId, feed.status === "ok" ? feed.videos : []);
+  const video = await resolveVideoWithTitle(siteConfig.links.featuredVideoId, feed.status === "ok" ? feed.videos : []);
   if (!video) return null;
 
   return (
