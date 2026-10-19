@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
+import { Icon3D, type Icon3DName } from "./Icon3D";
 import { IconTile, type IconName } from "./icons";
 import { TextCTA, TextCTAChip, TextCTALabel } from "./TextCTA";
 
@@ -25,19 +26,24 @@ export function Card({
 /** Icon tile, heading and one line. Used for feature and topic grids. */
 export function FeatureCard({
   icon,
+  icon3d,
+  className = "",
   title,
   children,
   headingLevel = 3,
 }: {
   icon: IconName;
+  /** A Fluent 3D icon in place of the line icon (Home). */
+  icon3d?: Icon3DName;
+  className?: string;
   title: string;
   children: ReactNode;
   headingLevel?: 2 | 3;
 }) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
   return (
-    <Card as="li" className="flex flex-col">
-      <IconTile name={icon} />
+    <Card as="li" className={`flex flex-col ${className}`}>
+      {icon3d ? <Icon3D name={icon3d} /> : <IconTile name={icon} />}
       <Heading className="mt-6 text-2xl leading-snug">{title}</Heading>
       <p className="mt-3 leading-relaxed text-ink-muted">{children}</p>
     </Card>

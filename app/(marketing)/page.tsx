@@ -77,6 +77,7 @@ export default async function HomePage() {
                 size="large"
                 surface="mint"
                 icon="live"
+                icon3d="television"
                 title="Live teaching"
                 cta={{ href: "/events", label: "See upcoming sessions" }}
               >
@@ -87,6 +88,7 @@ export default async function HomePage() {
                 size="medium"
                 surface="white"
                 icon="people"
+                icon3d="graduation-cap"
                 title="House of Bread Academy"
                 cta={{ href: "/academy", label: "Explore the Academy" }}
               >
@@ -97,6 +99,7 @@ export default async function HomePage() {
                 size="medium"
                 surface="white"
                 icon="phone"
+                icon3d="mobile-phone"
                 title="The official app"
                 cta={{ href: "/app", label: "Get the app" }}
               >
@@ -107,6 +110,7 @@ export default async function HomePage() {
                 size="small"
                 surface="white"
                 icon="scroll"
+                icon3d="scroll"
                 title="Written teaching"
                 cta={{ href: "/teachings", label: "Read the teachings" }}
               >
@@ -138,14 +142,14 @@ export default async function HomePage() {
 
       <Section id="stands-for" title="What the ministry stands for" tone="mint">
         <ul className="grid gap-5 md:grid-cols-3">
-          <FeatureCard icon="cross" title="Doctrinal clarity">
+          <FeatureCard icon="cross" icon3d="latin-cross" title="Doctrinal clarity">
             Teaching that says plainly what Scripture says, and shows how the argument is built.
           </FeatureCard>
-          <FeatureCard icon="book" title="Scripture in context">
+          <FeatureCard icon="book" icon3d="magnifying-glass" title="Scripture in context">
             Passages are read with the background that makes them land, and quoted in full with the
             verses either side.
           </FeatureCard>
-          <FeatureCard icon="heart" title="Plain, warm and rigorous">
+          <FeatureCard icon="heart" icon3d="green-heart" title="Plain, warm and rigorous">
             Written to be understood. Rigorous without being academic.
           </FeatureCard>
         </ul>

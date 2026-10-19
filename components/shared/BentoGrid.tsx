@@ -2,6 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
 import { buttonClasses } from "./Button";
+import { Icon3D, type Icon3DName } from "./Icon3D";
 import { Icon, IconTile, type IconName } from "./icons";
 import { TextCTA } from "./TextCTA";
 
@@ -19,6 +20,10 @@ type BentoTileProps = {
   size: "large" | "medium" | "small";
   surface: "white" | "warm" | "mint";
   icon: IconName;
+  /** A Fluent 3D icon in place of the line icon (Home). */
+  icon3d?: Icon3DName;
+  /** Extra classes, such as card-motion and its index. */
+  className?: string;
   title: string;
   children: ReactNode;
   cta: { href: Route; label: string };
@@ -40,12 +45,12 @@ const surfaceClass = {
  * A tile whose call to action is stretched over the whole tile: one tab stop,
  * and the tile lifts on hover and focus.
  */
-export function BentoTile({ size, surface, icon, title, children, cta }: BentoTileProps) {
+export function BentoTile({ size, surface, icon, icon3d, className = "", title, children, cta }: BentoTileProps) {
   const large = size === "large";
   const small = size === "small";
   return (
     <li
-      className={`lift cta-host isolate flex flex-col rounded-card border shadow-soft ${placement[size]} ${surfaceClass[surface]} ${
+      className={`lift cta-host isolate flex flex-col rounded-card border shadow-soft ${placement[size]} ${surfaceClass[surface]} ${className} ${
         large ? "p-6 sm:p-10" : small ? "p-6 sm:p-7" : "p-6 sm:p-8"
       }`}
     >
@@ -60,7 +65,7 @@ export function BentoTile({ size, surface, icon, title, children, cta }: BentoTi
         </div>
       ) : null}
       <div className={`flex flex-1 flex-col ${small ? "sm:flex-row sm:items-start sm:gap-5" : ""}`}>
-        <IconTile name={icon} size={large ? "lg" : "md"} />
+        {icon3d ? <Icon3D name={icon3d} size={large ? "lg" : "md"} /> : <IconTile name={icon} size={large ? "lg" : "md"} />}
         {/* The large tile anchors its text to the bottom, below the icon. */}
         <div
           className={`flex flex-col ${
