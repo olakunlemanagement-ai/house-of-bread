@@ -179,7 +179,7 @@ No email address is published anywhere on the site.
 | Where | Placeholder |
 |---|---|
 | Home, Start here; Media Library, Video; `/events`, Watch | [VIDEO TITLE TO BE SUPPLIED]. `welcomeVideoId` and `featuredVideoId` in `siteConfig.links` are both `wpNuDtvzMzs` (set 18 October 2026). Its title and date come from the channel feed when the video is among the latest six; on 18 October it was not, so the thumbnail is `i.ytimg.com/vi/wpNuDtvzMzs/hqdefault.jpg` and the title is this placeholder (also the player's accessible name). Confirm the title, or replace the id with one from the feed. On `/events` it shows as "Latest session" until a session is live or a dated replay exists |
-| Home hero visual, floating session card | [DATE AND TIME TO BE SUPPLIED] (until a session is dated) |
+| Home hero visual, floating session card | None. It shows the next weekly session from `siteConfig.liveSession`, the same occurrence as the Next live session card |
 | Event cards, featured session card and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
 | Featured session card and `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED] |
 | `/events/[slug]` | [SESSION DESCRIPTION TO BE SUPPLIED], [PASSAGES TO BE SUPPLIED, LINKED THROUGH /lib/scripture] |
@@ -190,7 +190,7 @@ No email address is published anywhere on the site.
 | `/plans/[slug]`, Frequently asked | [FREQUENTLY ASKED QUESTIONS TO BE SUPPLIED] |
 | `/privacy`, section 8 | [HOW TO EXERCISE THESE RIGHTS TO BE SUPPLIED] |
 | `/contact`, under the form | [CONTACT FORM PRIVACY WORDING TO BE SUPPLIED] |
-| Home, Next live session, and `/events`, Weekly rhythm: region band | [SESSION TIME TO BE SUPPLIED] in each of the UK, Nigeria and US frames. Set `siteConfig.links.weeklySessionUtc` to one occurrence of the regular session in UTC and the band shows it in each region's time |
+| Home, Next live session, and `/events`, Next up | [DURATION TO BE SUPPLIED] and [CALENDAR FILE TO COME] on the weekly session card. Set `siteConfig.liveSession.durationMinutes` once confirmed; until then a session counts as current for 60 minutes after it starts. A weekly `.ics` is a follow up |
 
 ## Photo frames
 
@@ -230,11 +230,11 @@ None states a fact. Confirm or replace.
   {title}, {local time}. Watch on YouTube".
 - **About, closing band heading.** Reuses the Home H1, "Come and be fed by the
   Word.", with the "Study . Pray . Grow" eyebrow.
-- **Region cards on About and the region band.** The ministry is online only
+- **Region cards on About.** The ministry is online only
   (18 October 2026), so the [LOCAL DETAILS] placeholder is gone. Each card
   reads "Join live sessions and classes online. Session times are shown in
-  {zone}." The band heading reads "Session times for joining online". Both
-  are built from the online only fact and the zone labels. Confirm the
+  {zone}." The region band is gone (19 October 2026): its times sit in the
+  session card as "Session times by region". The cards are built from the online only fact and the zone labels. Confirm the
   wording, and that Academy classes run online.
 - **UI headings.** "Subscribe" above the `/subscribe` form, "Send a message"
   and "Other ways to reach the ministry" on `/contact`, "Classes" and "Choose a
@@ -242,9 +242,14 @@ None states a fact. Confirm or replace.
 
 ## Values to confirm
 
-- **US time zone for the region band.** The band shows Eastern time
-  (America/New_York). Confirm which zone the ministry's US audience uses, or
-  whether the band should show more than one US zone.
+- **Weekly live session.** Every Monday at 8:00 pm in Lagos (Africa/Lagos,
+  19:00 UTC), set 19 October 2026 in `siteConfig.liveSession`. Every time on
+  the site is worked out from this one rule through Intl and IANA zones
+  (`lib/schedule`), revalidated at most hourly and corrected by the
+  visitor's clock. Confirm the duration.
+- **Session times by region.** Nigeria, Ghana, United Kingdom, South Africa,
+  Kenya and United States (Eastern). Confirm the list, and whether the US
+  row should stay Eastern (America/New_York) or show more than one US zone.
 - **Day one sample.** `/plans/30-day-plan` shows Day 1, James 1-5 and
   Galatians 1-3, theme "Living faith and justification by faith." It is
   labelled as a sample. Confirm against the app.

@@ -59,6 +59,21 @@ export const sessionRegions = [
   { name: "United States", flag: "us", timeZone: "America/New_York", zoneLabel: "Eastern time" },
 ] as const;
 
+/**
+ * The regions shown under the weekly live session, each with the IANA zone
+ * its local time is worked out in. The first is the ministry's own zone. The
+ * US is shown in Eastern time, and the list itself, until the ministry
+ * confirms them (docs/PLACEHOLDERS.md).
+ */
+export const sessionTimeRegions = [
+  { name: "Nigeria", flag: "ng", timeZone: "Africa/Lagos" },
+  { name: "Ghana", flag: "gh", timeZone: "Africa/Accra" },
+  { name: "United Kingdom", flag: "gb", timeZone: "Europe/London" },
+  { name: "South Africa", flag: "za", timeZone: "Africa/Johannesburg" },
+  { name: "Kenya", flag: "ke", timeZone: "Africa/Nairobi" },
+  { name: "United States (Eastern)", flag: "us", timeZone: "America/New_York" },
+] as const;
+
 export const newsletterCopy = {
   heading: "Stay close to the ministry",
   text: "Reminders before each live session, new teaching, and news from House of Bread Global, sent to your inbox.",

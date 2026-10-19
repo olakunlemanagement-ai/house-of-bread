@@ -1,7 +1,9 @@
-import type { DatedEvent } from "@/lib/content/events";
 import { LocalTime } from "./LocalTime";
 import { PhoneFrame } from "./PhoneFrame";
 import { Placeholder } from "./Placeholder";
+
+/** The session the floating card shows: on Home, the next weekly session. */
+export type HeroSession = { title: string; startsAtUtc: string; timeZone: string | null };
 
 // Translucent white over the hero tint and the phone. 84% keeps ink-muted
 // above 4.5:1 even where the card overlaps the dark phone frame.
@@ -10,14 +12,14 @@ const floating = "glass-card absolute z-10 rounded-tile border border-white/70 p
 /**
  * Hero visual: a CSS phone with two floating cards. Illustrative, not a
  * screenshot and not live data, except that the session card shows the next
- * real session once one is dated. A soft emerald radial sits behind the
+ * next real session (on Home, the next weekly session). A soft emerald radial sits behind the
  * phone.
  */
 export function HeroVisual({
-  nextEvent,
+  nextSession,
   showSession = true,
 }: {
-  nextEvent?: DatedEvent;
+  nextSession?: HeroSession;
   /** The app page shows only the progress card. */
   showSession?: boolean;
 }) {
@@ -44,14 +46,14 @@ export function HeroVisual({
             <div className="flex items-center gap-2">
               <p className="eyebrow eyebrow-dot leading-tight">Next live session</p>
             </div>
-            {nextEvent ? (
+            {nextSession ? (
               <>
                 <p className="mt-3 font-serif text-base font-semibold leading-snug text-emerald-deep">
-                  {nextEvent.title}
+                  {nextSession.title}
                 </p>
                 <p className="mt-1 text-xs leading-snug text-ink-muted">
-                  {nextEvent.timeZone ? (
-                    <LocalTime iso={nextEvent.startsAtUtc} timeZone={nextEvent.timeZone} />
+                  {nextSession.timeZone ? (
+                    <LocalTime iso={nextSession.startsAtUtc} timeZone={nextSession.timeZone} />
                   ) : null}
                 </p>
               </>

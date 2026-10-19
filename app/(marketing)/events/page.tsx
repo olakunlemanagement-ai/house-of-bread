@@ -6,8 +6,9 @@ import { StepList } from "@/components/shared/Lists";
 import { EventCard, LiveSessionCard } from "@/components/shared/LiveSessionCard";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { Placeholder, PhotoFrame } from "@/components/shared/Placeholder";
-import { RegionTimes } from "@/components/shared/RegionTimes";
+import { PhotoFrame } from "@/components/shared/Placeholder";
+import { SessionTimes } from "@/components/shared/SessionTimes";
+import { WeeklySessionCard } from "@/components/shared/WeeklySessionCard";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
 import {
@@ -17,6 +18,10 @@ import {
   showLatestSession,
 } from "@/components/shared/LatestSession";
 import { getAll, replayEvents, upcomingEvents } from "@/lib/content";
+import { sessionTimeRegions } from "@/lib/content/copy";
+import { getNextLiveSession } from "@/lib/schedule/next-session";
+import { timeIn } from "@/lib/schedule/weekly";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Live sessions and events",
@@ -24,9 +29,15 @@ export const metadata: Metadata = {
     "House of Bread Global teaches live on YouTube. See what is coming, in your local time, and set a reminder.",
 };
 
-export default function EventsPage() {
+export default async function EventsPage() {
   const events = getAll("event");
   const [next, ...rest] = upcomingEvents(events);
+  const weekly = await getNextLiveSession();
+  // A dated content event leads only when it comes before the weekly session.
+  const eventFirst = next !== undefined && Date.parse(next.startsAtUtc) < Date.parse(weekly);
+  const rule = siteConfig.liveSession;
+  const ministryTime = timeIn(new Date(weekly), rule.timeZone);
+  const ministryRegion = sessionTimeRegions.find((region) => region.timeZone === rule.timeZone)?.name;
   const replays = replayEvents(events);
   const latest = showLatestSession({
     liveNow: events.some((event) => event.status === "live"),
@@ -50,13 +61,10 @@ export default function EventsPage() {
       />
 
       <Section id="next-up" title="Next up">
-        {next ? (
+        {next && eventFirst ? (
           <LiveSessionCard event={next} idPrefix="events-next" />
         ) : (
-          <EmptyState icon="live" action={{ href: "/subscribe", label: "Set a reminder" }}>
-            The next session will be announced here and by email. Subscribe and the date arrives in
-            your inbox.
-          </EmptyState>
+          <WeeklySessionCard serverIso={weekly} idPrefix="events-next" linkTitle={false} />
         )}
       </Section>
 
@@ -122,9 +130,12 @@ export default function EventsPage() {
       </Section>
 
       <Section id="rhythm" title="Weekly rhythm" tone="mint">
-        <Placeholder block>[WEEKLY SCHEDULE AND MINISTRY TIME ZONE TO BE SUPPLIED]</Placeholder>
-        <div className="mt-10">
-          <RegionTimes headingId="events-region-times" />
+        <p className="max-w-2xl text-lead text-ink">
+          Every {ministryTime.weekday} at {ministryTime.time} {ministryRegion} time, live on YouTube.
+          Every session is online, so join from wherever you are.
+        </p>
+        <div className="mt-10 max-w-3xl rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8">
+          <SessionTimes rule={rule} serverIso={weekly} headingId="events-region-times" headingLevel={3} />
         </div>
       </Section>
 

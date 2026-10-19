@@ -1,4 +1,4 @@
-import type { DatedEvent } from "@/lib/content/events";
+import type { HeroSession } from "./HeroVisual";
 import { ButtonLink } from "./Button";
 import { TextCTA } from "./TextCTA";
 import { HeroVisual } from "./HeroVisual";
@@ -12,7 +12,7 @@ import { RegionChips } from "./RegionChips";
  * this section, so the top padding is its 72px plus 64px or more of clear
  * space above the eyebrow.
  */
-export function Hero({ nextEvent }: { nextEvent?: DatedEvent }) {
+export function Hero({ nextSession }: { nextSession?: HeroSession }) {
   return (
     <section aria-labelledby="hero-heading" className="bg-hero-tint relative overflow-x-clip">
       <LoopVideo id="ambient-light" fill priority sizes="100vw" />
@@ -51,7 +51,7 @@ export function Hero({ nextEvent }: { nextEvent?: DatedEvent }) {
 
         {/* Rises without fading: on desktop this may be the largest element, so it paints at once. */}
         <div className="rise-text rise-4 relative lg:col-span-5">
-          <HeroVisual nextEvent={nextEvent} />
+          <HeroVisual nextSession={nextSession} />
         </div>
       </div>
     </section>

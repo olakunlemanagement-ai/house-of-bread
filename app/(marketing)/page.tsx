@@ -7,33 +7,34 @@ import { TextCTA } from "@/components/shared/TextCTA";
 import { WelcomeVideo } from "@/components/shared/WelcomeVideo";
 import { YouTubeFacadeSkeleton } from "@/components/shared/YouTubeFacade";
 import { CTACard, FeatureCard } from "@/components/shared/Card";
-import { EmptyState } from "@/components/shared/EmptyState";
 import { Hero } from "@/components/shared/Hero";
-import { LiveSessionCard } from "@/components/shared/LiveSessionCard";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PhotoFrame } from "@/components/shared/Placeholder";
 import { PlanCard } from "@/components/shared/PlanCard";
 import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
-import { RegionTimes } from "@/components/shared/RegionTimes";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { SocialLinks, YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
 import { homeStats, StatStrip } from "@/components/shared/StatStrip";
 import { nameText } from "@/lib/content/copy";
-import { getAll, upcomingEvents } from "@/lib/content";
 import { placeholderPlans } from "@/lib/content/placeholder-data";
+import { getNextLiveSession } from "@/lib/schedule/next-session";
 import { siteConfig } from "@/lib/site-config";
+import { WEEKLY_SESSION_TITLE, WeeklySessionCard } from "@/components/shared/WeeklySessionCard";
 
 export const metadata: Metadata = {
   title: { absolute: "House of Bread Global | A teaching ministry" },
   description: siteConfig.description,
 };
 
-export default function HomePage() {
-  const next = upcomingEvents(getAll("event"))[0];
+export default async function HomePage() {
+  // One occurrence, cached for an hour at most, feeds the hero chip and the card.
+  const nextSession = await getNextLiveSession();
 
   return (
     <main id="main" tabIndex={-1}>
-      <Hero nextEvent={next} />
+      <Hero
+        nextSession={{ title: WEEKLY_SESSION_TITLE, startsAtUtc: nextSession, timeZone: siteConfig.liveSession.timeZone }}
+      />
 
       {/* Figures sit just under the hero as a hairline row. */}
       <div className="container-page relative">
@@ -121,22 +122,9 @@ export default function HomePage() {
           <div className="lg:col-span-7">
             <SectionHeader id="next-live-heading">Next live session</SectionHeader>
             <div className="mt-10">
-              {next ? (
-                <LiveSessionCard event={next} idPrefix="home-next" />
-              ) : (
-                <EmptyState icon="live">
-                  Sessions are announced here and by email. Ask for a reminder and the next date
-                  arrives in your inbox.
-                </EmptyState>
-              )}
+              <WeeklySessionCard serverIso={nextSession} idPrefix="home-next" />
             </div>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              {/* The featured card carries its own reminder button. */}
-              {next ? null : (
-                <ButtonLink href="/subscribe" arrow className="w-full sm:w-auto">
-                  Set a reminder
-                </ButtonLink>
-              )}
               <YouTubeSubscribeButton />
             </div>
           </div>
@@ -145,9 +133,6 @@ export default function HomePage() {
             ratio="4/5"
             subject="The teacher leading a live session online"
           />
-          <div className="lg:col-span-12">
-            <RegionTimes headingId="home-region-times" />
-          </div>
         </div>
       </section>
 
