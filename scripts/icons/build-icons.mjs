@@ -23,7 +23,7 @@ export const ICONS = {
   "graduation-cap": "graduation_cap_3d.png",
   scroll: "scroll_3d.png",
   "mobile-phone": "mobile_phone_3d.png",
-  "latin-cross": "latin_cross_3d.png",
+  bread: "bread_3d.png",
   "magnifying-glass": "magnifying_glass_tilted_left_3d.png",
   "green-heart": "green_heart_3d.png",
 };

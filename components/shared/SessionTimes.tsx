@@ -74,5 +74,5 @@ export function SessionTimes({ rule, serverIso, headingId, headingLevel = 4 }: S
 
 /** The next session's date and time, corrected by the visitor's clock. */
 export function SessionWhen({ rule, serverIso }: { rule: WeeklyRule; serverIso: string }) {
-  return <LocalTime iso={useNextSession(rule, serverIso)} timeZone={rule.timeZone} />;
+  return <LocalTime iso={useNextSession(rule, serverIso)} timeZone={rule.timeZone} hour12 />;
 }

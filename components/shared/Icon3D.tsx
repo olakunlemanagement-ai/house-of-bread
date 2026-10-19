@@ -10,7 +10,7 @@ export type Icon3DName =
   | "graduation-cap"
   | "scroll"
   | "mobile-phone"
-  | "latin-cross"
+  | "bread"
   | "magnifying-glass"
   | "green-heart";
 

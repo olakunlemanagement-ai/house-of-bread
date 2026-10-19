@@ -135,7 +135,7 @@ export default async function HomePage() {
 
       <Section id="stands-for" title="What the ministry stands for" tone="mint" reveal={false}>
         <ul className="grid gap-5 md:grid-cols-3">
-          <FeatureCard icon="cross" icon3d="latin-cross" className="card-motion lift [--i:0]" title="Doctrinal clarity">
+          <FeatureCard icon="cross" icon3d="bread" className="card-motion lift [--i:0]" title="Doctrinal clarity">
             Teaching that says plainly what Scripture says, and shows how the argument is built.
           </FeatureCard>
           <FeatureCard icon="book" icon3d="magnifying-glass" className="card-motion lift [--i:1]" title="Scripture in context">

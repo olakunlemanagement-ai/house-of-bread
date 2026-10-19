@@ -38,8 +38,8 @@ SOFTWARE.
 
 - Source: https://github.com/microsoft/fluentui-emoji
 - Files: `assets/<Name>/3D/<name>_3d.png` for Television, Graduation cap,
-  Scroll, Mobile phone, Latin cross, Magnifying glass tilted left and Green
-  heart. Resized to 160px and converted to WebP by
+  Scroll, Mobile phone, Bread, Magnifying glass tilted left and Green heart.
+  (Latin cross was tried and dropped: its purple clashed with the greens.) Resized to 160px and converted to WebP by
   `scripts/icons/build-icons.mjs` on 19 October 2026, into `public/icons/3d/`.
   The raw PNGs are not in the repository.
 - Used by: `components/shared/Icon3D.tsx`
