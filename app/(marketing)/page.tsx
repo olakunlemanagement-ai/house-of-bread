@@ -6,7 +6,7 @@ import { ButtonLink } from "@/components/shared/Button";
 import { TextCTA } from "@/components/shared/TextCTA";
 import { StartHereVideo } from "@/components/shared/StartHereVideo";
 import { YouTubeFacadeSkeleton } from "@/components/shared/YouTubeFacade";
-import { CTACard, FeatureCard } from "@/components/shared/Card";
+import { FeatureCard } from "@/components/shared/Card";
 import { Hero } from "@/components/shared/Hero";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PhotoFrame } from "@/components/shared/Placeholder";
@@ -42,9 +42,9 @@ export default async function HomePage() {
       </div>
 
       <section id="start" aria-labelledby="start-heading" className="bg-surface">
-        <div className="container-page reveal py-20 md:py-30">
-          {/* Heading beside the start here video on desktop, the first steps below. */}
-          <div className="grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
+        <div className="container-page py-20 md:py-30">
+          {/* Heading beside the start here video on desktop, the four ways below. */}
+          <div className="reveal grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
             <div className="lg:col-span-5">
               <SectionHeader id="start-heading">New here? Start here.</SectionHeader>
             </div>
@@ -54,36 +54,24 @@ export default async function HomePage() {
               </Suspense>
             </div>
           </div>
-          <ul className="mt-10 grid gap-5 md:mt-14 lg:grid-cols-3">
-            <CTACard icon="play" title="Hear the teaching" cta={{ href: "/media", label: "Open the Media Library" }}>
-              Watch live sessions and replays, or listen on audio.
-            </CTACard>
-            <CTACard icon="route" title="Read with guidance" cta={{ href: "/plans", label: "Choose a journey" }}>
-              Follow a 30, 60 or 90 day journey through the New Testament in the official app.
-            </CTACard>
-            <CTACard icon="people" title="Go deeper" cta={{ href: "/academy", label: "Explore the Academy" }}>
-              Join House of Bread Academy, Bible classes for believers taught by the ministry.
-            </CTACard>
-          </ul>
-        </div>
-      </section>
-
-      <section id="ways" aria-labelledby="ways-heading" className="bg-surface-warm">
-        <div className="container-page py-18 md:py-28">
-          <SectionHeader id="ways-heading">Four ways to be fed</SectionHeader>
-          <div className="mt-10 md:mt-14">
-            <BentoGrid>
+          {/* The next step for someone new: four ways in, each a card. */}
+          <div id="ways" className="mt-16 md:mt-24">
+            <SectionHeader id="ways-heading" as="h3" intro="Four ways to grow, wherever you are.">
+              Make the most of House of Bread
+            </SectionHeader>
+            <div className="mt-10 md:mt-12">
+              <BentoGrid>
               <BentoTile
                 size="large"
                 surface="mint"
                 icon="live"
                 icon3d="television"
                 className="card-motion [--i:0]"
-                title="Live teaching"
-                cta={{ href: "/events", label: "See upcoming sessions" }}
+                title="Join the live session"
+                cta={{ href: "/events", label: "See the live sessions" }}
               >
-                House of Bread Global teaches live on YouTube, with reminders so no session is
-                missed.
+                Teaching streams live on YouTube every Monday evening, with reminders so no session
+                is missed.
               </BentoTile>
               <BentoTile
                 size="medium"
@@ -91,7 +79,7 @@ export default async function HomePage() {
                 icon="people"
                 icon3d="graduation-cap"
                 className="card-motion [--i:1]"
-                title="House of Bread Academy"
+                title="Learn in the Academy"
                 cta={{ href: "/academy", label: "Explore the Academy" }}
               >
                 Equipped in the truth. Bible classes that give believers a structured place to study
@@ -100,27 +88,28 @@ export default async function HomePage() {
               <BentoTile
                 size="medium"
                 surface="white"
+                icon="scroll"
+                icon3d="scroll"
+                className="card-motion [--i:2]"
+                title="Study the Word in writing"
+                cta={{ href: "/teachings", label: "Read the teachings" }}
+              >
+                Doctrine, interpretation and the questions believers actually ask.
+              </BentoTile>
+              <BentoTile
+                size="small"
+                surface="warm"
                 icon="phone"
                 icon3d="mobile-phone"
-                className="card-motion [--i:2]"
-                title="The official app"
+                className="card-motion [--i:3]"
+                title="Take the app with you"
                 cta={{ href: "/app", label: "Get the app" }}
               >
                 Daily reading, New Testament journeys, six translations and the ministry&apos;s
                 teaching, in your pocket.
               </BentoTile>
-              <BentoTile
-                size="small"
-                surface="white"
-                icon="scroll"
-                icon3d="scroll"
-                className="card-motion [--i:3]"
-                title="Written teaching"
-                cta={{ href: "/teachings", label: "Read the teachings" }}
-              >
-                Doctrine, interpretation and the questions believers actually ask.
-              </BentoTile>
-            </BentoGrid>
+              </BentoGrid>
+            </div>
           </div>
         </div>
       </section>
