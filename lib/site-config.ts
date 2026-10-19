@@ -1,3 +1,5 @@
+import type { WeeklyRule } from "./schedule/weekly";
+
 export type SocialPlatform = "instagram" | "youtube" | "tiktok" | "facebook" | "x" | "linktree";
 
 export type SocialAccount = {
@@ -60,6 +62,18 @@ export const siteConfig = {
    * metadata and are unaffected by this flag.
    */
   noindex: true,
+  /**
+   * The regular live session: every Monday at 8:00 pm Lagos time (19:00 UTC).
+   * Every page works out the next occurrence and each region's local time
+   * from this one rule (lib/schedule). The duration is a placeholder until
+   * the ministry confirms it (docs/PLACEHOLDERS.md).
+   */
+  liveSession: {
+    weekday: "monday",
+    time: "20:00",
+    timeZone: "Africa/Lagos",
+    durationMinutes: null,
+  } satisfies WeeklyRule as WeeklyRule,
   /**
    * External links. Do not invent them. Each null or empty value is listed
    * in docs/PLACEHOLDERS.md.
