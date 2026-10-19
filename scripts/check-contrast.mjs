@@ -118,6 +118,27 @@ const pairings = [
   ["Social: TikTok and X black on white", "black", ["white"], UI],
   ["Social: Linktree mark, darkened green, on white", "#1e7a35", ["white"], UI],
   ["Social: Linktree brand green on white (not used)", "#43e55e", ["white"], UI, "not used"],
+  // Session times by region (Home and Events session card, white).
+  ["Session times: region and time, ink on white", "ink", ["white"], TEXT],
+  ["Session times: date line and weekday, ink-muted on white", "inkMuted", ["white"], TEXT],
+  ["Session times: Your time label, emerald-deep on white", "emeraldDeep", ["white"], TEXT],
+  ["Session times: clock glyph, emerald on white", "emerald", ["white"], UI],
+  ["Weekly card: ink on the mint panel", "ink", ["mint50"], TEXT],
+  // ImageSlot: caption on a solid white pill, whatever the gradient behind.
+  ["Image slot caption: ink on white pill", "ink", ["white"], TEXT],
+  // Home cards (.card-motion): green glow ring, and text at the 0.85 reveal start.
+  ["Card glow ring: emerald on white", "emerald", ["white"], UI],
+  ["Card glow ring: emerald on mint", "emerald", ["mint50"], UI],
+  ["Card glow ring: emerald on cream", "emerald", ["cream"], UI],
+  ["Card reveal 0.85: ink on cream (app tile)", "ink/0.85", ["cream"], TEXT],
+  ["Card reveal 0.85: ink-muted on cream (app tile)", "inkMuted/0.85", ["cream"], TEXT],
+  ["Card reveal 0.85: emerald-deep on mint (live tile)", "emeraldDeep/0.85", ["mint50"], TEXT],
+  ["Card reveal 0.85: white on emerald (live tile button)", "white/0.85", ["emerald"], TEXT],
+  // Logo mark (public/logo-mark.png, transparent). Header: no tile. Footer: white tile.
+  ["Footer logo tile: white tile on green-deep", "white", ["greenDeep"], UI],
+  ["Logo lid edge on green-deep without a tile (not used, why the tile stays)", "#397733", ["greenDeep"], UI, "not used"],
+  ["Logo lid edge on white (header, plain pages)", "#397733", ["white"], UI],
+  ["Logo lid edge over the hero tint peak", "#397733", ["white", "emerald/0.1"], UI],
   // Never used: lime is a decorative dot only.
   ["Lime on white (never used for text or meaning)", "lime", ["white"], TEXT, "not used"],
 ];

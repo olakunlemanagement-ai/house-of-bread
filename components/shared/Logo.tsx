@@ -6,7 +6,7 @@ import { Wordmark } from "./Wordmark";
  * The House of Bread mark beside the text wordmark. The mark is a PNG with
  * alpha, cut from the supplied logo by scripts/logo/make-transparent.mjs, so
  * in the header it sits straight on the hero tint with no tile. On the deep
- * green footer the lid's dark green falls to about 1.9:1, so there it sits in
+ * green footer the lid's edge falls to 2.49:1 (under 3:1), so there it sits in
  * a small white tile that keeps its true colours.
  * TODO: swap for the SVG once the ministry supplies it.
  */

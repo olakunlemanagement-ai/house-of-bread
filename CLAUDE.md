@@ -359,7 +359,7 @@ ships.
   white cross stays; 1px feathered and defringed), shown with `next/image`
   beside the text wordmark (`Logo.tsx`), with `priority` in the header,
   straight on the hero tint with no tile. On the footer it sits in a white
-  tile, because the lid falls to about 1.9:1 on green-deep. `app/icon.png`, `app/apple-icon.png` and
+  tile, because the lid edge falls to 2.49:1 on green-deep. `app/icon.png`, `app/apple-icon.png` and
   `app/opengraph-image.png` come from the same source. Replace all of them
   when the SVG arrives.
 

@@ -730,3 +730,28 @@ Interleaved runs against a build of `main`, three each. Home: `main` 61 to
 74, branch 66 to 76. About: `main` 69 to 72, branch 70 to 76. Accessibility
 100 and CLS 0 throughout. `main` itself misses 95 here, so the absolute
 score needs a rerun on CI or a real mid range Android phone.
+
+## Home revisions (revision 7, 19 October 2026)
+
+Branch `feat/simplify-flow`. Transparent logo, start here video, 3D card
+icons, the weekly live session with times by region, and image slots.
+Third party artwork is credited in `docs/CREDITS.md`.
+
+### Contrast, WCAG 2.2 AA
+
+Measured with `npm run contrast`. Text 4.5:1, non-text 3:1.
+
+| Element | Pairing | Ratio |
+|---|---|---|
+| Session times by region | ink, ink-muted, emerald-deep ("Your time") on white | 16.47, 7.64, 7.65 |
+| Session times clock glyph (3:1) | emerald on white | 6.57 |
+| Weekly card date panel | ink on mint | 14.88 |
+| Image slot caption | ink on a solid white pill | 16.47 |
+| Card glow ring (3:1) | emerald on white, mint, cream | 6.57, 5.94, 6.19 |
+| Card reveal start, 0.85 opacity | ink, ink-muted on cream; emerald-deep on mint; white on emerald | 9.94, 4.96, 4.91, 5.25 |
+| Logo lid edge (3:1) | on white; over the hero tint peak | 5.44, 4.69 |
+| Footer logo tile (3:1) | white tile on green-deep | 13.53 |
+| Logo lid edge on green-deep, no tile | not used: the reason the footer keeps its tile | 2.49 |
+
+The 3D icon wells (tint on white) and the flag outlines are decorative and
+carry no meaning, so they have no threshold.

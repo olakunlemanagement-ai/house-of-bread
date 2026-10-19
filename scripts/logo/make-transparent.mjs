@@ -24,7 +24,6 @@ const HEIGHT = 256;
 
 const { data, info } = await sharp(source).removeAlpha().raw().toBuffer({ resolveWithObject: true });
 const { width: W, height: H } = info;
-const at = (x, y) => (y * W + x) * 3;
 const isWhite = (i) => Math.min(data[i], data[i + 1], data[i + 2]) >= WHITE_MIN;
 
 // 1. Flood fill from the border through near white pixels.
