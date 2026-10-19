@@ -9,7 +9,7 @@ import { YouTubeFacadeSkeleton } from "@/components/shared/YouTubeFacade";
 import { FeatureCard } from "@/components/shared/Card";
 import { Hero } from "@/components/shared/Hero";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
-import { PhotoFrame } from "@/components/shared/Placeholder";
+import { ImageSlot } from "@/components/shared/ImageSlot";
 import { PlanCard } from "@/components/shared/PlanCard";
 import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
 import { Section, SectionHeader } from "@/components/shared/Section";
@@ -125,10 +125,10 @@ export default async function HomePage() {
               <YouTubeSubscribeButton />
             </div>
           </div>
-          <PhotoFrame
+          <ImageSlot
             className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
             ratio="4/5"
-            subject="The teacher leading a live session online"
+            brief="the teacher in a live session"
           />
         </div>
       </section>

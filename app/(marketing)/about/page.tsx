@@ -6,7 +6,8 @@ import { Flag } from "@/components/shared/Flags";
 import { LoopVideo } from "@/components/shared/LoopVideo";
 import { StepList } from "@/components/shared/Lists";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { Placeholder, PlaceholderBadge, PhotoFrame } from "@/components/shared/Placeholder";
+import { ImageSlot } from "@/components/shared/ImageSlot";
+import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { nameText, sessionRegions } from "@/lib/content/copy";
@@ -44,9 +45,9 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          <PhotoFrame
+          <ImageSlot
             className="lg:col-span-5"
-            subject="Believers following a live teaching online, with open Bibles"
+            brief="believers following a live teaching online, with open Bibles"
           />
         </div>
       </section>
@@ -134,10 +135,10 @@ export default function AboutPage() {
 
       <section id="leadership" aria-labelledby="leadership-heading" className="bg-surface-warm">
         <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
-          <PhotoFrame
+          <ImageSlot
             className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
             ratio="4/5"
-            subject="Portrait of the teacher"
+            brief="a portrait of the teacher"
           />
           <div className="lg:col-span-7">
             <SectionHeader id="leadership-heading">Leadership</SectionHeader>

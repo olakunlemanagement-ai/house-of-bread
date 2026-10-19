@@ -5,7 +5,7 @@ import { IconTile, type IconName } from "@/components/shared/icons";
 import { FeatureList } from "@/components/shared/Lists";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { PhotoFrame } from "@/components/shared/Placeholder";
+import { ImageSlot } from "@/components/shared/ImageSlot";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { StoreButtons } from "@/components/shared/StoreButtons";
 import { appAudience } from "@/lib/content/copy";
@@ -22,28 +22,28 @@ const features: { id: string; title: string; icon: IconName; text: string; scree
     title: "New Testament journeys",
     icon: "route",
     text: "Three guided routes through the New Testament, in the order the books were written. Progress is tracked automatically. Open the app and continue exactly where the last session ended.",
-    screen: "A journey's daily reading and progress",
+    screen: "a journey's daily reading and progress",
   },
   {
     id: "books",
     title: "Every book introduced",
     icon: "scroll",
     text: "Twenty-seven books, each with a written introduction covering who wrote it, who received it, the central argument, the themes and where it sits in Scripture.",
-    screen: "A book introduction",
+    screen: "a book introduction",
   },
   {
     id: "translations",
     title: "Six translations",
     icon: "book",
     text: "Comparing translations is one of the simplest ways to see what a passage is actually saying. The King James Version is the default text, and versions switch without losing your place.",
-    screen: "Switching between translations",
+    screen: "switching between translations",
   },
   {
     id: "teaching",
     title: "The ministry's teaching",
     icon: "compass",
     text: "A growing library of written teaching on doctrine, interpretation and the questions believers actually ask.",
-    screen: "The teaching library",
+    screen: "the teaching library",
   },
 ];
 
@@ -85,10 +85,10 @@ export default function AppPage() {
                   </div>
                   <p className="mt-6 max-w-xl text-lead text-ink">{feature.text}</p>
                 </div>
-                <PhotoFrame
+                <ImageSlot
                   className={`lg:col-span-5 ${flip ? "lg:order-1" : ""}`}
-                  label="Screenshot to come"
-                  subject={feature.screen}
+                  kind="screenshot"
+                  brief={feature.screen}
                 />
               </div>
             </section>

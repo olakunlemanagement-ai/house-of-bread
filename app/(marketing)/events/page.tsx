@@ -6,7 +6,7 @@ import { StepList } from "@/components/shared/Lists";
 import { EventCard, LiveSessionCard } from "@/components/shared/LiveSessionCard";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { PhotoFrame } from "@/components/shared/Placeholder";
+import { ImageSlot } from "@/components/shared/ImageSlot";
 import { SessionTimes } from "@/components/shared/SessionTimes";
 import { WeeklySessionCard } from "@/components/shared/WeeklySessionCard";
 import { Section, SectionHeader } from "@/components/shared/Section";
@@ -106,10 +106,10 @@ export default async function EventsPage() {
               />
             </div>
           </div>
-          <PhotoFrame
+          <ImageSlot
             className="mx-auto w-full max-w-sm lg:col-span-4 lg:max-w-none"
             ratio="4/5"
-            subject="A session streaming live, the teacher on camera"
+            brief="a session streaming live, the teacher on camera"
           />
         </div>
       </section>

@@ -7,7 +7,7 @@ Everything listed here is temporary. Each item must be replaced or confirmed
 before launch. Remove a line once its item is done.
 
 Every bracketed placeholder renders through the `Placeholder` component (or
-`StoreButtons`, `SocialLinks`, `YouTubeSubscribeButton`, `PhotoFrame`) with a
+`StoreButtons`, `SocialLinks`, `YouTubeSubscribeButton`, `ImageSlot`) with a
 dashed outline or a "Placeholder" badge, and carries a `data-placeholder`
 attribute, so the built HTML can be searched for any that remain.
 
@@ -192,26 +192,29 @@ No email address is published anywhere on the site.
 | `/contact`, under the form | [CONTACT FORM PRIVACY WORDING TO BE SUPPLIED] |
 | Home, Next live session, and `/events`, Next up | [DURATION TO BE SUPPLIED] and [CALENDAR FILE TO COME] on the weekly session card. Set `siteConfig.liveSession.durationMinutes` once confirmed; until then a session counts as current for 60 minutes after it starts. A weekly `.ics` is a follow up |
 
-## Photo frames
+## Image slots
 
-Art directed "Photo to come" frames (`PhotoFrame`) stand where photography
-belongs. No stock photos. Each carries `data-placeholder` and an accessible
-label naming what the photo will show.
+`ImageSlot` (`components/shared/ImageSlot.tsx`) stands wherever a photo,
+video or screenshot belongs: a fixed ratio frame with a soft green tinted
+gradient, a faint pinstripe and a caption naming the intended image
+("Photo: the teacher in a live session"). No stock photos. Each carries
+`data-placeholder` and the caption as its accessible name. To use the real
+image, pass `src` (a static import or a path) and `alt`: a one line change,
+same box, served through `next/image`.
 
-| Where | Ratio | Subject |
-|---|---|---|
-| Home, Next live session | 4:5 | The teacher leading a live session online |
-| `/about`, Mission | 16:9 | Believers following a live teaching online, with open Bibles |
-| `/about`, Leadership | 4:5 | Portrait of the teacher |
-| `/events`, How it works | 4:5 | A session streaming live, the teacher on camera |
-| `/academy`, Who the Academy is for | 4:5 | Now the open Bible loop (see "Motion loops" below). An online class photo, believers with open Bibles, can replace it later |
-| `/app`, four feature sections | 16:9 | "Screenshot to come": a journey, a book introduction, switching translations, the teaching library |
+| Where | Ratio | Kind | Brief for the photo |
+|---|---|---|---|
+| Home, Next live session | 4:5 | Photo | The teacher in a live session: on camera, mid teaching, Bible open, warm natural light. Portrait crop with space above the head |
+| Home, Start here (only if no video) | 16:9 | Video | A first teaching for someone new to the ministry. Today `startHereVideoId` fills it, so this slot does not show |
+| `/about`, Mission | 16:9 | Photo | Believers following a live teaching online, with open Bibles: a laptop or phone showing the stream, hands on an open Bible |
+| `/about`, Leadership | 4:5 | Photo | A portrait of the teacher: head and shoulders, plain or softly blurred background, looking just off camera |
+| `/events`, How it works | 4:5 | Photo | A session streaming live, the teacher on camera, seen from behind the camera or as the stream itself |
+| `/academy`, Who the Academy is for | 4:5 | Loop | Now the open Bible loop (see "Motion loops" below). An online class photo, believers with open Bibles, can replace it later |
+| `/app`, four feature sections | 16:9 | Screenshot | Real app screens: a journey's daily reading and progress, a book introduction, switching between translations, the teaching library |
 
 Assets to request from the ministry (CONTENT-PACK 1.7): a portrait of the
-teacher, 10 to 15 stills from live sessions and online classes, a 60 to 90 second
-welcome video (to load behind a click to load `youtube-nocookie.com` facade),
-real app screenshots, the logo SVG (mark and wordmark), and a social share
-image. Swap each frame for `next/image` with explicit dimensions.
+teacher, 10 to 15 stills from live sessions and online classes, real app
+screenshots, the logo SVG (mark and wordmark), and a social share image.
 
 ## Copy to confirm
 
