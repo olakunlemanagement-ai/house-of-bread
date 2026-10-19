@@ -305,6 +305,10 @@ ships.
 - Motion is CSS only and short: hero rise 8px over 500ms, scroll reveal
   from 0.85 opacity and 10px, card lift 2px, button lift 2px with a 4px
   arrow nudge, menu fade 180ms. Nothing runs under reduced motion.
+- Home cards carry `.card-motion`: a reveal staggered by animation range
+  (`--i`), a 4px lift on hover and keyboard focus, the 3D icon floating
+  4px with a 3 degree tilt, a green border glow by pseudo element opacity,
+  and a 0.98 press. Transform, translate and opacity only.
 - The hero eyebrow never touches the header: hero and page headers keep at
   least 64px of top padding below the 72px header.
 

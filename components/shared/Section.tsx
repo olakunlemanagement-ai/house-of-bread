@@ -23,6 +23,8 @@ type SectionProps = {
   width?: "wide" | "narrow";
   /** Centre only short closing bands. Content stays left aligned. */
   align?: "left" | "center";
+  /** False when the cards inside reveal one by one (.card-motion), so nothing fades twice. */
+  reveal?: boolean;
   children?: ReactNode;
 };
 
@@ -35,12 +37,13 @@ export function Section({
   tone = "white",
   width = "wide",
   align = "left",
+  reveal = true,
   children,
 }: SectionProps) {
   return (
     <section id={id} aria-labelledby={`${id}-heading`} className={toneClass[tone]}>
       <div className="container-page relative py-20 md:py-30">
-        <div className={`reveal ${width === "narrow" ? "max-w-3xl" : ""}`}>
+        <div className={`${reveal ? "reveal" : ""} ${width === "narrow" ? "max-w-3xl" : ""}`}>
           <SectionHeader
             id={`${id}-heading`}
             eyebrow={eyebrow}

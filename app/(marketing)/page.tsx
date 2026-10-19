@@ -69,7 +69,7 @@ export default async function HomePage() {
       </section>
 
       <section id="ways" aria-labelledby="ways-heading" className="bg-surface-warm">
-        <div className="container-page reveal py-18 md:py-28">
+        <div className="container-page py-18 md:py-28">
           <SectionHeader id="ways-heading">Four ways to be fed</SectionHeader>
           <div className="mt-10 md:mt-14">
             <BentoGrid>
@@ -78,6 +78,7 @@ export default async function HomePage() {
                 surface="mint"
                 icon="live"
                 icon3d="television"
+                className="card-motion [--i:0]"
                 title="Live teaching"
                 cta={{ href: "/events", label: "See upcoming sessions" }}
               >
@@ -89,6 +90,7 @@ export default async function HomePage() {
                 surface="white"
                 icon="people"
                 icon3d="graduation-cap"
+                className="card-motion [--i:1]"
                 title="House of Bread Academy"
                 cta={{ href: "/academy", label: "Explore the Academy" }}
               >
@@ -100,6 +102,7 @@ export default async function HomePage() {
                 surface="white"
                 icon="phone"
                 icon3d="mobile-phone"
+                className="card-motion [--i:2]"
                 title="The official app"
                 cta={{ href: "/app", label: "Get the app" }}
               >
@@ -111,6 +114,7 @@ export default async function HomePage() {
                 surface="white"
                 icon="scroll"
                 icon3d="scroll"
+                className="card-motion [--i:3]"
                 title="Written teaching"
                 cta={{ href: "/teachings", label: "Read the teachings" }}
               >
@@ -140,16 +144,16 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <Section id="stands-for" title="What the ministry stands for" tone="mint">
+      <Section id="stands-for" title="What the ministry stands for" tone="mint" reveal={false}>
         <ul className="grid gap-5 md:grid-cols-3">
-          <FeatureCard icon="cross" icon3d="latin-cross" title="Doctrinal clarity">
+          <FeatureCard icon="cross" icon3d="latin-cross" className="card-motion lift [--i:0]" title="Doctrinal clarity">
             Teaching that says plainly what Scripture says, and shows how the argument is built.
           </FeatureCard>
-          <FeatureCard icon="book" icon3d="magnifying-glass" title="Scripture in context">
+          <FeatureCard icon="book" icon3d="magnifying-glass" className="card-motion lift [--i:1]" title="Scripture in context">
             Passages are read with the background that makes them land, and quoted in full with the
             verses either side.
           </FeatureCard>
-          <FeatureCard icon="heart" icon3d="green-heart" title="Plain, warm and rigorous">
+          <FeatureCard icon="heart" icon3d="green-heart" className="card-motion lift [--i:2]" title="Plain, warm and rigorous">
             Written to be understood. Rigorous without being academic.
           </FeatureCard>
         </ul>
@@ -177,10 +181,11 @@ export default async function HomePage() {
         title="A journey through the New Testament"
         intro="Three guided routes from Matthew to Revelation, in the order the books were written."
         tone="warm"
+        reveal={false}
       >
         <ul className="grid gap-5 md:grid-cols-3">
-          {placeholderPlans.map((plan) => (
-            <PlanCard key={plan.slug} {...plan} />
+          {placeholderPlans.map((plan, index) => (
+            <PlanCard key={plan.slug} {...plan} className={`card-motion lift [--i:${index}]`} />
           ))}
         </ul>
         <div className="mt-10">

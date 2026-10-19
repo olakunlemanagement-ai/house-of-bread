@@ -12,6 +12,7 @@ type PlanCardProps = {
   /** The middle journey on /plans sits slightly raised. */
   raised?: boolean;
   headingLevel?: 2 | 3;
+  className?: string;
 };
 
 export function PlanCard({
@@ -22,6 +23,7 @@ export function PlanCard({
   href,
   raised = false,
   headingLevel = 3,
+  className = "",
 }: PlanCardProps) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
   return (
@@ -30,7 +32,7 @@ export function PlanCard({
         raised
           ? "rounded-card border border-border-strong bg-surface p-6 shadow-raised sm:p-8 md:-translate-y-4"
           : cardClass
-      } ${href ? interactiveCardClass : ""} flex flex-col`}
+      } ${href ? interactiveCardClass : ""} flex flex-col ${className}`}
     >
       <div className="flex items-end justify-between gap-3">
         {/* Solid emerald, not the leaf gradient: the small label needs 4.5:1 (6.57:1 here). */}

@@ -555,6 +555,92 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
 }
 
 /*
+  Home cards (.card-motion, with --i as the card's index). CSS only, and
+  only transform, translate and opacity move:
+  - a staggered scroll reveal from 0.85 opacity and 12px, on `translate` so
+    it never fights the hover `transform`. Time delays are ignored on scroll
+    timelines, so the stagger shifts each card's animation range instead;
+  - a 4px lift on hover and keyboard focus, with the 3D icon floating 4px
+    and tilting 3 degrees;
+  - a soft green border glow, a pseudo element fading in by opacity;
+  - a pressed scale of 0.98 for touch.
+  The label and arrow chip always show, so nothing depends on hover. All
+  movement sits under no-preference; the glow (opacity only) stays.
+*/
+.card-motion::after {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  box-shadow:
+    0 0 0 1px var(--emerald),
+    0 12px 32px -10px rgb(27 107 51 / 0.32);
+  opacity: 0;
+  transition: opacity 220ms var(--ease-out);
+  pointer-events: none;
+}
+
+.card-motion:has(:focus-visible)::after {
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  .card-motion:hover::after {
+    opacity: 1;
+  }
+}
+
+@keyframes card-reveal {
+  from {
+    opacity: 0.85;
+    translate: 0 12px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .card-motion {
+    transition:
+      transform 220ms var(--ease-out),
+      border-color 200ms var(--ease-out);
+  }
+
+  .card-motion .icon-3d {
+    transition: transform 320ms var(--ease-out);
+  }
+
+  .card-motion:has(:focus-visible) {
+    transform: translateY(-4px);
+  }
+
+  .card-motion:has(:focus-visible) .icon-3d {
+    transform: translateY(-4px) rotate(-3deg);
+  }
+
+  @media (hover: hover) {
+    .card-motion:hover {
+      transform: translateY(-4px);
+    }
+
+    .card-motion:hover .icon-3d {
+      transform: translateY(-4px) rotate(-3deg);
+    }
+  }
+
+  .card-motion:active {
+    transform: scale(0.98);
+    transition-duration: 90ms;
+  }
+
+  @supports (animation-timeline: view()) {
+    .card-motion {
+      animation: card-reveal linear both;
+      animation-timeline: view();
+      animation-range: entry calc(var(--i, 0) * 8%) entry calc(55% + var(--i, 0) * 8%);
+    }
+  }
+}
+
+/*
   The mobile menu panel fades in when its details element opens. CSS only:
   browsers without @starting-style show it at once. Closing is instant.
 */
