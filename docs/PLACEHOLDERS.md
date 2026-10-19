@@ -755,3 +755,17 @@ Measured with `npm run contrast`. Text 4.5:1, non-text 3:1.
 
 The 3D icon wells (tint on white) and the flag outlines are decorative and
 carry no meaning, so they have no threshold.
+
+### Lighthouse mobile and no script (19 October 2026)
+
+- Home, production build, two runs on this machine: performance 58 and 64,
+  accessibility 100 both times, CLS 0, LCP 3.9 to 4.2 s, TBT 920 to 1,290
+  ms. `main` scored 61 to 74 here earlier, so this machine cannot show 95
+  either way; rerun on CI or a mid range Android phone.
+- Without script, the server HTML carries all six region times and no "Your
+  time" row, as designed. But every page under `app/(marketing)` (Home,
+  Events, About, Privacy, and the base commit before this branch) sends its
+  `<main>` inside the `(marketing)/loading.tsx` Suspense boundary as a
+  hidden streamed chunk that only script reveals, so a visitor without
+  script sees the loading skeleton. A test build without that file put
+  `<main>` inline on every page. To decide: remove or narrow `loading.tsx`.
