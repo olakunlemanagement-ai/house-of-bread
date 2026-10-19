@@ -1,26 +1,41 @@
+import { resolveVideo } from "@/lib/media/featured";
 import { getLatestVideos } from "@/lib/media/videos";
+import { siteConfig } from "@/lib/site-config";
 import { IconTile } from "./icons";
 import { LoadingRegion, Skeleton } from "./Skeleton";
 import { YouTubeSubscribeButton } from "./SocialLinks";
 import { VideoLibrary } from "./VideoLibrary";
 
+function NoVideosYet({ className = "" }: { className?: string }) {
+  return (
+    <div
+      className={`flex flex-col items-start gap-6 rounded-card border border-dashed border-border-strong bg-surface p-6 sm:flex-row sm:items-center sm:p-8 ${className}`}
+    >
+      <IconTile name="video" size="lg" />
+      <p className="max-w-xl flex-1 text-lg leading-relaxed text-ink">Videos will appear here soon.</p>
+      <YouTubeSubscribeButton />
+    </div>
+  );
+}
+
 /**
- * The latest six videos from the channel feed, with the player on top
- * (VideoLibrary), or a fallback while there are none.
+ * The player and the latest six videos from the channel feed
+ * (VideoLibrary). The featured video (siteConfig.links.featuredVideoId)
+ * leads the player when set, otherwise the newest feed video does. When the
+ * feed is unavailable the featured video still plays, above the fallback.
  */
 export async function VideoGrid() {
   const feed = await getLatestVideos();
-  if (feed.status === "unavailable") {
-    return (
-      <div className="flex flex-col items-start gap-6 rounded-card border border-dashed border-border-strong bg-surface p-6 sm:flex-row sm:items-center sm:p-8">
-        <IconTile name="video" size="lg" />
-        <p className="max-w-xl flex-1 text-lg leading-relaxed text-ink">Videos will appear here soon.</p>
-        <YouTubeSubscribeButton />
-      </div>
-    );
-  }
+  const videos = feed.status === "ok" ? feed.videos : [];
+  const featured = resolveVideo(siteConfig.links.featuredVideoId, videos);
+  const lead = featured ?? videos[0];
+
+  if (!lead) return <NoVideosYet />;
   return (
-    <VideoLibrary videos={feed.videos} />
+    <>
+      <VideoLibrary lead={lead} leadLabel={featured ? "Featured video" : "Latest video"} videos={videos} />
+      {videos.length === 0 ? <NoVideosYet className="mt-12" /> : null}
+    </>
   );
 }
 

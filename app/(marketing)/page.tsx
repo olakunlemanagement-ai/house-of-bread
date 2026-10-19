@@ -143,7 +143,7 @@ export default function HomePage() {
           <PhotoFrame
             className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
             ratio="4/5"
-            subject="A live teaching session, the teacher and those gathered"
+            subject="The teacher leading a live session online"
           />
           <div className="lg:col-span-12">
             <RegionTimes headingId="home-region-times" />

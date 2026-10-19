@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { ButtonLink } from "@/components/shared/Button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { StepList } from "@/components/shared/Lists";
@@ -9,10 +10,13 @@ import { Placeholder, PhotoFrame } from "@/components/shared/Placeholder";
 import { RegionTimes } from "@/components/shared/RegionTimes";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
-import { TextCTA } from "@/components/shared/TextCTA";
-import { YouTubeFacade } from "@/components/shared/YouTubeFacade";
+import {
+  LatestSession,
+  LatestSessionSkeleton,
+  LivePlayer,
+  showLatestSession,
+} from "@/components/shared/LatestSession";
 import { getAll, replayEvents, upcomingEvents } from "@/lib/content";
-import { YOUTUBE_CHANNEL_ID } from "@/lib/site-config";
 
 export const metadata: Metadata = {
   title: "Live sessions and events",
@@ -24,6 +28,10 @@ export default function EventsPage() {
   const events = getAll("event");
   const [next, ...rest] = upcomingEvents(events);
   const replays = replayEvents(events);
+  const latest = showLatestSession({
+    liveNow: events.some((event) => event.status === "live"),
+    hasReplay: replays.length > 0,
+  });
 
   return (
     <main id="main" tabIndex={-1}>
@@ -52,33 +60,27 @@ export default function EventsPage() {
         )}
       </Section>
 
-      <Section
-        id="watch"
-        title="Watch live"
-        intro="Live sessions stream on the ministry's YouTube channel. Press play to watch here, or open YouTube."
-        tone="mint"
-      >
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-10">
-          <div className="lg:col-span-8">
-            <YouTubeFacade
-              source={{ kind: "live", channelId: YOUTUBE_CHANNEL_ID }}
-              title="House of Bread Global on YouTube"
-            />
-          </div>
-          <div className="lg:col-span-4">
-            <h3 className="text-2xl leading-snug">When the channel is not live</h3>
-            <p className="mt-3 leading-relaxed text-ink-muted">
-              The player shows a YouTube message instead of a stream, or a countdown when the next
-              session is already scheduled. The times on this page show when to come back.
-            </p>
-            <p className="mt-5">
-              <TextCTA href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`}>
-                Open the live page on YouTube
-              </TextCTA>
-            </p>
-          </div>
-        </div>
-      </Section>
+      {latest ? (
+        <Section
+          id="watch"
+          title="Watch the latest session"
+          intro="Until the next session is live, the most recent one is here. Press play to watch here, or open YouTube."
+          tone="mint"
+        >
+          <Suspense fallback={<LatestSessionSkeleton />}>
+            <LatestSession />
+          </Suspense>
+        </Section>
+      ) : (
+        <Section
+          id="watch"
+          title="Watch live"
+          intro="Live sessions stream on the ministry's YouTube channel. Press play to watch here, or open YouTube."
+          tone="mint"
+        >
+          <LivePlayer />
+        </Section>
+      )}
 
       <section id="how" aria-labelledby="how-heading" className="bg-surface-warm">
         <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-14">
@@ -99,7 +101,7 @@ export default function EventsPage() {
           <PhotoFrame
             className="mx-auto w-full max-w-sm lg:col-span-4 lg:max-w-none"
             ratio="4/5"
-            subject="A session streaming live, seen from the room"
+            subject="A session streaming live, the teacher on camera"
           />
         </div>
       </section>
