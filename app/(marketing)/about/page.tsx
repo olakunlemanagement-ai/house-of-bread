@@ -46,8 +46,8 @@ export default function AboutPage() {
             </div>
           </div>
           <ImageSlot
+            id="about-mission"
             className="lg:col-span-5"
-            brief="believers following a live teaching online, with open Bibles"
           />
         </div>
       </section>
@@ -136,9 +136,9 @@ export default function AboutPage() {
       <section id="leadership" aria-labelledby="leadership-heading" className="bg-surface-warm">
         <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
           <ImageSlot
+            id="about-leadership"
             className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
-            ratio="4/5"
-            brief="a portrait of the teacher"
+            sizes="(min-width: 1024px) 40vw, (min-width: 640px) 384px, 100vw"
           />
           <div className="lg:col-span-7">
             <SectionHeader id="leadership-heading">Leadership</SectionHeader>

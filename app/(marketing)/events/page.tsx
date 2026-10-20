@@ -99,9 +99,9 @@ export default async function EventsPage() {
             </div>
           </div>
           <ImageSlot
+            id="events-how-it-works"
             className="mx-auto w-full max-w-sm lg:col-span-4 lg:max-w-none"
-            ratio="4/5"
-            brief="a session streaming live, the teacher on camera"
+            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 384px, 100vw"
           />
         </div>
       </section>

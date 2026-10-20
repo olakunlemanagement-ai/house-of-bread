@@ -21,7 +21,7 @@ export async function StartHereVideo() {
     return <YouTubeFacade source={{ kind: "video", id: video.id }} title={video.title} />;
   }
 
-  return <ImageSlot kind="video" brief="a first teaching for someone new to the ministry" />;
+  return <ImageSlot id="home-start-here" />;
 }
 
 /**

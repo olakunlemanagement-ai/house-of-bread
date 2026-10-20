@@ -125,9 +125,9 @@ export default async function HomePage() {
             </div>
           </div>
           <ImageSlot
+            id="home-live-session"
             className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
-            ratio="4/5"
-            brief="the teacher in a live session"
+            sizes="(min-width: 1024px) 40vw, (min-width: 640px) 384px, 100vw"
           />
         </div>
       </section>
