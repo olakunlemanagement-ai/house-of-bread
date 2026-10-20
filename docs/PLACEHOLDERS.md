@@ -769,3 +769,21 @@ carry no meaning, so they have no threshold.
   hidden streamed chunk that only script reveals, so a visitor without
   script sees the loading skeleton. A test build without that file put
   `<main>` inline on every page. To decide: remove or narrow `loading.tsx`.
+
+### No script check after removing loading.tsx (20 October 2026)
+
+- `(marketing)/loading.tsx` is removed. `node scripts/check-html.mjs <base>`
+  passes on all 20 routes: each sends its `<main>`, h1 and key sentence in
+  the first HTML. `scripts/check-noscript.mjs` confirms the same in
+  Chromium with JavaScript off for Home, About, Academy, Media, Events, App,
+  Contact and Subscribe.
+- Three local Suspense boundaries remain: the Start here video, the Media
+  Library video grid, and the Events latest session player and title. Each
+  fallback measures the same height as its content at 375, 768 and 1280px.
+  Video titles there are clamped to two lines with two lines reserved.
+- React still streams those three boundaries as hidden chunks, even though
+  the pages are static, so without script their skeleton stays. To decide:
+  add a no script link to YouTube inside each fallback.
+- An unknown slug (for example `/teachings/xyz`) returns 404, but Next sends
+  it as a script only payload, so without script the page is blank.
+  `dynamicParams` is not available with Cache Components.
