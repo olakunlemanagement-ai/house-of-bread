@@ -33,5 +33,5 @@ export function StartHereVideoSkeleton() {
   const href: `https://${string}` = isVideoId(id)
     ? `https://www.youtube.com/watch?v=${id}`
     : `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`;
-  return <YouTubeFacadeSkeleton href={href} name="the start here video" />;
+  return <YouTubeFacadeSkeleton link={{ href, name: "the start here video" }} />;
 }

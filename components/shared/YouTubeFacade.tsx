@@ -109,31 +109,36 @@ export function YouTubeFacade({
  * in a chunk only script reveals, so without script this link is how the
  * video stays reachable. It sits outside the hidden loading region, so it
  * stays focusable, and on a white pill, so it keeps the TextCTA colours.
+ * Leave `link` out where the same link already sits beside the player in
+ * the first HTML (Events), so it is not there twice.
  */
 export function YouTubeFacadeSkeleton({
   label = "Loading video",
-  href,
-  name,
+  link,
 }: {
   label?: string;
-  /** The video, or the channel's videos page when the video is not known yet. */
-  href: `https://${string}`;
-  /** Completes the link's accessible name, such as "the start here video". */
-  name: string;
+  link?: {
+    /** The video, or the channel's videos page when the video is not known yet. */
+    href: `https://${string}`;
+    /** Completes the link's accessible name, such as "the start here video". */
+    name: string;
+  };
 }) {
   return (
     <div className="relative">
       <LoadingRegion label={label}>
         <Skeleton className="aspect-video rounded-card shadow-raised" />
       </LoadingRegion>
-      <div className="absolute inset-0 flex items-center justify-center p-4">
-        {/* The pill is the link itself, so the focus ring follows its shape. .text-cta sets a radius outside the layers, hence the ! */}
-        <p>
-          <TextCTA href={href} className="rounded-full! bg-surface pl-5 pr-2 shadow-soft">
-            Watch on YouTube<span className="sr-only">: {name}</span>
-          </TextCTA>
-        </p>
-      </div>
+      {link ? (
+        <div className="absolute inset-0 flex items-center justify-center p-4">
+          {/* The pill is the link itself, so the focus ring follows its shape. .text-cta sets a radius outside the layers, hence the ! */}
+          <p>
+            <TextCTA href={link.href} className="rounded-full! bg-surface pl-5 pr-2 shadow-soft">
+              Watch on YouTube<span className="sr-only">: {link.name}</span>
+            </TextCTA>
+          </p>
+        </div>
+      ) : null}
     </div>
   );
 }

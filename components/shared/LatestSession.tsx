@@ -68,15 +68,8 @@ export function LatestSession() {
   return (
     <Layout
       player={
-        <Suspense
-          fallback={
-            <YouTubeFacadeSkeleton
-              label="Loading the latest session"
-              href={`https://www.youtube.com/watch?v=${id}`}
-              name="the latest session"
-            />
-          }
-        >
+        // No link on the fallback: "Watch on YouTube" below is already in the first HTML.
+        <Suspense fallback={<YouTubeFacadeSkeleton label="Loading the latest session" />}>
           <LatestSessionPlayer />
         </Suspense>
       }

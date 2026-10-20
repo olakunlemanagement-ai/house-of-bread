@@ -28,9 +28,10 @@ const PAGES = [
 
 /** Async regions: the element whose height must not change when content replaces the fallback. */
 const REGIONS = [
-  { path: "/", name: "Start here video", selector: "#start .lg\\:col-span-7" },
-  { path: "/media", name: "Media Library video grid", selector: "#video .container-page > div > :last-child" },
-  { path: "/events", name: "Latest session player", selector: "#watch .container-page > div > :last-child" },
+  { path: "/", name: "Start here video", selector: "#start .lg\\:col-span-7", fallbackLink: true },
+  { path: "/media", name: "Media Library video grid", selector: "#video .container-page > div > :last-child", fallbackLink: true },
+  // The "Watch on YouTube" link beside the player is in the first HTML, so the fallback has none.
+  { path: "/events", name: "Latest session player", selector: "#watch .container-page > div > :last-child", fallbackLink: false },
 ];
 
 const VIEWPORTS = [
@@ -117,36 +118,51 @@ try {
     await contexts.content.close();
   }
 
-  console.log("\nFallback links without JavaScript, reached by Tab");
+  // Each region must offer exactly one visible "Watch on YouTube" link without
+  // script: on the skeleton where the region has a fallback link, beside it
+  // where the page already carries one in the first HTML.
+  console.log('\n"Watch on YouTube" without JavaScript, reached by Tab');
   const keyboard = await browser.newContext({ javaScriptEnabled: false, viewport: VIEWPORTS[0] });
   for (const region of REGIONS) {
     const page = await keyboard.newPage();
     await page.goto(new URL(region.path, base).href, { waitUntil: "load" });
-    const link = await page.$eval(region.selector, (root) => {
-      const busy = root.querySelector('[aria-busy="true"]');
-      const a = busy?.parentElement?.querySelector("a[href]");
-      if (!a || busy.contains(a) || a.closest('[aria-hidden="true"]')) return null;
-      return { href: a.getAttribute("href"), name: a.textContent.replace(/\s+/g, " ").trim(), visible: a.getClientRects().length > 0 };
+    const found = await page.$eval(region.selector, (root) => {
+      const links = [...root.querySelectorAll("a[href]")].filter(
+        (a) =>
+          a.textContent.trim().startsWith("Watch on YouTube") &&
+          a.getClientRects().length > 0 &&
+          !a.closest('[aria-hidden="true"], [aria-busy="true"]'),
+      );
+      return links.map((a, index) => {
+        a.setAttribute("data-check-link", String(index));
+        const box = a.closest(".relative");
+        return {
+          href: a.getAttribute("href"),
+          name: a.textContent.replace(/\s+/g, " ").trim(),
+          onSkeleton: !!box?.querySelector(':scope > [aria-busy="true"]'),
+        };
+      });
     });
+    const link = found[0];
     let tabs = 0;
     let reached = false;
     if (link) {
       for (; tabs < 300 && !reached; tabs++) {
         await page.keyboard.press("Tab");
-        reached = await page.$eval(region.selector, (root) => {
-          const active = document.activeElement;
-          return !!active && active.tagName === "A" && root.contains(active) && !!active.closest(".relative")?.querySelector('[aria-busy="true"]');
-        });
+        reached = await page.evaluate(() => document.activeElement?.getAttribute("data-check-link") === "0");
       }
     }
+    const where = link ? (link.onSkeleton ? "on the skeleton" : "beside the player") : "";
     console.log(
-      `${region.path.padEnd(8)} ${region.name.padEnd(26)} ${link ? `"${link.name}" -> ${link.href}` : "(no link)"}  ${reached ? `reached after ${tabs} Tab presses` : "not reached by Tab"}`,
+      `${region.path.padEnd(8)} ${region.name.padEnd(26)} ${found.length} link(s)  ${link ? `"${link.name}" ${where} -> ${link.href}` : ""}  ${reached ? `reached after ${tabs} Tab presses` : "not reached by Tab"}`,
     );
-    if (!link) fail(`${region.name} fallback has no focusable link beside the loading region`);
-    else {
-      if (!link.visible) fail(`${region.name} fallback link is not visible`);
-      if (!/^https:\/\/www\.youtube\.com\//.test(link.href ?? "")) fail(`${region.name} fallback link is not a YouTube link`);
-      if (!reached) fail(`${region.name} fallback link is not reachable by Tab`);
+    if (found.length !== 1) fail(`${region.name} has ${found.length} visible "Watch on YouTube" links, expected 1`);
+    if (link) {
+      if (link.onSkeleton !== region.fallbackLink) {
+        fail(`${region.name} link is ${where}, expected ${region.fallbackLink ? "on the skeleton" : "beside the player"}`);
+      }
+      if (!/^https:\/\/www\.youtube\.com\//.test(link.href ?? "")) fail(`${region.name} link is not a YouTube link`);
+      if (!reached) fail(`${region.name} link is not reachable by Tab`);
     }
     await page.close();
   }

@@ -54,8 +54,10 @@ export function VideoGridSkeleton() {
         <div className="lg:col-span-8">
           <YouTubeFacadeSkeleton
             label="Loading videos"
-            href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`}
-            name="the ministry's videos"
+            link={{
+              href: `https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`,
+              name: "the ministry's videos",
+            }}
           />
         </div>
         <div aria-hidden="true" className="lg:col-span-4">
