@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import { Suspense, type ReactNode } from "react";
 import { resolveVideoWithTitle } from "@/lib/media/oembed";
 import { getLatestVideos } from "@/lib/media/videos";
 import { isVideoId } from "@/lib/media/youtube-feed";
@@ -26,50 +26,72 @@ function Layout({ player, children }: { player: ReactNode; children: ReactNode }
   );
 }
 
+/** The featured video with its best title: the feed's, then oEmbed's, then the placeholder. */
+async function featuredVideo() {
+  const feed = await getLatestVideos();
+  return resolveVideoWithTitle(siteConfig.links.featuredVideoId, feed.status === "ok" ? feed.videos : []);
+}
+
+async function LatestSessionPlayer() {
+  const video = await featuredVideo();
+  if (!video) return null;
+  return <YouTubeFacade source={{ kind: "video", id: video.id }} title={video.title} />;
+}
+
+async function LatestSessionTitle() {
+  const video = await featuredVideo();
+  return video ? <VideoTitle video={video} /> : null;
+}
+
+/** Two lines at the h3's size (2 x 2.0625rem), so the title replaces them without a shift. */
+function TitleSkeleton() {
+  return (
+    <>
+      <span className="sr-only">Loading the title</span>
+      <span aria-hidden="true" className="flex h-[4.125rem] flex-col justify-center gap-3">
+        <Skeleton className="h-5 w-11/12 rounded-full" />
+        <Skeleton className="h-5 w-2/3 rounded-full" />
+      </span>
+    </>
+  );
+}
+
 /**
  * The featured video in the Events Watch panel, labelled as the latest
- * session, never as live. Its title comes from the feed when the video is
- * there, otherwise the placeholder title.
+ * session, never as live. The id is configured, so only the player and the
+ * title wait for the feed. Each has its own Suspense boundary sized like the
+ * real thing, and the copy and links around them are in the first HTML.
+ * Render only when showLatestSession() is true, so the id is valid.
  */
-export async function LatestSession() {
-  const feed = await getLatestVideos();
-  const video = await resolveVideoWithTitle(siteConfig.links.featuredVideoId, feed.status === "ok" ? feed.videos : []);
-  if (!video) return null;
-
+export function LatestSession() {
+  const id = siteConfig.links.featuredVideoId;
   return (
-    <Layout player={<YouTubeFacade source={{ kind: "video", id: video.id }} title={video.title} />}>
+    <Layout
+      player={
+        <Suspense fallback={<YouTubeFacadeSkeleton label="Loading the latest session" />}>
+          <LatestSessionPlayer />
+        </Suspense>
+      }
+    >
       <p className="eyebrow">Latest session</p>
-      <h3 className="mt-3 text-2xl leading-snug">
-        <VideoTitle video={video} />
+      {/* Two lines reserved and at most two shown, so every title and the fallback share one height. */}
+      <h3 className="mt-3 line-clamp-2 min-h-[4.125rem] text-2xl leading-snug">
+        <Suspense fallback={<TitleSkeleton />}>
+          <LatestSessionTitle />
+        </Suspense>
       </h3>
       <p className="mt-3 leading-relaxed text-ink-muted">
         Sessions stream live on the ministry&apos;s YouTube channel. When the next one is live, it
         plays here.
       </p>
       <p className="mt-5">
-        <TextCTA href={video.url}>Watch on YouTube</TextCTA>
+        <TextCTA href={`https://www.youtube.com/watch?v=${id}`}>Watch on YouTube</TextCTA>
       </p>
       <p className="mt-3">
         <TextCTA href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`}>
           Open the live page on YouTube
         </TextCTA>
       </p>
-    </Layout>
-  );
-}
-
-/** Suspense fallback for LatestSession: the same player box and caption lines. */
-export function LatestSessionSkeleton() {
-  return (
-    <Layout player={<YouTubeFacadeSkeleton label="Loading the latest session" />}>
-      <div aria-hidden="true">
-        <Skeleton className="h-3 w-28 rounded-full" />
-        <Skeleton className="mt-4 h-5 w-11/12 rounded-full" />
-        <Skeleton className="mt-6 h-4 w-full rounded-full" />
-        <Skeleton className="mt-3 h-4 w-4/5 rounded-full" />
-        <Skeleton className="mt-6 h-7 w-44 rounded-full" />
-        <Skeleton className="mt-4 h-7 w-56 rounded-full" />
-      </div>
     </Layout>
   );
 }

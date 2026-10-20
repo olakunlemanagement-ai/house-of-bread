@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
 import { ButtonLink } from "@/components/shared/Button";
 import { EmptyState } from "@/components/shared/EmptyState";
 import { StepList } from "@/components/shared/Lists";
@@ -11,12 +10,7 @@ import { SessionTimes } from "@/components/shared/SessionTimes";
 import { WeeklySessionCard } from "@/components/shared/WeeklySessionCard";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
-import {
-  LatestSession,
-  LatestSessionSkeleton,
-  LivePlayer,
-  showLatestSession,
-} from "@/components/shared/LatestSession";
+import { LatestSession, LivePlayer, showLatestSession } from "@/components/shared/LatestSession";
 import { getAll, replayEvents, upcomingEvents } from "@/lib/content";
 import { sessionTimeRegions } from "@/lib/content/copy";
 import { getNextLiveSession } from "@/lib/schedule/next-session";
@@ -75,9 +69,7 @@ export default async function EventsPage() {
           intro="Until the next session is live, the most recent one is here. Press play to watch here, or open YouTube."
           tone="mint"
         >
-          <Suspense fallback={<LatestSessionSkeleton />}>
-            <LatestSession />
-          </Suspense>
+          <LatestSession />
         </Section>
       ) : (
         <Section

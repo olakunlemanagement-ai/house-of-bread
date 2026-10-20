@@ -60,7 +60,9 @@ export function VideoGridSkeleton() {
           <div className="mt-2 flex h-5 items-center">
             <Skeleton className="h-3 w-32 rounded-full" />
           </div>
-          <Skeleton className="mt-5 h-7 w-44 rounded-full" />
+          <div className="mt-5 flex h-11 items-center">
+            <Skeleton className="h-7 w-44 rounded-full" />
+          </div>
         </div>
       </div>
       <ul className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -77,7 +79,9 @@ export function VideoGridSkeleton() {
               </div>
               <div className="mt-auto pt-5">
                 <Skeleton className="h-12 w-full rounded-button sm:h-13" />
-                <Skeleton className="mt-4 h-7 w-44 rounded-full" />
+                <div className="mt-4 flex h-11 items-center">
+                  <Skeleton className="h-7 w-44 rounded-full" />
+                </div>
               </div>
             </div>
           </li>

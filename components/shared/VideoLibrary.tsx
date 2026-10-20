@@ -64,10 +64,11 @@ function VideoCard({
         )}
       </div>
       <div className="flex flex-1 flex-col p-6">
-        <h3 className="text-xl leading-snug">
+        {/* Two title lines and the date line are always reserved, so every card and its skeleton share one height. */}
+        <h3 className="line-clamp-2 min-h-[3.4375rem] text-xl leading-snug">
           <VideoTitle video={video} />
         </h3>
-        <p className="mt-2 text-sm text-ink-muted">
+        <p className="mt-2 min-h-5 text-sm text-ink-muted">
           <PublishedDate video={video} />
         </p>
         <div className="mt-auto pt-5">
@@ -145,10 +146,11 @@ export function VideoLibrary({
         </div>
         <div className="lg:col-span-4">
           <p className="eyebrow">{started ? "Now playing" : leadLabel}</p>
-          <h3 className="mt-3 text-2xl leading-snug">
+          {/* Fixed caption height (two title lines, the date line) to match VideoGridSkeleton. */}
+          <h3 className="mt-3 line-clamp-2 min-h-[4.125rem] text-2xl leading-snug">
             <VideoTitle video={selected} />
           </h3>
-          <p className="mt-2 text-sm text-ink-muted">
+          <p className="mt-2 min-h-5 text-sm text-ink-muted">
             <PublishedDate video={selected} />
           </p>
           <p className="mt-5">
