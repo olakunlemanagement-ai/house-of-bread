@@ -116,6 +116,41 @@ try {
     await contexts.fallback.close();
     await contexts.content.close();
   }
+
+  console.log("\nFallback links without JavaScript, reached by Tab");
+  const keyboard = await browser.newContext({ javaScriptEnabled: false, viewport: VIEWPORTS[0] });
+  for (const region of REGIONS) {
+    const page = await keyboard.newPage();
+    await page.goto(new URL(region.path, base).href, { waitUntil: "load" });
+    const link = await page.$eval(region.selector, (root) => {
+      const busy = root.querySelector('[aria-busy="true"]');
+      const a = busy?.parentElement?.querySelector("a[href]");
+      if (!a || busy.contains(a) || a.closest('[aria-hidden="true"]')) return null;
+      return { href: a.getAttribute("href"), name: a.textContent.replace(/\s+/g, " ").trim(), visible: a.getClientRects().length > 0 };
+    });
+    let tabs = 0;
+    let reached = false;
+    if (link) {
+      for (; tabs < 300 && !reached; tabs++) {
+        await page.keyboard.press("Tab");
+        reached = await page.$eval(region.selector, (root) => {
+          const active = document.activeElement;
+          return !!active && active.tagName === "A" && root.contains(active) && !!active.closest(".relative")?.querySelector('[aria-busy="true"]');
+        });
+      }
+    }
+    console.log(
+      `${region.path.padEnd(8)} ${region.name.padEnd(26)} ${link ? `"${link.name}" -> ${link.href}` : "(no link)"}  ${reached ? `reached after ${tabs} Tab presses` : "not reached by Tab"}`,
+    );
+    if (!link) fail(`${region.name} fallback has no focusable link beside the loading region`);
+    else {
+      if (!link.visible) fail(`${region.name} fallback link is not visible`);
+      if (!/^https:\/\/www\.youtube\.com\//.test(link.href ?? "")) fail(`${region.name} fallback link is not a YouTube link`);
+      if (!reached) fail(`${region.name} fallback link is not reachable by Tab`);
+    }
+    await page.close();
+  }
+  await keyboard.close();
 } finally {
   await browser.close();
 }

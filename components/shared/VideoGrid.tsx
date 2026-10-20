@@ -1,10 +1,11 @@
 import { resolveVideoWithTitle } from "@/lib/media/oembed";
 import { getLatestVideos } from "@/lib/media/videos";
-import { siteConfig } from "@/lib/site-config";
+import { siteConfig, YOUTUBE_CHANNEL_ID } from "@/lib/site-config";
 import { IconTile } from "./icons";
-import { LoadingRegion, Skeleton } from "./Skeleton";
+import { Skeleton } from "./Skeleton";
 import { YouTubeSubscribeButton } from "./SocialLinks";
 import { VideoLibrary } from "./VideoLibrary";
+import { YouTubeFacadeSkeleton } from "./YouTubeFacade";
 
 function NoVideosYet({ className = "" }: { className?: string }) {
   return (
@@ -40,16 +41,24 @@ export async function VideoGrid() {
 }
 
 /**
- * Suspense fallback for VideoGrid: the player and its caption, then six
- * cards the size of the real ones (16:9 frame, two title lines, the date
- * line, the Play button and the YouTube link).
+ * Suspense fallback for VideoGrid: the player, with a link to the channel's
+ * videos page on it, and its caption, then six cards the size of the real
+ * ones (16:9 frame, two title lines, the date line, the Play button and the
+ * YouTube link). The player box carries the loading status; the rest is
+ * hidden from assistive technology.
  */
 export function VideoGridSkeleton() {
   return (
-    <LoadingRegion label="Loading videos">
+    <div>
       <div className="grid gap-6 lg:grid-cols-12 lg:items-center lg:gap-10">
-        <Skeleton className="aspect-video rounded-card shadow-raised lg:col-span-8" />
-        <div className="lg:col-span-4">
+        <div className="lg:col-span-8">
+          <YouTubeFacadeSkeleton
+            label="Loading videos"
+            href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/videos`}
+            name="the ministry's videos"
+          />
+        </div>
+        <div aria-hidden="true" className="lg:col-span-4">
           <div className="flex h-[1.05rem] items-center">
             <Skeleton className="h-3 w-28 rounded-full" />
           </div>
@@ -65,7 +74,7 @@ export function VideoGridSkeleton() {
           </div>
         </div>
       </div>
-      <ul className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      <ul aria-hidden="true" className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
         {[0, 1, 2, 3, 4, 5].map((key) => (
           <li key={key} className="flex flex-col overflow-hidden rounded-card border border-border bg-surface shadow-soft">
             <Skeleton className="aspect-video" />
@@ -87,6 +96,6 @@ export function VideoGridSkeleton() {
           </li>
         ))}
       </ul>
-    </LoadingRegion>
+    </div>
   );
 }

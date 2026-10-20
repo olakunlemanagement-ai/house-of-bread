@@ -4,8 +4,7 @@ import { AppBand } from "@/components/shared/AppBand";
 import { BentoGrid, BentoTile } from "@/components/shared/BentoGrid";
 import { ButtonLink } from "@/components/shared/Button";
 import { TextCTA } from "@/components/shared/TextCTA";
-import { StartHereVideo } from "@/components/shared/StartHereVideo";
-import { YouTubeFacadeSkeleton } from "@/components/shared/YouTubeFacade";
+import { StartHereVideo, StartHereVideoSkeleton } from "@/components/shared/StartHereVideo";
 import { FeatureCard } from "@/components/shared/Card";
 import { Hero } from "@/components/shared/Hero";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
@@ -49,7 +48,7 @@ export default async function HomePage() {
               <SectionHeader id="start-heading">New here? Start here.</SectionHeader>
             </div>
             <div className="lg:col-span-7">
-              <Suspense fallback={<YouTubeFacadeSkeleton />}>
+              <Suspense fallback={<StartHereVideoSkeleton />}>
                 <StartHereVideo />
               </Suspense>
             </div>
