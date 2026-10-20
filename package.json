@@ -14,7 +14,8 @@
     "contrast": "node scripts/check-contrast.mjs",
     "loops:build": "node scripts/loops/process-loops.mjs",
     "loops:verify": "node scripts/loops/verify-white.mjs",
-    "loops:sample": "node scripts/loops/sample-extremes.mjs"
+    "loops:sample": "node scripts/loops/sample-extremes.mjs",
+    "images:build": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/images/build-slots.mjs"
   },
   "dependencies": {
     "@mdx-js/mdx": "^3.1.1",
