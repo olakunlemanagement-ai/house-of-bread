@@ -11,6 +11,7 @@ const KIT_ENV = {
   KIT_TAG_LIVE_NOTIFY: "222",
   KIT_TAG_SOURCE_FOOTER: "333",
   KIT_TAG_SOURCE_SUBSCRIBE_PAGE: "444",
+  KIT_TAG_SOURCE_ACADEMY_WAITLIST: "555",
 };
 
 type KitCall = { url: string; body: Record<string, unknown>; apiKey: string | null };
@@ -86,6 +87,18 @@ describe("POST /api/subscribe", () => {
     ]);
     expect(kitCalls[0].body).toEqual({ email_address: EMAIL, first_name: "Ada", state: "inactive" });
     expect(kitCalls.every((call) => call.apiKey === "test-key")).toBe(true);
+  });
+
+  it("applies the Academy waitlist tag to an academy-waitlist signup", async () => {
+    mockKit(201);
+    const response = await POST(jsonRequest({ email: EMAIL, source: "academy-waitlist" }));
+
+    expect(response.status).toBe(200);
+    expect(kitCalls.map((call) => call.url)).toEqual([
+      "https://api.kit.com/v4/subscribers",
+      "https://api.kit.com/v4/forms/111/subscribers",
+      "https://api.kit.com/v4/tags/555/subscribers",
+    ]);
   });
 
   it("redirects a plain form post to the check email page with 303", async () => {

@@ -15,6 +15,7 @@ const sourceTagEnv: Record<NewsletterSource, string> = {
   "subscribe-page": "KIT_TAG_SOURCE_SUBSCRIBE_PAGE",
   "live-notify": "KIT_TAG_SOURCE_LIVE_NOTIFY",
   "plan-page": "KIT_TAG_SOURCE_PLAN_PAGE",
+  "academy-waitlist": "KIT_TAG_SOURCE_ACADEMY_WAITLIST",
 };
 
 function read(name: string): string | undefined {

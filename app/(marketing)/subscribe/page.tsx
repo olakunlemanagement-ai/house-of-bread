@@ -7,6 +7,7 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { SocialLinks } from "@/components/shared/SocialLinks";
 import { SignupError } from "./SignupError";
+import { SourcedSubscribeForm, SubscribeForm } from "./SubscribeForm";
 
 export const metadata: Metadata = {
   title: "Join the newsletter",
