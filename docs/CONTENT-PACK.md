@@ -1,7 +1,7 @@
 # House of Bread Global: Content Pack and Layout Brief
 
 Date: 17 October 2026
-Revision: 4 (white and green redesign: mostly white, green as structure and accent, calmer type, scoped translucent surfaces, skeleton loading, the logo). Revision 3 was the lighter palette, buttons and TextCTA, navigation, House of Bread Academy and the Media Library.
+Revision: 5, 21 October 2026 (navigation: Home, Academy, Library, About, Contact, and one Explore Teachings button in the header; the Media Library is renamed the Library; the Home figures strip is removed). Revision 4 (white and green redesign: mostly white, green as structure and accent, calmer type, scoped translucent surfaces, skeleton loading, the logo). Revision 3 was the lighter palette, buttons and TextCTA, navigation, House of Bread Academy and the Media Library.
 Use with: CLAUDE.md and docs/SPEC-v3.md
 Purpose: real copy and layout direction for all stage-one routes.
 
@@ -129,7 +129,7 @@ Hero, the stat row, white, cream, white, mint, white, the app panel, cream, whit
 - Button (primary, secondary, live; light and green tones) with an optional arrow icon.
 - TextCTA: label and arrow chip, the text form of a call to action.
 - BentoGrid and BentoTile, FeatureCard, CTACard, IconTile.
-- StatStrip, RegionChips, SocialLinks.
+- RegionChips, SocialLinks.
 - Section, SectionHeader, PageHeader (white with a radial tint), StepList.
 - ScriptureBlock, light and feature variants. Both are mint with an emerald rule; feature is larger, beside a split section.
 - PlanCard, BookGrid, LiveSessionCard, EventCard, VideoGrid.
@@ -155,13 +155,14 @@ One primary action per section, written as a verb that says what happens next. N
 
 | Page | Primary CTA | Secondary CTA |
 |---|---|---|
+| Header | Explore Teachings (to /academy) | none |
 | Home hero | Join the next live session | Get the official app, then TextCTA "Explore the Academy" |
-| Home, Start here | Open the Media Library, Choose a journey, Explore the Academy (TextCTAs) | none |
+| Home, Start here | Open the Library, Choose a journey, Explore the Academy (TextCTAs) | none |
 | Home bento | See upcoming sessions, Explore the Academy, Get the app, Read the teachings | none |
 | About | Join a live session | Contact the ministry |
 | Live | Set a reminder | Subscribe on YouTube |
 | Academy | See how to join | Hear when enrolment opens |
-| Media Library | Set a reminder, or Watch live on YouTube while live | TextCTA "See the full schedule" |
+| Library | Set a reminder, or Watch live on YouTube while live | TextCTA "See the full schedule" |
 | Teachings | Subscribe for new teaching | none |
 | Study | Read this book in the app | Browse all 27 books |
 | Journeys | Start a journey in the app | Compare the three paces |
@@ -176,7 +177,6 @@ One primary action per section, written as a verb that says what happens next. N
 | Header and nav | transparent over the hero tint, no border, scrolls away, ink nav, tint pill for the current page, emerald primary button |
 | Home hero | white with soft emerald radials, ink type, emerald-deep accent phrase, translucent floating cards |
 | Inner page header | white with one emerald radial, hairline below, ink type |
-| Stat strip | white row under the hero, hairline dividers, soft shadow |
 | Bento tiles | white and mint, hairline borders |
 | Feature and plan cards | white on white, cream or mint sections |
 | Split text sections, steps, FAQ | cream or mint, alternating with white |
@@ -197,17 +197,17 @@ One primary action per section, written as a verb that says what happens next. N
 
 ### Header
 - 72px, not sticky: it scrolls away with the page. Transparent over the hero or page header tint, with no bar or border.
-- Left: logo, then Home, About, Academy, Media Library, Contact.
-- Right: Subscribe (secondary) and Get the app (primary).
+- Left: logo, then Home, Academy, Library, About, Contact. Library goes to /media and is also the current item on /events.
+- Right: one button, Explore Teachings (primary, emerald), to /academy. Subscribe and the app are not in the header: they are reached from the Home hero, the footer and the closing newsletter card.
 - Current page: aria-current and a stronger pill, not colour alone.
-- Mobile: logo left (the name hides below 420px), a compact "Get app" button and a "Menu" button on the right, both always visible. The menu is a details element and works without JavaScript. It lists Home, About, Academy, Media Library, Contact as large tap targets, then a full width Subscribe button.
+- Mobile: logo left (the name hides below 420px), a compact "Explore Teachings" button (48px tall) and a "Menu" button on the right, both always visible. The menu is a details element and works without JavaScript. It lists Home, Academy, Library, About, Contact as large tap targets, and nothing else.
 
 ### Footer
 - Top strip: "Stay close to the ministry" and a Subscribe button, only on pages that do not already offer signup (pages without the newsletter card, plus /subscribe and check-email are excluded).
 - Columns:
   - Brand: logo and "A teaching ministry committed to doctrinal clarity and careful handling of Scripture, serving believers across the United Kingdom, Africa and the United States." Region chips: United Kingdom, Africa, United States.
-  - Ministry: About, Academy, Media Library, Live sessions, Contact
-  - Learn: Teachings, Study the New Testament, New Testament journeys, The official app
+  - Ministry, in the header order: Academy, Library, Live sessions, About, Contact, Subscribe
+  - Learn: Teachings, Study the New Testament, New Testament journeys, Get the official app
   - Follow: YouTube [CHANNEL LINK], [OTHER SOCIAL PLATFORMS AND LINKS TO BE SUPPLIED]
 - Link lists have no underline: hover pill, current page pill.
 - Bottom line: "© 2026 House of Bread Global", a Privacy link, and "Study . Pray . Grow".
@@ -230,17 +230,12 @@ Metadata description: A global teaching ministry serving believers across the UK
 - HeroVisual (right on desktop, below on mobile): a CSS phone showing the app reading screen, a floating LiveSessionCard ("Next live session", time placeholder or empty state) overlapping the phone's left edge, and a floating progress card ("30 Day NT Journey, Day 1 of 30") overlapping its lower right. Illustrative, marked as such in code comments.
 - Background: white with two soft emerald radial gradients. Generous top padding keeps the eyebrow clear of the header.
 
-### Stat strip (directly under the hero)
-- 3 regions served: the United Kingdom, Africa and the United States
-- 27 New Testament books introduced
-- 6 translations in the app
-- 3 New Testament journeys: 30, 60 and 90 days
-
-### Start here (right after the stat strip, white)
+### Start here (directly under the hero, white)
+- No figures strip between the hero and this section (removed in revision 5). The hero fades to white at its base and runs straight into it, with the same 80px (mobile) and 120px (from md) step used between the sections that follow.
 - H2: New here? Start here.
 - Welcome video slot beside the heading: a click to load YouTube facade (youtube-nocookie.com). Until the video is supplied, a "Photo and video to come" frame.
 - Three cards, each with a TextCTA:
-  - Hear the teaching: "Watch live sessions and replays, or listen on audio." TextCTA "Open the Media Library" (to /media)
+  - Hear the teaching: "Watch live sessions and replays, or listen on audio." TextCTA "Open the Library" (to /media)
   - Read with guidance: "Follow a 30, 60 or 90 day journey through the New Testament in the official app." TextCTA "Choose a journey" (to /plans)
   - Go deeper: "Join House of Bread Academy, Bible classes for believers taught by the ministry." TextCTA "Explore the Academy" (to /academy)
 
@@ -380,13 +375,13 @@ Metadata description: House of Bread Global teaches live on YouTube. See what is
 
 ---
 
-## 5A. Media Library (/media)
+## 5A. Library (/media)
 
-Metadata title: Media Library | House of Bread Global
+Metadata title: Library | House of Bread Global
 Metadata description: Live sessions, replays, audio and the ministry's social pages, all in one place.
 
 ### Header band
-- Eyebrow: MEDIA LIBRARY
+- Eyebrow: LIBRARY
 - H1: Everything the ministry shares, in one place
 - Lead: Live sessions, replays, audio teaching and social pages. Watch, listen and follow wherever you are.
 - Anchor chips: Live and replays, Video, Audio, Social, Read and study
@@ -648,7 +643,7 @@ Sections:
 ### 404
 - H1: This page could not be found
 - Text: The link may be old, or the address may have been typed differently. Try one of these instead.
-- Links: Home, Academy, Media Library, Live sessions, Teachings, The official app
+- Links: Home, Academy, Library, Live sessions, Teachings, The official app
 - Permanent noindex.
 
 ### Error
@@ -664,7 +659,7 @@ Sections:
 ## 15. Acceptance checks for this pass
 
 - No page reads as a Bible study website. Live teaching, the Academy and the ministry lead on Home, About and the header. The New Testament material sits under Study and the app.
-- Home has a hero with a visual, a stat strip, a Start here section, a bento grid, a feature scripture panel, an app band, a social row and a newsletter card.
+- Home has a hero with a visual, a Start here section, a bento grid, a feature scripture panel, an app band, a social row and a newsletter card.
 - Every page has a header band, at least three sections and a closing call to action, and each section has one clear primary CTA from the CTA system.
 - Light surfaces carry every page. No deep green section or panel apart from the footer. No call to action is underlined.
 - Every text and background pairing, including each gradient stop, passes WCAG 2.2 AA and is logged in docs/PLACEHOLDERS.md. Lime never appears as text.

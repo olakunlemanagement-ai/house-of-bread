@@ -55,7 +55,7 @@ The website is where the ministry is found, understood and joined.
 ### In at launch
 
 - Content website: home, about, live sessions and events, House of Bread
-  Academy (the classes and training), the Media Library,
+  Academy (the classes and training), the Library (`/media`),
   teachings, New Testament books, reading plan landing pages, app page,
   contact, privacy
 - Newsletter signup with double opt-in and a notify me option for live
@@ -103,7 +103,7 @@ changes".
 /about                    Ministry, teacher, doctrinal position
 /academy                  House of Bread Academy overview (was /classes)
 /academy/[slug]           Single class: what, who, when, how to join
-/media                    Media Library: live and replays, video, audio,
+/media                    Library: live and replays, video, audio,
                           social pages, read and study
 /events                   Live sessions, trainings, meetings, schedule
 /events/[slug]            Single session with YouTube link, calendar file, notify me
@@ -123,7 +123,23 @@ changes".
 `/classes` and `/classes/[slug]` redirect permanently (308) to `/academy` and
 `/academy/[slug]`.
 
-### Media Library (/media)
+### Navigation
+
+Updated 21 October 2026.
+
+- Header, left to right: Home, Academy, Library, About, Contact. Library is
+  the label for `/media`, and is also the current item on `/events`.
+- One button on the right of the header: "Explore Teachings" (primary,
+  emerald), to `/academy`. Subscribe and the app are not in the header.
+- Mobile: the same button and a Menu button. The menu lists the same five
+  links in the same order, and nothing else.
+- Subscribe and the app stay reachable from the Home hero ("Get the
+  official app"), the footer (a Subscribe link and "Get the official app")
+  and the newsletter card that closes each page.
+- Footer Ministry column follows the header order: Academy, Library, Live
+  sessions, About, Contact, Subscribe.
+
+### Library (/media)
 
 One page for everything the ministry shares, in five anchored sections:
 
@@ -370,7 +386,7 @@ consent, a privacy policy update, and read only scope.
 - MDX pipeline with Zod frontmatter validation
 - Canonical scripture module with golden tests
 - Newsletter flow, end to end
-- Home, about, events, Academy, Media Library, app page, contact, privacy
+- Home, about, events, Academy, Library, app page, contact, privacy
 - Teaching archive, New Testament book pages, plan landing pages
 - Sitemap, robots.txt, `llms.txt`, Open Graph images, Plausible
 - Security headers, `.ics` generation, click to load YouTube facade
