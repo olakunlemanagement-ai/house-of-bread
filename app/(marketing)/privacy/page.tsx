@@ -20,7 +20,7 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
   {
     id: "collected",
     title: "What is collected",
-    body: "Email address and optional first name when subscribing, and name, email and message when using the contact form. Basic anonymous visit statistics.",
+    body: "Email address and optional first name when subscribing, and name, email and message when using the contact form. The question and an optional topic when asking a question anonymously. Basic anonymous visit statistics.",
   },
   {
     id: "basis",
@@ -30,7 +30,23 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
   {
     id: "processors",
     title: "Who processes the data",
-    body: "Kit (newsletter), Resend (contact form email), Vercel (hosting), Plausible (cookieless analytics). Add any others before launch.",
+    body: "Kit (newsletter), Resend (contact form and anonymous question email), Vercel (hosting), Plausible (cookieless analytics). Add any others before launch.",
+  },
+  {
+    id: "questions",
+    title: "Anonymous questions",
+    body: (
+      <>
+        The Ask a question form does not ask for a name, email address, phone number or any other
+        identifying detail. Only the question and an optional topic are sent. Each question is
+        emailed to the ministry through Resend, which acts as a processor. Vercel, which hosts the
+        site, may record network details such as the IP address in its logs for security, and
+        these are not added to the email. Questions about faith can reveal religious beliefs,
+        which data protection law treats as sensitive, so please leave out names, contact details
+        and anything else that could identify you or another person. Questions are kept for{" "}
+        <Placeholder>[CONFIRM RETENTION]</Placeholder>.
+      </>
+    ),
   },
   {
     id: "cookies",
