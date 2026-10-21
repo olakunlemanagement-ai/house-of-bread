@@ -2,7 +2,8 @@ import { ResendError, sendPlainEmail } from "@/lib/mail/resend";
 import { getQuestionsConfig } from "@/lib/questions/config";
 import { buildQuestionEmail } from "@/lib/questions/email";
 import { questionErrorMessage, type QuestionError } from "@/lib/questions/messages";
-import { HONEYPOT_FIELD, questionSchema } from "@/lib/questions/schema";
+import { HONEYPOT_FIELD } from "@/lib/questions/fields";
+import { questionSchema } from "@/lib/questions/schema";
 
 // Anonymous Bible questions. Accepts JSON from the enhanced form, and plain
 // form posts so it works without JavaScript. Form posts get a 303 redirect,
