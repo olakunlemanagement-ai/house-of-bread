@@ -3,9 +3,10 @@ import { getAll } from "@/lib/content";
 import { placeholderPlans } from "@/lib/content/placeholder-data";
 import { siteConfig } from "@/lib/site-config";
 
-// Public, indexable pages only. /subscribe/check-email and the 404 page are
-// permanently noindex and left out. No lastModified until content carries
-// real dates. The global noindex flag in siteConfig still applies until launch.
+// Public, indexable pages only. /subscribe/check-email, /ask/sent and the 404
+// page are permanently noindex and left out. No lastModified until content
+// carries real dates. The global noindex flag in siteConfig still applies
+// until launch.
 const staticPaths = [
   "/",
   "/about",
@@ -17,6 +18,7 @@ const staticPaths = [
   "/plans",
   "/app",
   "/subscribe",
+  "/ask",
   "/contact",
   "/privacy",
 ];

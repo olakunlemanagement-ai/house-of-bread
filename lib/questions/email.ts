@@ -1,5 +1,6 @@
 import type { PlainEmail } from "@/lib/mail/resend";
-import { topicLabels, type QuestionInput } from "./schema";
+import { topicLabels } from "./fields";
+import type { QuestionInput } from "./schema";
 
 /** Fixed. Never built from user input. */
 export const QUESTION_SUBJECT = "New anonymous Bible question";
