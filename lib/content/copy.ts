@@ -78,3 +78,70 @@ export const newsletterCopy = {
   heading: "Stay close to the ministry",
   text: "Reminders before each live session, new teaching, and news from House of Bread Global, sent to your inbox.",
 } as const;
+
+/**
+ * House of Bread Academy (/academy). The Academy is not open yet: the steps
+ * and answers describe what it will offer, and are ministry copy to confirm
+ * (docs/PLACEHOLDERS.md). Never claim certificates, live Q and A, lesson
+ * counts, durations or prices here until the ministry supplies them.
+ */
+export const academyCopy = {
+  tagline: "Equipped in the truth",
+  lead: "House of Bread Academy will give believers a structured place to study the Bible, one course at a time and at their own pace.",
+  waitlistLabel: "Notify me when the Academy opens",
+  waitlistHref: "/subscribe?source=academy-waitlist#signup",
+  courses: {
+    title: "Courses in preparation",
+    intro: "The first courses are being prepared now, and each one opens here when it is ready.",
+    cta: "See the course",
+  },
+  steps: {
+    title: "How the Academy will work",
+    intro: "This is what the Academy is being built to offer.",
+    items: [
+      { title: "Create an account.", text: "One account opens every course." },
+      { title: "Choose a course.", text: "Start with the one that meets you where you are." },
+      {
+        title: "Learn at your own pace.",
+        text: "Work through each lesson when it suits you, and see your progress as you go.",
+      },
+    ],
+  },
+  why: {
+    title: "Why learn here",
+    intro: "Teaching that keeps every passage in its context and explains it in plain English.",
+    items: [
+      {
+        title: "Who it is for",
+        text: "Believers who want to go further than reading alone, from new believers to those who already teach others.",
+      },
+      { title: "Who teaches", text: undefined },
+      {
+        title: "How it teaches",
+        text: "From the King James Version, in plain contemporary English, with Scripture always read in its context.",
+      },
+    ],
+  },
+  questions: {
+    title: "Questions",
+    intro: "What people ask most about the Academy before it opens.",
+    items: [
+      { question: "Will the Academy be free or paid?", answer: undefined, confirm: "free, paid, or some of each" },
+      {
+        question: "What will I need to take part?",
+        answer: "A phone, tablet or computer with an internet connection.",
+        confirm: "device and connection",
+      },
+      { question: "How long will I have access to a course?", answer: undefined, confirm: "how long access lasts" },
+      {
+        question: "Will I need to attend anything live?",
+        answer: "Courses are planned to be self paced, so nothing needs to be attended live.",
+        confirm: "no live attendance",
+      },
+    ],
+    ask: "Ask a question anonymously",
+  },
+  closingHeading: "Hear when the Academy opens",
+  closingText:
+    "Be among the first to know when the first courses open, with reminders before live sessions and new teaching from House of Bread Global.",
+} as const;
