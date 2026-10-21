@@ -268,8 +268,38 @@ app. Write accordingly:
 
 Tokens live in `app/globals.css`. Every value and every contrast pairing is
 logged in `docs/PLACEHOLDERS.md`. Add any new pairing to
-`scripts/check-contrast.mjs`, run `npm run contrast`, and log it before it
-ships.
+`scripts/check-contrast.mjs` (as a role pairing, so it runs in both
+themes), run `npm run contrast`, and log it before it ships.
+
+### Themes
+
+- The site has a light and a dark theme. Tokens only: no hex, `rgb()`,
+  `color-mix()` or literal `white`/`black` utility in a component. Every
+  new component must work in both themes. Colours are defined in
+  `app/globals.css` and nowhere else, and
+  `components/shared/theme/colour-tokens.test.ts` fails the build on a
+  literal colour outside its short list of theme invariant uses (the deep
+  green footer, brand marks on white tiles, white text on fills).
+- Dark tokens are written once, inside `:root { @variant dark { ... } }`.
+  The `dark` variant matches the system preference when no theme is saved
+  (this is also the no JavaScript case), or `data-theme="dark"`;
+  `data-theme="light"` opts out. Use `dark:` utilities for dark only
+  additions.
+- A colour that is both a fill and text gets two tokens. `emerald` is a
+  fill that carries white text; `emerald-deep` is text and links; `glyph`
+  is icons, rules, progress fills and the card glow ring; `fill-hover` and
+  `fill-disabled` are button fills; `on-gold` is text on gold, brand ink
+  in both themes; `surface-raised` replaces white for inputs, pills and
+  secondary buttons.
+- Dark is deep green black (`#0a1510`), never pure black, with raised
+  surfaces a step lighter. The footer stays deep green in both themes.
+- The head script in `app/layout.tsx` sets `data-theme` from the saved
+  choice before first paint, so the wrong theme never flashes. Do not move
+  theme logic into a component that runs after hydration. Theme controls
+  carry `data-theme-control` and stay hidden without JavaScript.
+- Decorative loops and their posters are light only. In dark,
+  `LoopVideoClient` loads no video and `[data-loop]` shows still radial
+  glows. A new loop needs a dark glow in `app/globals.css`.
 
 ### Palette
 
@@ -287,9 +317,10 @@ ships.
 - Deep green (`green-deep`, `green-night`) is the footer and small
   elements only, such as the phone frame. No deep green section or panel
   anywhere else, and no full bleed green hero.
-- `lime` is a decorative 6px dot at most (the eyebrow dot halo). Never text,
-  a fill, a headline colour or a carrier of meaning. Lime on white is
-  1.90:1.
+- `lime` is a decorative 6px dot at most (the eyebrow dot halo) on light.
+  Never a fill, a headline colour or a carrier of meaning. Lime on white is
+  1.90:1. In dark only, lime is the eyebrow text colour, as it passes 5.4:1
+  or more on every dark surface and glow.
 - `gold` and `gold-soft` are fills for live states, badges and small
   highlights, always with ink text. Use them sparingly.
 - Borders are hairlines (emerald at 12%), deepening to 35% on hover.
@@ -359,7 +390,9 @@ ships.
   white cross stays; 1px feathered and defringed), shown with `next/image`
   beside the text wordmark (`Logo.tsx`), with `priority` in the header,
   straight on the hero tint with no tile. On the footer it sits in a white
-  tile, because the lid edge falls to 2.49:1 on green-deep. `app/icon.png`, `app/apple-icon.png` and
+  tile, because the lid edge falls to 2.49:1 on green-deep, and in dark the
+  header mark gets the same tile (`.logo-mark`) until the ministry supplies
+  a reversed mark. `app/icon.png`, `app/apple-icon.png` and
   `app/opengraph-image.png` come from the same source. Replace all of them
   when the SVG arrives.
 
@@ -402,17 +435,20 @@ ships.
   bottom margin; Hero and PageHeader add 72px to their top padding). Left:
   logo, then Home, Academy, Library, About, Contact in ink (Library is
   `/media`), the current page in a tint pill with an inset emerald ring.
-  Right: one primary button, "Explore Teachings", to `/academy`.
+  Right: the dark theme switch (a 44px icon button with `aria-pressed`)
+  and one primary button, "Explore Teachings", to `/academy`.
   Subscribe and the app are never in the header: they live in the Home
   hero, the footer and the closing newsletter card.
 - Below `xl`: logo (the name hides below 420px), a compact "Explore
   Teachings" button (48px tall) and a "Menu" button, all always visible.
   The menu panel is solid white. The menu is a `details` element and
-  works without JavaScript: the five links as large tap targets, and
+  works without JavaScript: the five links as large tap targets, then the
+  Light, Dark or System theme choice (shown only with JavaScript), and
   nothing else.
 - Footer: Ministry in the header order (Academy, Library, Live sessions,
   About, Contact, Subscribe), Learn (Teachings, Study the New Testament,
-  New Testament journeys, Get the official app), Follow. The "Stay close to the ministry" strip shows only
+  New Testament journeys, Get the official app), Follow. The first column
+  carries the Light, Dark or System theme choice. The "Stay close to the ministry" strip shows only
   on pages that do not already offer signup (`[data-newsletter]`).
 - Pages close with the newsletter card: a translucent white card over soft
   gold or mint radial tints, with an emerald button, never a green band.

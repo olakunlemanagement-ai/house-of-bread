@@ -1,6 +1,6 @@
 # Security headers
 
-Last updated: 17 October 2026
+Last updated: 21 October 2026
 
 ## Decision
 
@@ -15,7 +15,7 @@ A nonce policy was rejected. A nonce forces every page to render on each request
 The risk is low today:
 
 - No content comes from users. All content is MDX in the repository.
-- The site uses no `dangerouslySetInnerHTML`.
+- The only `dangerouslySetInnerHTML` is the theme script in `app/layout.tsx`, a constant string from `components/shared/theme/theme-script.ts` with no data from outside.
 - React escapes all output.
 
 The policy still blocks external script hosts, limits where data can be sent (`connect-src`) and where images can be loaded from (`img-src`), and prevents clickjacking (`frame-ancestors 'none'`). It also limits framing to YouTube on pages with an embed.
@@ -28,6 +28,12 @@ The policy still blocks external script hosts, limits where data can be sent (`c
 - Embed routes (`EMBED_ROUTES`: `/`, `/media`, `/events`): `frame-src https://www.youtube-nocookie.com`. Add a path to the list when a page gains an embed.
 - Other headers: `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `X-Frame-Options`. Vercel sends `Strict-Transport-Security` itself.
 - When the Plausible script is added, `script-src` needs `https://plausible.io`, or Plausible can be proxied through a rewrite so it stays `'self'`.
+
+## The theme script
+
+Dark mode sets the theme before first paint with a small inline script in `<head>` (`themeScript` in `components/shared/theme/theme-script.ts`). It reads the saved choice from localStorage inside try/catch and sets `data-js` and `data-theme` on `<html>`. It runs under the existing `'unsafe-inline'`, so the policy needs no change.
+
+If the policy ever moves to nonces or hashes, `'unsafe-inline'` is ignored and this script must be listed: add its `'sha256-...'` to `script-src`, or give it the nonce. `lib/security/headers.test.ts` fails if `script-src` uses hashes or nonces without the script's hash.
 
 ## Checking the headers
 

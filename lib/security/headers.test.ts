@@ -1,4 +1,6 @@
+import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
+import { themeScript } from "@/components/shared/theme/theme-script";
 import { EMBED_ROUTES, buildCsp, securityHeaders } from "./headers";
 
 function directive(csp: string, name: string): string | undefined {
@@ -38,6 +40,18 @@ describe("buildCsp", () => {
       expect(directive(csp, "img-src")).toContain("https://i.ytimg.com");
       expect(directive(csp, "connect-src")).toBe("'self' https://plausible.io");
     }
+  });
+});
+
+describe("theme script", () => {
+  // The inline head script sets the theme before first paint. 'unsafe-inline'
+  // is ignored once script-src carries a hash or a nonce, so then the
+  // script's own hash must be listed. See docs/SECURITY-HEADERS.md.
+  it("is allowed to run by script-src", () => {
+    const scriptSrc = directive(buildCsp({ dev: false, allowYouTubeFrame: true }), "script-src") ?? "";
+    const hash = `'sha256-${createHash("sha256").update(themeScript).digest("base64")}'`;
+    const usesHashes = /'(?:sha256|sha384|sha512|nonce)-/.test(scriptSrc);
+    expect(usesHashes ? scriptSrc.includes(hash) : scriptSrc.includes("'unsafe-inline'")).toBe(true);
   });
 });
 
