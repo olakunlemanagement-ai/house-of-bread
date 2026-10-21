@@ -25,6 +25,9 @@ Filling in a value there turns every matching placeholder into a real link.
   pipeline. Until then no task can meet that line of the definition of done.
 - **Privacy policy.** `/privacy` is a draft structure, not legal advice, and
   shows a "Draft, under review" badge. A qualified person must review it.
+- **Interim slot images.** Any slot image with status `interim` is an AI
+  generated placeholder (logged 20 October 2026). Replace each with a real
+  photo before launch. See "Image slots" below.
 - **Newsletter needs Kit set up.** The signup code is built. Until the steps
   in "Newsletter setup" below are done, every newsletter form shows a disabled
   button and "Signup opens soon".
@@ -265,22 +268,59 @@ No email address is published anywhere on the site.
 ## Image slots
 
 `ImageSlot` (`components/shared/ImageSlot.tsx`) stands wherever a photo,
-video or screenshot belongs: a fixed ratio frame with a soft green tinted
-gradient, a faint pinstripe and a caption naming the intended image
-("Photo: the teacher in a live session"). No stock photos. Each carries
-`data-placeholder` and the caption as its accessible name. To use the real
-image, pass `src` (a static import or a path) and `alt`: a one line change,
-same box, served through `next/image`.
+video or screenshot belongs. Each slot has an id in
+`lib/media/image-slots.ts`, which holds its ratio, brief, alt text and
+status. No stock photos.
 
-| Where | Ratio | Kind | Brief for the photo |
-|---|---|---|---|
-| Home, Next live session | 4:5 | Photo | The teacher in a live session: on camera, mid teaching, Bible open, warm natural light. Portrait crop with space above the head |
-| Home, Start here (only if no video) | 16:9 | Video | A first teaching for someone new to the ministry. Today `startHereVideoId` fills it, so this slot does not show |
-| `/about`, Mission | 16:9 | Photo | Believers following a live teaching online, with open Bibles: a laptop or phone showing the stream, hands on an open Bible |
-| `/about`, Leadership | 4:5 | Photo | A portrait of the teacher: head and shoulders, plain or softly blurred background, looking just off camera |
-| `/events`, How it works | 4:5 | Photo | A session streaming live, the teacher on camera, seen from behind the camera or as the stream itself |
-| `/academy`, Who the Academy is for | 4:5 | Loop | Now the open Bible loop (see "Motion loops" below). An online class photo, believers with open Bibles, can replace it later |
-| `/app`, four feature sections | 16:9 | Screenshot | Real app screens: a journey's daily reading and progress, a book introduction, switching between translations, the teaching library |
+- **With an image.** When `public/images/slots/<id>.webp` has been built,
+  the slot shows it through `next/image` with a blur placeholder, in the
+  same fixed ratio box, so nothing shifts. The "Photo:" caption is gone.
+- **Without one.** It shows the designed placeholder: a soft green tinted
+  gradient, a faint pinstripe and a caption naming the intended image
+  ("Photo: the teacher in a live session"), with `data-placeholder` and the
+  caption as its accessible name.
+- **Building.** Put `<id>.png` or `<id>.jpg` in
+  `C:\Users\USER\house-of-bread-assets\slot-images-raw` (outside the repo)
+  and run `npm run images:build`. It crops to the slot's ratio from the
+  centre, resizes to 1600 wide at most and writes WebP at 150 KB or less. It
+  fails, writing nothing, on a name that matches no slot, a slot marked
+  real photo needed, or an image it cannot fit in budget. `-- --prune`
+  drops built images whose raw file is gone. Check the alt text in the
+  registry against each image when it lands.
+
+### Interim images are AI generated
+
+Logged 20 October 2026. Any image in `public/images/slots` for a slot with
+status `interim` is an AI generated placeholder, not a photo of the
+ministry. Each still carries `data-placeholder="interim-image"`, so the
+built HTML can be searched for them. Replace every one with a real photo
+before launch, then set the slot's status to `final`. As of this date no
+interim image has been built.
+
+### Every slot
+
+Status `real needed` means the slot shows people or the app's own screens:
+it keeps the designed placeholder, and the build script refuses any file
+for it. Real photo needed, do not use generated people. For the app slots,
+real app screenshot needed, do not use generated screens. When the real
+image arrives, set the status to `final` and build it.
+
+| Id | Page | Ratio | Brief for the photo | Status |
+|---|---|---|---|---|
+| `home-live-session` | Home, Next live session | 4:5 | The teacher in a live session: on camera, mid teaching, Bible open, warm natural light. Portrait crop with space above the head | Real needed (person) |
+| `home-start-here` | Home, Start here (only if no video) | 16:9 | A first teaching for someone new to the ministry. Today `startHereVideoId` fills it, so this slot does not show | Interim allowed |
+| `about-mission` | `/about`, Mission | 16:9 | Believers following a live teaching online, with open Bibles: a laptop or phone showing the stream, hands on an open Bible | Real needed (community) |
+| `about-leadership` | `/about`, Leadership | 4:5 | A portrait of the teacher: head and shoulders, plain or softly blurred background, looking just off camera | Real needed (person) |
+| `events-how-it-works` | `/events`, How it works | 4:5 | A session streaming live, the teacher on camera, seen from behind the camera or as the stream itself | Real needed (person) |
+| `app-journeys` | `/app`, New Testament journeys | 16:9 | Real app screen: a journey's daily reading and progress | Real needed (screenshot) |
+| `app-books` | `/app`, Every book introduced | 16:9 | Real app screen: a book introduction | Real needed (screenshot) |
+| `app-translations` | `/app`, Six translations | 16:9 | Real app screen: switching between translations | Real needed (screenshot) |
+| `app-teaching` | `/app`, The ministry's teaching | 16:9 | Real app screen: the teaching library | Real needed (screenshot) |
+
+`/academy`, Who the Academy is for, is no longer an image slot: it is the
+open Bible loop (see "Motion loops" below). An online class photo,
+believers with open Bibles, can replace it later, and would be a real
+photo needed slot.
 
 Assets to request from the ministry (CONTENT-PACK 1.7): a portrait of the
 teacher, 10 to 15 stills from live sessions and online classes, real app

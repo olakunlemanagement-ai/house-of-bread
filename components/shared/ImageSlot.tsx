@@ -1,6 +1,6 @@
-import Image, { type StaticImageData } from "next/image";
-
-export type ImageSlotRatio = "16/9" | "4/5" | "1/1" | "3/2";
+import Image from "next/image";
+import { getImageSlot, type ImageSlotId, type ImageSlotRatio } from "@/lib/media/image-slots";
+import { getSlotImage } from "@/lib/media/slot-images";
 
 const ratioClass: Record<ImageSlotRatio, string> = {
   "16/9": "aspect-video",
@@ -12,51 +12,53 @@ const ratioClass: Record<ImageSlotRatio, string> = {
 const kindLabel = { photo: "Photo", video: "Video", screenshot: "Screenshot" } as const;
 
 type ImageSlotProps = {
-  ratio?: ImageSlotRatio;
-  /** What belongs here, as a phrase: "the teacher in a live session". Logged in docs/PLACEHOLDERS.md. */
-  brief: string;
-  kind?: keyof typeof kindLabel;
-  /**
-   * The real image. Set it (with alt) and the slot shows the photo in the
-   * same box, so swapping one in is a one line change. No stock photos.
-   */
-  src?: StaticImageData | string;
-  alt?: string;
+  /** The slot in lib/media/image-slots.ts. Ratio, brief and alt come from there. */
+  id: ImageSlotId;
   sizes?: string;
   className?: string;
 };
 
 /**
- * A fixed ratio frame where a photo belongs. Until one is supplied it shows
- * a designed placeholder: a soft green tinted gradient, a faint pinstripe
- * and a caption naming the intended photo ("Photo: ..."). Ink on the white
- * caption pill holds 16.1:1.
+ * A fixed ratio frame where a photo belongs. When scripts/images/build-slots.mjs
+ * has built public/images/slots/<id>.webp, the slot shows it through
+ * next/image with a blur placeholder, in the same box, so nothing shifts.
+ * Until then it shows a designed placeholder: a soft green tinted gradient,
+ * a faint pinstripe and a caption naming the intended photo ("Photo: ...").
+ * Ink on the raised caption pill holds AA in both themes.
  */
-export function ImageSlot({
-  ratio = "16/9",
-  brief,
-  kind = "photo",
-  src,
-  alt = "",
-  sizes = "(min-width: 1024px) 40vw, 100vw",
-  className = "",
-}: ImageSlotProps) {
-  const frame = `relative overflow-hidden rounded-card border border-border shadow-soft ${ratioClass[ratio]} ${className}`;
+export function ImageSlot({ id, sizes = "(min-width: 1024px) 40vw, 100vw", className = "" }: ImageSlotProps) {
+  const slot = getImageSlot(id);
+  const image = getSlotImage(id);
+  const frame = `relative overflow-hidden rounded-card border border-border shadow-soft ${ratioClass[slot.ratio]} ${className}`;
 
-  if (src) {
+  if (image) {
     return (
-      <div className={frame}>
-        <Image src={src} alt={alt} fill sizes={sizes} className="object-cover" />
+      <div
+        className={`${frame} bg-tint`}
+        data-slot={id}
+        // An interim (AI generated) image is still a placeholder until replaced.
+        data-placeholder={slot.status === "interim" ? "interim-image" : undefined}
+      >
+        <Image
+          src={image.src}
+          alt={slot.decorative ? "" : slot.alt}
+          fill
+          sizes={sizes}
+          placeholder="blur"
+          blurDataURL={image.blurDataURL}
+          className="object-cover"
+        />
       </div>
     );
   }
 
-  const caption = `${kindLabel[kind]}: ${brief}`;
+  const caption = `${kindLabel[slot.kind]}: ${slot.brief}`;
   return (
     <div
       role="img"
       aria-label={`${caption} (to come)`}
       data-placeholder
+      data-slot={id}
       className={`${frame} bg-surface-mint [background-image:radial-gradient(120%_90%_at_15%_10%,var(--slot-glow),transparent_60%),linear-gradient(135deg,var(--surface-mint),var(--surface-warm)_75%)]`}
     >
       <div
@@ -71,7 +73,7 @@ export function ImageSlot({
       >
         <path d="M85 0h30v80h85v30h-85v170H85V110H0V80h85z" fill="currentColor" />
       </svg>
-      {kind === "video" ? (
+      {slot.kind === "video" ? (
         <span
           aria-hidden="true"
           className="absolute left-1/2 top-1/2 flex size-16 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-emerald text-white shadow-raised sm:size-20"
