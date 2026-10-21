@@ -32,7 +32,7 @@ Filling in a value there turns every matching placeholder into a real link.
   button disabled and a "Messaging opens soon" note until the contact slice.
 - **Security headers are not set.** CLAUDE.md requires a
   Content-Security-Policy and the other headers in `next.config`. None exist
-  yet. When added, `img-src` must allow `https://i.ytimg.com` (Media Library
+  yet. When added, `img-src` must allow `https://i.ytimg.com` (Library page
   thumbnails) and `frame-src` must allow `https://www.youtube-nocookie.com`
   on pages with a video facade (Home).
 
@@ -178,7 +178,7 @@ No email address is published anywhere on the site.
 
 | Where | Placeholder |
 |---|---|
-| Home, Start here; Media Library, Video; `/events`, Watch | Fallback title [VIDEO TITLE TO BE SUPPLIED]. `siteConfig.startHereVideoId` and `siteConfig.links.featuredVideoId` are both `wpNuDtvzMzs`. The video is on the pastor's channel (@TheBrotherOla), not in the ministry feed, so its title comes from YouTube oEmbed on the server (cached for days): "Christianity is the slave master's tool?" on 19 October 2026. If oEmbed is unreachable the placeholder shows and retries within the hour. Thumbnail `i.ytimg.com/vi/wpNuDtvzMzs/hqdefault.jpg`. On `/events` it shows as "Latest session" until a session is live or a dated replay exists |
+| Home, Start here; Library, Video; `/events`, Watch | Fallback title [VIDEO TITLE TO BE SUPPLIED]. `siteConfig.startHereVideoId` and `siteConfig.links.featuredVideoId` are both `wpNuDtvzMzs`. The video is on the pastor's channel (@TheBrotherOla), not in the ministry feed, so its title comes from YouTube oEmbed on the server (cached for days): "Christianity is the slave master's tool?" on 19 October 2026. If oEmbed is unreachable the placeholder shows and retries within the hour. Thumbnail `i.ytimg.com/vi/wpNuDtvzMzs/hqdefault.jpg`. On `/events` it shows as "Latest session" until a session is live or a dated replay exists |
 | Home hero visual, floating session card | None. It shows the next weekly session from `siteConfig.liveSession`, the same occurrence as the Next live session card |
 | Event cards, featured session card and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
 | Featured session card and `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED] |
@@ -342,7 +342,7 @@ site does not have yet.
   Needs the store links (`siteConfig.links.appStore` and `googlePlay`).
 - **Copy buttons.** Copy a session link or calendar link from a session card.
   Needs real session links and calendar files first.
-- **Topic chips in the Media Library.** Left out: videos carry no topics.
+- **Topic chips in the Library.** Left out: videos carry no topics.
   Add a sideways scroll-snap chip row, CSS only, once videos are tagged.
 
 ## Known behaviour to revisit
@@ -487,7 +487,7 @@ fps. Tested 17 October 2026 on a production build, headless Chromium,
 Decision: blur ships off. The three surfaces keep translucent white (header
 96%, cards 84%), which passes AA without blur. Over the smooth radial tints
 behind the cards and the newsletter, blur is close to invisible anyway.
-**Open item:** scroll Home and the Media Library on a real mid range Android
+**Open item:** scroll Home and the Library on a real mid range Android
 phone with blur on the header only (`backdrop-filter: blur(10px)`, header at
 88%, contrast already measured at 12.52 and 5.82). Keep it if the loss is a
 few fps or less.

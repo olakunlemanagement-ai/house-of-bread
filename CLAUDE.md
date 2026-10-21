@@ -3,7 +3,7 @@
 Operating instructions for Claude Code on the House of Bread Global website.
 Read this file at the start of every session. Follow it over general defaults.
 
-Last updated: 17 October 2026
+Last updated: 21 October 2026
 
 ---
 
@@ -330,7 +330,7 @@ ships.
 
 ### Loading states
 
-- Skeletons only where content really loads: the Media Library video grid
+- Skeletons only where content really loads: the Library video grid
   (Suspense fallback), route segments that await data (`loading.tsx`), and
   a still tint behind `next/image` thumbnails. Never on static content.
 - Use `components/shared/Skeleton.tsx`: `Skeleton` blocks inside a
@@ -400,17 +400,19 @@ ships.
 - Header: 72px, not sticky. It scrolls away with the page and floats,
   transparent with no border, over the hero or page header tint (a -72px
   bottom margin; Hero and PageHeader add 72px to their top padding). Left:
-  logo, then Home, About, Academy, Media Library, Contact in ink, the
-  current page in a tint pill with an inset emerald ring. Right: Subscribe
-  (secondary) and Get the app (primary).
-- Below `xl`: logo (the name hides below 420px), a compact "Get app"
-  button and a "Menu" button, all always visible. The menu panel is solid
-  white. The menu is a `details` element and works without
-  JavaScript: the five links as large tap targets, then a full width
-  Subscribe button.
-- Footer: Ministry (About, Academy, Media Library, Live sessions, Contact),
-  Learn (Teachings, Study the New Testament, New Testament journeys, The
-  official app), Follow. The "Stay close to the ministry" strip shows only
+  logo, then Home, Academy, Library, About, Contact in ink (Library is
+  `/media`), the current page in a tint pill with an inset emerald ring.
+  Right: one primary button, "Explore Teachings", to `/academy`.
+  Subscribe and the app are never in the header: they live in the Home
+  hero, the footer and the closing newsletter card.
+- Below `xl`: logo (the name hides below 420px), a compact "Explore
+  Teachings" button (48px tall) and a "Menu" button, all always visible.
+  The menu panel is solid white. The menu is a `details` element and
+  works without JavaScript: the five links as large tap targets, and
+  nothing else.
+- Footer: Ministry in the header order (Academy, Library, Live sessions,
+  About, Contact, Subscribe), Learn (Teachings, Study the New Testament,
+  New Testament journeys, Get the official app), Follow. The "Stay close to the ministry" strip shows only
   on pages that do not already offer signup (`[data-newsletter]`).
 - Pages close with the newsletter card: a translucent white card over soft
   gold or mint radial tints, with an emerald button, never a green band.

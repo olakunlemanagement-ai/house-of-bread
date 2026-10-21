@@ -1,10 +1,10 @@
-# Media Library video feed
+# Library video feed
 
 Last updated: 17 October 2026
 
 ## Decision
 
-The Media Library shows the latest six videos from the channel's public feed (`youtube.com/feeds/videos.xml`), fetched on the server by `getLatestVideos()` in `lib/media/videos.ts` and refreshed hourly. When a refresh fails, the page keeps the last list that loaded. The empty state shows only when no fetch has succeeded for the current deployment, or when the channel has no videos.
+The Library page (`/media`) shows the latest six videos from the channel's public feed (`youtube.com/feeds/videos.xml`), fetched on the server by `getLatestVideos()` in `lib/media/videos.ts` and refreshed hourly. When a refresh fails, the page keeps the last list that loaded. The empty state shows only when no fetch has succeeded for the current deployment, or when the channel has no videos.
 
 ## How it works
 
