@@ -31,8 +31,8 @@ const EXACT = {
     key: "House of Bread Global is a teaching ministry committed to doctrinal clarity and careful handling of Scripture",
   },
   "/academy": {
-    h1: "Be equipped in the truth.",
-    key: "House of Bread Academy gives believers a structured place to study the Bible",
+    h1: "House of Bread Academy",
+    key: "House of Bread Academy will give believers a structured place to study the Bible",
   },
   "/app": {
     h1: "The official House of Bread app",

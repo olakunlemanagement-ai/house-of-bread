@@ -164,6 +164,10 @@ const shared = [
   ["Session times: ink on surface", "@ink", ["@surface"], TEXT],
   ["Session times: Your time, accent on surface", "@accent", ["@surface"], TEXT],
   ["Weekly card: ink on mint", "@ink", ["@mint"], TEXT],
+  // Academy questions: a native details accordion, raised cards on the mint band.
+  ["Academy question: ink on surface", "@ink", ["@surface"], TEXT],
+  ["Academy answer: muted on surface", "@muted", ["@surface"], TEXT],
+  ["Academy question chevron: glyph on surface", "@glyph", ["@surface"], UI],
   // Scroll reveal: text at its 0.85 starting opacity, transient only.
   ["Reveal 0.85: ink on surface", "@ink/0.85", ["@surface"], TEXT],
   ["Reveal 0.85: muted on surface", "@muted/0.85", ["@surface"], TEXT],

@@ -18,7 +18,7 @@ import path from "node:path";
 const PAGES = [
   { path: "/", lead: "A global teaching ministry serving believers" },
   { path: "/about", lead: "House of Bread Global is a teaching ministry committed to doctrinal clarity" },
-  { path: "/academy", lead: "House of Bread Academy gives believers a structured place to study the Bible" },
+  { path: "/academy", lead: "House of Bread Academy will give believers a structured place to study the Bible" },
   { path: "/media", lead: "Live sessions, replays, audio teaching and social pages." },
   { path: "/events", lead: "House of Bread Global teaches live on YouTube." },
   { path: "/app", lead: "Bible study, trusted teaching and practical guidance all in one place." },
