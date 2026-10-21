@@ -101,8 +101,9 @@ changes".
 ```
 /                         Home, next live session, newsletter, app call to action
 /about                    Ministry, teacher, doctrinal position
-/academy                  House of Bread Academy overview (was /classes)
-/academy/[slug]           Single class: what, who, when, how to join
+/academy                  House of Bread Academy, front door of the future
+                          course platform (was /classes)
+/academy/[slug]           Single course: what, who, when, how to join
 /media                    Library: live and replays, video, audio,
                           social pages, read and study
 /events                   Live sessions, trainings, meetings, schedule
@@ -279,6 +280,14 @@ chooses (an external form, a WhatsApp link, or a newsletter tag). Student
 accounts, lesson players and progress tracking are deferred and are a stage
 three decision.
 
+Since 21 October 2026, `/academy` is the front door of a future course
+platform: courses in preparation, what the Academy will offer, and a
+waitlist (Kit tag `source-academy-waitlist`). Pages read courses only
+through `/lib/academy`: a framework free `CourseCatalog` interface (list
+courses, get a course) with a `StaticCourseCatalog` over the MDX class
+files. A later LMS plugs in behind that interface, and no page changes. No
+accounts, sign in or progress exist on the website until stage three.
+
 ---
 
 ## 8. Scripture reference handling
@@ -405,6 +414,28 @@ consent, a privacy policy update, and read only scope.
 - App progress integration (section 9)
 - Giving, with the Gift Aid decision made first
 - Classes with accounts and lesson progress, if demand justifies
+- House of Bread Academy course platform. Decision recorded 21 October
+  2026: the ministry prefers a custom built LMS. It is deferred, and no LMS
+  code is written until an Academy spec is approved. It plugs in behind
+  `/lib/academy` (section 7). It will need:
+  - An Academy spec first: courses, lessons, roles, who uploads, how people
+    join, free or paid, and what `biblecourse.hobglobal.online` is
+    (PLACEHOLDERS, "House of Bread Academy, open questions")
+  - An auth provider using a standard (OAuth or OIDC), ideally shared with
+    the app's sign in. No custom auth scheme
+  - A database for learners, enrolments and progress
+  - Video delivery for lessons (YouTube unlisted, or a hosted player), with
+    transcripts, under the no hosted long form video rule unless revised
+  - Admin upload: a way for the ministry to add courses and lessons without
+    a developer
+  - Progress tracking, read and written on the server
+  - Privacy: course enrolment can reveal religious belief, which is special
+    category data under UK GDPR (Article 9), with NDPA obligations for
+    Nigerian learners. A lawful basis and condition, a data protection
+    impact assessment, minimal collection, retention periods and an
+    updated privacy policy come before launch
+  - Payments, only if courses are paid: a provider for UK and Nigerian
+    cards (for example Stripe and Paystack), with refunds and tax handled
 
 Weeks are estimates. The code will finish before the content does.
 
@@ -437,6 +468,8 @@ Answers needed, in order of how much they block:
   can change it?
 - What is the app's deep link scheme, and the store links?
 - How do people join a class or training: form, WhatsApp, other?
+- House of Bread Academy: free or paid, who uploads courses, how people
+  join, and what `biblecourse.hobglobal.online` is
 - Is giving needed at launch? If yes, is House of Bread Global a registered UK
   charity, since that decides Gift Aid?
 - Which time zone are live sessions announced in, and what is the weekly

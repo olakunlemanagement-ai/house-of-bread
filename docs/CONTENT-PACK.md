@@ -161,7 +161,7 @@ One primary action per section, written as a verb that says what happens next. N
 | Home bento | See upcoming sessions, Explore the Academy, Get the app, Read the teachings | none |
 | About | Join a live session | Contact the ministry |
 | Live | Set a reminder | Subscribe on YouTube |
-| Academy | See how to join | Hear when enrolment opens |
+| Academy | Notify me when the Academy opens | none |
 | Library | Set a reminder, or Watch live on YouTube while live | TextCTA "See the full schedule" |
 | Teachings | Subscribe for new teaching | none |
 | Study | Read this book in the app | Browse all 27 books |
@@ -418,32 +418,50 @@ Metadata description: Live sessions, replays, audio and the ministry's social pa
 
 ## 6. House of Bread Academy (/academy)
 
-The training classes are named House of Bread Academy ("Academy" in the nav), tagline "Equipped in the truth.": the believers' Bible classes that equip believers with knowledge of the truth. /classes and /classes/[slug] redirect permanently to /academy and /academy/[slug].
+House of Bread Academy ("Academy" in the nav), tagline "Equipped in the truth.", is the front door of a future Bible course platform. The platform is not built (SPEC-v3, stage three): the page says what the Academy will offer and collects a waitlist. No "Log in" or "Create account" button anywhere until the platform exists. /classes and /classes/[slug] redirect permanently to /academy and /academy/[slug]. The header's "Explore Teachings" button lands here. Copy lives in `academyCopy` (lib/content/copy.ts) and is ministry copy to confirm (PLACEHOLDERS, "Copy to confirm").
 
 Metadata title: House of Bread Academy
-Metadata description: House of Bread Academy: the believers' Bible classes of House of Bread Global, equipping believers with knowledge of the truth. See what each class covers, who it is for and how to join.
+Metadata description: House of Bread Academy: Bible courses from House of Bread Global, taught from the King James Version in plain English, with Scripture read in its context. See the courses in preparation and hear when the Academy opens.
 
 ### PageHeader
-- Eyebrow: HOUSE OF BREAD ACADEMY
-- H1: Be equipped in the truth.
-- Lead: House of Bread Academy gives believers a structured place to study the Bible, so they are equipped with knowledge of the truth and ready to stand in it.
+- Eyebrow: EQUIPPED IN THE TRUTH
+- H1: House of Bread Academy
+- Lead: House of Bread Academy will give believers a structured place to study the Bible, one course at a time and at their own pace.
+- Button (primary): Notify me when the Academy opens (to /subscribe?source=academy-waitlist, Kit tag source-academy-waitlist)
+- Visual: the open Bible loop in a framed panel (poster on phones, still glow in dark)
 
-### Class list
-- Cards from content: title, one line summary, who it is for, when it runs, a "View class" link.
-- Empty state: Class details are being prepared. Subscribe to hear when enrolment opens.
+### Courses in preparation
+- Intro: The first courses are being prepared now, and each one opens here when it is ready.
+- Three to six cards from the course catalog (lib/academy): 3D icon, "Coming soon" badge, title, one line summary, TextCTA "See the course". Placeholder titles until the ministry supplies courses. No lesson counts, durations, prices or certificates.
 
-### Who the Academy is for (four icon items)
-- New believers who want a structured way into the New Testament
-- Readers who have started and stalled before
-- Students and teachers who want to handle Scripture with more care
-- Anyone who wants to know the Scriptures rather than simply own one
+### How the Academy will work
+- Intro: This is what the Academy is being built to offer.
+- 1. Create an account. One account opens every course.
+- 2. Choose a course. Start with the one that meets you where you are.
+- 3. Learn at your own pace. Work through each lesson when it suits you, and see your progress as you go.
 
-### How to join
-- [JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email]
+### Why learn here
+- Intro: Teaching that keeps every passage in its context and explains it in plain English.
+- Who it is for: Believers who want to go further than reading alone, from new believers to those who already teach others.
+- Who teaches: [TEACHER NAME AND A SHORT INTRODUCTION TO BE SUPPLIED], beside the academy-teacher photo slot (real photo needed, do not use generated people).
+- How it teaches: From the King James Version, in plain contemporary English, with Scripture always read in its context.
 
-### Class detail (/academy/[slug])
-- Sections: What it covers, Who it is for, When it runs, How to join, Cost, [CLASS DETAILS TO BE SUPPLIED]
-- Closing: newsletter card
+### Questions (native details and summary)
+- Intro: What people ask most about the Academy before it opens.
+- Will the Academy be free or paid? [CONFIRM]
+- What will I need to take part? A phone, tablet or computer with an internet connection. [CONFIRM]
+- How long will I have access to a course? [CONFIRM]
+- Will I need to attend anything live? Courses are planned to be self paced, so nothing needs to be attended live. [CONFIRM]
+- TextCTA: Ask a question anonymously (to /ask)
+
+### Closing newsletter card (Kit tag source-academy-waitlist)
+- Heading: Hear when the Academy opens
+- Text: Be among the first to know when the first courses open, with reminders before live sessions and new teaching from House of Bread Global.
+
+### Course detail (/academy/[slug])
+- Header: course title, summary, "Coming soon" badge, button "Notify me when the Academy opens". "See how to join" replaces it once a course has a join link.
+- Sections: What it covers, Who it is for, When it runs, How to join, Cost, [COURSE DETAILS TO BE SUPPLIED]
+- Closing: the Academy newsletter card
 
 ---
 

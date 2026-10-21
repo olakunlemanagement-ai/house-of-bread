@@ -72,6 +72,7 @@ tag's URL.
 | `source-subscribe-page` | `KIT_TAG_SOURCE_SUBSCRIBE_PAGE` | Signup from `/subscribe` |
 | `source-live-notify` | `KIT_TAG_SOURCE_LIVE_NOTIFY` | Signup from `/events` or an event page |
 | `source-plan-page` | `KIT_TAG_SOURCE_PLAN_PAGE` | Reserved for plan pages, which have no form yet |
+| `source-academy-waitlist` | `KIT_TAG_SOURCE_ACADEMY_WAITLIST` | Signup from `/subscribe?source=academy-waitlist` (the Academy hero button) or the closing card on `/academy` and course pages. Without JavaScript, a signup through `/subscribe` gets `source-subscribe-page` instead, because the query is read inside Suspense |
 
 Tags are optional in code: a missing id skips that tag. A tag that fails is
 logged and the signup still succeeds, so check the logs after setup.
@@ -238,8 +239,9 @@ No email address is published anywhere on the site.
 | `/about`, Leadership | [TEACHER NAME, PHOTO AND SHORT BIOGRAPHY TO BE SUPPLIED] |
 | `/about`, Doctrinal position | [DOCTRINAL STATEMENT TO BE SUPPLIED BY THE MINISTRY] |
 | `/events`, Weekly rhythm | [WEEKLY SCHEDULE AND MINISTRY TIME ZONE TO BE SUPPLIED] |
-| `/academy`, How to join | [JOINING METHOD TO BE SUPPLIED: form, WhatsApp link or email] |
-| `/academy/[slug]`, all five sections | [CLASS DETAILS TO BE SUPPLIED] |
+| `/academy`, Why learn here | [TEACHER NAME AND A SHORT INTRODUCTION TO BE SUPPLIED] |
+| `/academy`, Questions | [CONFIRM] on every answer: free or paid, device needed, how long access lasts, live attendance. See "House of Bread Academy, open questions" |
+| `/academy/[slug]`, all five sections | [COURSE DETAILS TO BE SUPPLIED] |
 | `/plans/[slug]`, closing band | [APP DEEP LINK TO BE CONFIRMED] |
 | `/contact`, side panel | [RESPONSE TIME, EMAIL ADDRESS AND SOCIAL LINKS TO BE SUPPLIED] |
 | `/privacy`, section 1 | [LEGAL NAME, ADDRESS AND CONTACT EMAIL OF THE MINISTRY] |
@@ -256,7 +258,7 @@ No email address is published anywhere on the site.
 | Event cards, featured session card and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
 | Featured session card and `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED] |
 | `/events/[slug]` | [SESSION DESCRIPTION TO BE SUPPLIED], [PASSAGES TO BE SUPPLIED, LINKED THROUGH /lib/scripture] |
-| Class cards and `/academy/[slug]` header | [ONE LINE SUMMARY], [AUDIENCE], [DATES] |
+| Course cards and `/academy/[slug]` header | Titles [COURSE TITLE 1] to [COURSE TITLE 4], a placeholder summary and a "Coming soon" badge. No lesson counts, durations, prices or certificates until the ministry supplies them |
 | Teaching cards and `/teachings/[slug]` | [SUMMARY TO BE SUPPLIED], [READING TIME], [PASSAGES], [DATE], [PASSAGES AS LINKED CHIPS], [TEACHING BODY TO BE SUPPLIED] |
 | `/new-testament/[book]`, all five sections | [BODY TEXT FOR THIS SECTION TO BE SUPPLIED] |
 | `/plans/[slug]` for the 60 and 90 day journeys | [DAY ONE READING TO BE CONFIRMED AGAINST THE APP] |
@@ -311,16 +313,15 @@ image arrives, set the status to `final` and build it.
 | `home-start-here` | Home, Start here (only if no video) | 16:9 | A first teaching for someone new to the ministry. Today `startHereVideoId` fills it, so this slot does not show | Interim allowed |
 | `about-mission` | `/about`, Mission | 16:9 | Believers following a live teaching online, with open Bibles: a laptop or phone showing the stream, hands on an open Bible | Real needed (community) |
 | `about-leadership` | `/about`, Leadership | 4:5 | A portrait of the teacher: head and shoulders, plain or softly blurred background, looking just off camera | Real needed (person) |
+| `academy-teacher` | `/academy`, Why learn here | 4:5 | The teacher leading an online class: on camera or at a desk, Bible open, warm natural light. Real photo needed, do not use generated people | Real needed (person) |
 | `events-how-it-works` | `/events`, How it works | 4:5 | A session streaming live, the teacher on camera, seen from behind the camera or as the stream itself | Real needed (person) |
 | `app-journeys` | `/app`, New Testament journeys | 16:9 | Real app screen: a journey's daily reading and progress | Real needed (screenshot) |
 | `app-books` | `/app`, Every book introduced | 16:9 | Real app screen: a book introduction | Real needed (screenshot) |
 | `app-translations` | `/app`, Six translations | 16:9 | Real app screen: switching between translations | Real needed (screenshot) |
 | `app-teaching` | `/app`, The ministry's teaching | 16:9 | Real app screen: the teaching library | Real needed (screenshot) |
 
-`/academy`, Who the Academy is for, is no longer an image slot: it is the
-open Bible loop (see "Motion loops" below). An online class photo,
-believers with open Bibles, can replace it later, and would be a real
-photo needed slot.
+The `/academy` hero visual is the open Bible loop in a framed panel (see
+"Motion loops" below), not an image slot.
 
 Assets to request from the ministry (CONTENT-PACK 1.7): a portrait of the
 teacher, 10 to 15 stills from live sessions and online classes, real app
@@ -337,6 +338,49 @@ None states a fact. Confirm or replace.
   "Bible classes that equip believers with knowledge of the truth, for those
   who want to go further than reading alone." Both are built from the
   approved tagline and description.
+- **`/academy`, written 21 October 2026.** All in `academyCopy`
+  (`lib/content/copy.ts`). It describes what the Academy will offer, not
+  what exists. Confirm each:
+  - Lead: "House of Bread Academy will give believers a structured place to
+    study the Bible, one course at a time and at their own pace."
+  - How the Academy will work: "Create an account. One account opens every
+    course." "Choose a course. Start with the one that meets you where you
+    are." "Learn at your own pace. Work through each lesson when it suits
+    you, and see your progress as you go." No certificates or live Q and A
+    are claimed.
+  - Why learn here: who it is for ("Believers who want to go further than
+    reading alone, from new believers to those who already teach others"),
+    who teaches (placeholder), how it teaches ("From the King James Version,
+    in plain contemporary English, with Scripture always read in its
+    context").
+  - Questions: the device answer ("A phone, tablet or computer with an
+    internet connection") and the live answer ("Courses are planned to be
+    self paced, so nothing needs to be attended live") are working
+    assumptions, each marked [CONFIRM].
+  - Closing card: "Hear when the Academy opens. Be among the first to know
+    when the first courses open, with reminders before live sessions and
+    new teaching from House of Bread Global." The signup joins the general
+    newsletter with the academy-waitlist tag, so the wording says so.
+
+## House of Bread Academy, open questions
+
+Logged 21 October 2026. The Academy is planned as a custom built course
+platform, deferred (SPEC-v3, stage three). `/academy` is its front door
+only: no accounts, sign in, database or lesson progress exist. Answers
+needed from the ministry before an Academy spec is written:
+
+- **Free or paid?** All free, all paid, or some of each. Paid brings a
+  payment provider, refunds and tax into scope.
+- **Who uploads courses?** Who writes and records lessons, and who puts them
+  on the platform: the teacher, a ministry volunteer, or the developer.
+  This decides how much admin tooling the platform needs.
+- **How do people join?** Open sign up, an application, or an invitation.
+  And whether existing class members move across.
+- **What is `biblecourse.hobglobal.online`?** Whether it is live, what runs
+  on it, who controls it, and whether the Academy should live there or at
+  `/academy`.
+- **How long does access last, and is anything live?** The `/academy`
+  answers carry [CONFIRM] until these are known.
 
 - **Announcement bar, session within 24 hours.** The pack gives only "Live
   now: {title}. Watch on YouTube". The upcoming case reads "Coming up:
@@ -388,7 +432,7 @@ is copied from the app. Replace or delete each one when real content arrives.
 | Route | Source | Sample |
 |---|---|---|
 | `/events/[slug]` | `content/events` | `sample-live-session` |
-| `/academy/[slug]` | `content/classes` | `sample-class` |
+| `/academy/[slug]` | `content/classes`, read through `lib/academy` | `sample-class`, `sample-class-2`, `sample-class-3`, `sample-class-4` (shown as "Coming soon") |
 | `/teachings/[slug]` | `content/teachings` | `sample-teaching` (marked draft) |
 | `/new-testament/[book]` | `content/books` | `matthew` |
 | `/plans/[slug]` | `lib/content/placeholder-data.ts` | `30-day-plan`, `60-day-plan`, `90-day-plan` |
@@ -798,6 +842,21 @@ accent glyph on raised, tint on hover, a glyph border at 55%.
 |---|---|---|---|
 | Accent glyph on raised | 7.65 | 9.84 | Pass |
 | Accent glyph on tint (hover) | 6.80 | 8.04 | Pass |
+
+### Academy questions accordion (21 October 2026)
+
+Native `details` and `summary`, each a raised card on the mint band. The
+chevron and the open state are carried by the element itself, never by
+colour alone.
+
+| Pairing | Light | Dark | Result |
+|---|---|---|---|
+| Question: ink on surface (text) | 16.47 | 16.07 | Pass |
+| Answer: muted on surface (text) | 7.64 | 9.28 | Pass |
+| Chevron: glyph on surface (UI, 3:1) | 6.57 | 8.39 | Pass |
+
+The course cards' "Coming soon" badge is the existing ink on gold-soft badge
+(theme invariant), and the focus ring rows cover the summary.
 | Glyph border at 55% over the hero tint peak | 2.37 | 3.10 | Light below 3, as on the Menu button. Not required: the glyph identifies the control |
 
 ## Come alive (revision 5)
@@ -860,7 +919,7 @@ and pause offscreen. Sizes in KB of 1000 bytes.
 | dust-light | Inner page headers without a visual, lg and up | Desktop inner pages | 746 | 766 | 18 |
 | wheat-field | `/about`, The name | No | 748 | 740 | 50 |
 | bread-steam | Behind the newsletter card (11 pages) | No | 576 | 751 | 49 |
-| open-bible | `/academy`, Who the Academy is for | No | 346 | 744 | 23 |
+| open-bible | `/academy` hero, framed panel beside the text (replaces dust-light there) | Desktop `/academy` | 346 | 744 | 23 |
 | water-light | Behind the phone in the app band (6 pages) | No | 743 | 776 | 28 |
 | green-mesh | `/about` closing band, lg and up | No | 750 | 757 | 29 |
 
