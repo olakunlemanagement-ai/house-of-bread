@@ -427,7 +427,7 @@ Metadata description: House of Bread Academy: Bible courses from House of Bread 
 - Eyebrow: EQUIPPED IN THE TRUTH
 - H1: House of Bread Academy
 - Lead: House of Bread Academy will give believers a structured place to study the Bible, one course at a time and at their own pace.
-- Button (primary): Notify me when the Academy opens (to /subscribe?source=academy-waitlist, Kit tag source-academy-waitlist)
+- Button (primary): Notify me when the Academy opens (to /subscribe/academy, Kit tag source-academy-waitlist)
 - Visual: the open Bible loop in a framed panel, desktop only like the other inner page headers (still glow in dark)
 
 ### Courses in preparation

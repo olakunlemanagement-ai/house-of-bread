@@ -82,7 +82,7 @@ export const academyCopy = {
   tagline: "Equipped in the truth",
   lead: "House of Bread Academy will give believers a structured place to study the Bible, one course at a time and at their own pace.",
   waitlistLabel: "Notify me when the Academy opens",
-  waitlistHref: "/subscribe?source=academy-waitlist#signup",
+  waitlistHref: "/subscribe/academy",
   courses: {
     title: "Courses in preparation",
     intro: "The first courses are being prepared now, and each one opens here when it is ready.",

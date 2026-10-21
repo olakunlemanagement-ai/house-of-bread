@@ -1,22 +1,55 @@
+import { Suspense } from "react";
+import { IconTile, type IconName } from "@/components/shared/icons";
 import { NewsletterForm } from "@/components/shared/NewsletterForm";
-import { subscribePageSource, type NewsletterSource } from "@/lib/newsletter/schema";
+import { SectionHeader } from "@/components/shared/Section";
+import type { NewsletterSource } from "@/lib/newsletter/schema";
+import { SignupError } from "./SignupError";
 
-/** The signup form on /subscribe, tagged with the given source. */
-export function SubscribeForm({ source = "subscribe-page" }: { source?: NewsletterSource }) {
-  return <NewsletterForm idPrefix="subscribe" source={source} withLiveNotify consent="short" />;
-}
+export type ExpectItem = { icon: IconName; text: string };
 
 /**
- * Reads ?source= (such as academy-waitlist from the Academy page) and tags
- * the signup with it. Rendered inside Suspense with a plain SubscribeForm as
- * the fallback, so the page stays static and the form works without
- * JavaScript, where the signup is tagged subscribe-page instead.
+ * The signup card and the "What to expect" panel, shared by /subscribe and
+ * /subscribe/academy. The source is fixed per page and posted as a hidden
+ * field, so the tag is right with or without JavaScript.
  */
-export async function SourcedSubscribeForm({
+export function SignupSection({
+  source,
+  idPrefix,
+  expect,
   searchParams,
 }: {
+  source: NewsletterSource;
+  idPrefix: string;
+  expect: ExpectItem[];
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
-  const { source } = await searchParams;
-  return <SubscribeForm source={subscribePageSource(source)} />;
+  return (
+    <section id="signup" data-newsletter aria-labelledby="signup-heading" className="scroll-mt-6 bg-surface">
+      <div className="container-page grid gap-8 py-18 md:py-24 lg:grid-cols-12 lg:gap-10">
+        <div className="rounded-card border border-border bg-surface p-6 shadow-raised sm:p-10 lg:col-span-7">
+          <h2 id="signup-heading" className="mb-8 text-3xl">
+            Subscribe
+          </h2>
+          <Suspense fallback={null}>
+            <SignupError searchParams={searchParams} />
+          </Suspense>
+          <NewsletterForm idPrefix={idPrefix} source={source} withLiveNotify consent="short" />
+        </div>
+
+        <aside aria-labelledby="expect-heading" className="rounded-card bg-surface-mint p-6 sm:p-10 lg:col-span-5">
+          <SectionHeader id="expect-heading" size="compact" as="h2">
+            What to expect
+          </SectionHeader>
+          <ul className="mt-8 space-y-5">
+            {expect.map((item) => (
+              <li key={item.text} className="flex items-center gap-4 text-lg text-ink">
+                <IconTile name={item.icon} />
+                {item.text}
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </div>
+    </section>
+  );
 }

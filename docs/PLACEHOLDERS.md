@@ -72,7 +72,7 @@ tag's URL.
 | `source-subscribe-page` | `KIT_TAG_SOURCE_SUBSCRIBE_PAGE` | Signup from `/subscribe` |
 | `source-live-notify` | `KIT_TAG_SOURCE_LIVE_NOTIFY` | Signup from `/events` or an event page |
 | `source-plan-page` | `KIT_TAG_SOURCE_PLAN_PAGE` | Reserved for plan pages, which have no form yet |
-| `source-academy-waitlist` | `KIT_TAG_SOURCE_ACADEMY_WAITLIST` | Signup from `/subscribe?source=academy-waitlist` (the Academy hero button) or the closing card on `/academy` and course pages. Without JavaScript, a signup through `/subscribe` gets `source-subscribe-page` instead, because the query is read inside Suspense |
+| `source-academy-waitlist` | `KIT_TAG_SOURCE_ACADEMY_WAITLIST` | Signup from `/subscribe/academy` (the Academy waitlist buttons) or the closing card on `/academy` and course pages. The source is a fixed hidden field on each, so the tag is right without JavaScript |
 
 Tags are optional in code: a missing id skips that tag. A tag that fails is
 logged and the signup still succeeds, so check the logs after setup.

@@ -18,6 +18,7 @@ const staticPaths = [
   "/plans",
   "/app",
   "/subscribe",
+  "/subscribe/academy",
   "/ask",
   "/contact",
   "/privacy",

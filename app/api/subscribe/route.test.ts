@@ -215,3 +215,51 @@ describe("POST /api/subscribe", () => {
     expect(response.status).toBe(415);
   });
 });
+
+describe("the /subscribe/academy form", () => {
+  /** The fields the page's form posts without JavaScript, read from its server HTML. */
+  async function academyFormFields(): Promise<{ action: string; fields: Record<string, string> }> {
+    const { createElement } = await import("react");
+    const { prerender } = await import("react-dom/static");
+    const { default: AcademySubscribePage } = await import("@/app/(marketing)/subscribe/academy/page");
+    const { prelude } = await prerender(createElement(AcademySubscribePage, { params: Promise.resolve({}), searchParams: Promise.resolve({}) }));
+    const html = await new Response(prelude).text();
+
+    const form = html.match(/<form\b[^>]*>[\s\S]*?<\/form>/)?.[0];
+    if (!form) throw new Error("no form on /subscribe/academy");
+    const action = form.match(/\baction="([^"]*)"/)?.[1] ?? "";
+    const fields: Record<string, string> = {};
+    for (const input of form.match(/<input\b[^>]*>/g) ?? []) {
+      const name = input.match(/\bname="([^"]*)"/)?.[1];
+      if (name && /\btype="hidden"/.test(input)) fields[name] = input.match(/\bvalue="([^"]*)"/)?.[1] ?? "";
+    }
+    return { action, fields };
+  }
+
+  it("posts the academy-waitlist source as a hidden field to /api/subscribe", async () => {
+    const { action, fields } = await academyFormFields();
+    expect(action).toBe("/api/subscribe");
+    expect(fields.source).toBe("academy-waitlist");
+  });
+
+  it("gets the source to Kit as the Academy waitlist tag, without JavaScript", async () => {
+    const { fields } = await academyFormFields();
+    mockKit(201);
+    const response = await POST(formRequest({ ...fields, email: EMAIL, website: "" }));
+
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe("https://hobglobal.online/subscribe/check-email");
+    expect(kitCalls.map((call) => call.url)).toContain("https://api.kit.com/v4/tags/555/subscribers");
+    expect(kitCalls.map((call) => call.url)).not.toContain("https://api.kit.com/v4/tags/444/subscribers");
+  });
+
+  it("sends a failed Academy form post back to /subscribe/academy", async () => {
+    mockKit(201);
+    const response = await POST(formRequest({ email: "nope", source: "academy-waitlist", website: "" }));
+
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe(
+      "https://hobglobal.online/subscribe/academy?error=email#signup",
+    );
+  });
+});

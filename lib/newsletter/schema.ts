@@ -9,19 +9,6 @@ export const newsletterSources = [
 ] as const;
 export type NewsletterSource = (typeof newsletterSources)[number];
 
-/**
- * Sources a link may ask /subscribe to use, as /subscribe?source=<source>.
- * Anything else, or no source, is recorded as "subscribe-page".
- */
-export const linkableSources = ["academy-waitlist"] as const satisfies readonly NewsletterSource[];
-
-/** The source for a /subscribe signup, from its ?source= query value. */
-export function subscribePageSource(value: unknown): NewsletterSource {
-  return (linkableSources as readonly unknown[]).includes(value)
-    ? (value as (typeof linkableSources)[number])
-    : "subscribe-page";
-}
-
 /** Treats an empty or whitespace-only string as absent. */
 const optionalText = (max: number) =>
   z.preprocess(

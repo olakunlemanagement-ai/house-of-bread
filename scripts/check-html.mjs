@@ -19,7 +19,9 @@ import { pathToFileURL } from "node:url";
  * Expectations per route. `h1` and `key` are exact text (whitespace
  * normalised). A pattern route checks its h1 against the page title instead,
  * and a key sentence from the shared template. A route found in the sitemap
- * with no entry here fails, so new routes get an entry.
+ * with no entry here fails, so new routes get an entry. `source`, where
+ * given, is the newsletter source the signup form in main must post as a
+ * hidden field, so the Kit tag is right without script.
  */
 const EXACT = {
   "/": {
@@ -73,6 +75,12 @@ const EXACT = {
   "/subscribe": {
     h1: "Stay close to the ministry",
     key: "Reminders before each live session, new teaching and news from House of Bread Global",
+    source: "subscribe-page",
+  },
+  "/subscribe/academy": {
+    h1: "Hear when the Academy opens",
+    key: "Be among the first to know when the first courses open",
+    source: "academy-waitlist",
   },
   "/subscribe/check-email": {
     h1: "Check your email",
@@ -142,7 +150,7 @@ function visibleHtml(html) {
 }
 
 /** Checks one page's HTML. Returns { failures, notes }. Exported for testing. */
-export function analyse(html, { h1: expectedH1, key, h1InTitle = false }) {
+export function analyse(html, { h1: expectedH1, key, h1InTitle = false, source }) {
   const failures = [];
   const notes = [];
   const visible = visibleHtml(html);
@@ -180,6 +188,16 @@ export function analyse(html, { h1: expectedH1, key, h1InTitle = false }) {
         ? `key sentence arrives only after script runs: "${key}"`
         : `key sentence missing: "${key}"`,
     );
+  }
+
+  if (source) {
+    const sources = [...main.matchAll(/<input\b[^>]*\sname="source"[^>]*>/g)].map(
+      ([input]) => input.match(/\svalue="([^"]*)"/)?.[1],
+    );
+    if (sources.length === 0) failures.push("no signup form with a source field in main");
+    else if (sources.some((value) => value !== source)) {
+      failures.push(`signup source is ${sources.join(", ")}, expected ${source}`);
+    }
   }
 
   const skeletons = main.match(SKELETON)?.length ?? 0;

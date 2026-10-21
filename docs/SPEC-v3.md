@@ -116,6 +116,7 @@ changes".
 /plans/[slug]             Plan landing with first days and app call to action
 /app                      App page and store links
 /subscribe                Newsletter signup
+/subscribe/academy        Academy waitlist signup, source fixed in the form
 /subscribe/check-email    Confirmation prompt
 /contact
 /privacy
