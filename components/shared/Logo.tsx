@@ -37,7 +37,7 @@ export function Logo({
       >
         <Image src={mark} alt="" priority={priority} sizes="36px" className="h-full w-auto" />
       </span>
-      <span className={compact ? "hidden min-[420px]:inline" : ""}>
+      <span className={compact ? "hidden min-[480px]:inline" : ""}>
         <Wordmark className="tracking-[0.14em] sm:tracking-[0.18em]" />
       </span>
     </span>

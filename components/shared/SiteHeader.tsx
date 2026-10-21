@@ -11,11 +11,13 @@ import { ThemeToggle } from "./theme/ThemeToggle";
  * the hero or page header tint: the negative bottom margin pulls the next
  * section up beneath it, and Hero and PageHeader add 72px to their top
  * padding. No bar or border, as nothing ever scrolls under it.
- * Wide screens: logo and the five nav links on the left; the dark theme
- * switch and one emerald primary button, Explore Teachings, on the right. Subscribe and the app are reached
- * from the Home hero, the footer and the closing newsletter card.
- * Narrow screens: logo, a compact Explore Teachings button (still 48px tall)
- * and a Menu button, all always visible. The menu is a details element, so it opens and closes
+ * Wide screens: logo and the five nav links on the left; one emerald primary
+ * button, Explore Teachings, then the dark theme switch on the right.
+ * Subscribe and the app are reached from the Home hero, the footer and the
+ * closing newsletter card.
+ * Narrow screens: logo, a compact Explore Teachings button (still 48px tall,
+ * "Explore" below sm), the theme switch and a Menu button, all always
+ * visible. The menu is a details element, so it opens and closes
  * without JavaScript. Its panel is solid white (night in dark) and fades in
  * over 180ms. Below the links sits the Light, Dark or System choice, which
  * shows only with JavaScript.
@@ -44,19 +46,15 @@ export function SiteHeader() {
           </Suspense>
         </nav>
 
-        <div className="ml-auto hidden items-center gap-2 xl:flex">
+        {/* One set of controls at every width. Below sm the button reads
+            "Explore", so all three keep full size tap targets at 375px. */}
+        <div className="ml-auto flex shrink-0 items-center gap-2">
+          <ButtonLink href="/academy" size="compact" className="whitespace-nowrap xl:px-6 xl:text-base">
+            <span className="sm:hidden">Explore</span>
+            <span className="hidden sm:inline">Explore Teachings</span>
+          </ButtonLink>
           <ThemeToggle />
-          <ButtonLink href="/academy" className="whitespace-nowrap">
-            Explore Teachings
-          </ButtonLink>
-        </div>
-
-        {/* Narrow screens. Both controls stay visible beside the logo. */}
-        <div className="ml-auto flex items-center gap-2 xl:hidden">
-          <ButtonLink href="/academy" size="compact" className="whitespace-nowrap">
-            Explore Teachings
-          </ButtonLink>
-          <details data-menu className="group">
+          <details data-menu className="group xl:hidden">
             <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded-button border-[1.5px] border-glyph/55 bg-surface-raised px-3.5 text-sm font-semibold text-emerald-deep hover:bg-tint [&::-webkit-details-marker]:hidden">
               <span aria-hidden="true" className="flex w-4 flex-col gap-1">
                 <span className="h-0.5 rounded bg-current transition-transform group-open:translate-y-1.5 group-open:rotate-45" />

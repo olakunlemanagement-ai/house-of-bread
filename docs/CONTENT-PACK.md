@@ -198,9 +198,9 @@ One primary action per section, written as a verb that says what happens next. N
 ### Header
 - 72px, not sticky: it scrolls away with the page. Transparent over the hero or page header tint, with no bar or border.
 - Left: logo, then Home, Academy, Library, About, Contact. Library goes to /media and is also the current item on /events.
-- Right: one button, Explore Teachings (primary, emerald), to /academy. Subscribe and the app are not in the header: they are reached from the Home hero, the footer and the closing newsletter card.
+- Right: one button, Explore Teachings (primary, emerald), to /academy, then the theme switch (a 44px icon button). Subscribe and the app are not in the header: they are reached from the Home hero, the footer and the closing newsletter card.
 - Current page: aria-current and a stronger pill, not colour alone.
-- Mobile: logo left (the name hides below 420px), a compact "Explore Teachings" button (48px tall) and a "Menu" button on the right, both always visible. The menu is a details element and works without JavaScript. It lists Home, Academy, Library, About, Contact as large tap targets, and nothing else.
+- Mobile: logo left (the name hides below 480px), a compact "Explore Teachings" button (48px tall, "Explore" below 640px), the theme switch (a 44px icon button) and a "Menu" button on the right, all always visible. The menu is a details element and works without JavaScript. It lists Home, Academy, Library, About, Contact as large tap targets, then the Light, Dark or System theme choice (shown only with JavaScript).
 
 ### Footer
 - Top strip: "Stay close to the ministry" and a Subscribe button, only on pages that do not already offer signup (pages without the newsletter card, plus /subscribe and check-email are excluded).

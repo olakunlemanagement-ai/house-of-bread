@@ -749,6 +749,17 @@ light results are unchanged. Values are the dark tokens in
 The footer, gold fills, play chips and the social marks on their white
 tiles are the same in both themes; their rows are in the light tables above.
 
+### Header theme switch (21 October 2026)
+
+The switch shows at every width and is styled like the Menu button: an
+accent glyph on raised, tint on hover, a glyph border at 55%.
+
+| Pairing (UI, 3:1) | Light | Dark | Result |
+|---|---|---|---|
+| Accent glyph on raised | 7.65 | 9.84 | Pass |
+| Accent glyph on tint (hover) | 6.80 | 8.04 | Pass |
+| Glyph border at 55% over the hero tint peak | 2.37 | 3.10 | Light below 3, as on the Menu button. Not required: the glyph identifies the control |
+
 ## Come alive (revision 5)
 
 Branch `feat/come-alive`, 17 October 2026. Measured with `npm run contrast`.

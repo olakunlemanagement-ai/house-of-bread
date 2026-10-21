@@ -131,8 +131,8 @@ Updated 21 October 2026.
   the label for `/media`, and is also the current item on `/events`.
 - One button on the right of the header: "Explore Teachings" (primary,
   emerald), to `/academy`. Subscribe and the app are not in the header.
-- Mobile: the same button and a Menu button. The menu lists the same five
-  links in the same order, and nothing else.
+- Mobile: the same button, the theme switch and a Menu button. The menu
+  lists the same five links in the same order, then the theme choice.
 - Subscribe and the app stay reachable from the Home hero ("Get the
   official app"), the footer (a Subscribe link and "Get the official app")
   and the newsletter card that closes each page.

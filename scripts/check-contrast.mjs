@@ -136,7 +136,11 @@ const shared = [
   ["Card glow ring on mint", "@glyph", ["@mint"], UI],
   ["Card glow ring on warm", "@glyph", ["@warm"], UI],
   // Header, transparent over the hero tint.
-  ["Header: ink nav and theme switch over the hero tint peak", "@ink", ["@heroPeak"], TEXT],
+  ["Header: ink nav over the hero tint peak", "@ink", ["@heroPeak"], TEXT],
+  // Theme switch, styled like the Menu button: accent glyph on raised, tint on hover.
+  ["Header theme switch: accent glyph on raised", "@accent", ["@raised"], UI],
+  ["Header theme switch hover: accent glyph on tint", "@accent", ["@tint"], UI],
+  ["Header theme switch and Menu: glyph border at 55% over the hero tint peak", "@glyph/0.55", ["@heroPeak"], UI, "glyph identifies the control"],
   ["Nav current and theme choice: accent on tint pill over the hero tint peak", "@accent", ["@heroPeak", "@tint/0.9"], TEXT],
   ["Theme choice current: accent on tint over surface (menu)", "@accent", ["@surface", "@tint"], TEXT],
   // Translucent cards (hero floating cards, newsletter card).

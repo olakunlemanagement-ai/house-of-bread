@@ -435,12 +435,14 @@ themes), run `npm run contrast`, and log it before it ships.
   bottom margin; Hero and PageHeader add 72px to their top padding). Left:
   logo, then Home, Academy, Library, About, Contact in ink (Library is
   `/media`), the current page in a tint pill with an inset emerald ring.
-  Right: the dark theme switch (a 44px icon button with `aria-pressed`)
-  and one primary button, "Explore Teachings", to `/academy`.
-  Subscribe and the app are never in the header: they live in the Home
-  hero, the footer and the closing newsletter card.
-- Below `xl`: logo (the name hides below 420px), a compact "Explore
-  Teachings" button (48px tall) and a "Menu" button, all always visible.
+  Right: one primary button, "Explore Teachings", to `/academy`, then
+  the dark theme switch (a 44px round icon button with `aria-pressed`,
+  styled like the Menu button). Subscribe and the app are never in the
+  header: they live in the Home hero, the footer and the closing
+  newsletter card.
+- Below `xl`: logo (the name hides below 480px), a compact "Explore
+  Teachings" button (48px tall, "Explore" below `sm`), the theme switch
+  and a "Menu" button, all always visible.
   The menu panel is solid white. The menu is a `details` element and
   works without JavaScript: the five links as large tap targets, then the
   Light, Dark or System theme choice (shown only with JavaScript), and
