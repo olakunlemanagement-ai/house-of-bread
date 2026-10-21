@@ -78,7 +78,7 @@ function noPreviousPage(): boolean {
 }
 
 /**
- * The channel's latest videos for the Media Library, cached and refreshed
+ * The channel's latest videos for the Library page, cached and refreshed
  * hourly. Uses YOUTUBE_CHANNEL_ID; without it the result is "unavailable".
  *
  * When the feed fails at runtime this throws on purpose. The refresh then

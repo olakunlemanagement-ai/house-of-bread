@@ -8,7 +8,7 @@ const nextConfig: NextConfig = {
   // lib/content reads /content with fs. Pages are prerendered, but an unknown
   // slug renders on request to return its 404, so ship the folder too.
   outputFileTracingIncludes: { "/**": ["./content/**/*"] },
-  // Media Library video thumbnails. The feed's own numbered hosts (i2, i3...)
+  // Library page (/media) video thumbnails. The feed's own numbered hosts (i2, i3...)
   // are not used: thumbnails are rebuilt on i.ytimg.com from the video id.
   images: {
     remotePatterns: [{ protocol: "https", hostname: "i.ytimg.com", pathname: "/vi/**" }],

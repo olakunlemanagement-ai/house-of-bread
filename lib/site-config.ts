@@ -21,7 +21,7 @@ export type SiteLinks = {
   /** Audio platforms (podcast and similar), in display order. Empty renders a placeholder. */
   audio: { label: string; href: string }[];
   /**
-   * The featured video, as a YouTube video id. It leads the Media Library
+   * The featured video, as a YouTube video id. It leads the Library page
    * player ahead of the feed, and fills the Events Watch panel as the latest
    * session until a session is live or a dated replay exists. Change this
    * one value to replace it. Null puts the newest feed video in the lead.

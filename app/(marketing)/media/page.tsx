@@ -16,7 +16,7 @@ import { getAll, upcomingEvents } from "@/lib/content";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "Media Library",
+  title: "Library",
   description: "Live sessions, replays, audio and the ministry's social pages, all in one place.",
 };
 
@@ -31,7 +31,7 @@ const sections = [
 /** Anchor chips under the header. Pill shaped, never underlined. */
 function SectionChips() {
   return (
-    <nav aria-label="Media Library sections" className="mt-2">
+    <nav aria-label="Library sections" className="mt-2">
       <ul className="flex flex-wrap gap-2">
         {sections.map((section) => (
           <li key={section.id}>
@@ -94,7 +94,7 @@ export default function MediaPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
-        eyebrow="Media Library"
+        eyebrow="Library"
         title="Everything the ministry shares, in one place"
         lead="Live sessions, replays, audio teaching and social pages. Watch, listen and follow wherever you are."
         meta={<SectionChips />}

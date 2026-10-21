@@ -68,7 +68,7 @@ const tileClasses =
 /**
  * The social accounts from siteConfig.links.social, each a brand mark in a
  * 44px white round tile. "icons" is a wrapping row of tiles (the footer);
- * "labelled" adds the platform name beside each tile (the Media Library).
+ * "labelled" adds the platform name beside each tile (the Library page).
  * Links open in a new tab with rel="noopener noreferrer".
  */
 export function SocialLinks({ variant = "icons" }: { variant?: "icons" | "labelled" }) {

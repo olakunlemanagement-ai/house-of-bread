@@ -8,7 +8,7 @@
 
 /**
  * Routes that render a YouTube embed. Only these may frame
- * youtube-nocookie.com: Home (start here video), the Media Library (featured
+ * youtube-nocookie.com: Home (start here video), the Library page (featured
  * player) and Events (Watch live). Add a path here, and in
  * scripts/check-headers.mjs, when a page gains an embed.
  */

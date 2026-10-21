@@ -29,7 +29,7 @@ const PAGES = [
 /** Async regions: the element whose height must not change when content replaces the fallback. */
 const REGIONS = [
   { path: "/", name: "Start here video", selector: "#start .lg\\:col-span-7", fallbackLink: true },
-  { path: "/media", name: "Media Library video grid", selector: "#video .container-page > div > :last-child", fallbackLink: true },
+  { path: "/media", name: "Library video grid", selector: "#video .container-page > div > :last-child", fallbackLink: true },
   // The "Watch on YouTube" link beside the player is in the first HTML, so the fallback has none.
   { path: "/events", name: "Latest session player", selector: "#watch .container-page > div > :last-child", fallbackLink: false },
 ];

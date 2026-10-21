@@ -88,7 +88,7 @@ function VideoCard({
 }
 
 /**
- * The Media Library player and the latest videos. The lead video (the
+ * The Library page player and the latest videos. The lead video (the
  * featured video, or the newest) waits in the click to load facade at the
  * top. A card's Play button (or its thumbnail) loads that video into the
  * player and starts it, scrolls the player into view and moves focus to it.
