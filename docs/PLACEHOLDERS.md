@@ -28,6 +28,9 @@ Filling in a value there turns every matching placeholder into a real link.
 - **Newsletter needs Kit set up.** The signup code is built. Until the steps
   in "Newsletter setup" below are done, every newsletter form shows a disabled
   button and "Signup opens soon".
+- **Anonymous questions need Resend set up.** The code is built. Until the
+  steps in "Anonymous questions setup" below are done, `/ask` shows a
+  disabled button and "Questions open soon".
 - **Contact form is not wired up.** It renders real fields with the submit
   button disabled and a "Messaging opens soon" note until the contact slice.
 - **Security headers are not set.** CLAUDE.md requires a
@@ -122,11 +125,78 @@ such page exists yet. Kit's default confirmation page is used until the
 ministry chooses one. If a site page is wanted, set it as the form's redirect
 after confirmation in Kit.
 
+## Anonymous questions setup
+
+Added 21 October 2026. `/ask` takes an anonymous Bible question and
+`/api/questions` emails it to the ministry through the Resend REST API. Until
+all three variables below are set, the form shows a disabled button and
+"Questions open soon".
+
+### 1. Verify the domain in Resend
+
+1. In Resend, open Domains and add `hobglobal.online`.
+2. Add the DNS records Resend lists at the domain's DNS host: for SPF, an
+   MX and a TXT record on the `send` subdomain; for DKIM, a TXT record
+   on `resend._domainkey`. A DMARC record is recommended too.
+3. Wait until Resend shows the domain as Verified. Sending from an
+   unverified domain fails, and the form then shows its generic error.
+
+### 2. Create the API key
+
+In Resend, open API Keys and create a key with "Sending access" only,
+limited to `hobglobal.online`. This is `RESEND_API_KEY`. Treat it as a
+secret: never give it a `NEXT_PUBLIC_` prefix and never commit it.
+
+### 3. Set the variables in Vercel
+
+1. In Vercel, open the project, then Settings, then Environment Variables.
+2. Add, for Production:
+   - `RESEND_API_KEY`: the key from step 2, marked Sensitive
+   - `RESEND_FROM`: `House of Bread Global <questions@hobglobal.online>`
+     (any address on the verified domain)
+   - `QUESTIONS_TO_EMAIL`: the ministry inbox that should receive questions
+3. Leave them off Preview unless previews should send real email.
+4. Redeploy. Whether the form is enabled is decided at build time.
+
+### 4. Add the Vercel Firewall rate limit
+
+1. In Vercel, open the project, then Firewall, then Configure, and add a
+   custom rule.
+2. Condition: Request Path equals `/api/questions`, and Method equals `POST`.
+3. Action: Rate Limit, fixed window, 3 requests per 600 seconds, keyed on IP
+   address, then Deny (429).
+4. Save and publish the rule.
+
+The firewall sees the IP address to count requests. The route never reads,
+logs or forwards it. Add Cloudflare Turnstile only if abuse appears.
+
+### 5. Test once
+
+- A question sent from `/ask` arrives at `QUESTIONS_TO_EMAIL` with the
+  subject "New anonymous Bible question" and only the time, topic and text.
+- Sending with JavaScript turned off lands on `/ask/sent`.
+- A fourth question within ten minutes is refused by the firewall.
+
+### For the ministry to confirm
+
+- **Safety notice on the form.** "This form cannot reply to you or give
+  urgent help. If you or someone else is in danger, contact your local
+  emergency services."
+- **Privacy line above the question box.** "Please do not include names,
+  contact details or other private details about yourself or anyone else."
+- **`[CONFIRM HOW QUESTIONS ARE ANSWERED]`** on `/ask`. The page makes no
+  promise of a reply and says nothing about how questions are used.
+- **`[CONFIRM RETENTION]`** in the privacy policy, section "Anonymous
+  questions": how long questions are kept in the ministry inbox.
+- **Success copy.** "Thank you, your question has been sent" and "It
+  reached the ministry without your name or any contact details."
+
 ## Pages that stay noindex permanently
 
 These set their own robots metadata and ignore the global flag.
 
 - `/subscribe/check-email`, only meaningful straight after a signup
+- `/ask/sent`, only meaningful straight after sending a question
 - The 404 page
 
 ## Social accounts to confirm

@@ -24,6 +24,7 @@ const PAGES = [
   { path: "/app", lead: "Bible study, trusted teaching and practical guidance all in one place." },
   { path: "/contact", lead: "Questions about the ministry, live sessions, the Academy or the app are welcome." },
   { path: "/subscribe", lead: "Reminders before each live session, new teaching and news" },
+  { path: "/ask", lead: "Questions about Scripture, doctrine and Christian living are welcome." },
 ];
 
 /** Async regions: the element whose height must not change when content replaces the fallback. */

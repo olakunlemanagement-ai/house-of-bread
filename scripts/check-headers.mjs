@@ -8,7 +8,7 @@
 
 // Keep in step with EMBED_ROUTES in lib/security/headers.ts.
 const EMBED_ROUTES = new Set(["/", "/media", "/events"]);
-const ROUTES = ["/", "/media", "/events", "/about", "/app", "/contact", "/subscribe", "/teachings", "/privacy"];
+const ROUTES = ["/", "/media", "/events", "/about", "/app", "/contact", "/subscribe", "/ask", "/teachings", "/privacy"];
 const YOUTUBE_FRAME = "https://www.youtube-nocookie.com";
 
 const REQUIRED = {

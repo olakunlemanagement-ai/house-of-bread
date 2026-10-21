@@ -44,4 +44,5 @@ The Vercel preview checks below have not been run yet, because no remote or prev
 3. With `siteConfig.startHereVideoId` set, click Play on the Home facade and confirm the player loads with no violation.
 4. With `YOUTUBE_CHANNEL_ID` set, confirm that the Media thumbnails load with no `img-src` or `style-src` violation.
 5. With `KIT_API_KEY` and `KIT_FORM_ID` set, submit the newsletter form on `/subscribe`. Confirm the success message appears and there is no `connect-src` violation. Then repeat the submission with JavaScript off.
+   With the Resend variables set, do the same with the question form on `/ask`. It posts to `/api/questions` on the same origin and Resend is called from the server, so the policy needs no change for it.
 6. Frame the preview from another origin and confirm the browser refuses to show it.

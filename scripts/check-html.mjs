@@ -38,6 +38,14 @@ const EXACT = {
     h1: "The official House of Bread app",
     key: "Bible study, trusted teaching and practical guidance all in one place.",
   },
+  "/ask": {
+    h1: "Ask a question about the Bible",
+    key: "Ask anonymously. No name or email needed.",
+  },
+  "/ask/sent": {
+    h1: "Thank you, your question has been sent",
+    key: "It reached the ministry without your name or any contact details.",
+  },
   "/contact": {
     h1: "Get in touch",
     key: "Questions about the ministry, live sessions, the Academy or the app are welcome.",
@@ -85,7 +93,7 @@ const PATTERNS = [
 ];
 
 /** Pages the sitemap leaves out on purpose. */
-const EXTRA_ROUTES = ["/subscribe/check-email"];
+const EXTRA_ROUTES = ["/subscribe/check-email", "/ask/sent"];
 
 /**
  * An unknown slug renders on request. Its status must be 404, which fails
