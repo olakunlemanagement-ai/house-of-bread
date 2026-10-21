@@ -1,14 +1,23 @@
-// Checks WCAG 2.2 contrast for the colour pairings the design uses.
+// Checks WCAG 2.2 contrast for the colour pairings the design uses, in both
+// themes.
 //
 //   node scripts/check-contrast.mjs
 //
 // Each pairing lists a foreground and a stack of backgrounds, bottom first.
 // A colour may carry an alpha ("#ffffff/0.12"), which is composited over the
 // layers beneath it. Foreground alpha (text faded by a reveal) is composited
-// over the final background. Prints every ratio and exits 1 if any pairing
-// in use falls below its threshold. No dependencies.
+// over the final background.
+//
+// Role pairings are written once with @role names (such as "@muted" on
+// "@surface") and run in the light and the dark theme, each with its own role
+// table below. Pairings that exist in one theme only (the light loops, the
+// dark glows) sit in that theme's own list. Theme invariant pairings (the
+// deep green footer, gold fills, brand marks on white tiles) run once.
+// Prints every ratio and exits 1 if any pairing in use falls below its
+// threshold. No dependencies. Values mirror app/globals.css.
 
 const tokens = {
+  // Light palette.
   white: "#ffffff",
   cream: "#fbf8f1",
   mint50: "#eef6e8",
@@ -18,6 +27,7 @@ const tokens = {
   inkMuted: "#3d5a46",
   emerald: "#1b6b33",
   emeraldDeep: "#14602f",
+  leaf: "#2e9e4f",
   greenDeep: "#0a3616",
   greenNight: "#04290e",
   lime: "#a6c859",
@@ -25,46 +35,152 @@ const tokens = {
   goldSoft: "#f3d98b",
   offWhite: "#f8f9f8",
   black: "#000000",
+  // Night palette (dark theme).
+  night: "#0a1510",
+  nightRaised: "#111e17",
+  nightMint: "#10211a",
+  nightWarm: "#16170f",
+  nightGold: "#1c1a10",
+  nightTint: "#163122",
+  mist: "#e9f0ea",
+  mistMuted: "#a8bcae",
+  spring: "#8fd3a5",
+  sprout: "#6dbf88",
+  emeraldNight: "#1e7438",
   // Darkest pixels of the decorative loops, from npm run loops:sample.
   loopLightDark: "#00402b",
   loopWaterDark: "#48422f",
+  // Logo lid edge, the mark's lightest green edge.
+  logoLid: "#397733",
 };
 
-// Thresholds: text 4.5, non-text UI (rings, glyphs) 3. Large text (3) has no pairing now.
+// Thresholds: text 4.5, non-text UI (rings, glyphs) 3.
 const TEXT = 4.5;
 const UI = 3;
 
-/** [label, foreground, background stack bottom first, threshold] */
-const pairings = [
-  // Light surfaces.
-  ["Body: ink on white", "ink", ["white"], TEXT],
-  ["Muted: ink-muted on white", "inkMuted", ["white"], TEXT],
-  ["Muted: ink-muted on cream", "inkMuted", ["cream"], TEXT],
-  ["Muted: ink-muted on mint", "inkMuted", ["mint50"], TEXT],
-  ["Accent: emerald-deep on white (links, eyebrows, H1 phrase)", "emeraldDeep", ["white"], TEXT],
-  ["Accent: emerald-deep on cream", "emeraldDeep", ["cream"], TEXT],
-  ["Accent: emerald-deep on mint", "emeraldDeep", ["mint50"], TEXT],
-  // Hero and page header tints: emerald at 10% at the peak.
-  ["Hero tint peak: ink on 10% emerald over white", "ink", ["white", "emerald/0.1"], TEXT],
-  ["Hero tint peak: ink-muted on 10% emerald over white", "inkMuted", ["white", "emerald/0.1"], TEXT],
-  ["Hero tint peak: emerald-deep on 10% emerald over white", "emeraldDeep", ["white", "emerald/0.1"], TEXT],
+/** Role names per theme. A role may be a stack fragment ("a, b/0.1"). */
+const roles = {
+  light: {
+    surface: "white",
+    raised: "white",
+    warm: "cream",
+    mint: "mint50",
+    tint: "tint",
+    ink: "ink",
+    muted: "inkMuted",
+    accent: "emeraldDeep",
+    eyebrow: "emeraldDeep",
+    glyph: "emerald",
+    ring: "emeraldDeep",
+    fill: "emerald",
+    fillHover: "emeraldDeep",
+    // Hero and page header tints at their peak: 10% emerald.
+    heroPeak: "white, emerald/0.1",
+    // Translucent cards, and the worst background each one meets.
+    glass: "white/0.84",
+    glassWorst: "greenNight",
+  },
+  dark: {
+    surface: "night",
+    raised: "nightRaised",
+    warm: "nightWarm",
+    mint: "nightMint",
+    tint: "nightTint",
+    ink: "mist",
+    muted: "mistMuted",
+    accent: "spring",
+    eyebrow: "lime",
+    glyph: "sprout",
+    ring: "spring",
+    fill: "emeraldNight",
+    fillHover: "emerald",
+    // Hero tint peak: 16% leaf over night.
+    heroPeak: "night, leaf/0.16",
+    // Dark glass over white: the lightest thing that can sit behind it.
+    glass: "nightRaised/0.88",
+    glassWorst: "white",
+  },
+};
+
+/** [label, foreground, background stack bottom first, threshold, note?] */
+const shared = [
+  ["Body: ink on surface", "@ink", ["@surface"], TEXT],
+  ["Body: ink on raised", "@ink", ["@raised"], TEXT],
+  ["Body: ink on warm band", "@ink", ["@warm"], TEXT],
+  ["Body: ink on mint band", "@ink", ["@mint"], TEXT],
+  ["Muted on surface", "@muted", ["@surface"], TEXT],
+  ["Muted on raised", "@muted", ["@raised"], TEXT],
+  ["Muted on warm band", "@muted", ["@warm"], TEXT],
+  ["Muted on mint band", "@muted", ["@mint"], TEXT],
+  ["Accent (links, H1 phrase, TextCTA) on surface", "@accent", ["@surface"], TEXT],
+  ["Accent on raised", "@accent", ["@raised"], TEXT],
+  ["Accent on warm band", "@accent", ["@warm"], TEXT],
+  ["Accent on mint band", "@accent", ["@mint"], TEXT],
+  ["Eyebrow on surface", "@eyebrow", ["@surface"], TEXT],
+  ["Eyebrow on raised", "@eyebrow", ["@raised"], TEXT],
+  ["Eyebrow on mint band", "@eyebrow", ["@mint"], TEXT],
+  ["Eyebrow on warm band", "@eyebrow", ["@warm"], TEXT],
+  ["Hero tint peak: ink", "@ink", ["@heroPeak"], TEXT],
+  ["Hero tint peak: muted", "@muted", ["@heroPeak"], TEXT],
+  ["Hero tint peak: accent", "@accent", ["@heroPeak"], TEXT],
+  ["Hero tint peak: eyebrow", "@eyebrow", ["@heroPeak"], TEXT],
   // Buttons.
-  ["Primary: white on emerald", "white", ["emerald"], TEXT],
-  ["Primary hover: white on emerald-deep", "white", ["emeraldDeep"], TEXT],
-  ["Secondary: emerald-deep on white", "emeraldDeep", ["white"], TEXT],
-  ["Secondary hover: emerald-deep on tint", "emeraldDeep", ["tint"], TEXT],
-  ["Footer primary: green-deep on white", "greenDeep", ["white"], TEXT],
-  ["Footer primary hover: green-deep on mint", "greenDeep", ["mint50"], TEXT],
-  ["Footer secondary: white on 12% white over green-deep", "white", ["greenDeep", "white/0.12"], TEXT],
-  // Icon tiles: emerald glyph on tint.
-  ["Icon glyph: emerald on tint", "emerald", ["tint"], UI],
-  // Header, transparent over the hero or page header tint (10% emerald at the peak).
-  ["Header: ink nav over the hero tint peak", "ink", ["white", "emerald/0.1"], TEXT],
-  ["Nav current: emerald-deep on tint pill over the hero tint peak", "emeraldDeep", ["white", "emerald/0.1", "emerald/0.08"], TEXT],
-  // Hero floating cards, translucent white at 84%. Worst case: over the green-night phone frame.
-  ["Hero card: ink-muted over green-night", "inkMuted", ["greenNight", "white/0.84"], TEXT],
+  ["Primary: white on fill", "white", ["@fill"], TEXT],
+  ["Primary hover: white on fill hover", "white", ["@fillHover"], TEXT],
+  ["Secondary: accent on raised", "@accent", ["@raised"], TEXT],
+  ["Secondary hover: accent on tint", "@accent", ["@tint"], TEXT],
+  // Icon tiles, rules and the card glow ring.
+  ["Icon glyph on tint", "@glyph", ["@tint"], UI],
+  ["Glyph (clock, rules) on surface", "@glyph", ["@surface"], UI],
+  ["Card glow ring on surface", "@glyph", ["@surface"], UI],
+  ["Card glow ring on mint", "@glyph", ["@mint"], UI],
+  ["Card glow ring on warm", "@glyph", ["@warm"], UI],
+  // Header, transparent over the hero tint.
+  ["Header: ink nav and theme switch over the hero tint peak", "@ink", ["@heroPeak"], TEXT],
+  ["Nav current and theme choice: accent on tint pill over the hero tint peak", "@accent", ["@heroPeak", "@tint/0.9"], TEXT],
+  ["Theme choice current: accent on tint over surface (menu)", "@accent", ["@surface", "@tint"], TEXT],
+  // Translucent cards (hero floating cards, newsletter card).
+  ["Glass card: ink over its worst background", "@ink", ["@glassWorst", "@glass"], TEXT],
+  ["Glass card: muted over its worst background", "@muted", ["@glassWorst", "@glass"], TEXT],
+  ["Glass card: accent over its worst background", "@accent", ["@glassWorst", "@glass"], TEXT],
+  ["Glass card: eyebrow over its worst background", "@eyebrow", ["@glassWorst", "@glass"], TEXT],
+  ["Glass card: muted over the hero tint", "@muted", ["@heroPeak", "@glass"], TEXT],
+  // Scripture panel: mint with a glyph rule and an emerald version pill.
+  ["Scripture: ink on mint", "@ink", ["@mint"], TEXT],
+  ["Scripture: reference, accent on mint", "@accent", ["@mint"], TEXT],
+  ["Scripture: rule, glyph on mint", "@glyph", ["@mint"], UI],
+  ["Scripture: version pill, white on fill", "white", ["@fill"], TEXT],
+  // Forms.
+  ["Input text: ink on raised", "@ink", ["@raised"], TEXT],
+  ["Input border: muted on raised", "@muted", ["@raised"], UI],
+  ["Input border: muted on surface", "@muted", ["@surface"], UI],
+  // Image slot caption pill.
+  ["Image slot caption: ink on raised pill", "@ink", ["@raised"], TEXT],
+  // Session times.
+  ["Session times: ink on surface", "@ink", ["@surface"], TEXT],
+  ["Session times: Your time, accent on surface", "@accent", ["@surface"], TEXT],
+  ["Weekly card: ink on mint", "@ink", ["@mint"], TEXT],
+  // Scroll reveal: text at its 0.85 starting opacity, transient only.
+  ["Reveal 0.85: ink on surface", "@ink/0.85", ["@surface"], TEXT],
+  ["Reveal 0.85: muted on surface", "@muted/0.85", ["@surface"], TEXT],
+  ["Reveal 0.85: muted on mint", "@muted/0.85", ["@mint"], TEXT],
+  ["Reveal 0.85: muted on warm (app tile)", "@muted/0.85", ["@warm"], TEXT],
+  ["Reveal 0.85: accent on warm", "@accent/0.85", ["@warm"], TEXT],
+  ["Reveal 0.85: accent on mint (live tile)", "@accent/0.85", ["@mint"], TEXT],
+  ["Reveal 0.85: white on fill (live tile button)", "white/0.85", ["@fill"], TEXT],
+  // Focus rings, 3px.
+  ["Focus ring on surface", "@ring", ["@surface"], UI],
+  ["Focus ring on raised", "@ring", ["@raised"], UI],
+  ["Focus ring on mint", "@ring", ["@mint"], UI],
+  ["Focus ring on warm", "@ring", ["@warm"], UI],
+  ["Focus ring over the hero tint peak", "@ring", ["@heroPeak"], UI],
+  ["Focus ring on tint (current pill)", "@ring", ["@tint"], UI],
+];
+
+/** Light only. Labels keep their earlier wording, so the log stays comparable. */
+const lightOnly = [
+  // Hero floating cards over the green-night phone frame (light glass).
   ["Hero card: emerald-deep over green-night", "emeraldDeep", ["greenNight", "white/0.84"], TEXT],
-  ["Hero card: ink-muted over hero tint", "inkMuted", ["white", "emerald/0.12", "white/0.84"], TEXT],
   // Text over decorative loops. Backgrounds are each loop's darkest and
   // brightest single pixel over every frame of the final WebM (npm run
   // loops:sample, 18 October 2026). Dark text is worst over the darkest pixel.
@@ -88,28 +204,50 @@ const pairings = [
   ["Newsletter card over steam: ink-muted, brightest pixel", "inkMuted", ["white", "white/0.84"], TEXT],
   // Pause/Play control: emerald-deep glyph on 90% white over any loop (UI).
   ["Motion control: emerald-deep glyph over black, 90% white", "emeraldDeep", ["black", "white/0.9"], UI],
-  // Footer, deep green.
+  // Logo mark, no tile on light.
+  ["Logo lid edge on white (header, plain pages)", "logoLid", ["white"], UI],
+  ["Logo lid edge over the hero tint peak", "logoLid", ["white", "emerald/0.1"], UI],
+  // Never used: lime is a decorative dot only on light.
+  ["Lime on white (never used for text or meaning)", "lime", ["white"], TEXT, "not used"],
+];
+
+/** Dark only. Loops are replaced by still glows; the logo mark sits in a white tile. */
+const darkOnly = [
+  // Home hero swirl at its brightest overlap: the leaf ribbon, the lime breath and the emerald glow.
+  ["Hero swirl peak: ink", "mist", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
+  ["Hero swirl peak: muted", "mistMuted", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
+  ["Hero swirl peak: accent (H1 phrase, TextCTA)", "spring", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
+  ["Hero swirl peak: lime eyebrow", "lime", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
+  ["Hero swirl peak: focus ring", "spring", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], UI],
+  ["Hero card over the swirl peak: muted", "mistMuted", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28", "nightRaised/0.88"], TEXT],
+  // Newsletter frame: warm gold and green glows over raised night.
+  ["Newsletter frame glow: muted on glass over the gold glow", "mistMuted", ["nightRaised", "gold/0.1", "nightRaised/0.88"], TEXT],
+  // Logo mark in its white tile, and the tile itself on night.
+  ["Logo tile: white tile on night", "white", ["night"], UI],
+  ["Logo lid edge on the white tile", "logoLid", ["white"], UI],
+  // Lime is eyebrow text in dark only.
+  ["Lime eyebrow on tint (icon well context)", "lime", ["nightTint"], TEXT],
+  // Disabled primary (Subscribe while signup is closed): exempt, recorded only.
+  ["Disabled primary: white on ink-muted (exempt)", "white", ["inkMuted"], TEXT, "disabled, exempt"],
+];
+
+/** Theme invariant: the deep green footer, gold fills, brand marks and play chips. */
+const invariant = [
   ["Footer: off-white on green-night", "offWhite", ["greenNight"], TEXT],
   ["Footer: off-white on green-deep", "offWhite", ["greenDeep"], TEXT],
   ["Footer muted: 80% off-white over green-deep", "offWhite/0.8", ["greenDeep"], TEXT],
-  ["Footer current pill: off-white on 15% white over green-deep", "offWhite", ["greenDeep", "white/0.15"], TEXT],
-  // Gold, always with ink text.
+  ["Footer current pill and theme choice: off-white on 15% white over green-deep", "offWhite", ["greenDeep", "white/0.15"], TEXT],
+  ["Footer primary: green-deep on white", "greenDeep", ["white"], TEXT],
+  ["Footer primary hover: green-deep on mint", "greenDeep", ["mint50"], TEXT],
+  ["Footer secondary: white on 12% white over green-deep", "white", ["greenDeep", "white/0.12"], TEXT],
+  ["Footer focus ring: white on green-deep", "white", ["greenDeep"], UI],
+  ["Footer logo tile: white tile on green-deep", "white", ["greenDeep"], UI],
+  ["Logo lid edge on green-deep without a tile (not used, why the tile stays)", "logoLid", ["greenDeep"], UI, "not used"],
   ["Live: ink on gold", "ink", ["gold"], TEXT],
   ["Badge: ink on gold-soft", "ink", ["goldSoft"], TEXT],
-  // Play chip on thumbnails: white on 85% green-night, worst cases.
   ["Play chip: white on 85% green-night over a white image", "white", ["white", "greenNight/0.85"], TEXT],
   ["Play chip: white on 85% green-night over a black image", "white", ["black", "greenNight/0.85"], TEXT],
-  // Scroll reveal: text at its 0.85 starting opacity, transient only.
-  ["Reveal 0.85: ink on white", "ink/0.85", ["white"], TEXT],
-  ["Reveal 0.85: ink-muted on white", "inkMuted/0.85", ["white"], TEXT],
-  ["Reveal 0.85: ink-muted on mint", "inkMuted/0.85", ["mint50"], TEXT],
-  ["Reveal 0.85: emerald-deep on cream", "emeraldDeep/0.85", ["cream"], TEXT],
-  // Focus rings.
-  ["Focus ring: emerald-deep on white", "emeraldDeep", ["white"], UI],
-  ["Focus ring: emerald-deep on mint", "emeraldDeep", ["mint50"], UI],
-  ["Focus ring: emerald-deep on the header over the hero tint peak", "emeraldDeep", ["white", "emerald/0.1"], UI],
-  ["Focus ring: white on green-deep", "white", ["greenDeep"], UI],
-  // Social brand marks on their white tiles (UI, 3:1).
+  // Social brand marks on their white tiles (UI, 3:1), white in both themes.
   ["Social: YouTube red on white", "#ff0000", ["white"], UI],
   ["Social: Facebook blue on white", "#0866ff", ["white"], UI],
   ["Social: Instagram gradient middle stop on white", "#d62976", ["white"], UI],
@@ -118,30 +256,19 @@ const pairings = [
   ["Social: TikTok and X black on white", "black", ["white"], UI],
   ["Social: Linktree mark, darkened green, on white", "#1e7a35", ["white"], UI],
   ["Social: Linktree brand green on white (not used)", "#43e55e", ["white"], UI, "not used"],
-  // Session times by region (Home and Events session card, white).
-  ["Session times: region and time, ink on white", "ink", ["white"], TEXT],
-  ["Session times: date line and weekday, ink-muted on white", "inkMuted", ["white"], TEXT],
-  ["Session times: Your time label, emerald-deep on white", "emeraldDeep", ["white"], TEXT],
-  ["Session times: clock glyph, emerald on white", "emerald", ["white"], UI],
-  ["Weekly card: ink on the mint panel", "ink", ["mint50"], TEXT],
-  // ImageSlot: caption on a solid white pill, whatever the gradient behind.
-  ["Image slot caption: ink on white pill", "ink", ["white"], TEXT],
-  // Home cards (.card-motion): green glow ring, and text at the 0.85 reveal start.
-  ["Card glow ring: emerald on white", "emerald", ["white"], UI],
-  ["Card glow ring: emerald on mint", "emerald", ["mint50"], UI],
-  ["Card glow ring: emerald on cream", "emerald", ["cream"], UI],
-  ["Card reveal 0.85: ink on cream (app tile)", "ink/0.85", ["cream"], TEXT],
-  ["Card reveal 0.85: ink-muted on cream (app tile)", "inkMuted/0.85", ["cream"], TEXT],
-  ["Card reveal 0.85: emerald-deep on mint (live tile)", "emeraldDeep/0.85", ["mint50"], TEXT],
-  ["Card reveal 0.85: white on emerald (live tile button)", "white/0.85", ["emerald"], TEXT],
-  // Logo mark (public/logo-mark.png, transparent). Header: no tile. Footer: white tile.
-  ["Footer logo tile: white tile on green-deep", "white", ["greenDeep"], UI],
-  ["Logo lid edge on green-deep without a tile (not used, why the tile stays)", "#397733", ["greenDeep"], UI, "not used"],
-  ["Logo lid edge on white (header, plain pages)", "#397733", ["white"], UI],
-  ["Logo lid edge over the hero tint peak", "#397733", ["white", "emerald/0.1"], UI],
-  // Never used: lime is a decorative dot only.
-  ["Lime on white (never used for text or meaning)", "lime", ["white"], TEXT, "not used"],
 ];
+
+/** Replace @role names with the theme's value. A role may expand to several layers. */
+function resolveSpec(spec, theme) {
+  if (!spec.startsWith("@")) return [spec];
+  const [name, alpha] = spec.slice(1).split("/");
+  const value = roles[theme][name];
+  if (value === undefined) throw new Error(`Unknown role: ${spec}`);
+  const layers = value.split(",").map((s) => s.trim());
+  if (alpha === undefined) return layers;
+  if (layers.length !== 1) throw new Error(`Alpha on a stacked role: ${spec}`);
+  return [`${layers[0].split("/")[0]}/${alpha}`];
+}
 
 function parse(spec) {
   const [name, alpha] = spec.split("/");
@@ -174,17 +301,28 @@ function ratio(fg, stack) {
 }
 
 let failed = 0;
-for (const [label, fg, stack, threshold, note] of pairings) {
-  const value = ratio(fg, stack);
-  const pass = value >= threshold;
-  // "reference" rows are measured but never used; "transient" rows exist only mid animation.
-  const status = pass ? "pass" : note ? `below ${threshold} (${note})` : "FAIL";
-  if (!pass && !note) failed++;
-  console.log(`${value.toFixed(2).padStart(6)}  ${status.padEnd(26)} ${label}`);
+function run(title, rows, theme) {
+  console.log(`\n${title}`);
+  for (const [label, fg, stack, threshold, note] of rows) {
+    const front = theme ? resolveSpec(fg, theme) : [fg];
+    const layers = theme ? stack.flatMap((s) => resolveSpec(s, theme)) : stack;
+    const value = ratio(front[0], layers);
+    const pass = value >= threshold;
+    // Rows with a note are measured but not in use, transient or exempt.
+    const status = pass ? "pass" : note ? `below ${threshold} (${note})` : "FAIL";
+    if (!pass && !note) failed++;
+    console.log(`${value.toFixed(2).padStart(6)}  ${status.padEnd(26)} ${label}`);
+  }
 }
+
+run("Light theme, shared roles", shared, "light");
+run("Light theme only", lightOnly);
+run("Dark theme, shared roles", shared, "dark");
+run("Dark theme only", darkOnly);
+run("Both themes (theme invariant)", invariant);
 
 if (failed > 0) {
   console.error(`\n${failed} pairing(s) in use fail.`);
   process.exit(1);
 }
-console.log("\nAll pairings in use pass.");
+console.log("\nAll pairings in use pass, in both themes.");

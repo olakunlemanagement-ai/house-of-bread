@@ -395,6 +395,11 @@ is copied from the app. Replace or delete each one when real content arrives.
   (180px) and `app/opengraph-image.png` (1200x630, mark and name on white)
   come from the same PNG. The Next.js default favicon is removed. Regenerate
   all three when the SVG arrives.
+- **Reversed logo for dark.** In the dark theme the green mark reads poorly
+  on night, so the header mark sits in a white tile (`.logo-mark` in
+  `app/globals.css`), as it does in the footer. **Ask the ministry for a
+  reversed (light) mark, ideally SVG,** so the dark header can show the
+  mark without a tile.
 
 ## Design work deferred
 
@@ -689,6 +694,60 @@ transient: the reveal's range is `entry 0% entry 120px`, so a section is
 fully opaque once 120px of it is on screen, and a section straddling the fold
 at load never rests part faded. The hero entrance is time based and finishes
 within 1 second of load. The H1 rises without fading.
+
+## Dark theme, WCAG 2.2 AA (21 October 2026)
+
+Measured by `npm run contrast`, which now runs every role pairing in both
+themes, then the light only rows (loops), the dark only rows (glows, glass,
+logo tile) and the theme invariant rows (footer, gold, brand marks). The
+light results are unchanged. Values are the dark tokens in
+`app/globals.css`; rerun when official brand values arrive.
+
+### Dark tokens
+
+| Token | Value | Role |
+|---|---|---|
+| surface | night `#0a1510` | Page base, deep green black |
+| surface-raised | `#111e17` | Inputs, pills, secondary buttons, cards' raised parts |
+| surface-mint, surface-warm, surface-gold | `#10211a`, `#16170f`, `#1c1a10` | Alternating bands, newsletter tints |
+| tint | `#163122` | Nav pill, icon wells, skeletons |
+| ink, ink-muted | mist `#e9f0ea`, `#a8bcae` | Text |
+| emerald-deep (accent) | spring `#8fd3a5` | Links, H1 phrase, TextCTA, focus ring |
+| glyph | sprout `#6dbf88` | Icons, rules, progress fills, card glow ring |
+| emerald (fill) | `#1e7438` | Primary fill with white text; hover `#1b6b33` |
+| eyebrow | lime `#a6c859` | Eyebrow text, dark only |
+| glass-card | `#111e17` at 88% | Hero floating cards, newsletter card |
+
+### Text and UI
+
+| Pairing | Surface, raised, warm, mint | Result |
+|---|---|---|
+| ink | 16.07, 14.83, 15.57, 14.44 | Pass |
+| ink-muted | 9.28, 8.57, 9.00, 8.35 | Pass |
+| accent (spring) | 10.67, 9.84, 10.34, 9.59 | Pass |
+| eyebrow (lime) | 9.78, 9.02, 9.48, 8.79 | Pass. Lime is text in dark only, never a fill |
+| glyph (sprout), non-text | 8.39 on surface, 7.54 on mint, 6.32 on tint | Pass |
+| focus ring (spring, 3px) | 10.67, 9.84, 10.34, 9.59; 8.04 on tint | Pass |
+| White on emerald fill, hover | 5.82, 6.57 | Pass |
+| White on emerald fill at the 0.85 reveal start | 4.70 | Pass. `#237f3e` gave 4.11, so the fill was deepened |
+| Accent on tint (secondary hover, nav and theme choice current) | 8.04 | Pass |
+| Input text on raised, input border | 14.83, 8.57 | Pass |
+| Reveal 0.85: muted on mint | 6.40 | Pass (lowest reveal row) |
+
+### Glows, glass and logo
+
+| Pairing | Ratio | Result |
+|---|---|---|
+| Hero tint peak (16% leaf over night): ink, muted, accent, eyebrow | 13.12, 7.58, 8.71, 7.99 | Pass |
+| Hero swirl at its brightest overlap (22% leaf, 6% lime, 28% emerald): ink, muted, accent, lime | 8.91, 5.15, 5.92, 5.42 | Pass. Stronger glows took muted text under 4.5, so these alphas are the ceiling |
+| Glass over white, the lightest thing that can sit behind it: ink, muted, accent, lime | 10.37, 5.99, 6.89, 6.31 | Pass |
+| Glass over the hero swirl peak: muted | 8.16 | Pass |
+| Newsletter glass over the gold glow: muted | 8.40 | Pass |
+| Logo tile (white) on night; lid edge on the tile | 18.62, 5.44 | Pass |
+| Disabled primary: white on `#3d5a46` | 7.64 | Exempt, recorded |
+
+The footer, gold fills, play chips and the social marks on their white
+tiles are the same in both themes; their rows are in the light tables above.
 
 ## Come alive (revision 5)
 

@@ -45,7 +45,7 @@
   --brand-mist-muted: #a8bcae;
   --brand-spring: #8fd3a5;
   --brand-sprout: #6dbf88;
-  --brand-emerald-night: #237f3e;
+  --brand-emerald-night: #1e7438;
 
   color-scheme: light;
 
@@ -188,7 +188,7 @@
   Dark tokens. Every palette and role token restated for night. Ratios are
   checked by npm run contrast (dark section) and logged in
   docs/PLACEHOLDERS.md. Emerald stays a fill that carries white text
-  (5.03:1); text and links move to spring green, glyphs to sprout. Lime may
+  (5.82:1); text and links move to spring green, glyphs to sprout. Lime may
   be eyebrow text here, as it passes 9:1 on every dark surface; it is never
   a fill or a carrier of meaning.
 */
