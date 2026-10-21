@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import type { LoopId } from "@/lib/media/loops";
 import { LoopVideo } from "./LoopVideo";
 
 type PageHeaderProps = {
@@ -16,6 +17,8 @@ type PageHeaderProps = {
    * panel on the right. Phones never see it. False turns it off.
    */
   motion?: boolean;
+  /** The loop in that desktop panel. Dust in sunlight unless a page has its own. */
+  loop?: LoopId;
 };
 
 /**
@@ -23,7 +26,16 @@ type PageHeaderProps = {
  * a hairline below. The header floats over it, so top padding is its 72px
  * plus 64px or more of clear space above the eyebrow.
  */
-export function PageHeader({ eyebrow, title, lead, meta, actions, visual, motion = true }: PageHeaderProps) {
+export function PageHeader({
+  eyebrow,
+  title,
+  lead,
+  meta,
+  actions,
+  visual,
+  motion = true,
+  loop = "dust-light",
+}: PageHeaderProps) {
   const loopPanel = !visual && motion;
   return (
     <div className="bg-page-tint border-b border-border">
@@ -47,7 +59,7 @@ export function PageHeader({ eyebrow, title, lead, meta, actions, visual, motion
         {loopPanel ? (
           <div className="rise rise-3 hidden lg:col-span-5 lg:block">
             <LoopVideo
-              id="dust-light"
+              id={loop}
               sizes="(min-width: 1024px) 40vw, 1px"
               className="aspect-[4/3] overflow-hidden rounded-card border border-border shadow-soft"
             />

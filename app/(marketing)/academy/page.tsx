@@ -6,7 +6,6 @@ import type { Icon3DName } from "@/components/shared/Icon3D";
 import { Icon } from "@/components/shared/icons";
 import { ImageSlot } from "@/components/shared/ImageSlot";
 import { StepList } from "@/components/shared/Lists";
-import { LoopVideo } from "@/components/shared/LoopVideo";
 import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
@@ -27,7 +26,9 @@ const revealIndex = ["[--i:0]", "[--i:1]", "[--i:2]", "[--i:3]", "[--i:4]", "[--
 const courseIcons: Icon3DName[] = ["graduation-cap", "scroll", "bread", "magnifying-glass", "green-heart", "television"];
 
 export default async function AcademyPage() {
-  const courses = await courseCatalog.listCourses();
+  const courses = (await courseCatalog.listCourses()).slice(0, 6);
+  // Two columns for two or four cards, three for three, five or six.
+  const courseGrid = courses.length % 3 === 0 || courses.length === 5 ? "sm:grid-cols-2 lg:grid-cols-3" : "sm:grid-cols-2";
 
   return (
     <main id="main" tabIndex={-1}>
@@ -40,19 +41,13 @@ export default async function AcademyPage() {
             {copy.waitlistLabel}
           </ButtonLink>
         }
-        visual={
-          <LoopVideo
-            id="open-bible"
-            sizes="(min-width: 1024px) 40vw, (min-width: 640px) 90vw, 100vw"
-            className="aspect-[4/3] overflow-hidden rounded-card border border-border shadow-soft"
-          />
-        }
+        loop="open-bible"
       />
 
       <Section id="courses" title={copy.courses.title} intro={copy.courses.intro} reveal={false}>
         {courses.length > 0 ? (
-          <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {courses.slice(0, 6).map((course, index) => (
+          <ul className={`grid gap-5 ${courseGrid}`}>
+            {courses.map((course, index) => (
               <CTACard
                 key={course.slug}
                 icon="book"
