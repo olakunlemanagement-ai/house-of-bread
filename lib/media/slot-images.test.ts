@@ -30,7 +30,7 @@ describe("image slot registry", () => {
   });
 
   it("locks every slot meant for people or app screens", () => {
-    for (const id of ["home-live-session", "about-mission", "about-leadership", "events-how-it-works"] as const) {
+    for (const id of ["home-live-session", "about-mission", "about-leadership", "academy-teacher", "events-how-it-works"] as const) {
       expect(lockReason(IMAGE_SLOTS[id]), id).toMatch(/real photo needed/);
     }
     for (const id of ["app-journeys", "app-books", "app-translations", "app-teaching"] as const) {

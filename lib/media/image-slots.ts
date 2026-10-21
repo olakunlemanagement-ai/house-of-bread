@@ -73,6 +73,14 @@ export const IMAGE_SLOTS = {
     alt: "Portrait of the teacher of House of Bread Global",
     status: "real-needed",
   },
+  "academy-teacher": {
+    page: "/academy, Why learn here",
+    ratio: "4/5",
+    kind: "photo",
+    brief: "the teacher leading an online class",
+    alt: "The teacher of House of Bread Global leading an online Academy class, with the Bible open",
+    status: "real-needed",
+  },
   "events-how-it-works": {
     page: "/events, How it works",
     ratio: "4/5",

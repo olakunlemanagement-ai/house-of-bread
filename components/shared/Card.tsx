@@ -56,12 +56,18 @@ export function FeatureCard({
  */
 export function CTACard({
   icon,
+  icon3d,
+  badge,
   title,
   children,
   cta,
   className = "",
 }: {
   icon: IconName;
+  /** A Fluent 3D icon in place of the line icon. */
+  icon3d?: Icon3DName;
+  /** A small label beside the icon, such as a "Coming soon" badge. */
+  badge?: ReactNode;
   title: string;
   children: ReactNode;
   cta: { href: Route; label: string };
@@ -69,7 +75,10 @@ export function CTACard({
 }) {
   return (
     <Card as="li" className={`cta-host flex flex-col ${interactiveCardClass} ${className}`}>
-      <IconTile name={icon} />
+      <div className="flex items-start justify-between gap-3">
+        {icon3d ? <Icon3D name={icon3d} /> : <IconTile name={icon} />}
+        {badge}
+      </div>
       <h3 className="mt-6 text-2xl leading-snug">{title}</h3>
       <p className="mt-3 leading-relaxed text-ink-muted">{children}</p>
       <div className="mt-auto pt-5">

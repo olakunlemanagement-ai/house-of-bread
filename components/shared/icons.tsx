@@ -37,7 +37,8 @@ export type IconName =
   | "resume"
   | "sun"
   | "moon"
-  | "monitor";
+  | "monitor"
+  | "chevron-down";
 
 const paths: Record<IconName, ReactNode> = {
   book: (
@@ -100,6 +101,7 @@ const paths: Record<IconName, ReactNode> = {
   check: <path d="m5 12.5 4.5 4.5L19 7.5" />,
   "arrow-right": <path d="M5 12h14M13 6l6 6-6 6" />,
   "arrow-left": <path d="M19 12H5M11 6l-6 6 6 6" />,
+  "chevron-down": <path d="m6 9 6 6 6-6" />,
   question: (
     <>
       <circle cx="12" cy="12" r="9" />

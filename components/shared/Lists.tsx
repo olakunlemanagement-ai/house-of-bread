@@ -26,9 +26,10 @@ export type Step = { title?: string; text: ReactNode; icon?: IconName };
  * Numbered steps. A title, when given, leads the step in bold. With an icon
  * the step shows an icon tile and the number sits beside it.
  */
-export function StepList({ steps, columns = 4 }: { steps: Step[]; columns?: 2 | 4 | 5 }) {
+export function StepList({ steps, columns = 4 }: { steps: Step[]; columns?: 2 | 3 | 4 | 5 }) {
   const grid = {
     2: "sm:grid-cols-2",
+    3: "md:grid-cols-3",
     4: "sm:grid-cols-2 lg:grid-cols-4",
     5: "sm:grid-cols-2 lg:grid-cols-5",
   }[columns];
