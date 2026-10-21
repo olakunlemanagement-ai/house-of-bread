@@ -7,8 +7,12 @@ import { Wordmark } from "./Wordmark";
  * alpha, cut from the supplied logo by scripts/logo/make-transparent.mjs, so
  * in the header it sits straight on the hero tint with no tile. On the deep
  * green footer the lid's edge falls to 2.49:1 (under 3:1), so there it sits in
- * a small white tile that keeps its true colours.
- * TODO: swap for the SVG once the ministry supplies it.
+ * a small white tile that keeps its true colours. In the dark theme the
+ * header mark reads poorly on night too, so it gets the same white tile
+ * (.logo-mark in globals.css), drawn by box-shadow so the 36px box and the
+ * layout do not move.
+ * TODO: swap for the SVG once the ministry supplies it, with a reversed
+ * (light) version for dark, which would let the dark tile go.
  */
 export function Logo({
   priority = false,
@@ -28,7 +32,7 @@ export function Logo({
     <span className={`inline-flex items-center gap-2.5 ${className}`}>
       <span
         className={`inline-flex shrink-0 items-center justify-center ${
-          onDeep ? "size-10 rounded-xl bg-white p-1.5" : "size-9"
+          onDeep ? "size-10 rounded-xl bg-white p-1.5" : "logo-mark size-9"
         }`}
       >
         <Image src={mark} alt="" priority={priority} sizes="36px" className="h-full w-auto" />

@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
 import type { LoopSource } from "@/lib/media/loops";
 import { Icon } from "./icons";
+import { useTheme } from "./theme/theme-store";
 
 // Page wide motion state, shared by every loop on the page: whether the
 // visitor paused motion, and which loops have come into view. The first of
@@ -85,8 +86,13 @@ const noSubscribe = () => () => {};
 
 type NetworkInformation = { saveData?: boolean };
 
-/** Whether this loop may move on this device. Never on the server. */
+/**
+ * Whether this loop may move on this device. Never on the server, and never
+ * in dark: the loops are white themed, so dark shows still glows instead
+ * (globals.css, [data-loop]) and no video is requested.
+ */
 function useEligible(hasMobile: boolean): { eligible: boolean; phone: boolean } {
+  const { resolved } = useTheme();
   const reduce = useSyncExternalStore(subscribeReduce, () => window.matchMedia(REDUCE).matches, () => true);
   const phone = useSyncExternalStore(subscribePhone, () => window.matchMedia(PHONE).matches, () => false);
   const saveData = useSyncExternalStore(
@@ -94,7 +100,7 @@ function useEligible(hasMobile: boolean): { eligible: boolean; phone: boolean } 
     () => (navigator as Navigator & { connection?: NetworkInformation }).connection?.saveData === true,
     () => true,
   );
-  return { eligible: !reduce && !saveData && (!phone || hasMobile), phone };
+  return { eligible: resolved === "light" && !reduce && !saveData && (!phone || hasMobile), phone };
 }
 
 function pickSource(video: HTMLVideoElement, source: LoopSource): string {
@@ -179,7 +185,7 @@ export function LoopVideoClient({
 
   return (
     <>
-      <div className={`absolute inset-0 overflow-hidden ${mediaClassName}`}>
+      <div className={`absolute inset-0 overflow-hidden dark:hidden ${mediaClassName}`}>
         {children}
         {eligible ? (
           <video

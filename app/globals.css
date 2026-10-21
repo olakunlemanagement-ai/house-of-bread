@@ -246,6 +246,56 @@
   }
 }
 
+/*
+  Loops in dark. Loops and posters are white themed and would glow, so in
+  dark the poster layer is hidden, LoopVideoClient requests no video, and
+  the frame carries still radial glows instead. Radial gradients only, no
+  blur. The Home hero keeps its light swirl as a ribbon of soft green
+  ellipses curving from upper left to the phone, with a breath of lime.
+  Text over them is checked against the brightest point (npm run contrast).
+*/
+[data-loop] {
+  @variant dark {
+    background-color: var(--surface);
+    background-image:
+      radial-gradient(40rem 24rem at 80% 10%, rgb(46 158 79 / 0.14), transparent 70%),
+      radial-gradient(32rem 22rem at 10% 90%, rgb(27 107 51 / 0.16), transparent 70%);
+  }
+}
+
+[data-loop="ambient-light"] {
+  @variant dark {
+    background-image:
+      radial-gradient(38rem 13rem at 16% 10%, rgb(46 158 79 / 0.22), transparent 70%),
+      radial-gradient(30rem 15rem at 50% 20%, rgb(166 200 89 / 0.06), transparent 70%),
+      radial-gradient(40rem 26rem at 84% 34%, rgb(27 107 51 / 0.28), transparent 70%),
+      radial-gradient(44rem 20rem at 28% 100%, rgb(27 107 51 / 0.22), transparent 70%);
+  }
+}
+
+/* The newsletter frame: warm, like the bread steam it stands in for. */
+[data-loop="bread-steam"] {
+  @variant dark {
+    background-color: var(--surface-raised);
+    background-image:
+      radial-gradient(30rem 20rem at 15% 20%, rgb(233 185 73 / 0.1), transparent 70%),
+      radial-gradient(34rem 22rem at 90% 90%, rgb(46 158 79 / 0.14), transparent 70%);
+  }
+}
+
+/*
+  Logo mark in dark: a white tile, as in the footer, until the ministry
+  supplies a reversed mark. Background plus a 4px spread, so the tile grows
+  outward and the 36px box keeps its size.
+*/
+.logo-mark {
+  @variant dark {
+    border-radius: 8px;
+    background-color: var(--brand-white);
+    box-shadow: 0 0 0 4px var(--brand-white);
+  }
+}
+
 /* 3D icon wells: a faint top light and edge in dark, so the well holds its shape. */
 .icon-well {
   @variant dark {
