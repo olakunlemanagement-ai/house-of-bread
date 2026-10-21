@@ -33,7 +33,7 @@ export default function AskPage({ searchParams }: PageProps<"/ask">) {
         <div className="container-page grid gap-8 py-18 md:py-24 lg:grid-cols-12 lg:gap-10">
           <div className="rounded-card border border-border bg-surface p-6 shadow-raised sm:p-10 lg:col-span-7">
             <h2 id="ask-form-heading" className="mb-8 text-3xl">
-              Your question
+              Send a question
             </h2>
             <Suspense fallback={null}>
               <AskError searchParams={searchParams} />
@@ -41,7 +41,7 @@ export default function AskPage({ searchParams }: PageProps<"/ask">) {
             <AskForm />
           </div>
 
-          <aside aria-labelledby="ask-how-heading" className="rounded-card bg-surface-mint p-6 sm:p-10 lg:col-span-5">
+          <aside aria-labelledby="ask-how-heading" className="rounded-card bg-surface-mint p-6 sm:p-10 lg:col-span-5 lg:self-start">
             <SectionHeader id="ask-how-heading" size="compact" as="h2">
               Asking anonymously
             </SectionHeader>
