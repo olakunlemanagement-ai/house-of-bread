@@ -7,7 +7,7 @@ export type HeroSession = { title: string; startsAtUtc: string; timeZone: string
 
 // Translucent white over the hero tint and the phone. 84% keeps ink-muted
 // above 4.5:1 even where the card overlaps the dark phone frame.
-const floating = "glass-card absolute z-10 rounded-tile border border-white/70 p-4";
+const floating = "glass-card absolute z-10 rounded-tile border border-(--glass-border) p-4";
 
 /**
  * Hero visual: a CSS phone with two floating cards. Illustrative, not a
@@ -35,7 +35,7 @@ export function HeroVisual({
     >
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 size-[22rem] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:radial-gradient(closest-side,rgb(27_107_51/0.12),transparent)] lg:size-[30rem]"
+        className="pointer-events-none absolute left-1/2 top-1/2 size-[22rem] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:radial-gradient(closest-side,var(--halo),transparent)] lg:size-[30rem]"
       />
       <div aria-hidden="true" className="relative">
         <PhoneFrame className="mx-auto" />
@@ -70,7 +70,7 @@ export function HeroVisual({
           <p className="font-serif text-base font-semibold leading-snug text-emerald-deep">30 Day NT Journey</p>
           <p className="mt-1 text-sm text-ink-muted">Day 1 of 30</p>
           <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface-mint">
-            <div className="h-full w-[8%] rounded-full bg-emerald" />
+            <div className="h-full w-[8%] rounded-full bg-glyph" />
           </div>
         </div>
       </div>

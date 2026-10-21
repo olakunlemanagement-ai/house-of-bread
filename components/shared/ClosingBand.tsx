@@ -22,7 +22,7 @@ export function ClosingBand({
     <section aria-labelledby={`${id}-heading`} className="bg-panel-tint relative overflow-hidden border-y border-border">
       <div className="container-page reveal relative grid items-center gap-12 py-20 text-center md:py-24 lg:grid-cols-12 lg:text-left">
         <div className="lg:col-span-7">
-          <span aria-hidden="true" className="mx-auto block h-0.5 w-10 rounded-full bg-emerald lg:mx-0" />
+          <span aria-hidden="true" className="mx-auto block h-0.5 w-10 rounded-full bg-glyph lg:mx-0" />
           {eyebrow ? <p className="eyebrow mt-5">{eyebrow}</p> : null}
           <h2 id={`${id}-heading`} className="mx-auto mt-4 max-w-3xl text-h2 lg:mx-0">
             {title}

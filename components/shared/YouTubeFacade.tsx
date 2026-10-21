@@ -94,7 +94,7 @@ export function YouTubeFacade({
         </svg>
       </span>
       {/* One line, truncated, so a long title never covers the play button. The full title stays in the link's name. */}
-      <span className="absolute inset-x-0 bottom-0 truncate bg-white/95 px-4 py-2.5 text-base font-semibold text-ink sm:px-5 sm:py-3">
+      <span className="absolute inset-x-0 bottom-0 truncate bg-(--facade-bar) px-4 py-2.5 text-base font-semibold text-ink sm:px-5 sm:py-3">
         {live ? "Watch live: " : "Play: "}
         {title}
         <span className="sr-only"> (loads YouTube)</span>

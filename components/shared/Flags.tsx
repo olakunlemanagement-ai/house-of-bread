@@ -18,7 +18,7 @@ export function Flag({ code, className = "w-6" }: { code: FlagCode; className?: 
       width={24}
       height={18}
       decoding="async"
-      className={`h-auto shrink-0 rounded-[2px] shadow-[0_0_0_1px_rgb(11_36_18/0.15)] ${className}`}
+      className={`h-auto shrink-0 rounded-[2px] shadow-[0_0_0_1px_var(--flag-edge)] ${className}`}
     />
   );
 }

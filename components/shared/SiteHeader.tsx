@@ -52,7 +52,7 @@ export function SiteHeader() {
             Explore Teachings
           </ButtonLink>
           <details data-menu className="group">
-            <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded-button border-[1.5px] border-emerald/55 bg-white px-3.5 text-sm font-semibold text-emerald-deep hover:bg-tint [&::-webkit-details-marker]:hidden">
+            <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded-button border-[1.5px] border-glyph/55 bg-surface-raised px-3.5 text-sm font-semibold text-emerald-deep hover:bg-tint [&::-webkit-details-marker]:hidden">
               <span aria-hidden="true" className="flex w-4 flex-col gap-1">
                 <span className="h-0.5 rounded bg-current transition-transform group-open:translate-y-1.5 group-open:rotate-45" />
                 <span className="h-0.5 rounded bg-current group-open:opacity-0" />

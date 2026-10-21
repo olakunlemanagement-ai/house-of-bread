@@ -38,14 +38,14 @@ export function ScriptureBlock({
     <div
       className={
         feature
-          ? "relative overflow-hidden rounded-r-card border border-l-4 border-border border-l-emerald bg-surface-mint p-8 shadow-soft sm:p-10"
-          : "rounded-r-card border-l-4 border-emerald bg-surface-mint px-6 py-7 sm:px-9"
+          ? "relative overflow-hidden rounded-r-card border border-l-4 border-border border-l-glyph bg-surface-mint p-8 shadow-soft sm:p-10"
+          : "rounded-r-card border-l-4 border-glyph bg-surface-mint px-6 py-7 sm:px-9"
       }
     >
       {feature ? (
         <span
           aria-hidden="true"
-          className="absolute left-6 top-1 font-serif text-[6rem] leading-none text-emerald opacity-15 sm:left-8"
+          className="absolute left-6 top-1 font-serif text-[6rem] leading-none text-glyph opacity-15 sm:left-8"
         >
           &ldquo;
         </span>

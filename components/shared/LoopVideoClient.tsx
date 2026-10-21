@@ -203,7 +203,7 @@ export function LoopVideoClient({
         <button
           type="button"
           onClick={() => motion.setPaused(!state.paused)}
-          className="absolute bottom-3 right-3 z-20 inline-flex size-11 items-center justify-center rounded-full border border-border bg-white/90 text-emerald-deep shadow-soft transition-colors hover:border-border-strong hover:bg-white"
+          className="absolute bottom-3 right-3 z-20 inline-flex size-11 items-center justify-center rounded-full border border-border bg-(--control-fill) text-emerald-deep shadow-soft transition-colors hover:border-border-strong hover:bg-surface-raised"
         >
           <Icon name={state.paused ? "resume" : "pause"} className="size-5" />
           <span className="sr-only">{state.paused ? "Play background motion" : "Pause background motion"}</span>

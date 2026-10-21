@@ -38,7 +38,7 @@ export function Placeholder({
 /** Gold-soft badge with ink text (11.85:1). Readable on every surface. */
 export function PlaceholderBadge({ label = "Placeholder" }: { label?: string }) {
   return (
-    <span className="inline-block rounded-full bg-gold-soft px-2.5 py-0.5 font-sans text-xs font-bold uppercase tracking-wider text-ink">
+    <span className="inline-block rounded-full bg-gold-soft px-2.5 py-0.5 font-sans text-xs font-bold uppercase tracking-wider text-on-gold">
       {label}
     </span>
   );

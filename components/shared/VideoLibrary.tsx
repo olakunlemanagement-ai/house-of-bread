@@ -56,7 +56,7 @@ function VideoCard({
           className="absolute inset-0 size-full cursor-pointer"
         />
         {current ? (
-          <span className="absolute bottom-4 left-4 inline-flex items-center rounded-full bg-white px-3.5 py-1.5 text-sm font-semibold text-emerald-deep shadow-soft">
+          <span className="absolute bottom-4 left-4 inline-flex items-center rounded-full bg-surface-raised px-3.5 py-1.5 text-sm font-semibold text-emerald-deep shadow-soft">
             Now playing
           </span>
         ) : (

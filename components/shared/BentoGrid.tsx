@@ -60,7 +60,7 @@ export function BentoTile({ size, surface, icon, icon3d, className = "", title, 
         <div aria-hidden="true" className="absolute inset-0 -z-10 overflow-hidden rounded-card">
           <Icon
             name={icon}
-            className="pointer-events-none absolute right-8 top-8 size-24 text-emerald opacity-[0.08]"
+            className="pointer-events-none absolute right-8 top-8 size-24 text-glyph opacity-[0.08]"
           />
         </div>
       ) : null}

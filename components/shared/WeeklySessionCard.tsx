@@ -35,7 +35,7 @@ export function WeeklySessionCard({
             <p className="eyebrow">Every Monday</p>
           </div>
           <p className="flex items-start gap-2 text-ink">
-            <Icon name="clock" className="mt-1 size-5 shrink-0 text-emerald" />
+            <Icon name="clock" className="mt-1 size-5 shrink-0 text-glyph" />
             <span>
               <SessionWhen rule={rule} serverIso={serverIso} />
             </span>

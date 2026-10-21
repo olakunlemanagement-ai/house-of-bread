@@ -38,8 +38,8 @@ export function EventDuration({ event }: { event: EventData }) {
 /** Gold "Live now" badge. Gold appears only for live states. Ink on gold 9.02:1. */
 export function LiveBadge() {
   return (
-    <span className="inline-flex items-center gap-2 rounded-full bg-gold px-3 py-1 font-sans text-sm font-bold text-ink">
-      <span aria-hidden="true" className="size-2 rounded-full bg-ink" />
+    <span className="inline-flex items-center gap-2 rounded-full bg-gold px-3 py-1 font-sans text-sm font-bold text-on-gold">
+      <span aria-hidden="true" className="size-2 rounded-full bg-on-gold" />
       Live now
     </span>
   );
@@ -62,7 +62,7 @@ export function LiveSessionCard({ event, idPrefix }: { event: EventData; idPrefi
             {live ? <LiveBadge /> : <p className="eyebrow">{eventKindLabel[event.kind]}</p>}
           </div>
           <p className="flex items-start gap-2 text-ink">
-            <Icon name="clock" className="mt-1 size-5 shrink-0 text-emerald" />
+            <Icon name="clock" className="mt-1 size-5 shrink-0 text-glyph" />
             <span>
               <EventWhen event={event} />
             </span>

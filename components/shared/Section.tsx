@@ -86,7 +86,7 @@ export function SectionHeader({
     <div className={centred ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
       <span
         aria-hidden="true"
-        className={`block h-0.5 w-10 rounded-full bg-emerald ${centred ? "mx-auto" : ""}`}
+        className={`block h-0.5 w-10 rounded-full bg-glyph ${centred ? "mx-auto" : ""}`}
       />
       {eyebrow ? (
         <p className="mt-5">

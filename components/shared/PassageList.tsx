@@ -14,7 +14,7 @@ export function PassageList({ passages }: { passages: string[] }) {
             key={canonical}
             data-passage={canonical}
             data-href={href}
-            className="rounded-full border border-emerald/25 bg-surface px-3.5 py-1.5 text-sm font-semibold text-emerald-deep"
+            className="rounded-full border border-glyph/25 bg-surface px-3.5 py-1.5 text-sm font-semibold text-emerald-deep"
           >
             {canonical}
           </li>

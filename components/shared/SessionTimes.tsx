@@ -57,7 +57,7 @@ export function SessionTimes({ rule, serverIso, headingId, headingLevel = 4 }: S
         ))}
         {yours ? (
           <li className="flex items-center gap-3 border-b border-border py-2.5 sm:col-span-2">
-            <Icon name="clock" className="size-6 shrink-0 text-emerald" />
+            <Icon name="clock" className="size-6 shrink-0 text-glyph" />
             <span className="text-base font-semibold text-emerald-deep">Your time</span>
             <span className="ml-auto whitespace-nowrap text-right text-base font-semibold tabular-nums text-ink">
               {yours.time}

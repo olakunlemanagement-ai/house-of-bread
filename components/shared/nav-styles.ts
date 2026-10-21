@@ -9,7 +9,7 @@ export type NavLayout = "inline" | "stacked" | "footer" | "legal";
  */
 const lightState = (current: boolean) =>
   current
-    ? "bg-tint font-semibold text-emerald-deep ring-1 ring-inset ring-emerald/25"
+    ? "bg-tint font-semibold text-emerald-deep ring-1 ring-inset ring-glyph/25"
     : "text-ink hover:bg-tint";
 
 const deepState = (current: boolean) =>

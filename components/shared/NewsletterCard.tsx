@@ -46,7 +46,7 @@ export function NewsletterCard({
           <LoopVideo id="bread-steam" fill sizes="(min-width: 1280px) 1200px, 100vw" />
           {/* Bottom padding from sm leaves room for the Pause/Play control below the card. */}
           <div className="relative p-3 sm:p-6 sm:pb-16 lg:p-10 lg:pb-16">
-            <div className="glass-card grid gap-10 rounded-card border border-white/70 p-6 sm:p-10 lg:grid-cols-12 lg:gap-14 lg:p-12">
+            <div className="glass-card grid gap-10 rounded-card border border-(--glass-border) p-6 sm:p-10 lg:grid-cols-12 lg:gap-14 lg:p-12">
               <div className="lg:col-span-5">
                 <IconTile name="mail" size="lg" />
                 <h2 id={headingId} className="mt-6 text-h2">

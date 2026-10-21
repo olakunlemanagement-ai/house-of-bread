@@ -104,6 +104,46 @@
   --glass-card: rgb(255 255 255 / 0.84);
   --glass-edge: inset 0 1px 0 rgb(255 255 255 / 0.6);
 
+  /*
+    Theme roles. Each holds its light value here and is redefined for dark
+    below, so a component written with them works in both themes.
+    - surface-raised: white elements on the page (inputs, pills, secondary
+      buttons). In dark, a raised surface a step lighter than the base.
+    - glyph: icon glyphs, short rules, progress fills, decorative dots and
+      the card glow ring. Emerald on light; in dark the accent green, since
+      emerald glyphs on a dark tint fall below 3:1.
+    - fill-hover and fill-disabled: the primary button's hover and disabled
+      fills. Kept apart from emerald-deep, which is text.
+    - on-gold: text on gold fills. Always brand ink, in both themes.
+    - on-green-hover: the footer primary button's hover. The footer is deep
+      green in both themes, so this never changes.
+  */
+  --surface-raised: var(--brand-white);
+  --glyph: var(--emerald);
+  --fill-hover: var(--emerald-deep);
+  --fill-disabled: var(--ink-muted);
+  --on-gold: var(--brand-ink);
+  --on-green-hover: var(--brand-mint-50);
+
+  /* Overlays and glows, one token each so dark can restate them. */
+  --scrim: rgb(255 255 255 / 0.8);
+  --scrim-soft: rgb(255 255 255 / 0.2);
+  --glass-border: rgb(255 255 255 / 0.7);
+  --control-fill: rgb(255 255 255 / 0.9);
+  --facade-bar: rgb(255 255 255 / 0.95);
+  --skeleton-sheen: rgb(255 255 255 / 0.55);
+  --fill-highlight: rgb(255 255 255 / 0.18);
+  --hero-glow-1: rgb(27 107 51 / 0.1);
+  --hero-glow-2: rgb(27 107 51 / 0.06);
+  --page-glow: rgb(27 107 51 / 0.08);
+  --panel-light: rgb(255 255 255 / 0.7);
+  --panel-glow: rgb(27 107 51 / 0.06);
+  --halo: rgb(27 107 51 / 0.12);
+  --slot-glow: rgb(27 107 51 / 0.14);
+  --card-glow: rgb(27 107 51 / 0.32);
+  --flag-edge: rgb(11 36 18 / 0.15);
+  --phone-shadow: 0 2px 6px rgb(4 41 14 / 0.12), 0 24px 48px rgb(4 41 14 / 0.18);
+
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
   /* Buttons: 300ms on the standard curve for the lift and arrow nudge. */
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
@@ -119,6 +159,7 @@
   --fg-heading: var(--on-green);
   --fg-link: var(--on-green);
   --fg-accent: var(--on-green);
+  --fg-eyebrow: var(--on-green);
   --ring: var(--on-green);
   --chip-fill: rgb(255 255 255 / 0.08);
   --chip-hover: rgb(255 255 255 / 0.12);
@@ -154,6 +195,12 @@
   --color-gold-soft: var(--gold-soft);
   --color-on-green: var(--on-green);
   --color-on-green-muted: var(--on-green-muted);
+  --color-surface-raised: var(--surface-raised);
+  --color-glyph: var(--glyph);
+  --color-fill-hover: var(--fill-hover);
+  --color-fill-disabled: var(--fill-disabled);
+  --color-on-gold: var(--on-gold);
+  --color-on-green-hover: var(--on-green-hover);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-input-border: var(--input-border);
@@ -201,21 +248,21 @@
 @utility bg-hero-tint {
   background-color: var(--surface);
   background-image:
-    radial-gradient(60rem 32rem at 85% -10%, rgb(27 107 51 / 0.1), transparent 70%),
-    radial-gradient(40rem 28rem at -10% 110%, rgb(27 107 51 / 0.06), transparent 70%);
+    radial-gradient(60rem 32rem at 85% -10%, var(--hero-glow-1), transparent 70%),
+    radial-gradient(40rem 28rem at -10% 110%, var(--hero-glow-2), transparent 70%);
 }
 
 @utility bg-page-tint {
   background-color: var(--surface);
-  background-image: radial-gradient(56rem 26rem at 90% -20%, rgb(27 107 51 / 0.08), transparent 70%);
+  background-image: radial-gradient(56rem 26rem at 90% -20%, var(--page-glow), transparent 70%);
 }
 
 /* A soft tinted panel: the app band and closing bands. */
 @utility bg-panel-tint {
   background-color: var(--surface-mint);
   background-image:
-    radial-gradient(40rem 24rem at 100% 0%, rgb(255 255 255 / 0.7), transparent 70%),
-    radial-gradient(36rem 24rem at 0% 100%, rgb(27 107 51 / 0.06), transparent 70%);
+    radial-gradient(40rem 24rem at 100% 0%, var(--panel-light), transparent 70%),
+    radial-gradient(36rem 24rem at 0% 100%, var(--panel-glow), transparent 70%);
 }
 
 /*
@@ -251,7 +298,8 @@
   letter-spacing: 0.14em;
   line-height: 1.4;
   text-transform: uppercase;
-  color: var(--fg-accent);
+  /* --fg-eyebrow is unset on light pages, so eyebrows follow --fg-accent there. */
+  color: var(--fg-eyebrow, var(--fg-accent));
 }
 
 /* Eyebrow led by a 6px emerald dot with a faint lime halo. Decorative. */
@@ -266,7 +314,7 @@
     width: 6px;
     height: 6px;
     border-radius: 9999px;
-    background-color: var(--emerald);
+    background-color: var(--glyph);
     box-shadow: 0 0 0 3px rgb(166 200 89 / 0.35);
   }
 }
@@ -468,7 +516,7 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
   content: "";
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.55), transparent);
+  background-image: linear-gradient(90deg, transparent, var(--skeleton-sheen), transparent);
   transform: translateX(-100%);
 }
 
@@ -573,8 +621,8 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
   inset: -1px;
   border-radius: inherit;
   box-shadow:
-    0 0 0 1px var(--emerald),
-    0 12px 32px -10px rgb(27 107 51 / 0.32);
+    0 0 0 1px var(--glyph),
+    0 12px 32px -10px var(--card-glow);
   opacity: 0;
   transition: opacity 220ms var(--ease-out);
   pointer-events: none;

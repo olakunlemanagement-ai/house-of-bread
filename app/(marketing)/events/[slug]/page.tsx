@@ -44,11 +44,11 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
           <div className="space-y-3">
             {event.placeholder ? <PlaceholderBadge label="Sample" /> : null}
             <p className="flex flex-wrap items-center gap-2 text-lg text-ink">
-              <Icon name="calendar" className="size-5 text-emerald" />
+              <Icon name="calendar" className="size-5 text-glyph" />
               <EventWhen event={event} />
             </p>
             <p className="flex flex-wrap items-center gap-2 text-ink-muted">
-              <Icon name="clock" className="size-5 text-emerald" />
+              <Icon name="clock" className="size-5 text-glyph" />
               <EventDuration event={event} />
             </p>
           </div>

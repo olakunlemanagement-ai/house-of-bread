@@ -43,7 +43,7 @@ export function AppBand({
     <section aria-labelledby={headingId} className="bg-panel-tint relative overflow-hidden border-y border-border">
       <div className="container-page relative grid items-center gap-12 py-20 md:py-30 lg:grid-cols-12">
         <div className="reveal lg:col-span-7">
-          <span aria-hidden="true" className="block h-0.5 w-10 rounded-full bg-emerald" />
+          <span aria-hidden="true" className="block h-0.5 w-10 rounded-full bg-glyph" />
           <p className="eyebrow mt-5">{eyebrow}</p>
           <h2 id={headingId} className="mt-3 text-h2">
             {heading}

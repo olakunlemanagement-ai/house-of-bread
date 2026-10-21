@@ -57,17 +57,17 @@ export function ImageSlot({
       role="img"
       aria-label={`${caption} (to come)`}
       data-placeholder
-      className={`${frame} bg-surface-mint [background-image:radial-gradient(120%_90%_at_15%_10%,rgb(27_107_51/0.14),transparent_60%),linear-gradient(135deg,var(--surface-mint),var(--surface-warm)_75%)]`}
+      className={`${frame} bg-surface-mint [background-image:radial-gradient(120%_90%_at_15%_10%,var(--slot-glow),transparent_60%),linear-gradient(135deg,var(--surface-mint),var(--surface-warm)_75%)]`}
     >
       <div
         aria-hidden="true"
-        className="absolute inset-0 opacity-[0.07] [background-image:repeating-linear-gradient(135deg,var(--emerald)_0_1px,transparent_1px_14px)]"
+        className="absolute inset-0 opacity-[0.07] [background-image:repeating-linear-gradient(135deg,var(--glyph)_0_1px,transparent_1px_14px)]"
       />
       <svg
         viewBox="0 0 200 280"
         aria-hidden="true"
         focusable="false"
-        className="absolute right-6 top-6 h-20 w-14 text-emerald opacity-15"
+        className="absolute right-6 top-6 h-20 w-14 text-glyph opacity-15"
       >
         <path d="M85 0h30v80h85v30h-85v170H85V110H0V80h85z" fill="currentColor" />
       </svg>
@@ -82,8 +82,8 @@ export function ImageSlot({
         </span>
       ) : null}
       <p aria-hidden="true" className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-        <span className="inline-flex max-w-full items-start gap-2 rounded-xl bg-white px-3 py-1.5 font-sans text-sm leading-snug text-ink shadow-soft">
-          <span className="mt-[0.45em] size-1.5 shrink-0 rounded-full bg-emerald" />
+        <span className="inline-flex max-w-full items-start gap-2 rounded-xl bg-surface-raised px-3 py-1.5 font-sans text-sm leading-snug text-ink shadow-soft">
+          <span className="mt-[0.45em] size-1.5 shrink-0 rounded-full bg-glyph" />
           {caption}
         </span>
       </p>

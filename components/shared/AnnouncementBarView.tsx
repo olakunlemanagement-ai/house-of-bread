@@ -20,10 +20,10 @@ export function AnnouncementBarView({
 }) {
   const href = event.youtubeUrl ?? `/events/${event.slug}`;
   return (
-    <div className={`text-ink [--fg-muted:var(--ink)] ${kind === "live" ? "bg-gold" : "bg-gold-soft"}`}>
+    <div className={`text-on-gold [--fg-muted:var(--on-gold)] ${kind === "live" ? "bg-gold" : "bg-gold-soft"}`}>
       <p className="container-page flex min-h-11 flex-wrap items-center justify-center gap-x-3 gap-y-1 py-2 text-center text-sm font-semibold sm:text-base">
         <span className="inline-flex flex-wrap items-center justify-center gap-x-2">
-          <span aria-hidden="true" className="size-2 rounded-full bg-ink" />
+          <span aria-hidden="true" className="size-2 rounded-full bg-on-gold" />
           {kind === "live" ? (
             <>Live now: {event.title}.</>
           ) : (

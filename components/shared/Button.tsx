@@ -20,19 +20,19 @@ const base =
 const styles: Record<ButtonTone, Record<ButtonVariant, string>> = {
   light: {
     // White on emerald 6.57:1, on emerald-deep 7.65:1.
-    primary: "bg-emerald text-white shadow-soft hover:bg-emerald-deep disabled:bg-ink-muted",
+    primary: "bg-emerald text-white shadow-soft hover:bg-fill-hover disabled:bg-fill-disabled",
     // Emerald-deep text on white 7.65:1, on tint 6.81:1.
     secondary:
-      "border-[1.5px] border-emerald/55 bg-white text-emerald-deep hover:border-emerald hover:bg-tint disabled:border-dashed disabled:border-ink-muted disabled:text-ink-muted disabled:hover:bg-white",
-    live: "bg-gold text-ink shadow-soft hover:bg-gold-soft",
+      "border-[1.5px] border-glyph/55 bg-surface-raised text-emerald-deep hover:border-glyph hover:bg-tint disabled:border-dashed disabled:border-ink-muted disabled:text-ink-muted disabled:hover:bg-surface-raised",
+    live: "bg-gold text-on-gold shadow-soft hover:bg-gold-soft",
   },
   green: {
     // Green-deep on white 13.53:1.
-    primary: "bg-white text-green-deep shadow-soft hover:bg-surface-mint disabled:bg-on-green-muted",
+    primary: "bg-white text-green-deep shadow-soft hover:bg-on-green-hover disabled:bg-on-green-muted",
     // White at 12% over green-deep 9.43:1.
     secondary:
       "border-[1.5px] border-white bg-white/12 text-white hover:bg-white/20 disabled:border-dashed disabled:bg-transparent",
-    live: "bg-gold text-ink shadow-soft hover:bg-gold-soft",
+    live: "bg-gold text-on-gold shadow-soft hover:bg-gold-soft",
   },
 };
 
