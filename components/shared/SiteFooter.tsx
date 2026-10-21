@@ -41,7 +41,7 @@ export function SiteFooter() {
             <div className="mt-6">
               <RegionChips />
             </div>
-            <div className="mt-8">
+            <div data-theme-control className="mt-8">
               <ThemeChoice legendClassName={columnHeading} />
             </div>
           </div>

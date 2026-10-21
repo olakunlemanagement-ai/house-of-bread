@@ -222,6 +222,9 @@ const darkOnly = [
   ["Hero card over the swirl peak: muted", "mistMuted", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28", "nightRaised/0.88"], TEXT],
   // Newsletter frame: warm gold and green glows over raised night.
   ["Newsletter frame glow: muted on glass over the gold glow", "mistMuted", ["nightRaised", "gold/0.1", "nightRaised/0.88"], TEXT],
+  // App band: the progress card (glass) over the water glow at its brightest.
+  ["App band glass over the water glow: muted", "mistMuted", ["nightRaised", "spring/0.14", "leaf/0.22", "nightRaised/0.88"], TEXT],
+  ["App band glass over the water glow: accent", "spring", ["nightRaised", "spring/0.14", "leaf/0.22", "nightRaised/0.88"], TEXT],
   // Logo mark in its white tile, and the tile itself on night.
   ["Logo tile: white tile on night", "white", ["night"], UI],
   ["Logo lid edge on the white tile", "logoLid", ["white"], UI],

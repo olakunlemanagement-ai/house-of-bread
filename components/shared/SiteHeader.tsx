@@ -72,7 +72,7 @@ export function SiteHeader() {
                   <NavLinks layout="stacked" />
                 </Suspense>
               </nav>
-              <div className="mx-auto w-full max-w-[75rem] px-4 pb-6 sm:px-6">
+              <div data-theme-control className="mx-auto w-full max-w-[75rem] px-4 pb-6 sm:px-6">
                 <div className="border-t border-border pt-5">
                   <ThemeChoice legendClassName="eyebrow" />
                 </div>
