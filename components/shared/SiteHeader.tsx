@@ -3,18 +3,22 @@ import { Suspense } from "react";
 import { ButtonLink } from "./Button";
 import { Logo } from "./Logo";
 import { NavLinks, StaticNavLinks } from "./NavLinks";
+import { ThemeChoice } from "./theme/ThemeChoice";
+import { ThemeToggle } from "./theme/ThemeToggle";
 
 /**
  * 72px header that scrolls away with the page. It floats, transparent, over
  * the hero or page header tint: the negative bottom margin pulls the next
  * section up beneath it, and Hero and PageHeader add 72px to their top
  * padding. No bar or border, as nothing ever scrolls under it.
- * Wide screens: logo and the five nav links on the left, one emerald primary
- * button, Explore Teachings, on the right. Subscribe and the app are reached
+ * Wide screens: logo and the five nav links on the left; the dark theme
+ * switch and one emerald primary button, Explore Teachings, on the right. Subscribe and the app are reached
  * from the Home hero, the footer and the closing newsletter card.
  * Narrow screens: logo, a compact Explore Teachings button (still 48px tall)
  * and a Menu button, all always visible. The menu is a details element, so it opens and closes
- * without JavaScript. Its panel is solid white and fades in over 180ms.
+ * without JavaScript. Its panel is solid white (night in dark) and fades in
+ * over 180ms. Below the links sits the Light, Dark or System choice, which
+ * shows only with JavaScript.
  */
 export function SiteHeader() {
   return (
@@ -40,7 +44,8 @@ export function SiteHeader() {
           </Suspense>
         </nav>
 
-        <div className="ml-auto hidden items-center xl:flex">
+        <div className="ml-auto hidden items-center gap-2 xl:flex">
+          <ThemeToggle />
           <ButtonLink href="/academy" className="whitespace-nowrap">
             Explore Teachings
           </ButtonLink>
@@ -67,6 +72,11 @@ export function SiteHeader() {
                   <NavLinks layout="stacked" />
                 </Suspense>
               </nav>
+              <div className="mx-auto w-full max-w-[75rem] px-4 pb-6 sm:px-6">
+                <div className="border-t border-border pt-5">
+                  <ThemeChoice legendClassName="eyebrow" />
+                </div>
+              </div>
             </div>
           </details>
         </div>

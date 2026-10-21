@@ -5,6 +5,7 @@ import { NavLinks, StaticNavLinks } from "./NavLinks";
 import { RegionChips } from "./RegionChips";
 import { SocialLinks } from "./SocialLinks";
 import { Logo } from "./Logo";
+import { ThemeChoice } from "./theme/ThemeChoice";
 
 const columnHeading = "font-sans text-xs font-semibold uppercase tracking-[0.16em] text-on-green-muted";
 
@@ -39,6 +40,9 @@ export function SiteFooter() {
             </p>
             <div className="mt-6">
               <RegionChips />
+            </div>
+            <div className="mt-8">
+              <ThemeChoice legendClassName={columnHeading} />
             </div>
           </div>
 

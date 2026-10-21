@@ -94,6 +94,11 @@
   --chip-hover: var(--tint);
   --link-line: rgb(27 107 51 / 0.5);
   --link-line-hover: var(--emerald);
+  /* Theme choice: the current option is a pill like the current nav link. */
+  --choice-edge: var(--border);
+  --pill-current-bg: var(--tint);
+  --pill-current-ring: color-mix(in oklab, var(--glyph) 25%, transparent);
+  --pill-current-fg: var(--emerald-deep);
 
   /* TextCTA: label, then a 28px circular chip with an arrow. */
   --cta-label: var(--emerald-deep);
@@ -266,6 +271,10 @@
   --chip-hover: rgb(255 255 255 / 0.12);
   --link-line: rgb(255 255 255 / 0.5);
   --link-line-hover: var(--on-green);
+  --choice-edge: rgb(255 255 255 / 0.15);
+  --pill-current-bg: rgb(255 255 255 / 0.15);
+  --pill-current-ring: rgb(255 255 255 / 0.45);
+  --pill-current-fg: var(--on-green);
   --cta-label: var(--on-green);
   --cta-chip-bg: rgb(255 255 255 / 0.15);
   --cta-chip-border: transparent;
@@ -520,6 +529,22 @@
   border-color: var(--cta-chip-hover-bg);
   background-color: var(--cta-chip-hover-bg);
   color: var(--cta-arrow-hover);
+}
+
+/*
+  Theme controls need JavaScript, so they stay hidden until the head script
+  marks the page with data-js. Without it the menu is the five links only.
+  While the theme switches, transitions pause for two frames, so colours
+  change at once rather than fading.
+*/
+html:not([data-js]) [data-theme-control] {
+  display: none !important;
+}
+
+[data-theme-switching] *,
+[data-theme-switching] *::before,
+[data-theme-switching] *::after {
+  transition: none !important;
 }
 
 /*
