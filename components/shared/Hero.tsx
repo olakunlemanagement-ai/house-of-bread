@@ -21,6 +21,8 @@ export function Hero({ nextSession }: { nextSession?: HeroSession }) {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-white/80 lg:bg-transparent lg:[background-image:linear-gradient(to_right,rgb(255_255_255/0.8)_0%,rgb(255_255_255/0.8)_60%,rgb(255_255_255/0.2)_100%)]"
       />
+      {/* The loop fades to white at the base, so the hero runs into the white section below without an edge. */}
+      <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-linear-to-b from-white/0 to-white" />
       <div className="container-page relative z-10 grid items-center gap-12 pb-16 pt-38 sm:pt-42 lg:grid-cols-12 lg:gap-12 lg:pb-24 lg:pt-46">
         <div className="lg:col-span-7">
           <p className="rise eyebrow eyebrow-dot">House of Bread Global</p>

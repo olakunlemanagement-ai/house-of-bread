@@ -13,7 +13,6 @@ import { PlanCard } from "@/components/shared/PlanCard";
 import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { SocialLinks, YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
-import { homeStats, StatStrip } from "@/components/shared/StatStrip";
 import { nameText } from "@/lib/content/copy";
 import { placeholderPlans } from "@/lib/content/placeholder-data";
 import { getNextLiveSession } from "@/lib/schedule/next-session";
@@ -35,13 +34,13 @@ export default async function HomePage() {
         nextSession={{ title: WEEKLY_SESSION_TITLE, startsAtUtc: nextSession, timeZone: siteConfig.liveSession.timeZone }}
       />
 
-      {/* Figures sit just under the hero as a hairline row. */}
-      <div className="container-page relative">
-        <StatStrip stats={homeStats} />
-      </div>
-
+      {/*
+        The hero flows straight into this section. Its top padding adds to the
+        hero bottom padding (64px, 96px from lg) to give the same 80px and
+        120px step that sits between this section and the next.
+      */}
       <section id="start" aria-labelledby="start-heading" className="bg-surface">
-        <div className="container-page py-20 md:py-30">
+        <div className="container-page pb-20 pt-4 md:pb-30 md:pt-14 lg:pt-6">
           {/* Heading beside the start here video on desktop, the four ways below. */}
           <div className="reveal grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
             <div className="lg:col-span-5">
