@@ -24,7 +24,7 @@ export function Icon3D({ name, size = "md" }: { name: Icon3DName; size?: "md" | 
   return (
     <span
       aria-hidden="true"
-      className={`inline-flex shrink-0 items-center justify-center rounded-tile bg-tint ${
+      className={`icon-well inline-flex shrink-0 items-center justify-center rounded-tile bg-tint ${
         large ? "size-20 sm:size-24" : "size-18 sm:size-20"
       }`}
     >
