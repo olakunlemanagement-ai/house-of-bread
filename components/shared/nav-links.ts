@@ -42,6 +42,7 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
       { href: "/new-testament", label: "Study the New Testament" },
       { href: "/plans", label: "New Testament journeys" },
       { href: "/app", label: "Get the official app" },
+      { href: "/ask", label: "Ask a question" },
     ],
   },
 ];

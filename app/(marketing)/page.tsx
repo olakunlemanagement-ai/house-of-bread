@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
 import { AppBand } from "@/components/shared/AppBand";
+import { AskCta } from "@/components/shared/AskCta";
 import { BentoGrid, BentoTile } from "@/components/shared/BentoGrid";
 import { ButtonLink } from "@/components/shared/Button";
 import { TextCTA } from "@/components/shared/TextCTA";
@@ -189,6 +190,8 @@ export default async function HomePage() {
       >
         <SocialLinks />
       </Section>
+
+      <AskCta />
 
       <NewsletterCard idPrefix="home-newsletter" />
     </main>
