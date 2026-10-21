@@ -17,8 +17,8 @@ function closeMenu(event: MouseEvent<HTMLAnchorElement>) {
 export function NavLinks({ layout, items = primaryNav }: { layout: NavLayout; items?: NavLink[] }) {
   const pathname = usePathname();
 
-  // Any client side navigation, including the menu's Subscribe and app
-  // links, closes the mobile menu.
+  // Any client side navigation, including the header's Explore Teachings
+  // button, closes the mobile menu.
   useEffect(() => {
     document.querySelectorAll("details[data-menu]").forEach((menu) => menu.removeAttribute("open"));
   }, [pathname]);

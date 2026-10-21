@@ -8,28 +8,31 @@ export type NavLink = {
 };
 
 /**
- * Main navigation. Subscribe and Get the app sit apart from this list, as
- * buttons on the right of the header.
+ * Main navigation. The one header button, Explore Teachings, sits apart from
+ * this list on the right of the header.
  */
 export const primaryNav: NavLink[] = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
   { href: "/academy", label: "Academy" },
-  // Live sessions are part of the Media Library.
-  { href: "/media", label: "Media Library", also: ["/events"] },
+  // Live sessions are part of the Library.
+  { href: "/media", label: "Library", also: ["/events"] },
+  { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
 
 /** Footer link columns. The Follow column is rendered from SocialLinks. */
 export const footerNav: { heading: string; links: NavLink[] }[] = [
   {
+    // Same order as the header. Subscribe stays here on every page, since the
+    // header no longer carries it.
     heading: "Ministry",
     links: [
-      { href: "/about", label: "About" },
       { href: "/academy", label: "Academy" },
-      { href: "/media", label: "Media Library" },
+      { href: "/media", label: "Library" },
       { href: "/events", label: "Live sessions" },
+      { href: "/about", label: "About" },
       { href: "/contact", label: "Contact" },
+      { href: "/subscribe", label: "Subscribe" },
     ],
   },
   {
@@ -38,7 +41,7 @@ export const footerNav: { heading: string; links: NavLink[] }[] = [
       { href: "/teachings", label: "Teachings" },
       { href: "/new-testament", label: "Study the New Testament" },
       { href: "/plans", label: "New Testament journeys" },
-      { href: "/app", label: "The official app" },
+      { href: "/app", label: "Get the official app" },
     ],
   },
 ];

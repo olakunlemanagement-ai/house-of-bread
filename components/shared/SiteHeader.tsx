@@ -9,10 +9,11 @@ import { NavLinks, StaticNavLinks } from "./NavLinks";
  * the hero or page header tint: the negative bottom margin pulls the next
  * section up beneath it, and Hero and PageHeader add 72px to their top
  * padding. No bar or border, as nothing ever scrolls under it.
- * Wide screens: logo and the five nav links on the left, Subscribe
- * (secondary) and Get the app (emerald primary) on the right.
- * Narrow screens: logo, a compact Get app button and a Menu button, all
- * always visible. The menu is a details element, so it opens and closes
+ * Wide screens: logo and the five nav links on the left, one emerald primary
+ * button, Explore Teachings, on the right. Subscribe and the app are reached
+ * from the Home hero, the footer and the closing newsletter card.
+ * Narrow screens: logo, a compact Explore Teachings button (still 48px tall)
+ * and a Menu button, all always visible. The menu is a details element, so it opens and closes
  * without JavaScript. Its panel is solid white and fades in over 180ms.
  */
 export function SiteHeader() {
@@ -39,19 +40,16 @@ export function SiteHeader() {
           </Suspense>
         </nav>
 
-        <div className="ml-auto hidden items-center gap-2.5 xl:flex">
-          <ButtonLink href="/subscribe" variant="secondary" className="whitespace-nowrap">
-            Subscribe
-          </ButtonLink>
-          <ButtonLink href="/app" className="whitespace-nowrap">
-            Get the app
+        <div className="ml-auto hidden items-center xl:flex">
+          <ButtonLink href="/academy" className="whitespace-nowrap">
+            Explore Teachings
           </ButtonLink>
         </div>
 
         {/* Narrow screens. Both controls stay visible beside the logo. */}
         <div className="ml-auto flex items-center gap-2 xl:hidden">
-          <ButtonLink href="/app" size="compact" className="whitespace-nowrap">
-            Get app
+          <ButtonLink href="/academy" size="compact" className="whitespace-nowrap">
+            Explore Teachings
           </ButtonLink>
           <details data-menu className="group">
             <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded-button border-[1.5px] border-emerald/55 bg-white px-3.5 text-sm font-semibold text-emerald-deep hover:bg-tint [&::-webkit-details-marker]:hidden">
@@ -68,9 +66,6 @@ export function SiteHeader() {
                 <Suspense fallback={<StaticNavLinks layout="stacked" />}>
                   <NavLinks layout="stacked" />
                 </Suspense>
-                <ButtonLink href="/subscribe" variant="secondary" className="mt-5 w-full">
-                  Subscribe
-                </ButtonLink>
               </nav>
             </div>
           </details>
