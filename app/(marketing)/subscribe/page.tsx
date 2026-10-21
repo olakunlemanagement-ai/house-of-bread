@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 import { AppBand } from "@/components/shared/AppBand";
 import { IconTile, type IconName } from "@/components/shared/icons";
-import { NewsletterForm } from "@/components/shared/NewsletterForm";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Section, SectionHeader } from "@/components/shared/Section";
 import { SocialLinks } from "@/components/shared/SocialLinks";
@@ -39,12 +38,9 @@ export default function SubscribePage({ searchParams }: PageProps<"/subscribe">)
             <Suspense fallback={null}>
               <SignupError searchParams={searchParams} />
             </Suspense>
-            <NewsletterForm
-              idPrefix="subscribe"
-              source="subscribe-page"
-              withLiveNotify
-              consent="short"
-            />
+            <Suspense fallback={<SubscribeForm />}>
+              <SourcedSubscribeForm searchParams={searchParams} />
+            </Suspense>
           </div>
 
           <aside
