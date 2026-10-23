@@ -53,6 +53,8 @@ const tokens = {
   // Brightest pixels of the dark loops that sit behind text or glass
   // (npm run loops:sample, 23 October 2026).
   loopAmbientDarkBright: "#aece9b",
+  // A crust highlight in the dark bread steam (23 October 2026).
+  loopBreadDarkBright: "#fffad9",
   // Logo lid edge, the mark's lightest green edge.
   logoLid: "#397733",
 };
@@ -246,7 +248,13 @@ const darkOnly = [
   ["Hero swirl peak: lime eyebrow", "lime", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
   ["Hero swirl peak: focus ring", "spring", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], UI],
   ["Hero card over the swirl peak: muted", "mistMuted", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28", "nightRaised/0.88"], TEXT],
-  // Newsletter frame: warm gold and green glows over raised night.
+  // Newsletter card: dark glass over the dark bread steam at its brightest
+  // pixel. Heading and body, consent text and its link.
+  ["Newsletter glass over dark steam: ink, brightest pixel", "mist", ["loopBreadDarkBright", "nightRaised/0.88"], TEXT],
+  ["Newsletter glass over dark steam: muted, brightest pixel", "mistMuted", ["loopBreadDarkBright", "nightRaised/0.88"], TEXT],
+  ["Newsletter glass over dark steam: accent (consent link), brightest pixel", "spring", ["loopBreadDarkBright", "nightRaised/0.88"], TEXT],
+  // Newsletter frame: warm gold and green glows over raised night, if the
+  // dark poster fails to load.
   ["Newsletter frame glow: muted on glass over the gold glow", "mistMuted", ["nightRaised", "gold/0.1", "nightRaised/0.88"], TEXT],
   // App band: the progress card (glass) over the water glow at its brightest.
   ["App band glass over the water glow: muted", "mistMuted", ["nightRaised", "spring/0.14", "leaf/0.22", "nightRaised/0.88"], TEXT],
