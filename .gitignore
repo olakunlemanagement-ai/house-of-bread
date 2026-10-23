@@ -43,3 +43,5 @@ next-env.d.ts
 
 # raw motion loop clips live outside the repo (house-of-bread-assets)
 /public/animations/
+/animation-dark/
+/public/animation-dark/
