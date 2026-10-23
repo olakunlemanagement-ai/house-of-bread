@@ -92,6 +92,12 @@ function preChain(clip) {
   const parts = [`fps=${FPS}`];
   if (clip.crop) parts.push(`crop=${clip.crop.w}:${clip.crop.h}:${clip.crop.x}:${clip.crop.y}`);
   parts.push(`scale=${WIDTH}:${HEIGHT}:flags=lanczos`, "setsar=1");
+  if (clip.blacks) {
+    // Pull the background to near black: these RGB levels (0 to 255) become
+    // 0 and everything above stretches to fill the range.
+    const [r, g, b] = clip.blacks.map((v) => (v / 255).toFixed(4));
+    parts.push(`colorlevels=rimin=${r}:gimin=${g}:bimin=${b}`);
+  }
   return parts.join(",");
 }
 
@@ -254,13 +260,17 @@ function processClip(clip) {
 
   /**
    * A lossless loop master at 24 fps, 1280 x 720, and the source frame it
-   * opens on. A given seam (phone loops) is used as is.
+   * opens on. A given seam (phone loops, or the clip's own seam) is used as is.
    */
   function buildMaster(spec, name, fixedSeam) {
     let seam = null;
     if (spec.loop === "xfade") {
-      seam = fixedSeam ?? findSeam(gray);
-      const diff = fixedSeam ? meanAbsDiff(gray.frame(seam.a), gray.frame(seam.b)) : seam.diff;
+      const given = fixedSeam ?? (spec.seam ? { a: spec.seam[0], b: spec.seam[1] } : null);
+      if (given && (given.a < 0 || given.b > gray.count || given.b - given.a <= 2 * (spec.xfade ?? XFADE_FRAMES))) {
+        throw new Error(`${clip.id}: loop point ${given.a} to ${given.b} does not fit`);
+      }
+      seam = given ?? findSeam(gray);
+      const diff = given ? meanAbsDiff(gray.frame(seam.a), gray.frame(seam.b)) : seam.diff;
       console.log(`  ${name} seam: frame ${seam.b} -> ${seam.a}, diff ${diff.toFixed(2)}`);
     } else {
       console.log(`  ${name} ping-pong over frames ${spec.segment[0]} to ${spec.segment[1]}`);

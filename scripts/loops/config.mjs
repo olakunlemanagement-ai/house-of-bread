@@ -6,6 +6,11 @@
 //              second, trim there, then crossfade the tail into the head.
 //   "pingpong" play a segment forward then backward. Used where the clip
 //              brightens steadily, so a crossfade would pulse.
+// seam: [a, b] fixed loop point of an "xfade" clip, in place of the search:
+//   frames a to b - 1 loop, the tail crossfading into the head. For a clip
+//   with an unusable head or tail, or no close pair of frames at all.
+// blacks: [r, g, b] levels (0 to 255) pulled to 0, for a dark clip whose
+//   background sits a little above black.
 // denoise: false by default. Set only when a clip cannot reach its size
 //   budget cleanly, and record why.
 // darkOf: the id of the light loop this clip stands in for in dark. Its
@@ -184,6 +189,43 @@ export const clips = [
     use: "App band, dark",
     // Gold and emerald caustics on a dark floor. The seam is barely a step.
     loop: "xfade",
+  },
+  {
+    id: "bread-steam-dark",
+    darkOf: "bread-steam",
+    // Supplied on 23 October 2026 with a doubled extension, used as named.
+    source: "clip-4-dark.mp4.mp4",
+    use: "Newsletter card, dark",
+    // Steam rising from a golden crust on warm near black. Until 1.5 s the
+    // steam builds from nothing (and at 0.8 to 1 s parts into twin curls),
+    // and from 7.33 s it parts into two mirrored scroll curls round a
+    // central column that read as a horned head. So only 1.5 to 7.17 s is
+    // used. No pair of frames matches closely (every pair is about five
+    // times the typical step), so the loop point is fixed at the ends of
+    // that span for length, and the plumes dissolve over 2 s. Steam run
+    // backwards sinks, so no ping-pong. No green on the crust in any frame
+    // (hue 70 to 170 degrees: 0 pixels).
+    loop: "xfade",
+    seam: [36, 172],
+    xfade: 48,
+    // The background is RGB 18, 13, 7. Pull it to near black.
+    blacks: [16, 11, 5],
+  },
+  {
+    id: "green-mesh-dark",
+    darkOf: "green-mesh",
+    source: "clip-7-dark.mp4.mp4",
+    use: "About, closing band, dark",
+    // Green to teal satin rolling on near black. Until 2.67 s the satin
+    // slides in from the left and brightens, so only 2.67 s to the end is
+    // used. The ribbon's edges match at frames 64 and 191 but drift apart
+    // either side, so a 2 s dissolve showed two top edges at once (up to
+    // 26 of 180 rows apart). A 0.67 s dissolve keeps them within 11 rows.
+    loop: "xfade",
+    seam: [64, 191],
+    xfade: 16,
+    // The background is RGB 9, 9, 9. Pull it to near black.
+    blacks: [8, 8, 8],
   },
   {
     id: "bible-loaf-dark",
