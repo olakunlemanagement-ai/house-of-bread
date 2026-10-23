@@ -8,6 +8,13 @@
 //              brightens steadily, so a crossfade would pulse.
 // denoise: false by default. Set only when a clip cannot reach its size
 //   budget cleanly, and record why.
+// darkOf: the id of the light loop this clip stands in for in dark. Its
+//   files are named "<darkOf>-dark", and lib/media/loops.ts lists it in
+//   WITH_DARK.
+//
+// Raw dark clips were supplied on 22 October 2026 and mapped to their
+// light clip by content. Each was checked frame by frame for faces,
+// readable text, flicker and a loop jump (no flicker in any of them).
 
 /** Size budgets in bytes (1 KB = 1000 bytes, the stricter reading). */
 export const BUDGET = { full: 800_000, mobile: 300_000 };
@@ -65,7 +72,16 @@ export const clips = [
     segment: [48, 144],
   },
   { id: "water-light", source: "clip-6.mp4", use: "App band", loop: "xfade" },
-  { id: "green-mesh", source: "clip-7.mp4", use: "Closing band", loop: "xfade" },
+  {
+    id: "green-mesh",
+    // Replaced clip-7.mp4 on 23 October 2026: teal to green satin with soft
+    // folds and a fine glitter, rolling slowly under a diagonal highlight.
+    source: "Green_gradient_mesh_abstract_shot_20261022232009.mp4",
+    use: "About, closing band",
+    loop: "xfade",
+    // The folds change shape across the seam. A 2 s dissolve reads as drift.
+    xfade: 48,
+  },
   {
     id: "bible-loaf",
     source: "clip-8.mp4",
@@ -83,5 +99,70 @@ export const clips = [
       // Outside this box everything is forced white.
       safe: { x0: 190, x1: 1090, y0: 190, y1: 680 },
     },
+  },
+
+  // Dark renditions, played in place of the light loop in dark.
+  {
+    id: "ambient-light-dark",
+    darkOf: "ambient-light",
+    source: "clip-1-dark.mp4",
+    use: "Home hero background, dark",
+    // Green and amber light through smoke on near black. The first four
+    // seconds rise out of black, and until about 3.75 s the smoke's leading
+    // edge reads as a face in profile, so only the full beam after it is
+    // used. Four seconds is too short to crossfade, and smoke drifting back
+    // reads as breath, so ping-pong it.
+    loop: "pingpong",
+    segment: [100, 191],
+  },
+  {
+    id: "dust-light-dark",
+    darkOf: "dust-light",
+    source: "clip-2-dark.mp4",
+    use: "Inner page headers, lg and up, dark",
+    // A diagonal river of gold dust over soft green. Brightness climbs from
+    // 53 to 69; a 2 s dissolve lets it settle back without a pulse.
+    loop: "xfade",
+    xfade: 48,
+  },
+  {
+    id: "wheat-field-dark",
+    darkOf: "wheat-field",
+    source: "clip-3-dark.mp4",
+    use: "About, The name, dark",
+    // Wheat at dusk. The camera dollies, as in the light clip.
+    loop: "pingpong",
+    segment: [60, 132],
+  },
+  {
+    id: "open-bible-dark",
+    darkOf: "open-bible",
+    source: "clip-5-dark.mp4",
+    use: "Academy, Who the Academy is for, dark",
+    // An open book under a lamp. From about 3 s the push in sharpens the
+    // page into letter shaped glyphs, so only the soft first 2.5 s is used.
+    loop: "pingpong",
+    segment: [6, 66],
+  },
+  {
+    id: "water-light-dark",
+    darkOf: "water-light",
+    source: "clip-6-dark.mp4",
+    use: "App band, dark",
+    // Gold and emerald caustics on a dark floor. The seam is barely a step.
+    loop: "xfade",
+  },
+  {
+    id: "bible-loaf-dark",
+    darkOf: "bible-loaf",
+    source: "clip-8-dark.mp4",
+    use: "Home, Why House of Bread?, dark",
+    // A loaf shaped like a Bible, tumbling on black. Mid turn its stamped
+    // ridges turn mould green, and a full turn cannot loop, so only the last
+    // two seconds of the cross facing the camera rock back and forth. Not
+    // shipped while the light loaf is not.
+    ship: false,
+    loop: "pingpong",
+    segment: [128, 172],
   },
 ];

@@ -15,6 +15,7 @@
     "loops:build": "node scripts/loops/process-loops.mjs",
     "loops:verify": "node scripts/loops/verify-white.mjs",
     "loops:sample": "node scripts/loops/sample-extremes.mjs",
+    "loops:seams": "node scripts/loops/check-seams.mjs",
     "images:build": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/images/build-slots.mjs"
   },
   "dependencies": {
