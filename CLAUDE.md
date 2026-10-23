@@ -385,11 +385,16 @@ themes), run `npm run contrast`, and log it before it ships.
   their phone rendition (`WITH_PHONE`): a centred crop to the hero's phone
   aspect, 540px wide at most, 12 fps, a 4 s loop opening on the poster's
   frame, 200 KB or less, light and dark, served by `<source media>`. Every
-  other loop is a poster on phones. A phone loop costs mobile Lighthouse on
-  Home, so add one only with an interleaved A/B (docs/PLACEHOLDERS.md).
-- No loop video exists before window load and an idle moment
-  (requestIdleCallback, or a timeout), and every loop has preload="none".
-  The poster holds the space and is never delayed.
+  other loop is a poster on phones. Add a phone loop only with an
+  interleaved mobile Lighthouse A/B on Home (docs/PLACEHOLDERS.md).
+- No loop video exists until window load, an idle moment
+  (requestIdleCallback, or a timeout) and then `LOOP_START_DELAY_MS` (3 s,
+  `lib/media/loops.ts`) have passed, and every loop has preload="none".
+  Until then the poster stands alone and holds the space; the video fades
+  in over it from the same frame. Why: started at load plus idle, the Home
+  phone loop cost mobile Lighthouse 8 points (median 84 to 76), all Speed
+  Index; with the delay the median was 88 against 90 in light (23 October
+  2026). Lower it only with that A/B.
 - Nothing stops a loop but Motion Off, Save-Data, a slow connection
   (slow-2g, 2g, 3g) or prefers-reduced-motion (through the Motion
   default). Offscreen it pauses and resumes on return.
