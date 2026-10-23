@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
-import { PHONE_QUERY, SLOW_CONNECTIONS, playableVideos, type LoopVideos } from "@/lib/media/loops";
+import { LOOP_START_DELAY_MS, PHONE_QUERY, SLOW_CONNECTIONS, playableVideos, type LoopVideos } from "@/lib/media/loops";
 import { useMotion } from "./theme/motion-store";
 import { useTheme } from "./theme/theme-store";
 
@@ -26,10 +26,11 @@ const subscribeConnection = (listener: () => void) => {
   return () => c?.removeEventListener?.("change", listener);
 };
 
-// The page has settled: window load has fired and the main thread has had
-// an idle moment (requestIdleCallback, or a short timeout where it is
-// missing). No loop video is created before this, so the poster stays the
-// LCP image and the first load carries no video at all.
+// The page has settled: window load has fired, the main thread has had an
+// idle moment (requestIdleCallback, or a short timeout where it is missing),
+// and LOOP_START_DELAY_MS more has passed. No loop video is created before
+// this, so the poster stands alone, the first load carries no video at all,
+// and the moving loop stays out of the first seconds the page is measured.
 let settled = false;
 let waiting = false;
 const settledListeners = new Set<() => void>();
@@ -38,8 +39,10 @@ function subscribeSettled(listener: () => void) {
   if (!settled && !waiting) {
     waiting = true;
     const done = () => {
-      settled = true;
-      for (const l of settledListeners) l();
+      window.setTimeout(() => {
+        settled = true;
+        for (const l of settledListeners) l();
+      }, LOOP_START_DELAY_MS);
     };
     const idle = () => {
       if (typeof window.requestIdleCallback === "function") window.requestIdleCallback(done, { timeout: 2000 });
@@ -71,9 +74,9 @@ function usePlayableVideos(loop: { light: LoopVideos; dark?: LoopVideos }) {
 
 /**
  * The moving layer over a poster. Renders no video on the server, before
- * window load and an idle moment, with Motion off, with Save-Data on, on a
- * slow connection, or where the loop has no rendition for the theme and
- * screen: the poster (children) stands alone and holds the space. Otherwise
+ * window load, an idle moment and LOOP_START_DELAY_MS, with Motion off,
+ * with Save-Data on, on a slow connection, or where the loop has no
+ * rendition for the theme and screen: the poster (children) stands alone and holds the space. Otherwise
  * the sources are added only when the loop nears the viewport (phones get
  * the phone crop by <source media>), it pauses offscreen and resumes on
  * return, and it fades in once it is actually playing, so the poster never

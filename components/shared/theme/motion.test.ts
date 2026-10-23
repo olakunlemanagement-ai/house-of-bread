@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   LOOP_IDS,
+  LOOP_START_DELAY_MS,
   PHONE_QUERY,
   SLOW_CONNECTIONS,
   getLoop,
@@ -156,6 +157,12 @@ describe("loop load order", () => {
     expect(client).toMatch(/requestIdleCallback\(done, \{ timeout: \d+ \}\)/);
     expect(client).toMatch(/window\.setTimeout\(done, \d+\)/);
     expect(client).toContain("if (!ready) return null;");
+  });
+
+  it("waits LOOP_START_DELAY_MS (3 s) more after load and idle before any loop starts", () => {
+    expect(LOOP_START_DELAY_MS).toBe(3000);
+    // The wait runs inside the idle callback, so it starts only once the page has settled.
+    expect(client).toMatch(/const done = \(\) => \{\s*window\.setTimeout\(\(\) => \{\s*settled = true;[\s\S]*?\}, LOOP_START_DELAY_MS\);/);
   });
 
   it("never preloads a loop, and picks the phone crop with <source media>", () => {

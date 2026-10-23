@@ -15,6 +15,21 @@ export const LOOP_BUDGET = { full: 800_000, phone: 200_000 } as const;
 /** Screens that get the phone rendition. The video's <source media> uses the same query. */
 export const PHONE_QUERY = "(max-width: 767px)";
 
+/**
+ * How long every loop waits after window load and an idle moment before its
+ * video is created. Until then the poster stands alone, and the video fades
+ * in over it from the same frame. Why 3 s: started at load plus idle, the
+ * Home phone loop cost mobile Lighthouse about 8 points (median 84 to 76,
+ * 23 October 2026), almost all Speed Index, because the moving background
+ * kept the page from reading as visually complete. With 3 s more the
+ * median was 88 against 90 without phone loops (light, 5 runs each).
+ * Lighthouse has stopped recording by then, so the loop is still
+ * downloaded, only later: the page has painted, settled and freed the
+ * network first. Lower it only with an interleaved Lighthouse A/B on
+ * mobile (docs/PLACEHOLDERS.md).
+ */
+export const LOOP_START_DELAY_MS = 3000;
+
 /** navigator.connection.effectiveType values too slow for a loop: poster only. */
 export const SLOW_CONNECTIONS: readonly string[] = ["slow-2g", "2g", "3g"];
 

@@ -12,7 +12,8 @@
 //   plays or shows, and the choice survives a reload
 // - at 375px only the Home and Academy heroes play, on their phone crop
 //   (light and dark); every other loop shows its poster. At 375 and 767px
-//   no loop video exists before window load, the video covers exactly its
+//   no loop video exists until LOOP_START_DELAY_MS after window load (the
+//   poster shows alone until then), the video covers exactly its
 //   poster, the frame is no wider than the crop (so they line up) and
 //   nothing shifts. A slow connection (2g, 3g) keeps every loop still.
 //
@@ -26,7 +27,9 @@
 // npm run loops:seams. Exits 1 on any failure.
 
 import { createRequire } from "node:module";
+import fs from "node:fs";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 
 const PAGES = ["/", "/about", "/academy"];
 const HERO = { "/": "ambient-light", "/about": "dust-light", "/academy": "open-bible" };
@@ -45,6 +48,15 @@ const PHONE = { width: 375, height: 812 };
 const maxRestartGap = (fps) => (2 * 1000) / fps + 1;
 const maxMidGap = (fps) => Math.max(120, maxRestartGap(fps));
 const MAX_SEAM_RATIO = 2.5;
+// Every loop waits LOOP_START_DELAY_MS after load and idle (lib/media/loops.ts,
+// read here so the two cannot drift). A loop that should stay still is
+// watched for that long plus 3 s, so a broken stopper would have started.
+const START_DELAY_MS = Number(
+  fs
+    .readFileSync(fileURLToPath(new URL("../lib/media/loops.ts", import.meta.url)), "utf8")
+    .match(/export const LOOP_START_DELAY_MS = (\d+);/)[1],
+);
+const STILL_WAIT_MS = START_DELAY_MS + 3000;
 const PHONE_FPS = 12;
 const PHONE_HEROES = new Set(["ambient-light", "open-bible"]);
 /** Crop aspect (width / height) of each phone rendition, from scripts/loops/config.mjs. */
@@ -96,7 +108,7 @@ function loopStates(page) {
 }
 
 /** Waits until the loop's video is playing and its time moves. */
-async function waitPlaying(page, id, timeout = 8000) {
+async function waitPlaying(page, id, timeout = START_DELAY_MS + 8000) {
   try {
     await page.waitForFunction(
       (loopId) => {
@@ -226,7 +238,7 @@ async function checkLoopsOn(context, theme, phone = false) {
       const hero = HERO[route] === id;
       // On phones only the Home and Academy heroes move; in dark, only loops with a dark rendition.
       const expected = phone ? hero && PHONE_HEROES.has(id) : theme === "light" || !NO_DARK.has(id);
-      const started = await waitPlaying(page, id, expected ? 8000 : 2500);
+      const started = await waitPlaying(page, id, expected ? START_DELAY_MS + 8000 : STILL_WAIT_MS);
       const state = (await loopStates(page)).find((s) => s.id === id);
       const where = `${view} ${theme} ${route} ${id}`;
       if (!state.video) {
@@ -324,6 +336,15 @@ async function checkPhoneLoad(browser) {
       const id = HERO[route];
       const page = await context.newPage();
       await page.goto(url(route), { waitUntil: "load" });
+      // Halfway through the start delay: the poster alone, painted and fully opaque.
+      await pause(START_DELAY_MS / 2);
+      const early = await page.evaluate((loopId) => {
+        const frame = document.querySelector(`[data-loop="${loopId}"]`);
+        const poster = [...frame.querySelectorAll("img")].find((img) => getComputedStyle(img).display !== "none");
+        return { video: Boolean(frame.querySelector("video")), poster: Boolean(poster?.complete && poster.naturalWidth > 0), opacity: poster ? getComputedStyle(poster).opacity : "" };
+      }, id);
+      check(!early.video, `${width}px ${route}: a loop video exists before the start delay has passed`);
+      check(early.poster && early.opacity === "1", `${width}px ${route}: the poster is not showing while the loop waits`);
       const started = await waitPlaying(page, id);
       await pause(800);
       const r = await page.evaluate((loopId) => {
@@ -349,7 +370,10 @@ async function checkPhoneLoad(browser) {
       );
       check(started, `${width}px ${route}: hero did not start`);
       check(/-phone\.webm$/.test(r.src), `${width}px ${route}: plays ${r.src}, not the phone crop`);
-      check(r.firstVideo !== null && r.load !== null && r.firstVideo > r.load, `${width}px ${route}: a loop video existed before window load`);
+      check(
+        r.firstVideo !== null && r.load !== null && r.firstVideo - r.load >= START_DELAY_MS,
+        `${width}px ${route}: a loop video was created ${(r.firstVideo - r.load).toFixed(0)} ms after load, before the ${START_DELAY_MS} ms start delay`,
+      );
       check(r.shift === 0, `${width}px ${route}: layout shift ${r.shift}`);
       check(JSON.stringify(r.poster) === JSON.stringify(r.video), `${width}px ${route}: video box ${r.video} is not the poster box ${r.poster}`);
       check(aspect <= PHONE_CROP[id] + 0.005, `${width}px ${route}: frame aspect ${aspect.toFixed(3)} is wider than the phone crop, so poster and video would not line up`);
@@ -430,7 +454,7 @@ async function checkMotionControl(browser) {
   for (const route of PAGES) {
     await page.goto(url(route), { waitUntil: "load" });
     for (const s of await loopStates(page)) await scrollTo(page, s.id);
-    await pause(1500);
+    await pause(START_DELAY_MS + 1500);
     const states = await loopStates(page);
     check(states.every((s) => !s.playing && !s.shown), `${route}: a loop plays with Motion saved off`);
     console.log(`  reload ${route} with Motion off: ${states.filter((s) => s.playing).length} of ${states.length} loops playing`);
@@ -494,7 +518,7 @@ async function checkStoppers(browser, viewport) {
     }, c);
     const page = await context.newPage();
     await page.goto(url("/"), { waitUntil: "load" });
-    const playing = await waitPlaying(page, "ambient-light", c.expect ? 8000 : 2500);
+    const playing = await waitPlaying(page, "ambient-light", c.expect ? START_DELAY_MS + 8000 : STILL_WAIT_MS);
     const states = await loopStates(page);
     console.log(`  ${c.name}: hero ${playing ? "plays" : "still"}, ${states.filter((s) => s.shown).length} videos shown`);
     check(playing === c.expect, `${c.name}: expected the hero to ${c.expect ? "play" : "stay still"}`);
