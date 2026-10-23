@@ -3,7 +3,7 @@
 Operating instructions for Claude Code on the House of Bread Global website.
 Read this file at the start of every session. Follow it over general defaults.
 
-Last updated: 21 October 2026
+Last updated: 23 October 2026
 
 ---
 
@@ -178,8 +178,8 @@ declaring any task complete.
 
 - Live streaming runs on YouTube. No hosted long form video. Short silent
   decorative loops are allowed: 800 KB each or less, with a poster, lazy
-  loaded, paused offscreen, never with sound, and off under reduced motion
-  and Save-Data.
+  loaded, paused offscreen, never with sound, and off with Motion Off
+  (which follows reduced motion until the visitor chooses) and Save-Data.
 - Embeds use `youtube-nocookie.com` behind a click to load facade, so no
   YouTube code loads until the visitor asks for it.
 - Event times are stored as UTC plus an IANA time zone in frontmatter, and
@@ -297,9 +297,11 @@ themes), run `npm run contrast`, and log it before it ships.
   choice before first paint, so the wrong theme never flashes. Do not move
   theme logic into a component that runs after hydration. Theme controls
   carry `data-theme-control` and stay hidden without JavaScript.
-- Decorative loops and their posters are light only. In dark,
+- A loop with a dark rendition (`WITH_DARK` in `lib/media/loops.ts`,
+  built from its own dark clip) shows its dark poster and plays its dark
+  video in dark. A loop without one is light only: in dark,
   `LoopVideoClient` loads no video and `[data-loop]` shows still radial
-  glows. A new loop needs a dark glow in `app/globals.css`.
+  glows. Every loop still needs a dark glow in `app/globals.css`.
 
 ### Palette
 
@@ -376,10 +378,35 @@ themes), run `npm run contrast`, and log it before it ships.
   `npm run loops:build` from raw clips kept outside the repo, never by hand.
 - At most one loop above the fold per page. Loops sit in framed panels
   (20px radius), never behind text, except the Home hero, which has a
-  white scrim checked against the darkest frame.
-- Phones play only loops with a 640 wide rendition. Every page with a
-  playing loop shows one Pause/Play control, placed by the first loop to
-  come into view.
+  white scrim checked against the darkest frame (in dark, a night scrim
+  checked against the brightest frame of the dark loop).
+- Phones play only loops with a 640 wide rendition, and never a dark one.
+- Nothing stops a loop but Motion Off, Save-Data, or prefers-reduced-motion
+  (through the Motion default). Offscreen it pauses and resumes on return.
+- Every loop is seamless: `npm run loops:seams` checks the wrap of every
+  file, and `scripts/check-loops.mjs` measures the restart in a browser.
+
+### Motion
+
+- No loop, hero or panel carries a Pause/Play button. One "Motion" control
+  (On or Off) sits beside the theme choice in the footer and in the mobile
+  menu (`components/shared/theme/MotionToggle.tsx`). Why: WCAG 2.2.2 needs
+  a way to stop motion that lasts over five seconds, and a button on every
+  panel cluttered the calm, premium surfaces and repeated itself down the
+  page. One site wide control does the job once, where the theme choice
+  already lives.
+- Off stops and hides every loop video: posters only, nothing moves. With
+  no saved choice it follows prefers-reduced-motion. A choice is saved in
+  localStorage (`hob:motion`, inside try/catch) and wins over the system
+  setting.
+- The head script sets `data-motion` on the html element before first
+  paint, so a loop never flashes and the current On or Off pill is right
+  before hydration. CSS hides `[data-loop] video` under
+  `data-motion="off"`, and `LoopVideoClient` unmounts the videos.
+- The control is a button named "Motion" by its visible label, with
+  `aria-pressed`, a 3px focus ring and a 44px target, and stays hidden
+  without JavaScript (`data-theme-control`), when no loop moves anyway.
+  `components/shared/theme/motion.test.ts` guards all of this.
 - A loop blended with `multiply` must be keyed to pure white and pass
   `npm run loops:verify`.
 
@@ -445,12 +472,12 @@ themes), run `npm run contrast`, and log it before it ships.
   and a "Menu" button, all always visible.
   The menu panel is solid white. The menu is a `details` element and
   works without JavaScript: the five links as large tap targets, then the
-  Light, Dark or System theme choice (shown only with JavaScript), and
-  nothing else.
+  Light, Dark or System theme choice and the Motion On or Off control
+  (both shown only with JavaScript), and nothing else.
 - Footer: Ministry in the header order (Academy, Library, Live sessions,
   About, Contact, Subscribe), Learn (Teachings, Study the New Testament,
   New Testament journeys, Get the official app), Follow. The first column
-  carries the Light, Dark or System theme choice. The "Stay close to the ministry" strip shows only
+  carries the Light, Dark or System theme choice and the Motion control. The "Stay close to the ministry" strip shows only
   on pages that do not already offer signup (`[data-newsletter]`).
 - Pages close with the newsletter card: a translucent white card over soft
   gold or mint radial tints, with an emerald button, never a green band.

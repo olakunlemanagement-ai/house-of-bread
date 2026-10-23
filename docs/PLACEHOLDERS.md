@@ -1026,3 +1026,98 @@ carry no meaning, so they have no threshold.
 - An unknown slug (for example `/teachings/xyz`) returns 404, but Next sends
   it as a script only payload, so without script the page is blank.
   `dynamicParams` is not available with Cache Components.
+
+## Hero revamp amendments (23 October 2026)
+
+Branch `feat/hero-revamp`. Dark loops, a new green mesh clip, and one
+Motion control in place of every Pause/Play button.
+
+### Dark clips: mapping and checks
+
+Supplied in `house-of-bread-assets/animations-dark` (not `animation-dark`,
+and already outside the repo), moved into `animations-raw` and renamed by
+content. Every frame was measured for flicker (none in any clip) and
+contact sheets were checked for faces and readable text.
+
+| Raw file | Clip | Content | Verdict |
+|---|---|---|---|
+| Light_drifting_in_dark_void | 1, ambient light | Green and amber light through smoke on near black | Used from 4.2 s only: until about 3.75 s the smoke edge reads as a face in profile. Ping-pong over the last 3.8 s |
+| Golden_dust_floating_in_light | 2, dust | A river of gold dust over soft green | Used whole, 2 s crossfade |
+| Wheat_stalks_swaying_in_field | 3, wheat | Wheat at dusk, camera dollies | Ping-pong, as the light clip |
+| Open_book_on_table | 5, Bible | Open book under a lamp | Used for the first 2.75 s only: the push in then sharpens the page into letter shaped glyphs |
+| Emerald_light_on_dark_water | 6, water | Gold and emerald caustics | Used whole, 1 s crossfade |
+| Artisan_bread_loaf_shaped_like | 8, loaf | A Bible shaped loaf tumbling on black | Not shipped: mid turn its ridges turn mould green and a full turn cannot loop. The last 2 s rock cleanly, so the config keeps that entry with `ship: false`, as the light loaf is not shipped either |
+
+No dark clip was supplied for 4 (bread steam) or 7 (green mesh), so those
+keep their still glows in dark.
+
+### Clip 7 replaced
+
+`Green_gradient_mesh_abstract_shot_20261022232009.mp4`: teal to green satin
+with soft folds and a fine glitter, rolling slowly under a diagonal
+highlight. It replaces `clip-7.mp4` as `green-mesh`, the About closing band,
+with a 2 s crossfade.
+
+### Files, KB of 1000 bytes
+
+| Loop | WebM | MP4 | Poster | Loop length | Budget encode (SSIM vs quality target) |
+|---|---|---|---|---|---|
+| green-mesh | 515 | 745 | 19 | 5.46 s | MP4 0.986 |
+| ambient-light-dark | 263 | 739 | 7 | 7.58 s | MP4 0.994 |
+| dust-light-dark | 747 | 795 | 44 | 4.71 s | WebM 0.940, MP4 0.930 |
+| wheat-field-dark | 748 | 743 | 59 | 6.00 s | WebM 0.973, MP4 0.961 |
+| open-bible-dark | 281 | 570 | 20 | 5.00 s | none |
+| water-light-dark | 747 | 767 | 35 | 5.75 s | WebM 0.961, MP4 0.943 |
+
+Dust in dark lost the most to the budget. At 1:1 it shows no blocking, and
+it plays in a panel about 40% of the screen wide.
+
+### Contrast over the dark hero loop
+
+The hero scrim in dark is night at 80% (20% behind the phone), where it was
+transparent over the still glow. Measured against the dark loop's brightest
+pixel (#aece9b, `npm run loops:sample`).
+
+| Element | Pairing | Ratio |
+|---|---|---|
+| Hero heading | mist, 80% night scrim | 10.39 |
+| Hero lead | mist-muted, 80% night scrim | 6.01 |
+| H1 phrase, TextCTA, focus ring | spring, 80% night scrim | 6.90 |
+| Eyebrow | lime, 80% night scrim | 6.33 |
+| Header nav current pill | spring on night tint | 8.04 |
+| Hero floating cards | mist-muted, spring on dark glass, 20% scrim | 7.04, 8.09 |
+| App band card over dark water | mist-muted, spring on dark glass over white | 5.99, 6.89 |
+
+The Pause/Play control row above (6.10) is retired with the control. The
+Motion control reuses the theme choice's pill pairings.
+
+### Motion control and the loop check
+
+`node scripts/check-loops.mjs <base>` in Chromium at 1280px: every loop
+starts by itself, muted and inline; plays through its restarts; pauses
+offscreen and resumes on return; keeps playing across a theme change; and
+stops only for Motion Off, Save-Data or prefers-reduced-motion (an explicit
+Motion On wins over reduced motion). With Motion Off no loop video plays or
+shows on Home, About or Academy, after a reload too. The footer control is
+reached by Tab with a 3px ring; the menu control is 46px tall at 375px.
+
+Restart gap, VP9 WebM, final run. A frame at 24 fps is 41.7 ms; on a 60 Hz
+screen it shows for 33 or 50 ms. No restart skipped a frame or showed a
+blank frame, and no clip needed fixing.
+
+| Loop | Light gap ms | Dark gap ms | Picture change at the restart (light, dark) |
+|---|---|---|---|
+| ambient-light (Home hero) | 64, 69 | 47, 63 | 1.18x, 1.09x a frame step |
+| dust-light (page headers) | 76, 72 | 72, 66 | 1.05x, 1.15x |
+| open-bible (Academy hero) | 71, 48 | 70, 55 | 1.22x, 1.30x |
+| water-light | 66 | 69 | 1.16x, 0.99x |
+| wheat-field | 69 | 72 | 1.20x, 1.00x |
+| green-mesh | 55 | poster only | 1.07x |
+| bread-steam | 57 | poster only | 1.59x |
+
+A separate timing only run of 30 restarts (dark ambient light, green mesh)
+gave 36 to 73 ms and no skipped frame. Earlier runs that read pixels back on
+every frame showed stalls up to 333 ms; that was the check itself, so pixels
+are now read only around the restart, in a pass of their own.
+`npm run loops:seams` decodes every WebM and MP4: each wrap is within 2.1x
+an ordinary frame step (most near 1x) and no file has flicker.
