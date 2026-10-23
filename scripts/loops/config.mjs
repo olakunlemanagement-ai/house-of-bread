@@ -11,19 +11,45 @@
 // darkOf: the id of the light loop this clip stands in for in dark. Its
 //   files are named "<darkOf>-dark", and lib/media/loops.ts lists it in
 //   WITH_DARK.
+// phone: a phone rendition ("<id>-phone"), only for a hero loop that plays
+//   on phones (Home and Academy). A centred crop of the 1280 x 720 master,
+//   at most PHONE.maxWidth wide, PHONE.fps, a 4 s loop of its own, no audio.
+//   The crop is centred so the video lines up with the 16:9 poster under
+//   object-cover, and its aspect must be at least the widest phone frame's
+//   (Home's hero is 0.63 at 767px), or poster and video scale differently.
+//     aspect   [w, h] of the crop, taken from the full 720 height
+//     loop     "pingpong", or "xfade" with xfade (frames)
+//   It opens on the poster's frame (the full loop's first), so the fade
+//   from poster to video shows no change; process-loops.mjs derives the
+//   segment from it.
+//   lib/media/loops.ts lists the light id in WITH_PHONE. A light loop with a
+//   phone rendition needs one on its dark clip too.
 //
 // Raw dark clips were supplied on 22 October 2026 and mapped to their
 // light clip by content. Each was checked frame by frame for faces,
 // readable text, flicker and a loop jump (no flicker in any of them).
 
 /** Size budgets in bytes (1 KB = 1000 bytes, the stricter reading). */
-export const BUDGET = { full: 800_000, mobile: 300_000 };
+export const BUDGET = { full: 800_000, phone: 200_000 };
 
 export const FPS = 24;
 export const WIDTH = 1280;
 export const HEIGHT = 720;
-export const MOBILE_WIDTH = 640;
-export const MOBILE_HEIGHT = 360;
+
+/**
+ * Phone renditions: at most 540 wide, 12 fps (exactly every second source
+ * frame, so motion stays even), 4 s long, so 96 source frames per loop.
+ */
+export const PHONE = { maxWidth: 540, fps: 12, frames: 96 };
+
+/** Centred crop of the 1280 x 720 master to [w, h], and the output size: even, at most PHONE.maxWidth wide. */
+export function phoneGeometry([aw, ah]) {
+  const cropWidth = Math.round((HEIGHT * aw) / ah / 2) * 2;
+  let width = Math.min(cropWidth, PHONE.maxWidth);
+  // Both sides even (yuv420p) and the aspect exact.
+  while ((width * ah) % aw !== 0 || ((width * ah) / aw) % 2 !== 0) width -= 2;
+  return { crop: `crop=${cropWidth}:${HEIGHT}:${(WIDTH - cropWidth) / 2}:0`, width, height: (width * ah) / aw };
+}
 
 /** Default crossfade length at the loop point, in frames (1 s). A clip may set its own xfade. */
 export const XFADE_FRAMES = 24;
@@ -41,8 +67,11 @@ export const clips = [
     loop: "xfade",
     // The ribbon changes shape across the seam. A 2 s dissolve reads as drift.
     xfade: 48,
-    // No 640 rendition: on phones it cost Home about 10 Lighthouse points,
-    // so phones show the poster (19 October 2026).
+    // On phones the hero is a tall frame (375 x 1452 up to 767 x 1208), so a
+    // 2:3 centre crop (480 x 720) covers it. The 640 rendition dropped on 19
+    // October 2026 played from the first paint; this one waits for load and
+    // idle (LoopVideoClient).
+    phone: { aspect: [2, 3], loop: "xfade", xfade: 24 },
   },
   {
     id: "dust-light",
@@ -66,10 +95,12 @@ export const clips = [
   {
     id: "open-bible",
     source: "clip-5.mp4",
-    use: "Academy, Who the Academy is for",
+    use: "Academy hero, framed panel",
     // A slow push in. A crossfade shows the Bible twice, so drift in and out.
     loop: "pingpong",
     segment: [48, 144],
+    // The Academy panel is 4:3 at every width. Two seconds in and out.
+    phone: { aspect: [4, 3], loop: "pingpong" },
   },
   { id: "water-light", source: "clip-6.mp4", use: "App band", loop: "xfade" },
   {
@@ -91,7 +122,6 @@ export const clips = [
     // regenerated clip on seamless white. Build it by naming its id.
     ship: false,
     loop: "xfade",
-    mobile: true,
     // Shot on a grey studio backdrop, not white. Key every low saturation
     // pixel to white so mix-blend-mode: multiply shows no box.
     keyWhite: {
@@ -114,6 +144,8 @@ export const clips = [
     // reads as breath, so ping-pong it.
     loop: "pingpong",
     segment: [100, 191],
+    // Two seconds from the full beam, past the face shaped edge.
+    phone: { aspect: [2, 3], loop: "pingpong" },
   },
   {
     id: "dust-light-dark",
@@ -138,11 +170,12 @@ export const clips = [
     id: "open-bible-dark",
     darkOf: "open-bible",
     source: "clip-5-dark.mp4",
-    use: "Academy, Who the Academy is for, dark",
+    use: "Academy hero, framed panel, dark",
     // An open book under a lamp. From about 3 s the push in sharpens the
     // page into letter shaped glyphs, so only the soft first 2.5 s is used.
     loop: "pingpong",
     segment: [6, 66],
+    phone: { aspect: [4, 3], loop: "pingpong" },
   },
   {
     id: "water-light-dark",

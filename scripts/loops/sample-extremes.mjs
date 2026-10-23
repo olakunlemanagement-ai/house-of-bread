@@ -12,7 +12,7 @@
 import { spawn } from "node:child_process";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { HEIGHT, WIDTH, clips } from "./config.mjs";
+import { HEIGHT, WIDTH, clips, phoneGeometry } from "./config.mjs";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const OUT = path.join(ROOT, "public", "media", "loops");
@@ -25,8 +25,8 @@ const linear = new Float64Array(256).map((_, v) => {
 const luminance = (r, g, b) => 0.2126 * linear[r] + 0.7152 * linear[g] + 0.0722 * linear[b];
 const hex = ([r, g, b]) => `#${[r, g, b].map((v) => v.toString(16).padStart(2, "0")).join("")}`;
 
-function sample(file) {
-  const frameBytes = WIDTH * HEIGHT * 3;
+function sample(file, width = WIDTH, height = HEIGHT) {
+  const frameBytes = width * height * 3;
   return new Promise((resolve, reject) => {
     const proc = spawn(FFMPEG, ["-v", "error", "-i", file, "-f", "rawvideo", "-pix_fmt", "rgb24", "-"]);
     let pending = Buffer.alloc(0);
@@ -65,11 +65,15 @@ function sample(file) {
 }
 
 for (const clip of clips.filter((c) => c.ship !== false)) {
-  const r = await sample(path.join(OUT, `${clip.id}.webm`));
-  console.log(
-    `${clip.id.padEnd(14)} darkest px ${hex(r.darkest.rgb)} (L ${r.darkest.l.toFixed(4)})  ` +
-      `brightest px ${hex(r.brightest.rgb)} (L ${r.brightest.l.toFixed(4)})  ` +
-      `darkest frame #${r.darkFrame.index} mean L ${r.darkFrame.l.toFixed(3)}  ` +
-      `brightest frame #${r.brightFrame.index} mean L ${r.brightFrame.l.toFixed(3)}`,
-  );
+  const files = [{ name: clip.id, width: WIDTH, height: HEIGHT }];
+  if (clip.phone) files.push({ name: `${clip.id}-phone`, ...phoneGeometry(clip.phone.aspect) });
+  for (const f of files) {
+    const r = await sample(path.join(OUT, `${f.name}.webm`), f.width, f.height);
+    console.log(
+      `${f.name.padEnd(24)} darkest px ${hex(r.darkest.rgb)} (L ${r.darkest.l.toFixed(4)})  ` +
+        `brightest px ${hex(r.brightest.rgb)} (L ${r.brightest.l.toFixed(4)})  ` +
+        `darkest frame #${r.darkFrame.index} mean L ${r.darkFrame.l.toFixed(3)}  ` +
+        `brightest frame #${r.brightFrame.index} mean L ${r.brightFrame.l.toFixed(3)}`,
+    );
+  }
 }
