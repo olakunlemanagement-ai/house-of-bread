@@ -10,6 +10,13 @@
 //   it keeps playing over several loops and across a theme change
 // - with Motion Off (the footer or menu control, or saved) no loop video
 //   plays or shows, and the choice survives a reload
+// - at 375px only the Home and Academy heroes play, on their phone crop
+//   (light and dark); every other loop shows its poster. At 375 and 767px
+//   no loop video exists before window load, the video covers exactly its
+//   poster, the frame is no wider than the crop (so they line up) and
+//   nothing shifts. A slow connection (2g, 3g) keeps every loop still.
+//
+//   ONLY=phone or ONLY=desktop runs one half.
 //
 //   PLAYWRIGHT=<path to playwright package> node scripts/check-loops.mjs http://localhost:3100
 //
@@ -29,12 +36,21 @@ const PHONE = { width: 375, height: 812 };
 // Thresholds at the loop point. A frame at 24 fps lasts 41.7 ms and a 60 Hz
 // display shows it for 33 or 50 ms; the restart's seek may hold the last
 // frame one refresh longer. A freeze is a frame held past two frame periods
-// (83.3 ms, plus 1 ms of timing jitter), and any skipped frame fails on its
-// own. Picture change: up to 2.5 times the clip's typical frame to frame
-// change reads as motion, not a cut. A blank frame is one whose mean
-// brightness drops by more than half from a neighbour.
-const MAX_RESTART_GAP_MS = (2 * 1000) / 24 + 1;
+// (83.3 ms at 24 fps, 166.7 ms for the 12 fps phone crops, plus 1 ms of
+// timing jitter), and any skipped frame fails on its own. Picture change:
+// up to 2.5 times the clip's typical frame to frame change reads as motion,
+// not a cut. A blank frame is one whose mean brightness drops by more than
+// half from a neighbour. Mid loop, a gap over 120 ms (two frame periods at
+// 12 fps) is a freeze.
+const maxRestartGap = (fps) => (2 * 1000) / fps + 1;
+const maxMidGap = (fps) => Math.max(120, maxRestartGap(fps));
 const MAX_SEAM_RATIO = 2.5;
+const PHONE_FPS = 12;
+const PHONE_HEROES = new Set(["ambient-light", "open-bible"]);
+/** Crop aspect (width / height) of each phone rendition, from scripts/loops/config.mjs. */
+const PHONE_CROP = { "ambient-light": 2 / 3, "open-bible": 4 / 3 };
+/** Loops with no dark rendition: a still glow in dark (WITH_DARK in lib/media/loops.ts). */
+const NO_DARK = new Set(["bread-steam", "green-mesh"]);
 
 const base = process.argv[2];
 const playwrightPath = process.env.PLAYWRIGHT;
@@ -196,8 +212,10 @@ async function scrollTo(page, id) {
 
 const report = [];
 
-async function checkLoopsOn(context, theme) {
+async function checkLoopsOn(context, theme, phone = false) {
   const seenIds = new Set();
+  const fps = phone ? PHONE_FPS : 24;
+  const view = phone ? "phone" : "desktop";
   for (const route of PAGES) {
     const page = await context.newPage();
     await page.goto(url(route), { waitUntil: "load" });
@@ -206,21 +224,25 @@ async function checkLoopsOn(context, theme) {
       seenIds.add(id);
       await scrollTo(page, id);
       const hero = HERO[route] === id;
-      const started = await waitPlaying(page, id);
+      // On phones only the Home and Academy heroes move; in dark, only loops with a dark rendition.
+      const expected = phone ? hero && PHONE_HEROES.has(id) : theme === "light" || !NO_DARK.has(id);
+      const started = await waitPlaying(page, id, expected ? 8000 : 2500);
       const state = (await loopStates(page)).find((s) => s.id === id);
-      const where = `${theme} ${route} ${id}`;
+      const where = `${view} ${theme} ${route} ${id}`;
       if (!state.video) {
-        // Only a loop with no rendition for this theme may stay still.
-        report.push({ theme, id, route, note: "poster only (no rendition for this theme)" });
-        check(theme === "dark" && !hero, `${where}: no video`);
+        report.push({ view, theme, id, route, note: phone ? "poster only (no phone rendition)" : "poster only (no rendition for this theme)" });
+        check(!expected, `${where}: no video`);
         continue;
       }
+      check(expected, `${where}: a video is on the page where only the poster should show`);
       check(started, `${where}: did not start by itself`);
       check(state.muted && state.mutedAttr, `${where}: not muted`);
       check(state.playsInline, `${where}: not playsinline`);
       check(state.loop, `${where}: no loop attribute`);
       check(!state.controls, `${where}: shows native controls`);
-      if (theme === "dark") check(/-dark\.webm$/.test(state.src), `${where}: plays ${state.src}, not its dark rendition`);
+      const dark = theme === "dark";
+      const wanted = phone ? (dark ? /-dark-phone\.webm$/ : /[^k]-phone\.webm$/) : dark ? /-dark\.webm$/ : /[^k]\.webm$/;
+      check(wanted.test(state.src), `${where}: plays ${state.src.split("/").pop()}, not its ${phone ? "phone " : ""}${theme} rendition`);
       if (!started) continue;
 
       // Timing: two restarts for heroes, one for panels. Then one more
@@ -236,8 +258,9 @@ async function checkLoopsOn(context, theme) {
       check(picture.opacity === "1", `${where}: video faded (opacity ${picture.opacity}) at the loop point`);
       for (const seam of m.seams) {
         // Media frames skipped across the restart: the last frame should be one frame before the end, the first frame 0.
-        const skipped = Math.max(0, Math.round((m.duration - seam.lastBefore + seam.firstAfter) * 24) - 1);
+        const skipped = Math.max(0, Math.round((m.duration - seam.lastBefore + seam.firstAfter) * fps) - 1);
         report.push({
+          view,
           theme,
           id,
           route,
@@ -251,30 +274,94 @@ async function checkLoopsOn(context, theme) {
           skipped,
         });
         check(skipped === 0, `${where}: ${skipped} frame(s) skipped at the loop point`);
-        check(seam.gap <= MAX_RESTART_GAP_MS, `${where}: restart gap ${seam.gap.toFixed(0)} ms (freeze)`);
+        check(seam.gap <= maxRestartGap(fps), `${where}: restart gap ${seam.gap.toFixed(0)} ms (freeze)`);
       }
       // A stall away from the loop point that does not repeat is the machine,
       // not the file: measure once more before failing.
       let maxGap = m.maxGap;
-      if (maxGap > 120) {
+      if (maxGap > maxMidGap(fps)) {
         const again = await measureLoop(page, id, 1);
         console.log(`  note: ${where} stalled ${maxGap.toFixed(0)} ms mid loop; remeasured, worst gap ${again.maxGap?.toFixed(0)} ms`);
         maxGap = again.error ? maxGap : again.maxGap;
       }
-      check(maxGap <= 120, `${where}: a ${maxGap.toFixed(0)} ms freeze mid loop, twice`);
+      check(maxGap <= maxMidGap(fps), `${where}: a ${maxGap.toFixed(0)} ms freeze mid loop, twice`);
       // Nothing stopped it over the restarts.
       const after = (await loopStates(page)).find((s) => s.id === id);
       check(after.playing, `${where}: stopped after looping`);
     }
     await page.close();
   }
+  // Inner page headers hide their panel on phones, so dust-light is not there.
   for (const id of ["ambient-light", "dust-light", "open-bible", "wheat-field", "bread-steam", "water-light", "green-mesh"]) {
-    check(seenIds.has(id), `${theme}: loop ${id} not found on ${PAGES.join(", ")}`);
+    if (phone && id === "dust-light") continue;
+    check(seenIds.has(id), `${view} ${theme}: loop ${id} not found on ${PAGES.join(", ")}`);
   }
 }
 
-async function checkOffscreen(context) {
-  console.log("\nOffscreen pause and resume (Home hero)");
+/**
+ * Phone load order and layout: no loop video exists before window load, the
+ * hero video covers exactly its poster's box, the frame is no wider than the
+ * phone crop (so poster and video scale alike under object-cover), the
+ * poster is not lazy loaded, and nothing shifts while the loop loads and starts.
+ */
+async function checkPhoneLoad(browser) {
+  for (const width of [PHONE.width, 767]) {
+    console.log(`\nPhone load order and layout, ${width}px`);
+    const context = await browser.newContext({ viewport: { width, height: PHONE.height }, isMobile: true, hasTouch: true });
+    await context.addInitScript(() => {
+      window.__loopLog = { load: null, firstVideo: null, shift: 0 };
+      addEventListener("load", () => (window.__loopLog.load = performance.now()));
+      new MutationObserver(() => {
+        if (window.__loopLog.firstVideo === null && document.querySelector("[data-loop] video")) {
+          window.__loopLog.firstVideo = performance.now();
+        }
+      }).observe(document, { childList: true, subtree: true });
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) if (!entry.hadRecentInput) window.__loopLog.shift += entry.value;
+      }).observe({ type: "layout-shift", buffered: true });
+    });
+    for (const route of ["/", "/academy"]) {
+      const id = HERO[route];
+      const page = await context.newPage();
+      await page.goto(url(route), { waitUntil: "load" });
+      const started = await waitPlaying(page, id);
+      await pause(800);
+      const r = await page.evaluate((loopId) => {
+        const frame = document.querySelector(`[data-loop="${loopId}"]`);
+        const poster = [...frame.querySelectorAll("img")].find((img) => getComputedStyle(img).display !== "none");
+        const video = frame.querySelector("video");
+        const box = (el) => {
+          const b = el.getBoundingClientRect();
+          return [b.x, b.y, b.width, b.height].map((v) => Math.round(v));
+        };
+        return {
+          ...window.__loopLog,
+          poster: box(poster),
+          video: video ? box(video) : null,
+          frame: box(frame),
+          posterLoading: poster.loading,
+          src: video?.currentSrc.split("/").pop() ?? "",
+        };
+      }, id);
+      const aspect = r.frame[2] / r.frame[3];
+      console.log(
+        `  ${route}: frame ${r.frame[2]} x ${r.frame[3]} (aspect ${aspect.toFixed(2)}, crop ${PHONE_CROP[id].toFixed(2)}), ${r.src}, video created ${(r.firstVideo - r.load).toFixed(0)} ms after load, layout shift ${r.shift.toFixed(4)}, poster ${r.posterLoading}`,
+      );
+      check(started, `${width}px ${route}: hero did not start`);
+      check(/-phone\.webm$/.test(r.src), `${width}px ${route}: plays ${r.src}, not the phone crop`);
+      check(r.firstVideo !== null && r.load !== null && r.firstVideo > r.load, `${width}px ${route}: a loop video existed before window load`);
+      check(r.shift === 0, `${width}px ${route}: layout shift ${r.shift}`);
+      check(JSON.stringify(r.poster) === JSON.stringify(r.video), `${width}px ${route}: video box ${r.video} is not the poster box ${r.poster}`);
+      check(aspect <= PHONE_CROP[id] + 0.005, `${width}px ${route}: frame aspect ${aspect.toFixed(3)} is wider than the phone crop, so poster and video would not line up`);
+      check(r.posterLoading !== "lazy", `${width}px ${route}: the poster loads lazily, so the LCP image waits`);
+      await page.close();
+    }
+    await context.close();
+  }
+}
+
+async function checkOffscreen(context, phone = false) {
+  console.log(`\nOffscreen pause and resume (Home hero, ${phone ? "phone" : "desktop"})`);
   const page = await context.newPage();
   await page.goto(url("/"), { waitUntil: "load" });
   check(await waitPlaying(page, "ambient-light"), "hero did not start");
@@ -298,7 +385,7 @@ async function checkOffscreen(context) {
   const swapped = await waitPlaying(page, "ambient-light", 6000);
   const dark = (await loopStates(page)).find((s) => s.id === "ambient-light");
   console.log(`  after the theme switch: ${swapped ? "playing" : "stopped"} ${dark.src.split("/").pop()}`);
-  check(swapped && /-dark\.webm$/.test(dark.src), "theme switch stopped the hero or kept the light rendition");
+  check(swapped && (phone ? /-dark-phone\.webm$/ : /-dark\.webm$/).test(dark.src), "theme switch stopped the hero or kept the light rendition");
   await page.close();
 }
 
@@ -366,29 +453,44 @@ async function checkMotionControl(browser) {
   check((await menuMotion.count()) === 1 && (await menuMotion.isVisible()), "mobile menu has no visible Motion control");
   const box = await menuMotion.boundingBox();
   check(box && box.height >= 44, `menu Motion control is ${box?.height}px tall, under 44`);
+  check(await waitPlaying(mpage, "ambient-light"), "phone hero did not start before Motion off");
   await menuMotion.click();
   check((await menuMotion.getAttribute("aria-pressed")) === "false", "menu Motion control did not turn off");
+  await pause(400);
+  const phoneOff = await loopStates(mpage);
+  check(phoneOff.every((s) => !s.playing && !s.shown), "a phone loop still plays or shows with Motion off");
+  await menuMotion.click();
+  check(await waitPlaying(mpage, "ambient-light"), "phone hero did not start again when Motion turned on");
+  await menuMotion.click();
   check((await mpage.evaluate(() => localStorage.getItem("hob:motion"))) === "off", "choice not saved");
   console.log("  mobile menu control: present, 44px or taller, saves off");
   await phone.close();
 }
 
-async function checkStoppers(browser) {
-  console.log("\nOnly Motion, Save-Data and reduced motion stop a loop");
+async function checkStoppers(browser, viewport) {
+  console.log(`\nOnly Motion, Save-Data, a slow connection and reduced motion stop a loop (${viewport.width}px)`);
   const cases = [
     { name: "prefers-reduced-motion, no choice saved", options: { reducedMotion: "reduce" }, expect: false },
     { name: "prefers-reduced-motion, Motion saved on", options: { reducedMotion: "reduce" }, saved: "on", expect: true },
     { name: "Save-Data on", options: {}, saveData: true, expect: false },
+    { name: "3g connection", options: {}, effectiveType: "3g", expect: false },
+    { name: "2g connection", options: {}, effectiveType: "2g", expect: false },
+    { name: "4g connection", options: {}, effectiveType: "4g", expect: true },
     { name: "Motion saved off", options: {}, saved: "off", expect: false },
     { name: "none of these", options: {}, expect: true },
   ];
   for (const c of cases) {
-    const context = await browser.newContext({ viewport: DESKTOP, ...c.options });
-    await context.addInitScript(({ saved, saveData }) => {
+    const phone = viewport.width < 768;
+    const context = await browser.newContext({ viewport, ...(phone ? { isMobile: true, hasTouch: true } : {}), ...c.options });
+    await context.addInitScript(({ saved, saveData, effectiveType }) => {
       try {
         if (saved) localStorage.setItem("hob:motion", saved);
       } catch {}
-      if (saveData) Object.defineProperty(navigator, "connection", { value: { saveData: true } });
+      if (saveData || effectiveType) {
+        const connection = new EventTarget();
+        Object.assign(connection, { saveData: Boolean(saveData), effectiveType: effectiveType ?? "4g" });
+        Object.defineProperty(navigator, "connection", { value: connection });
+      }
     }, c);
     const page = await context.newPage();
     await page.goto(url("/"), { waitUntil: "load" });
@@ -401,30 +503,44 @@ async function checkStoppers(browser) {
   }
 }
 
+const only = process.env.ONLY;
 const browser = await chromium.launch();
 try {
-  for (const theme of ["light", "dark"]) {
-    console.log(`\nEvery loop, ${theme}, ${DESKTOP.width}px`);
-    const context = await browser.newContext({ viewport: DESKTOP, colorScheme: theme });
-    await checkLoopsOn(context, theme);
-    if (theme === "light") await checkOffscreen(context);
-    await context.close();
+  if (only !== "phone") {
+    for (const theme of ["light", "dark"]) {
+      console.log(`\nEvery loop, ${theme}, ${DESKTOP.width}px`);
+      const context = await browser.newContext({ viewport: DESKTOP, colorScheme: theme });
+      await checkLoopsOn(context, theme);
+      if (theme === "light") await checkOffscreen(context);
+      await context.close();
+    }
+  }
+  if (only !== "desktop") {
+    for (const theme of ["light", "dark"]) {
+      console.log(`\nEvery loop, ${theme}, ${PHONE.width}px`);
+      const context = await browser.newContext({ viewport: PHONE, isMobile: true, hasTouch: true, colorScheme: theme });
+      await checkLoopsOn(context, theme, true);
+      if (theme === "light") await checkOffscreen(context, true);
+      await context.close();
+    }
+    await checkPhoneLoad(browser);
   }
   await checkMotionControl(browser);
-  await checkStoppers(browser);
+  if (only !== "phone") await checkStoppers(browser, DESKTOP);
+  if (only !== "desktop") await checkStoppers(browser, PHONE);
 } finally {
   await browser.close();
 }
 
-console.log("\nRestart gap per clip (VP9 WebM in Chromium). Gap is the time between the last frame before the restart and the first after it; a normal frame is the median gap.");
-console.log("theme  loop           page      length  gap ms  normal ms  last -> first (s)  skipped  picture change  blank");
+console.log("\nRestart gap per clip (VP9 WebM in Chromium). Gap is the time between the last frame before the restart and the first after it; a normal frame is the median gap (41.7 ms at 24 fps, 83.3 ms for the 12 fps phone crops).");
+console.log("view     theme  loop           page      length  gap ms  normal ms  last -> first (s)  skipped  picture change  blank");
 for (const r of report) {
   if (r.note) {
-    console.log(`${r.theme.padEnd(6)} ${r.id.padEnd(14)} ${r.route.padEnd(9)} ${r.note}`);
+    console.log(`${r.view.padEnd(8)} ${r.theme.padEnd(6)} ${r.id.padEnd(14)} ${r.route.padEnd(9)} ${r.note}`);
     continue;
   }
   console.log(
-    `${r.theme.padEnd(6)} ${r.id.padEnd(14)} ${r.route.padEnd(9)} ${r.duration.toFixed(2).padStart(6)}  ${r.gap.toFixed(0).padStart(6)}  ${r.medianGap.toFixed(0).padStart(9)}  ${r.lastBefore.toFixed(3)} -> ${r.firstAfter.toFixed(3)}  ${String(r.skipped).padStart(7)}  ${r.ratio.toFixed(2).padStart(5)}x step    ${r.blank ? "YES" : "no"}`,
+    `${r.view.padEnd(8)} ${r.theme.padEnd(6)} ${r.id.padEnd(14)} ${r.route.padEnd(9)} ${r.duration.toFixed(2).padStart(6)}  ${r.gap.toFixed(0).padStart(6)}  ${r.medianGap.toFixed(0).padStart(9)}  ${r.lastBefore.toFixed(3)} -> ${r.firstAfter.toFixed(3)}  ${String(r.skipped).padStart(7)}  ${r.ratio.toFixed(2).padStart(5)}x step    ${r.blank ? "YES" : "no"}`,
   );
 }
 console.log(failures > 0 ? `\n${failures} failure(s).` : "\nAll checks passed.");
