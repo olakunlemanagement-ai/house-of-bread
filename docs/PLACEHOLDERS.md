@@ -1121,3 +1121,85 @@ every frame showed stalls up to 333 ms; that was the check itself, so pixels
 are now read only around the restart, in a pass of their own.
 `npm run loops:seams` decodes every WebM and MP4: each wrap is within 2.1x
 an ordinary frame step (most near 1x) and no file has flicker.
+
+
+## Phone loops (23 October 2026)
+
+Branch `fix/phone-loops`, off `feat/hero-revamp`. Not merged: mobile
+Lighthouse on Home dropped by more than the 2 point limit (below).
+
+### What changed
+
+- Only the Home hero (ambient light) and the Academy hero (open Bible) play
+  on phones, 767px and below. Every other loop stays a poster there.
+- Each has a phone rendition in light and dark: a centred crop of the 1280 x
+  720 master, 12 fps (every second source frame), a 4 s loop that opens on
+  the poster's frame, no audio. Home is 2:3 (480 x 720), so it covers the
+  hero at every phone width (0.26 at 375px up to 0.63 at 767px) while
+  scaling exactly like the 16:9 poster. Academy is 4:3 (536 x 402), the
+  panel's shape.
+- Academy now shows its framed loop panel on phones, below the text, 448px
+  wide at most, with its poster loaded first. Tablets (768 to 1023px) still
+  show no panel.
+- No loop video exists before window load and an idle moment, on every
+  screen. Sources are added only as a loop nears the viewport, phone files
+  first with `<source media="(max-width: 767px)">`, WebM before MP4.
+- A slow connection (effectiveType slow-2g, 2g or 3g) keeps every loop a
+  poster, as Save-Data and Motion Off do.
+
+### Files, KB of 1000 bytes (budget 200)
+
+| Loop | WebM | MP4 | Size, fps, length |
+|---|---|---|---|
+| ambient-light-phone | 29.6 | 151.2 | 480 x 720, 12 fps, 4.00 s |
+| ambient-light-dark-phone | 40.0 | 165.2 | 480 x 720, 12 fps, 4.00 s |
+| open-bible-phone | 41.3 | 70.4 | 536 x 402, 12 fps, 4.00 s |
+| open-bible-dark-phone | 56.5 | 86.4 | 536 x 402, 12 fps, 4.00 s |
+
+All met the quality target with no budget re-encode. Each first frame
+matches its poster's crop (SSIM 0.980 to 0.996). `npm run loops:seams`:
+every wrap is 0.65x to 0.85x an ordinary frame step, no flicker.
+
+### Contrast
+
+`npm run loops:sample`: the light phone crop's darkest pixel (#1c7034) is
+lighter than the full loop's (#00402b), and the dark crop's brightest
+(#94b981) is darker than the full loop's (#aece9b), so the logged hero
+pairings are the worst case on phones too. The Academy panel carries no
+text.
+
+### Loop check at 375px
+
+`node scripts/check-loops.mjs` now runs at 375px as well (`ONLY=phone` or
+`ONLY=desktop` runs one half). In light and dark only the two heroes play,
+from their phone file; every other loop shows its poster. At 375 and 767px
+the video is created 150 to 260 ms after window load, covers exactly its
+poster's box, and nothing shifts (CLS 0). Offscreen pause, a theme switch,
+the menu Motion control, reduced motion, Save-Data, 2g and 3g all behave.
+
+| Loop (phone) | Light gap ms | Dark gap ms | Picture change at the restart (light, dark) |
+|---|---|---|---|
+| ambient-light | 38, 131 | 38, 124 | 0.60x, 0.59x a frame step |
+| open-bible | 74, 133 | 60, 120 | 0.66x, 0.80x |
+
+A frame at 12 fps lasts 83.3 ms; the freeze limit is two frames (167 ms).
+No skipped or blank frame. On desktop, one restart of the unchanged Home
+hero file showed frame 1 for frame 0 once; a full rerun was clean.
+
+### Lighthouse mobile, Home
+
+Interleaved runs on this machine, `feat/hero-revamp` (before) against this
+branch (after), production builds side by side.
+
+| Run | Before | After |
+|---|---|---|
+| Dark system theme, 1 to 3 | 78, 86, 90 | 78, 79, 91 |
+| Light, 1 to 5 | 69, 91, 84, 79, 91 | 86, 76, 73, 89, 76 |
+| Median, light | 84 | 76 |
+
+- LCP on phones is the hero heading, not the poster, in both builds: the
+  poster is 7 KB, too plain for Chrome to count it. It is never delayed.
+- The loss is mostly Speed Index: 1.3 to 2.7 s before, 2.7 to 3.3 s after
+  in every pair. The loop starts about 1 s into the trace, and Lighthouse
+  keeps recording to about 3.5 s while the background changes, so the page
+  never reads as visually complete. CLS stays 0.
