@@ -5,8 +5,8 @@ export type ThemeChoice = "light" | "dark" | "system";
 export type ResolvedTheme = "light" | "dark";
 export type ThemeSnapshot = { choice: ThemeChoice; resolved: ResolvedTheme };
 
-// Page wide theme state, in the same shape as the motion store in
-// LoopVideoClient. The html element is the source of truth: the head script
+// Page wide theme state, in the same shape as the Motion store
+// (motion-store.ts). The html element is the source of truth: the head script
 // set data-theme from storage before first paint, and setTheme changes it.
 
 const DARK_QUERY = "(prefers-color-scheme: dark)";

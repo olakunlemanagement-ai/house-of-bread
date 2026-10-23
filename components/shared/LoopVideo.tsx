@@ -21,6 +21,9 @@ type LoopVideoProps = {
  * next/image, so it is the LCP candidate and holds the space; the video lays
  * over it and fades in only once playing, so nothing shifts. Decorative:
  * the poster has empty alt text and the video is hidden from assistive tech.
+ * A loop with a dark rendition carries both posters, and CSS shows the one
+ * for the theme in effect, so the right one paints first. The dark poster
+ * loads lazily, so light never fetches it (display: none never intersects).
  * See LoopVideoClient for when it plays.
  */
 export function LoopVideo({ id, className = "", fill = false, sizes, priority = false, blend }: LoopVideoProps) {
@@ -30,9 +33,20 @@ export function LoopVideo({ id, className = "", fill = false, sizes, priority = 
       <LoopVideoClient
         full={loop.full}
         mobile={loop.mobile}
+        dark={loop.dark?.full}
         mediaClassName={blend === "multiply" ? "mix-blend-multiply" : ""}
       >
-        <Image src={loop.poster} alt="" fill sizes={sizes} priority={priority} className="object-cover" />
+        <Image
+          src={loop.poster}
+          alt=""
+          fill
+          sizes={sizes}
+          priority={priority}
+          className={`object-cover ${loop.dark ? "dark:hidden" : ""}`}
+        />
+        {loop.dark ? (
+          <Image src={loop.dark.poster} alt="" fill sizes={sizes} className="hidden object-cover dark:block" />
+        ) : null}
       </LoopVideoClient>
     </div>
   );

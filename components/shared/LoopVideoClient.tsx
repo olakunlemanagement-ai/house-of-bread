@@ -1,106 +1,37 @@
 "use client";
 
-import { useEffect, useId, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
-import type { LoopSource } from "@/lib/media/loops";
-import { Icon } from "./icons";
+import { useEffect, useRef, useState, useSyncExternalStore, type ReactNode } from "react";
+import { playableSource, type LoopSource } from "@/lib/media/loops";
+import { useMotion } from "./theme/motion-store";
 import { useTheme } from "./theme/theme-store";
 
-// Page wide motion state, shared by every loop on the page: whether the
-// visitor paused motion, and which loops have come into view. The first of
-// those carries the one Pause/Play control (WCAG 2.2.2).
+// When a loop may move: Motion is on (the footer and menu control, which
+// follows prefers-reduced-motion until the visitor chooses), Save-Data is
+// off, and there is a rendition for this theme and screen. Nothing else
+// stops it: loops carry no button of their own. The one Motion control
+// meets WCAG 2.2.2 for every loop on the site.
 
-const STORAGE_KEY = "hob:motion-paused";
-
-function readPaused(): boolean {
-  try {
-    return window.localStorage.getItem(STORAGE_KEY) === "1";
-  } catch {
-    return false;
-  }
-}
-
-function writePaused(paused: boolean) {
-  try {
-    if (paused) window.localStorage.setItem(STORAGE_KEY, "1");
-    else window.localStorage.removeItem(STORAGE_KEY);
-  } catch {
-    // Storage blocked or full: the choice still holds for this page view.
-  }
-}
-
-type MotionSnapshot = { paused: boolean; owner: string | null };
-const SERVER_SNAPSHOT: MotionSnapshot = { paused: false, owner: null };
-
-const listeners = new Set<() => void>();
-let paused: boolean | null = null;
-let owners: string[] = [];
-let snapshot: MotionSnapshot = SERVER_SNAPSHOT;
-
-function emit() {
-  snapshot = { paused: paused ?? false, owner: owners[0] ?? null };
-  for (const listener of listeners) listener();
-}
-
-const motion = {
-  subscribe(listener: () => void) {
-    if (paused === null) {
-      paused = readPaused();
-      snapshot = { paused, owner: owners[0] ?? null };
-    }
-    listeners.add(listener);
-    return () => {
-      listeners.delete(listener);
-    };
-  },
-  get: () => snapshot,
-  server: () => SERVER_SNAPSHOT,
-  register(id: string) {
-    if (!owners.includes(id)) {
-      owners = [...owners, id];
-      emit();
-    }
-  },
-  unregister(id: string) {
-    owners = owners.filter((owner) => owner !== id);
-    emit();
-  },
-  setPaused(next: boolean) {
-    paused = next;
-    writePaused(next);
-    emit();
-  },
-};
-
-function subscribeQuery(query: string) {
-  return (listener: () => void) => {
-    const list = window.matchMedia(query);
-    list.addEventListener("change", listener);
-    return () => list.removeEventListener("change", listener);
-  };
-}
-const REDUCE = "(prefers-reduced-motion: reduce)";
 const PHONE = "(max-width: 767px)";
-const subscribeReduce = subscribeQuery(REDUCE);
-const subscribePhone = subscribeQuery(PHONE);
+const subscribePhone = (listener: () => void) => {
+  const list = window.matchMedia(PHONE);
+  list.addEventListener("change", listener);
+  return () => list.removeEventListener("change", listener);
+};
 const noSubscribe = () => () => {};
 
 type NetworkInformation = { saveData?: boolean };
 
-/**
- * Whether this loop may move on this device. Never on the server, and never
- * in dark: the loops are white themed, so dark shows still glows instead
- * (globals.css, [data-loop]) and no video is requested.
- */
-function useEligible(hasMobile: boolean): { eligible: boolean; phone: boolean } {
+/** The source this loop plays here, or null for the poster only. Never on the server. */
+function usePlayableSource(loop: { full: LoopSource; mobile?: LoopSource; dark?: LoopSource }) {
   const { resolved } = useTheme();
-  const reduce = useSyncExternalStore(subscribeReduce, () => window.matchMedia(REDUCE).matches, () => true);
+  const motion = useMotion();
   const phone = useSyncExternalStore(subscribePhone, () => window.matchMedia(PHONE).matches, () => false);
   const saveData = useSyncExternalStore(
     noSubscribe,
     () => (navigator as Navigator & { connection?: NetworkInformation }).connection?.saveData === true,
     () => true,
   );
-  return { eligible: resolved === "light" && !reduce && !saveData && (!phone || hasMobile), phone };
+  return playableSource(loop, { motion, saveData, theme: resolved, phone });
 }
 
 function pickSource(video: HTMLVideoElement, source: LoopSource): string {
@@ -108,57 +39,49 @@ function pickSource(video: HTMLVideoElement, source: LoopSource): string {
 }
 
 /**
- * The moving layer over a poster. Renders no video on the server, under
- * reduced motion, with Save-Data on, or on a phone when the loop has no
- * mobile rendition: the poster (children) stands alone. Otherwise the source
- * is set only when the loop nears the viewport, it pauses offscreen, and it
- * fades in once it is actually playing, so the poster never flashes.
+ * The moving layer over a poster. Renders no video on the server, with
+ * Motion off, with Save-Data on, or where the loop has no rendition for the
+ * theme and screen: the poster (children) stands alone. Otherwise the source
+ * is set only when the loop nears the viewport, it pauses offscreen and
+ * resumes on return, and it fades in once it is actually playing, so the
+ * poster never flashes. A theme change swaps in a fresh video element.
  */
 export function LoopVideoClient({
   full,
   mobile,
+  dark,
   mediaClassName = "",
   children,
 }: {
   full: LoopSource;
   mobile?: LoopSource;
+  /** The dark rendition. Without one, the layer hides in dark and a still glow shows. */
+  dark?: LoopSource;
   /** Classes for the media layer (poster and video), such as a blend mode. */
   mediaClassName?: string;
-  /** The poster image. */
+  /** The poster image, or one per theme. */
   children: ReactNode;
 }) {
-  const id = useId();
   const videoRef = useRef<HTMLVideoElement>(null);
-  const visibleRef = useRef(false);
-  const [shown, setShown] = useState(false);
-  const { eligible, phone } = useEligible(Boolean(mobile));
-  const state = useSyncExternalStore(motion.subscribe, motion.get, motion.server);
-  const pausedRef = useRef(state.paused);
+  const [playing, setPlaying] = useState<string | null>(null);
+  const src = usePlayableSource({ full, mobile, dark });
 
-  // A loop keeps the control until it unmounts or may no longer move.
-  useEffect(() => {
-    if (!eligible) return;
-    return () => motion.unregister(id);
-  }, [eligible, id]);
-
-  // Load on approach, play while visible, pause offscreen. The first loop to
-  // come near the viewport claims the page's Pause/Play control, so a loop
-  // hidden by CSS (display: none never intersects) never holds it.
-  // Strings, not the source objects, so a re-render never restarts this.
-  const src = phone && mobile ? mobile : full;
-  const webm = src.webm;
-  const mp4 = src.mp4;
+  // Load on approach, play while visible, pause offscreen. Strings, not the
+  // source object, so a re-render never restarts this.
+  const webm = src?.webm;
+  const mp4 = src?.mp4;
   useEffect(() => {
     const video = videoRef.current;
-    if (!eligible || !video) return;
+    if (!webm || !mp4 || !video) return;
+    // React sets the muted property but not the attribute. defaultMuted
+    // reflects the attribute, which some browsers need for autoplay.
+    video.defaultMuted = true;
     video.muted = true;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        visibleRef.current = entry.isIntersecting;
         if (entry.isIntersecting) {
-          motion.register(id);
           if (!video.getAttribute("src")) video.src = pickSource(video, { webm, mp4 });
-          if (!pausedRef.current) video.play().catch(() => {});
+          video.play().catch(() => {});
         } else {
           video.pause();
         }
@@ -170,51 +93,30 @@ export function LoopVideoClient({
       observer.disconnect();
       video.pause();
     };
-  }, [eligible, webm, mp4, id]);
-
-  // Follow the page wide Pause/Play choice.
-  useEffect(() => {
-    pausedRef.current = state.paused;
-    const video = videoRef.current;
-    if (!video || !video.getAttribute("src")) return;
-    if (state.paused) video.pause();
-    else if (visibleRef.current) video.play().catch(() => {});
-  }, [state.paused]);
-
-  const isOwner = eligible && state.owner === id;
+  }, [webm, mp4]);
 
   return (
-    <>
-      <div className={`absolute inset-0 overflow-hidden dark:hidden ${mediaClassName}`}>
-        {children}
-        {eligible ? (
-          <video
-            ref={videoRef}
-            muted
-            loop
-            playsInline
-            preload="none"
-            disablePictureInPicture
-            disableRemotePlayback
-            aria-hidden="true"
-            tabIndex={-1}
-            onPlaying={() => setShown(true)}
-            className={`absolute inset-0 size-full object-cover transition-opacity duration-500 ${
-              shown ? "opacity-100" : "opacity-0"
-            }`}
-          />
-        ) : null}
-      </div>
-      {isOwner ? (
-        <button
-          type="button"
-          onClick={() => motion.setPaused(!state.paused)}
-          className="absolute bottom-3 right-3 z-20 inline-flex size-11 items-center justify-center rounded-full border border-border bg-(--control-fill) text-emerald-deep shadow-soft transition-colors hover:border-border-strong hover:bg-surface-raised"
-        >
-          <Icon name={state.paused ? "resume" : "pause"} className="size-5" />
-          <span className="sr-only">{state.paused ? "Play background motion" : "Pause background motion"}</span>
-        </button>
+    <div className={`absolute inset-0 overflow-hidden ${dark ? "" : "dark:hidden"} ${mediaClassName}`}>
+      {children}
+      {webm ? (
+        <video
+          key={webm}
+          ref={videoRef}
+          muted
+          loop
+          playsInline
+          preload="none"
+          disablePictureInPicture
+          disableRemotePlayback
+          aria-hidden="true"
+          tabIndex={-1}
+          data-loop-video=""
+          onPlaying={() => setPlaying(webm)}
+          className={`absolute inset-0 size-full object-cover transition-opacity duration-500 ${
+            playing === webm ? "opacity-100" : "opacity-0"
+          }`}
+        />
       ) : null}
-    </>
+    </div>
   );
 }

@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import { ButtonLink } from "./Button";
 import { Logo } from "./Logo";
 import { NavLinks, StaticNavLinks } from "./NavLinks";
+import { MotionToggle } from "./theme/MotionToggle";
 import { ThemeChoice } from "./theme/ThemeChoice";
 import { ThemeToggle } from "./theme/ThemeToggle";
 
@@ -19,8 +20,8 @@ import { ThemeToggle } from "./theme/ThemeToggle";
  * "Explore" below sm), the theme switch and a Menu button, all always
  * visible. The menu is a details element, so it opens and closes
  * without JavaScript. Its panel is solid white (night in dark) and fades in
- * over 180ms. Below the links sits the Light, Dark or System choice, which
- * shows only with JavaScript.
+ * over 180ms. Below the links sit the Light, Dark or System choice and the
+ * Motion On or Off control, which show only with JavaScript.
  */
 export function SiteHeader() {
   return (
@@ -71,8 +72,9 @@ export function SiteHeader() {
                 </Suspense>
               </nav>
               <div data-theme-control className="mx-auto w-full max-w-[75rem] px-4 pb-6 sm:px-6">
-                <div className="border-t border-border pt-5">
+                <div className="flex flex-wrap gap-x-8 gap-y-5 border-t border-border pt-5">
                   <ThemeChoice legendClassName="eyebrow" />
+                  <MotionToggle labelClassName="eyebrow" />
                 </div>
               </div>
             </div>

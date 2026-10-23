@@ -5,6 +5,7 @@ import { NavLinks, StaticNavLinks } from "./NavLinks";
 import { RegionChips } from "./RegionChips";
 import { SocialLinks } from "./SocialLinks";
 import { Logo } from "./Logo";
+import { MotionToggle } from "./theme/MotionToggle";
 import { ThemeChoice } from "./theme/ThemeChoice";
 
 const columnHeading = "font-sans text-xs font-semibold uppercase tracking-[0.16em] text-on-green-muted";
@@ -41,8 +42,9 @@ export function SiteFooter() {
             <div className="mt-6">
               <RegionChips />
             </div>
-            <div data-theme-control className="mt-8">
+            <div data-theme-control className="mt-8 flex flex-wrap gap-x-8 gap-y-6">
               <ThemeChoice legendClassName={columnHeading} />
+              <MotionToggle labelClassName={columnHeading} />
             </div>
           </div>
 

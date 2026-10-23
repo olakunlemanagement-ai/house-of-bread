@@ -146,7 +146,6 @@
   --scrim: rgb(255 255 255 / 0.8);
   --scrim-soft: rgb(255 255 255 / 0.2);
   --glass-border: rgb(255 255 255 / 0.7);
-  --control-fill: rgb(255 255 255 / 0.9);
   --facade-bar: rgb(255 255 255 / 0.95);
   --skeleton-sheen: rgb(255 255 255 / 0.55);
   --fill-highlight: rgb(255 255 255 / 0.18);
@@ -228,9 +227,9 @@
     --glass-edge: inset 0 1px 0 rgb(255 255 255 / 0.06);
     --glass-border: rgb(143 211 165 / 0.14);
 
-    --scrim: transparent;
-    --scrim-soft: transparent;
-    --control-fill: rgb(17 30 23 / 0.9);
+    /* Night over the dark hero loop, checked against its brightest pixel. */
+    --scrim: rgb(10 21 16 / 0.8);
+    --scrim-soft: rgb(10 21 16 / 0.2);
     --facade-bar: rgb(17 30 23 / 0.95);
     --skeleton-sheen: rgb(255 255 255 / 0.06);
     --hero-glow-1: rgb(46 158 79 / 0.16);
@@ -247,10 +246,12 @@
 }
 
 /*
-  Loops in dark. Loops and posters are white themed and would glow, so in
-  dark the poster layer is hidden, LoopVideoClient requests no video, and
-  the frame carries still radial glows instead. Radial gradients only, no
-  blur. The Home hero keeps its light swirl as a ribbon of soft green
+  Loops in dark. A loop with a dark rendition (WITH_DARK in
+  lib/media/loops.ts) shows its dark poster and plays its dark video, and
+  these glows sit unseen beneath. The rest are white themed and would
+  glow, so in dark their poster layer is hidden, LoopVideoClient requests
+  no video, and the frame carries still radial glows instead. Radial
+  gradients only, no blur. The Home hero keeps its light swirl as a ribbon of soft green
   ellipses curving from upper left to the phone, with a breath of lime.
   Text over them is checked against the brightest point (npm run contrast).
 */
@@ -646,6 +647,25 @@
 */
 html:not([data-js]) [data-theme-control] {
   display: none !important;
+}
+
+/*
+  Motion Off (the footer and menu control, or prefers-reduced-motion with
+  no saved choice): every loop shows its poster only. The head script sets
+  data-motion before first paint, so no video ever shows; LoopVideoClient
+  also unmounts them. The current On or Off pill matches the theme
+  choice's checked pill: inset ring and heavier type, never colour alone.
+*/
+html[data-motion="off"] [data-loop] video {
+  display: none !important;
+}
+
+html:not([data-motion="off"]) [data-motion-state="on"],
+html[data-motion="off"] [data-motion-state="off"] {
+  background-color: var(--pill-current-bg);
+  color: var(--pill-current-fg);
+  font-weight: 600;
+  box-shadow: inset 0 0 0 1px var(--pill-current-ring);
 }
 
 [data-theme-switching] *,

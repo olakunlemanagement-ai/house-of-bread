@@ -50,6 +50,9 @@ const tokens = {
   // Darkest pixels of the decorative loops, from npm run loops:sample.
   loopLightDark: "#00402b",
   loopWaterDark: "#48422f",
+  // Brightest pixels of the dark loops that sit behind text or glass
+  // (npm run loops:sample, 23 October 2026).
+  loopAmbientDarkBright: "#aece9b",
   // Logo lid edge, the mark's lightest green edge.
   logoLid: "#397733",
 };
@@ -210,8 +213,6 @@ const lightOnly = [
   ["Newsletter card over steam: ink-muted, darkest pixel", "inkMuted", ["black", "white/0.84"], TEXT],
   ["Newsletter card over steam: emerald-deep, darkest pixel", "emeraldDeep", ["black", "white/0.84"], TEXT],
   ["Newsletter card over steam: ink-muted, brightest pixel", "inkMuted", ["white", "white/0.84"], TEXT],
-  // Pause/Play control: emerald-deep glyph on 90% white over any loop (UI).
-  ["Motion control: emerald-deep glyph over black, 90% white", "emeraldDeep", ["black", "white/0.9"], UI],
   // Logo mark, no tile on light.
   ["Logo lid edge on white (header, plain pages)", "logoLid", ["white"], UI],
   ["Logo lid edge over the hero tint peak", "logoLid", ["white", "emerald/0.1"], UI],
@@ -219,8 +220,25 @@ const lightOnly = [
   ["Lime on white (never used for text or meaning)", "lime", ["white"], TEXT, "not used"],
 ];
 
-/** Dark only. Loops are replaced by still glows; the logo mark sits in a white tile. */
+/**
+ * Dark only. Loops with a dark rendition play it; the rest are replaced by
+ * still glows. The logo mark sits in a white tile.
+ */
 const darkOnly = [
+  // Home hero: the dark ambient loop (light through smoke) under an 80%
+  // night scrim. Light text is worst over the loop's brightest pixel.
+  ["Dark hero loop: ink over brightest frame pixel, 80% night scrim", "mist", ["loopAmbientDarkBright", "night/0.8"], TEXT],
+  ["Dark hero loop: muted over brightest frame pixel, 80% night scrim", "mistMuted", ["loopAmbientDarkBright", "night/0.8"], TEXT],
+  ["Dark hero loop: accent (H1 phrase, TextCTA), brightest pixel, 80% night scrim", "spring", ["loopAmbientDarkBright", "night/0.8"], TEXT],
+  ["Dark hero loop: lime eyebrow, brightest pixel, 80% night scrim", "lime", ["loopAmbientDarkBright", "night/0.8"], TEXT],
+  ["Dark hero loop: nav current pill, brightest pixel, 80% night scrim", "spring", ["loopAmbientDarkBright", "night/0.8", "nightTint"], TEXT],
+  ["Dark hero loop: focus ring, brightest pixel, 80% night scrim", "spring", ["loopAmbientDarkBright", "night/0.8"], UI],
+  // Hero floating cards (dark glass) where the scrim is lightest (20%).
+  ["Dark hero card over the loop: muted, brightest pixel, 20% night scrim", "mistMuted", ["loopAmbientDarkBright", "night/0.2", "nightRaised/0.88"], TEXT],
+  ["Dark hero card over the loop: accent, brightest pixel, 20% night scrim", "spring", ["loopAmbientDarkBright", "night/0.2", "nightRaised/0.88"], TEXT],
+  // App band: the progress card (dark glass) over the dark water loop, whose brightest pixel is white.
+  ["App band glass over dark water: muted, brightest pixel", "mistMuted", ["white", "nightRaised/0.88"], TEXT],
+  ["App band glass over dark water: accent, brightest pixel", "spring", ["white", "nightRaised/0.88"], TEXT],
   // Home hero swirl at its brightest overlap: the leaf ribbon, the lime breath and the emerald glow.
   ["Hero swirl peak: ink", "mist", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
   ["Hero swirl peak: muted", "mistMuted", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],

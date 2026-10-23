@@ -8,7 +8,8 @@ import { RegionChips } from "./RegionChips";
 /**
  * Home hero. A pale ambient light loop behind ink type and an emerald accent
  * phrase, under a white scrim so every text pairing keeps AA against the
- * darkest frame (logged in docs/PLACEHOLDERS.md). The header floats over
+ * darkest frame. In dark, light through smoke under a night scrim, checked
+ * against the brightest frame (both logged in docs/PLACEHOLDERS.md). The header floats over
  * this section, so the top padding is its 72px plus 64px or more of clear
  * space above the eyebrow.
  */
@@ -16,7 +17,7 @@ export function Hero({ nextSession }: { nextSession?: HeroSession }) {
   return (
     <section aria-labelledby="hero-heading" className="bg-hero-tint relative overflow-x-clip">
       <LoopVideo id="ambient-light" fill priority sizes="100vw" />
-      {/* Scrim: white at 80% across the text side and the header, easing off behind the phone. */}
+      {/* Scrim: white (night in dark) at 80% across the text side and the header, easing off behind the phone. */}
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 bg-(--scrim) lg:bg-transparent lg:[background-image:linear-gradient(to_right,var(--scrim)_0%,var(--scrim)_60%,var(--scrim-soft)_100%)]"

@@ -33,8 +33,6 @@ export type IconName =
   | "heart"
   | "headphones"
   | "video"
-  | "pause"
-  | "resume"
   | "sun"
   | "moon"
   | "monitor"
@@ -189,8 +187,6 @@ const paths: Record<IconName, ReactNode> = {
       <path d="m17 10 4-2.5v9L17 14" />
     </>
   ),
-  pause: <path d="M9 6v12M15 6v12" />,
-  resume: <path d="M8 5.5v13l10.5-6.5z" fill="currentColor" />,
   sun: (
     <>
       <circle cx="12" cy="12" r="4" />
