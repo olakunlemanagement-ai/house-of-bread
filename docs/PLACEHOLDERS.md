@@ -1121,3 +1121,116 @@ every frame showed stalls up to 333 ms; that was the check itself, so pixels
 are now read only around the restart, in a pass of their own.
 `npm run loops:seams` decodes every WebM and MP4: each wrap is within 2.1x
 an ordinary frame step (most near 1x) and no file has flicker.
+
+
+## Phone loops (23 October 2026)
+
+Branch `fix/phone-loops`, off `feat/hero-revamp`. Not merged; waiting for
+review.
+
+### What changed
+
+- Only the Home hero (ambient light) and the Academy hero (open Bible) play
+  on phones, 767px and below. Every other loop stays a poster there.
+- Each has a phone rendition in light and dark: a centred crop of the 1280 x
+  720 master, 12 fps (every second source frame), a 4 s loop that opens on
+  the poster's frame, no audio. Home is 2:3 (480 x 720), so it covers the
+  hero at every phone width (0.26 at 375px up to 0.63 at 767px) while
+  scaling exactly like the 16:9 poster. Academy is 4:3 (536 x 402), the
+  panel's shape.
+- Academy now shows its framed loop panel on phones, below the text, 448px
+  wide at most, with its poster loaded first. Tablets (768 to 1023px) still
+  show no panel.
+- No loop video exists until window load, an idle moment and then
+  `LOOP_START_DELAY_MS` (3 s, in `lib/media/loops.ts`) have passed, on every
+  screen. Until then the poster stands alone, and the video fades in over it
+  from the same frame. Sources are added only as a loop nears the viewport,
+  phone files first with `<source media="(max-width: 767px)">`, WebM before
+  MP4.
+- A slow connection (effectiveType slow-2g, 2g or 3g) keeps every loop a
+  poster, as Save-Data and Motion Off do.
+
+### Files, KB of 1000 bytes (budget 200)
+
+| Loop | WebM | MP4 | Size, fps, length |
+|---|---|---|---|
+| ambient-light-phone | 29.6 | 151.2 | 480 x 720, 12 fps, 4.00 s |
+| ambient-light-dark-phone | 40.0 | 165.2 | 480 x 720, 12 fps, 4.00 s |
+| open-bible-phone | 41.3 | 70.4 | 536 x 402, 12 fps, 4.00 s |
+| open-bible-dark-phone | 56.5 | 86.4 | 536 x 402, 12 fps, 4.00 s |
+
+All met the quality target with no budget re-encode. Each first frame
+matches its poster's crop (SSIM 0.980 to 0.996). `npm run loops:seams`:
+every wrap is 0.65x to 0.85x an ordinary frame step, no flicker.
+
+### Contrast
+
+`npm run loops:sample`: the light phone crop's darkest pixel (#1c7034) is
+lighter than the full loop's (#00402b), and the dark crop's brightest
+(#94b981) is darker than the full loop's (#aece9b), so the logged hero
+pairings are the worst case on phones too. The Academy panel carries no
+text.
+
+### Loop check, final run
+
+`node scripts/check-loops.mjs` runs at 1280px and 375px in light and dark
+(`ONLY=phone` or `ONLY=desktop` runs one half). It reads
+`LOOP_START_DELAY_MS` from `lib/media/loops.ts`, and watches a loop that
+should stay still for the delay plus 3 s, so a broken stopper cannot pass
+by not having started yet. All checks passed.
+
+- At 375px only the two heroes play, from their phone file, in light and
+  dark; every other loop shows its poster.
+- At 375 and 767px the poster shows alone and fully opaque halfway through
+  the delay, the video is created 3.11 to 3.16 s after window load, covers
+  exactly its poster's box, and nothing shifts (CLS 0).
+- Offscreen pause, a theme switch, the footer and menu Motion control,
+  reduced motion, Save-Data, 2g and 3g all behave on both screens.
+
+| Loop | View | Light gap ms | Dark gap ms | Picture change at the restart (light, dark) |
+|---|---|---|---|---|
+| ambient-light | phone | 61, 82 | 20, 119 | 0.60x, 0.59x a frame step |
+| open-bible | phone | 69, 119 | 81, 106 | 0.66x, 0.80x |
+| ambient-light | desktop | 72, 36 | 70, 53 | 1.18x, 1.09x |
+| open-bible | desktop | 52, 61 | 49, 57 | 1.22x, 1.30x |
+
+A frame lasts 83.3 ms at 12 fps (freeze limit 167 ms) and 41.7 ms at 24
+fps (limit 84 ms). No skipped or blank frame. Three stalls mid loop (216 to
+552 ms) remeasured clean (84 to 86 ms worst gap): the machine, not the
+files.
+
+### Lighthouse mobile, Home
+
+Interleaved runs on this machine, `feat/hero-revamp` (before) against this
+branch (after), production builds side by side.
+
+Without the start delay (loop at load plus idle), light, 5 runs each:
+
+| | Before | After |
+|---|---|---|
+| Scores | 69, 91, 84, 79, 91 | 86, 76, 73, 89, 76 |
+| Median | 84 | 76 |
+
+The loss was almost all Speed Index (1.3 to 2.7 s before, 2.7 to 3.3 s
+after in every pair): the loop started about 1 s into the trace and the
+moving background kept the page from reading as visually complete.
+
+Final, with the 3 s start delay:
+
+| | Before | After |
+|---|---|---|
+| Light, 5 runs | 72, 78, 94, 92, 90 | 88, 81, 93, 90, 84 |
+| Median, light | 90 | 88 |
+| Dark, 3 runs | 60, 84, 70 | 91, 82, 84 |
+| Median, dark | 70 | 84 |
+
+- Light is 2 points down at the median, inside the 2 point limit and
+  inside this machine's noise (pairs differ by up to 16 points).
+- Dark favours the branch only because two baseline runs had 1.8 and 2.4 s
+  of blocking time; that is the machine, not the branch.
+- No trace contains a loop request: Lighthouse has stopped recording before
+  the 3 s are up. Phones still download the loop, only later. CLS is 0 and
+  LCP is the hero heading in every run (the 7 KB poster is too plain for
+  Chrome to count), so the poster is never the LCP and never delayed.
+- These scores are from a busy desktop. Rerun on CI or a mid range Android
+  phone before trusting the absolute numbers.

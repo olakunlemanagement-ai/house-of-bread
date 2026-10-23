@@ -14,7 +14,7 @@ import { spawn } from "node:child_process";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { HEIGHT, MOBILE_HEIGHT, MOBILE_WIDTH, WIDTH, clips } from "./config.mjs";
+import { HEIGHT, WIDTH, clips } from "./config.mjs";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
 const OUT = path.join(ROOT, "public", "media", "loops");
@@ -84,7 +84,9 @@ const keyed = clips.filter((c) => c.keyWhite && (c.ship !== false || process.arg
 if (!keyed.length) console.log("No shipped loop is keyed to white. Name an id to check one anyway.");
 for (const clip of keyed) {
   const variants = [{ suffix: "", width: WIDTH, height: HEIGHT }];
-  if (clip.mobile) variants.push({ suffix: "-640", width: MOBILE_WIDTH, height: MOBILE_HEIGHT });
+  // The safe box is in full frame coordinates; a phone crop would need it
+  // shifted. No keyed loop plays on phones, so refuse rather than guess.
+  if (clip.phone) throw new Error(`${clip.id}: a keyed loop with a phone rendition is not checked yet`);
   for (const v of variants) {
     for (const ext of ["webm", "mp4"]) {
       const file = path.join(OUT, `${clip.id}${v.suffix}.${ext}`);

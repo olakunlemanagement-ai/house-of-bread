@@ -179,7 +179,8 @@ declaring any task complete.
 - Live streaming runs on YouTube. No hosted long form video. Short silent
   decorative loops are allowed: 800 KB each or less, with a poster, lazy
   loaded, paused offscreen, never with sound, and off with Motion Off
-  (which follows reduced motion until the visitor chooses) and Save-Data.
+  (which follows reduced motion until the visitor chooses), Save-Data and
+  a slow connection (effectiveType slow-2g, 2g or 3g).
 - Embeds use `youtube-nocookie.com` behind a click to load facade, so no
   YouTube code loads until the visitor asks for it.
 - Event times are stored as UTC plus an IANA time zone in frontmatter, and
@@ -380,9 +381,23 @@ themes), run `npm run contrast`, and log it before it ships.
   (20px radius), never behind text, except the Home hero, which has a
   white scrim checked against the darkest frame (in dark, a night scrim
   checked against the brightest frame of the dark loop).
-- Phones play only loops with a 640 wide rendition, and never a dark one.
-- Nothing stops a loop but Motion Off, Save-Data, or prefers-reduced-motion
-  (through the Motion default). Offscreen it pauses and resumes on return.
+- Phones (767px and below) play only the Home and Academy hero loops, from
+  their phone rendition (`WITH_PHONE`): a centred crop to the hero's phone
+  aspect, 540px wide at most, 12 fps, a 4 s loop opening on the poster's
+  frame, 200 KB or less, light and dark, served by `<source media>`. Every
+  other loop is a poster on phones. Add a phone loop only with an
+  interleaved mobile Lighthouse A/B on Home (docs/PLACEHOLDERS.md).
+- No loop video exists until window load, an idle moment
+  (requestIdleCallback, or a timeout) and then `LOOP_START_DELAY_MS` (3 s,
+  `lib/media/loops.ts`) have passed, and every loop has preload="none".
+  Until then the poster stands alone and holds the space; the video fades
+  in over it from the same frame. Why: started at load plus idle, the Home
+  phone loop cost mobile Lighthouse 8 points (median 84 to 76), all Speed
+  Index; with the delay the median was 88 against 90 in light (23 October
+  2026). Lower it only with that A/B.
+- Nothing stops a loop but Motion Off, Save-Data, a slow connection
+  (slow-2g, 2g, 3g) or prefers-reduced-motion (through the Motion
+  default). Offscreen it pauses and resumes on return.
 - Every loop is seamless: `npm run loops:seams` checks the wrap of every
   file, and `scripts/check-loops.mjs` measures the restart in a browser.
 

@@ -8,8 +8,9 @@
 // the repo. They never enter the repo. Output goes to public/media/loops.
 //
 // Per clip: strip audio, crop if needed, key to white if needed, make the
-// loop seamless, then encode VP9 WebM and H.264 MP4 (plus 640 wide versions
-// where configured) and a WebP poster from the loop's first frame. Each file
+// loop seamless, then encode VP9 WebM and H.264 MP4 and a WebP poster from
+// the loop's first frame. A clip with a phone rendition also gets its own
+// 4 s loop, cropped to the hero's phone aspect at 12 fps ("<id>-phone"). Each file
 // is first encoded at a quality target. Only a file over budget is
 // re-encoded at the budget bitrate, and the report says how much it lost.
 // Exits 1 if any file is still over budget. No dependencies.
@@ -23,12 +24,12 @@ import {
   BUDGET,
   FPS,
   HEIGHT,
-  MOBILE_HEIGHT,
-  MOBILE_WIDTH,
+  PHONE,
   SEAM_SEARCH_FRAMES,
   WIDTH,
   XFADE_FRAMES,
   clips,
+  phoneGeometry,
 } from "./config.mjs";
 
 const ROOT = fileURLToPath(new URL("../../", import.meta.url));
@@ -188,12 +189,18 @@ function ssim(file, reference, width, height) {
   return match ? Number(match[1]) : NaN;
 }
 
-function encode(codec, input, output, { width, height, denoise, crf, bitrate }) {
-  const filters = [denoise ? "hqdn3d=2:2:4:4" : null, `scale=${width}:${height}:flags=lanczos`, "format=yuv420p"]
+function encode(codec, input, output, { width, height, denoise, crf, bitrate, crop, fps = FPS }) {
+  const filters = [
+    denoise ? "hqdn3d=2:2:4:4" : null,
+    crop ?? null,
+    fps === FPS ? null : `fps=${fps}`,
+    `scale=${width}:${height}:flags=lanczos`,
+    "format=yuv420p",
+  ]
     .filter(Boolean)
     .join(",");
   const passlog = path.join(TMP, `pass-${path.basename(output)}`);
-  const common = ["-i", input, "-an", "-vf", filters, ...COLOUR_TAGS, "-g", String(FPS * 4)];
+  const common = ["-i", input, "-an", "-vf", filters, ...COLOUR_TAGS, "-g", String(fps * 4)];
   const rate =
     codec === "vp9"
       ? ["-c:v", "libvpx-vp9", ...(bitrate ? ["-b:v", String(bitrate)] : ["-crf", String(crf), "-b:v", "0"]),
@@ -243,26 +250,64 @@ function processClip(clip) {
   if (!fs.existsSync(source)) throw new Error(`Missing raw clip ${source}`);
   console.log(`\n${clip.id}: ${clip.source}`);
 
-  const seam = findSeam(rawGray(source, preChain(clip)));
-  if (clip.loop === "xfade") {
-    console.log(`  seam: frame ${seam.b} -> ${seam.a}, diff ${seam.diff.toFixed(2)} (typical step ${seam.typicalStep.toFixed(2)})`);
-  } else {
-    console.log(`  ping-pong over frames ${clip.segment[0]} to ${clip.segment[1]}`);
+  const gray = rawGray(source, preChain(clip));
+
+  /**
+   * A lossless loop master at 24 fps, 1280 x 720, and the source frame it
+   * opens on. A given seam (phone loops) is used as is.
+   */
+  function buildMaster(spec, name, fixedSeam) {
+    let seam = null;
+    if (spec.loop === "xfade") {
+      seam = fixedSeam ?? findSeam(gray);
+      const diff = fixedSeam ? meanAbsDiff(gray.frame(seam.a), gray.frame(seam.b)) : seam.diff;
+      console.log(`  ${name} seam: frame ${seam.b} -> ${seam.a}, diff ${diff.toFixed(2)}`);
+    } else {
+      console.log(`  ${name} ping-pong over frames ${spec.segment[0]} to ${spec.segment[1]}`);
+    }
+    const { graph, frames } = loopGraph(spec, seam);
+    const master = path.join(TMP, `${clip.id}-${name}-master.mkv`);
+    ffmpeg(["-i", source, "-an", "-filter_complex", graph, "-map", "[out]",
+      "-c:v", "libx264", "-preset", "fast", "-crf", "4", "-pix_fmt", "yuv444p", ...COLOUR_TAGS, master]);
+    const firstFrame = seam ? seam.a + (spec.xfade ?? XFADE_FRAMES) : spec.segment[0];
+    return { master, frames, firstFrame };
   }
 
-  const { graph, frames } = loopGraph(clip, seam);
-  const master = path.join(TMP, `${clip.id}-master.mkv`);
-  ffmpeg(["-i", source, "-an", "-filter_complex", graph, "-map", "[out]",
-    "-c:v", "libx264", "-preset", "fast", "-crf", "4", "-pix_fmt", "yuv444p", ...COLOUR_TAGS, master]);
+  const { master, frames, firstFrame } = buildMaster(clip, "full");
+  const variants = [{ suffix: "", master, frames, width: WIDTH, height: HEIGHT, budget: BUDGET.full }];
+  if (clip.phone) {
+    // Its own 4 s loop, where the full one runs 4 to 8 s. It opens on the
+    // poster's frame (the full loop's first), so the fade from poster to
+    // video shows no change of picture.
+    const spec = { ...clip, ...clip.phone };
+    if (spec.loop === "pingpong") {
+      // Forward 48 frames and back: 96 frames.
+      spec.segment = [firstFrame, firstFrame + PHONE.frames / 2];
+    }
+    const xfade = spec.xfade ?? XFADE_FRAMES;
+    const seam = spec.loop === "xfade" ? { a: firstFrame - xfade, b: firstFrame + PHONE.frames } : undefined;
+    if (seam && (seam.a < 0 || seam.b > gray.count)) throw new Error(`${clip.id}: the phone loop runs off the clip`);
+    if (spec.segment && spec.segment[1] >= gray.count) throw new Error(`${clip.id}: the phone loop runs off the clip`);
+    const phone = buildMaster(spec, "phone", seam);
+    if (phone.frames !== PHONE.frames) throw new Error(`${clip.id}: phone loop is ${phone.frames} frames, not ${PHONE.frames}`);
+    if (phone.firstFrame !== firstFrame) throw new Error(`${clip.id}: phone loop opens on frame ${phone.firstFrame}, the poster on ${firstFrame}`);
+    const geometry = phoneGeometry(spec.aspect);
+    variants.push({ suffix: "-phone", ...phone, ...geometry, fps: PHONE.fps, budget: BUDGET.phone });
+  }
 
   const results = [];
-  const variants = [{ suffix: "", width: WIDTH, height: HEIGHT, budget: BUDGET.full }];
-  if (clip.mobile) variants.push({ suffix: "-640", width: MOBILE_WIDTH, height: MOBILE_HEIGHT, budget: BUDGET.mobile });
   for (const variant of variants) {
     for (const [codec, ext] of [["vp9", "webm"], ["x264", "mp4"]]) {
       const output = path.join(OUT, `${clip.id}${variant.suffix}.${ext}`);
-      const opts = { width: variant.width, height: variant.height, budget: variant.budget, denoise: Boolean(clip.denoise) };
-      results.push({ ...encodeWithinBudget(codec, master, output, opts, frames), budget: variant.budget });
+      const opts = {
+        width: variant.width,
+        height: variant.height,
+        budget: variant.budget,
+        denoise: Boolean(clip.denoise),
+        crop: variant.crop,
+        fps: variant.fps,
+      };
+      results.push({ ...encodeWithinBudget(codec, variant.master, output, opts, variant.frames), budget: variant.budget, variant });
     }
   }
 
@@ -277,10 +322,13 @@ function processClip(clip) {
     if (r.mode === "budget") {
       note += `: clean ${(r.cleanBytes / 1000).toFixed(0)} KB, now ${(r.bitrate / 1000).toFixed(0)} kbps, SSIM vs clean ${r.ssimVsClean.toFixed(4)}`;
     }
-    console.log(`  ${path.basename(r.file).padEnd(26)} ${kb} KB  ${note}`);
+    const size = r.variant ? `  ${r.variant.width} x ${r.variant.height}, ${r.variant.fps ?? FPS} fps` : "";
+    console.log(`  ${path.basename(r.file).padEnd(30)} ${kb} KB  ${note}${size}`);
   }
-  console.log(`  ${frames} frames, ${(frames / FPS).toFixed(2)} s${clip.denoise ? ", denoised" : ""}`);
-  return { clip, frames, seam, results };
+  for (const v of variants) {
+    console.log(`  ${v.suffix || "full"}: ${v.frames} frames at 24 fps, ${(v.frames / FPS).toFixed(2)} s${clip.denoise ? ", denoised" : ""}`);
+  }
+  return { clip, results };
 }
 
 fs.mkdirSync(OUT, { recursive: true });

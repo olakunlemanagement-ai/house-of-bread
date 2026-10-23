@@ -1,7 +1,17 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { LOOP_IDS, getLoop, playableSource, type LoopId, type PlayContext } from "@/lib/media/loops";
+import {
+  LOOP_IDS,
+  LOOP_START_DELAY_MS,
+  PHONE_QUERY,
+  SLOW_CONNECTIONS,
+  getLoop,
+  playableVideos,
+  videosOf,
+  type LoopId,
+  type PlayContext,
+} from "@/lib/media/loops";
 import { resolveMotion } from "./motion-store";
 import { MOTION_KEY, THEME_KEY, themeScript } from "./theme-script";
 
@@ -78,51 +88,88 @@ describe("resolveMotion", () => {
 });
 
 describe("which loops play", () => {
-  /** What LoopVideo hands LoopVideoClient: each video source, the dark one included. */
-  const sources = (id: LoopId) => {
+  /** What LoopVideo hands LoopVideoClient: each theme's videos. */
+  const videos = (id: LoopId) => {
     const loop = getLoop(id);
-    return { full: loop.full, mobile: loop.mobile, dark: loop.dark?.full };
+    return { light: videosOf(loop), dark: loop.dark ? videosOf(loop.dark) : undefined };
   };
+  const on: PlayContext = { motion: "on", saveData: false, slowConnection: false, theme: "light", phone: false };
 
   const contexts: Omit<PlayContext, "motion">[] = [];
   for (const theme of ["light", "dark"] as const)
     for (const phone of [false, true])
-      for (const saveData of [false, true]) contexts.push({ theme, phone, saveData });
+      for (const saveData of [false, true])
+        for (const slowConnection of [false, true]) contexts.push({ theme, phone, saveData, slowConnection });
 
   it("plays no loop anywhere when Motion is off", () => {
     for (const id of LOOP_IDS)
       for (const context of contexts) {
-        expect(playableSource(sources(id), { ...context, motion: "off" }), `${id} ${JSON.stringify(context)}`).toBeNull();
+        expect(playableVideos(videos(id), { ...context, motion: "off" }), `${id} ${JSON.stringify(context)}`).toBeNull();
       }
   });
 
-  it("plays no loop with Save-Data on", () => {
+  it("plays no loop with Save-Data on or on a slow connection", () => {
     for (const id of LOOP_IDS)
-      for (const context of contexts.filter((c) => c.saveData)) {
-        expect(playableSource(sources(id), { ...context, motion: "on" })).toBeNull();
+      for (const context of contexts.filter((c) => c.saveData || c.slowConnection)) {
+        expect(playableVideos(videos(id), { ...context, motion: "on" }), `${id} ${JSON.stringify(context)}`).toBeNull();
       }
+  });
+
+  it("counts slow-2g, 2g and 3g as slow, and 4g as not", () => {
+    expect([...SLOW_CONNECTIONS].sort()).toEqual(["2g", "3g", "slow-2g"]);
   });
 
   it("plays every loop on a light desktop with Motion on", () => {
     for (const id of LOOP_IDS) {
-      const loop = getLoop(id);
-      expect(playableSource(sources(id), { motion: "on", saveData: false, theme: "light", phone: false })).toEqual(loop.full);
+      expect(playableVideos(videos(id), on)?.full).toEqual(getLoop(id).full);
     }
   });
 
   it("plays the dark rendition in dark, and nothing for a loop without one", () => {
     for (const id of LOOP_IDS) {
       const loop = getLoop(id);
-      expect(playableSource(sources(id), { motion: "on", saveData: false, theme: "dark", phone: false })).toEqual(
-        loop.dark?.full ?? null,
-      );
+      expect(playableVideos(videos(id), { ...on, theme: "dark" })?.full ?? null).toEqual(loop.dark?.full ?? null);
     }
+  });
+
+  it("plays only the Home and Academy hero loops on phones, with their phone crop in either theme", () => {
+    for (const id of LOOP_IDS)
+      for (const theme of ["light", "dark"] as const) {
+        const played = playableVideos(videos(id), { ...on, theme, phone: true });
+        const hero = id === "ambient-light" || id === "open-bible";
+        expect(Boolean(played), `${id} ${theme}`).toBe(hero);
+        if (played) expect(played.phone?.webm, `${id} ${theme}`).toMatch(theme === "dark" ? /-dark-phone\.webm$/ : /[^k]-phone\.webm$/);
+      }
   });
 
   it("gives every hero loop a dark rendition", () => {
     for (const id of ["ambient-light", "dust-light", "open-bible"] as const) {
       expect(getLoop(id).dark, id).toBeDefined();
     }
+  });
+});
+
+describe("loop load order", () => {
+  const client = readFileSync("components/shared/LoopVideoClient.tsx", "utf8");
+
+  it("creates no video before window load and an idle moment, with a timeout fallback", () => {
+    expect(client).toContain('addEventListener("load", idle');
+    expect(client).toMatch(/requestIdleCallback\(done, \{ timeout: \d+ \}\)/);
+    expect(client).toMatch(/window\.setTimeout\(done, \d+\)/);
+    expect(client).toContain("if (!ready) return null;");
+  });
+
+  it("waits LOOP_START_DELAY_MS (3 s) more after load and idle before any loop starts", () => {
+    expect(LOOP_START_DELAY_MS).toBe(3000);
+    // The wait runs inside the idle callback, so it starts only once the page has settled.
+    expect(client).toMatch(/const done = \(\) => \{\s*window\.setTimeout\(\(\) => \{\s*settled = true;[\s\S]*?\}, LOOP_START_DELAY_MS\);/);
+  });
+
+  it("never preloads a loop, and picks the phone crop with <source media>", () => {
+    expect(client).toContain('preload="none"');
+    expect(client).toContain("<source media={PHONE_QUERY} src={videos.phone.webm}");
+    expect(client.indexOf("videos.phone.webm")).toBeLessThan(client.indexOf("videos.full.webm"));
+    expect(PHONE_QUERY).toBe("(max-width: 767px)");
   });
 });
 
