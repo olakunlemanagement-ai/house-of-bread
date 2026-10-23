@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useEffect, type MouseEvent } from "react";
+import { useEffect, useRef, type MouseEvent } from "react";
+import { closeMenusOnNavigation } from "./menu";
 import { isCurrent, primaryNav, type NavLink } from "./nav-links";
 import { navLinkClass, navListClass, type NavLayout } from "./nav-styles";
 
@@ -18,9 +19,11 @@ export function NavLinks({ layout, items = primaryNav }: { layout: NavLayout; it
   const pathname = usePathname();
 
   // Any client side navigation, including the header's Explore Teachings
-  // button, closes the mobile menu.
+  // button, closes the mobile menu. Hydration is not a navigation, so a menu
+  // opened before it stays open.
+  const lastPath = useRef(pathname);
   useEffect(() => {
-    document.querySelectorAll("details[data-menu]").forEach((menu) => menu.removeAttribute("open"));
+    closeMenusOnNavigation(lastPath, pathname, document);
   }, [pathname]);
 
   return (
