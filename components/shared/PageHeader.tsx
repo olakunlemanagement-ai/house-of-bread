@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import type { LoopId } from "@/lib/media/loops";
+import { getLoop, type LoopId } from "@/lib/media/loops";
 import { LoopVideo } from "./LoopVideo";
 
 type PageHeaderProps = {
@@ -14,7 +14,8 @@ type PageHeaderProps = {
   visual?: ReactNode;
   /**
    * Without a visual, desktop shows the dust in sunlight loop in a framed
-   * panel on the right. Phones never see it. False turns it off.
+   * panel on the right. Phones see it only for a hero loop with a phone
+   * rendition (Academy), below the text; tablets never. False turns it off.
    */
   motion?: boolean;
   /** The loop in that desktop panel. Dust in sunlight unless a page has its own. */
@@ -37,6 +38,9 @@ export function PageHeader({
   loop = "dust-light",
 }: PageHeaderProps) {
   const loopPanel = !visual && motion;
+  // A hero loop that plays on phones: the panel shows there too, and its
+  // poster may be the largest paint, so it loads first.
+  const onPhones = loopPanel && getLoop(loop).phone !== undefined;
   return (
     <div className="bg-page-tint border-b border-border">
       <div
@@ -57,10 +61,17 @@ export function PageHeader({
         </div>
         {visual ? <div className="rise rise-3 lg:col-span-5">{visual}</div> : null}
         {loopPanel ? (
-          <div className="rise rise-3 hidden lg:col-span-5 lg:block">
+          <div
+            className={
+              onPhones
+                ? "rise-text rise-3 w-full max-w-md md:hidden lg:col-span-5 lg:block lg:max-w-none"
+                : "rise rise-3 hidden lg:col-span-5 lg:block"
+            }
+          >
             <LoopVideo
               id={loop}
-              sizes="(min-width: 1024px) 40vw, 1px"
+              sizes={onPhones ? "(min-width: 1024px) 40vw, (max-width: 767px) 100vw, 1px" : "(min-width: 1024px) 40vw, 1px"}
+              priority={onPhones}
               className="aspect-[4/3] overflow-hidden rounded-card border border-border shadow-soft"
             />
           </div>

@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { getLoop, type LoopId } from "@/lib/media/loops";
+import { getLoop, videosOf, type LoopId } from "@/lib/media/loops";
 import { LoopVideoClient } from "./LoopVideoClient";
 
 type LoopVideoProps = {
@@ -19,7 +19,8 @@ type LoopVideoProps = {
 /**
  * A short silent decorative loop over its poster. The poster is a normal
  * next/image, so it is the LCP candidate and holds the space; the video lays
- * over it and fades in only once playing, so nothing shifts. Decorative:
+ * over it and fades in only once playing, so nothing shifts (the phone
+ * rendition is a centred crop of the same frame, so it lines up too). Decorative:
  * the poster has empty alt text and the video is hidden from assistive tech.
  * A loop with a dark rendition carries both posters, and CSS shows the one
  * for the theme in effect, so the right one paints first. The dark poster
@@ -31,9 +32,8 @@ export function LoopVideo({ id, className = "", fill = false, sizes, priority = 
   return (
     <div data-loop={id} className={`${fill ? "absolute inset-0" : "relative"} ${className}`}>
       <LoopVideoClient
-        full={loop.full}
-        mobile={loop.mobile}
-        dark={loop.dark?.full}
+        light={videosOf(loop)}
+        dark={loop.dark ? videosOf(loop.dark) : undefined}
         mediaClassName={blend === "multiply" ? "mix-blend-multiply" : ""}
       >
         <Image
