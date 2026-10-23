@@ -66,14 +66,17 @@ export const WITH_PHONE: ReadonlySet<LoopId> = new Set<LoopId>(["ambient-light",
 
 /**
  * Loops with a dark rendition ("<id>-dark"), from the dark clips supplied
- * on 22 October 2026. No dark clip exists yet for bread-steam or green-mesh.
+ * on 22 October 2026, and bread-steam and green-mesh from 23 October 2026.
+ * Every loop has one now.
  */
 export const WITH_DARK: ReadonlySet<LoopId> = new Set<LoopId>([
   "ambient-light",
   "dust-light",
   "wheat-field",
+  "bread-steam",
   "open-bible",
   "water-light",
+  "green-mesh",
 ]);
 
 function source(name: string): LoopSource {

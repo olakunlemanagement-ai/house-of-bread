@@ -248,9 +248,10 @@
 /*
   Loops in dark. A loop with a dark rendition (WITH_DARK in
   lib/media/loops.ts) shows its dark poster and plays its dark video, and
-  these glows sit unseen beneath. The rest are white themed and would
-  glow, so in dark their poster layer is hidden, LoopVideoClient requests
-  no video, and the frame carries still radial glows instead. Radial
+  these glows sit unseen beneath (every loop has one since 23 October
+  2026). A loop without one is white themed and would glow, so in dark
+  its poster layer is hidden, LoopVideoClient requests no video, and the
+  frame carries still radial glows instead. Radial
   gradients only, no blur. The Home hero keeps its light swirl as a ribbon of soft green
   ellipses curving from upper left to the phone, with a breath of lime.
   Text over them is checked against the brightest point (npm run contrast).
@@ -331,7 +332,7 @@
   }
 }
 
-/* The newsletter frame: warm, like the bread steam it stands in for. */
+/* The newsletter frame: warm, like the bread steam whose dark poster covers it. */
 [data-loop="bread-steam"] {
   @variant dark {
     background-color: var(--surface-raised);

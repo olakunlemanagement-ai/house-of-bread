@@ -61,8 +61,11 @@ const PHONE_FPS = 12;
 const PHONE_HEROES = new Set(["ambient-light", "open-bible"]);
 /** Crop aspect (width / height) of each phone rendition, from scripts/loops/config.mjs. */
 const PHONE_CROP = { "ambient-light": 2 / 3, "open-bible": 4 / 3 };
-/** Loops with no dark rendition: a still glow in dark (WITH_DARK in lib/media/loops.ts). */
-const NO_DARK = new Set(["bread-steam", "green-mesh"]);
+/**
+ * Loops with no dark rendition: a still glow in dark (WITH_DARK in
+ * lib/media/loops.ts). None since 23 October 2026.
+ */
+const NO_DARK = new Set([]);
 
 const base = process.argv[2];
 const playwrightPath = process.env.PLAYWRIGHT;
