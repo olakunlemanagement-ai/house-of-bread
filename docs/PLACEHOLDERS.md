@@ -1049,7 +1049,8 @@ contact sheets were checked for faces and readable text.
 | Artisan_bread_loaf_shaped_like | 8, loaf | A Bible shaped loaf tumbling on black | Not shipped: mid turn its ridges turn mould green and a full turn cannot loop. The last 2 s rock cleanly, so the config keeps that entry with `ship: false`, as the light loaf is not shipped either |
 
 No dark clip was supplied for 4 (bread steam) or 7 (green mesh), so those
-keep their still glows in dark.
+kept their still glows in dark until the clips below arrived ("Dark clips
+4 and 7").
 
 ### Clip 7 replaced
 
@@ -1234,3 +1235,78 @@ Final, with the 3 s start delay:
   Chrome to count), so the poster is never the LCP and never delayed.
 - These scores are from a busy desktop. Rerun on CI or a mid range Android
   phone before trusting the absolute numbers.
+
+## Dark clips 4 and 7 (23 October 2026)
+
+Branch `feat/dark-clips-4-7`. `clip-4-dark.mp4.mp4` (bread steam) and
+`clip-7-dark.mp4.mp4` (green satin) in `animations-raw`, used as named (the
+doubled extension came with them). Every loop now has a dark rendition, so
+no loop falls back to its still glow in dark. The glows stay in
+`app/globals.css` beneath the dark posters.
+
+### Checks and seconds used
+
+Every frame was measured at 320 x 180 (mean brightness, black level,
+flicker, green on the crust) and contact sheets were read for faces, letter
+shapes and seams. Neither clip flickers (largest brightness jump against
+both neighbours: 0.91 and 0.92 levels of 255).
+
+| Clip | Slot | Used | Rejected, and why |
+|---|---|---|---|
+| 4, bread steam | Newsletter card | 1.50 to 7.17 s (frames 36 to 171), 2 s crossfade, 3.67 s loop | 0 to 1.5 s: the steam builds from nothing, and at 0.8 to 1 s parts into twin curls. 7.33 s on: two mirrored scroll curls round a central column read as a horned head |
+| 7, green satin | About, closing band | 2.67 to 7.96 s (frames 64 to 190), 0.67 s crossfade, 4.63 s loop | 0 to 2.67 s: the satin slides in from the left and brightens |
+
+- No frame pair in the steam matches closely (every pair is about five
+  times an ordinary frame step), so its loop point is fixed at the ends of
+  the clean span for length, and the plumes dissolve. Steam run backwards
+  sinks, so no ping-pong.
+- The satin's edges match at frames 64 and 191 but drift apart either
+  side. A 2 s dissolve showed two top edges at once (up to 26 of 180 rows
+  apart); 0.67 s keeps them within 11 rows. Two longer dissolves were built
+  and rejected for this.
+- Mould green: no pixel on the crust (hue 70 to 170 degrees) in any frame.
+- Black level: the steam's background was RGB 18, 13, 7 and the satin's 9,
+  9, 9. Both are pulled to near black in processing (`blacks` in
+  `scripts/loops/config.mjs`): now 3, 1, 1 and 1, 1, 1. Dark loops are not
+  blended with the page (no `mix-blend-mode`); they draw opaque in their
+  frames.
+- Phones: neither slot is a hero, so both stay a poster on phones
+  (`WITH_PHONE`). No phone rendition was built.
+
+### Files, KB of 1000 bytes (budget 800)
+
+| Loop | WebM | MP4 | Poster | Loop length | Budget encode (SSIM vs quality target) |
+|---|---|---|---|---|---|
+| bread-steam-dark | 266 | 497 | 39 | 3.67 s | none |
+| green-mesh-dark | 667 | 742 | 19 | 4.63 s | MP4 0.983 (quality target 1350 KB) |
+
+### Contrast in dark
+
+Text over either clip sits only in the newsletter card: dark glass
+(night raised at 88%) over the steam. Measured against the steam's brightest
+pixel over every frame (#fffad9, a crust highlight, `npm run loops:sample`;
+brightest frame #22, mean luminance 0.093).
+
+| Element | Pairing | Ratio |
+|---|---|---|
+| Heading, labels | mist on dark glass over #fffad9 | 10.49 |
+| Lead, consent text | mist-muted on dark glass over #fffad9 | 6.06 |
+| Privacy policy link | spring on dark glass over #fffad9 | 6.96 |
+
+The About closing band carries no text over its loop (a framed panel
+beside the text). The satin's brightest pixel is #e2ffe9.
+
+### Loop check
+
+`npm run loops:seams`: wrap 1.15x (WebM) and 1.19x (MP4) an ordinary frame
+step for the steam, 0.98x and 0.99x for the satin, no flicker.
+`node scripts/check-loops.mjs` at 1280px and 375px, light and dark: all
+checks passed. No restart skipped or blanked a frame.
+
+| Loop | Light gap ms | Dark gap ms | Picture change at the restart (light, dark) |
+|---|---|---|---|
+| bread-steam | 60 | 65 | 1.59x, 1.32x a frame step |
+| green-mesh | 71 | 67 | 1.07x, 1.08x |
+
+Motion Off, reduced motion, Save-Data, 2g and 3g keep every loop still in
+both themes, as before.
