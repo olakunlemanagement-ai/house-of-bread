@@ -10,6 +10,8 @@ export type ClassRecord = {
   schedule?: string;
   cost?: string;
   joinUrl?: string;
+  lessons?: number;
+  minutesPerLesson?: number;
 };
 
 /** Where the static catalog reads classes from. lib/academy/index.ts passes lib/content. */
@@ -25,6 +27,9 @@ function toCourse(data: ClassRecord): Course {
     summary: data.description,
     status: data.joinUrl ? "open" : "coming-soon",
     placeholder: data.placeholder === true,
+    // Only when supplied, so a course without them keeps the same shape.
+    ...(data.lessons !== undefined ? { lessons: data.lessons } : {}),
+    ...(data.minutesPerLesson !== undefined ? { minutesPerLesson: data.minutesPerLesson } : {}),
   };
 }
 

@@ -57,6 +57,10 @@ export const classSchema = z.strictObject({
   schedule: z.string().min(1).optional(),
   joinUrl: z.url({ protocol: /^https$/, error: "must be an https URL" }).optional(),
   cost: z.string().min(1).optional(),
+  /** Number of lessons, shown on course cards. Until supplied, cards show "[6]". */
+  lessons: z.number().int().positive().optional(),
+  /** Typical length of one lesson in minutes. Until supplied, cards show "[20]". */
+  minutesPerLesson: z.number().int().positive().optional(),
 });
 
 export const eventKinds = ["live", "training", "meeting"] as const;

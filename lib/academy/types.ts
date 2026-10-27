@@ -14,6 +14,10 @@ export type Course = {
   status: CourseStatus;
   /** True while the ministry has not yet supplied the real course. */
   placeholder: boolean;
+  /** Number of lessons, once the ministry supplies it. */
+  lessons?: number;
+  /** Typical lesson length in minutes, once the ministry supplies it. */
+  minutesPerLesson?: number;
 };
 
 export type CourseDetail = Course & {

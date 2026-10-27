@@ -13,6 +13,8 @@ const records: ClassRecord[] = [
     schedule: "Weekly",
     cost: "Free",
     joinUrl: "https://example.com/join",
+    lessons: 6,
+    minutesPerLesson: 20,
   },
 ];
 
@@ -53,12 +55,22 @@ describe("StaticCourseCatalog", () => {
       summary: "Another line.",
       status: "open",
       placeholder: false,
+      lessons: 6,
+      minutesPerLesson: 20,
       overview: "Body of second",
       audience: "Believers",
       schedule: "Weekly",
       cost: "Free",
       joinUrl: "https://example.com/join",
     });
+  });
+
+  it("carries lesson count and length only when supplied", async () => {
+    const [first, second] = await catalog.listCourses();
+    expect(first).not.toHaveProperty("lessons");
+    expect(first).not.toHaveProperty("minutesPerLesson");
+    expect(second.lessons).toBe(6);
+    expect(second.minutesPerLesson).toBe(20);
   });
 
   it("returns undefined for an unknown slug", async () => {
