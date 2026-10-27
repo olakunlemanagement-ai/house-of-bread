@@ -31,8 +31,18 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const PAGES = ["/", "/about", "/academy"];
-const HERO = { "/": "ambient-light", "/about": "dust-light", "/academy": "open-bible" };
+// Every loop sits in a page hero since 27 October 2026, one per page.
+// These seven pages cover all seven loops.
+const HERO = {
+  "/": "ambient-light",
+  "/academy": "open-bible",
+  "/about": "wheat-field",
+  "/media": "water-light",
+  "/ask": "dust-light",
+  "/contact": "bread-steam",
+  "/privacy": "green-mesh",
+};
+const PAGES = Object.keys(HERO);
 const DESKTOP = { width: 1280, height: 800 };
 const PHONE = { width: 375, height: 812 };
 
@@ -306,9 +316,8 @@ async function checkLoopsOn(context, theme, phone = false) {
     }
     await page.close();
   }
-  // Inner page headers hide their panel on phones, so dust-light is not there.
+  // Every hero loop is on the page at every width: a moving loop, or its poster on phones.
   for (const id of ["ambient-light", "dust-light", "open-bible", "wheat-field", "bread-steam", "water-light", "green-mesh"]) {
-    if (phone && id === "dust-light") continue;
     check(seenIds.has(id), `${view} ${theme}: loop ${id} not found on ${PAGES.join(", ")}`);
   }
 }
@@ -470,27 +479,33 @@ async function checkMotionControl(browser) {
   check(await waitPlaying(page, "ambient-light"), "hero did not start again when Motion turned on");
   await context.close();
 
-  // Mobile menu, at 375 px.
+  // At 375 px: the phone menu carries links only since the reset, and the
+  // footer's Motion control does the job on phones too.
   const phone = await browser.newContext({ viewport: PHONE });
   const mpage = await phone.newPage();
   // After hydration: the menu closes itself on navigation, hydration included.
   await mpage.goto(url("/"), { waitUntil: "networkidle" });
   await mpage.click("details[data-menu] summary");
-  const menuMotion = mpage.locator("details[data-menu] button[aria-pressed]");
-  check((await menuMotion.count()) === 1 && (await menuMotion.isVisible()), "mobile menu has no visible Motion control");
+  check((await mpage.locator("details[data-menu] button[aria-pressed]").count()) === 0, "the phone menu carries a Motion control");
+  await mpage.click("details[data-menu] summary");
+  const menuMotion = mpage.locator("footer button[aria-pressed]", { hasText: "On" });
+  await menuMotion.scrollIntoViewIfNeeded();
+  check((await menuMotion.count()) === 1 && (await menuMotion.isVisible()), "no visible Motion control in the footer at 375px");
   const box = await menuMotion.boundingBox();
-  check(box && box.height >= 44, `menu Motion control is ${box?.height}px tall, under 44`);
+  check(box && box.height >= 44, `phone Motion control is ${box?.height}px tall, under 44`);
+  await mpage.evaluate(() => window.scrollTo(0, 0));
   check(await waitPlaying(mpage, "ambient-light"), "phone hero did not start before Motion off");
   await menuMotion.click();
-  check((await menuMotion.getAttribute("aria-pressed")) === "false", "menu Motion control did not turn off");
+  check((await menuMotion.getAttribute("aria-pressed")) === "false", "phone Motion control did not turn off");
   await pause(400);
   const phoneOff = await loopStates(mpage);
   check(phoneOff.every((s) => !s.playing && !s.shown), "a phone loop still plays or shows with Motion off");
   await menuMotion.click();
+  await mpage.evaluate(() => window.scrollTo(0, 0));
   check(await waitPlaying(mpage, "ambient-light"), "phone hero did not start again when Motion turned on");
   await menuMotion.click();
   check((await mpage.evaluate(() => localStorage.getItem("hob:motion"))) === "off", "choice not saved");
-  console.log("  mobile menu control: present, 44px or taller, saves off");
+  console.log("  phone: no control in the menu; footer control 44px or taller, saves off");
   await phone.close();
 }
 

@@ -41,12 +41,13 @@ export default async function EventsPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="dust-light"
         eyebrow="Live"
         title="Live teaching, wherever you are"
         lead="House of Bread Global teaches live on YouTube. See what is coming in your local time, and never miss a session."
         actions={
           <>
-            <ButtonLink href="/subscribe" arrow>
+            <ButtonLink href="/subscribe">
               Set a reminder
             </ButtonLink>
             <YouTubeSubscribeButton />
@@ -83,7 +84,7 @@ export default async function EventsPage() {
       )}
 
       <section id="how" aria-labelledby="how-heading" className="bg-surface-warm">
-        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-14">
+        <div className="container-page grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-14">
           <div className="lg:col-span-8">
             <SectionHeader id="how-heading">How it works</SectionHeader>
             <div className="mt-10">

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { RevealHeading } from "./RevealHeading";
 
 /**
  * Section surfaces. Pages are white, with warm (cream) and mint bands for
@@ -23,8 +24,6 @@ type SectionProps = {
   width?: "wide" | "narrow";
   /** Centre only short closing bands. Content stays left aligned. */
   align?: "left" | "center";
-  /** False to skip the section fade. */
-  reveal?: boolean;
   children?: ReactNode;
 };
 
@@ -37,13 +36,12 @@ export function Section({
   tone = "white",
   width = "wide",
   align = "left",
-  reveal = true,
   children,
 }: SectionProps) {
   return (
     <section id={id} aria-labelledby={`${id}-heading`} className={toneClass[tone]}>
       <div className="container-page relative py-20 md:py-30">
-        <div className={`${reveal ? "reveal" : ""} ${width === "narrow" ? "max-w-3xl" : ""}`}>
+        <div className={width === "narrow" ? "max-w-3xl" : ""}>
           <SectionHeader
             id={`${id}-heading`}
             eyebrow={eyebrow}
@@ -61,7 +59,8 @@ export function Section({
 
 /**
  * The recurring motif: a short emerald rule above the heading, then an
- * optional eyebrow and intro.
+ * optional eyebrow and intro. A plain text heading reveals line by line
+ * once, as it enters (RevealHeading).
  */
 export function SectionHeader({
   id,
@@ -82,6 +81,7 @@ export function SectionHeader({
   children: ReactNode;
 }) {
   const centred = align === "center";
+  const headingClass = `${eyebrow ? "mt-3" : "mt-5"} ${size === "large" ? "text-h2" : "text-2xl leading-tight"}`;
   return (
     <div className={centred ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
       <span
@@ -93,12 +93,13 @@ export function SectionHeader({
           <span className="eyebrow">{eyebrow}</span>
         </p>
       ) : null}
-      <Heading
-        id={id}
-        className={`${eyebrow ? "mt-3" : "mt-5"} ${size === "large" ? "text-h2" : "text-2xl leading-tight"}`}
-      >
-        {children}
-      </Heading>
+      {typeof children === "string" ? (
+        <RevealHeading as={Heading} id={id} text={children} className={headingClass} />
+      ) : (
+        <Heading id={id} className={headingClass}>
+          {children}
+        </Heading>
+      )}
       {/* Body text stays left aligned on phones, even under a centred heading. */}
       {intro ? (
         <div className={`mt-4 text-lead text-fg-muted ${centred ? "text-left sm:text-center" : ""}`}>{intro}</div>

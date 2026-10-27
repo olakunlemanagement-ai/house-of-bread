@@ -9,7 +9,6 @@ import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
-import { TextCTA } from "@/components/shared/TextCTA";
 import { courseCatalog } from "@/lib/academy";
 import { academyCopy as copy } from "@/lib/content/copy";
 
@@ -31,11 +30,12 @@ export default async function AcademyPage() {
         title="House of Bread Academy"
         lead={copy.lead}
         actions={
-          <ButtonLink href={copy.waitlistHref} arrow>
+          <ButtonLink href={copy.waitlistHref}>
             {copy.waitlistLabel}
           </ButtonLink>
         }
         loop="open-bible"
+        phoneLoop
       />
 
       <Section id="courses" title={copy.courses.title} intro={copy.courses.intro}>
@@ -65,7 +65,7 @@ export default async function AcademyPage() {
       </Section>
 
       <section id="why" aria-labelledby="why-heading" className="bg-surface">
-        <div className="container-page reveal grid gap-12 py-20 md:py-30 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div className="container-page grid gap-12 py-20 md:py-30 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div className="lg:col-span-7">
             <span aria-hidden="true" className="block h-0.5 w-10 rounded-full bg-glyph" />
             <h2 id="why-heading" className="mt-5 text-h2">
@@ -113,7 +113,9 @@ export default async function AcademyPage() {
           ))}
         </div>
         <div className="mt-8">
-          <TextCTA href="/ask">{copy.questions.ask}</TextCTA>
+          <ButtonLink href="/ask" variant="secondary">
+            {copy.questions.ask}
+          </ButtonLink>
         </div>
       </Section>
 

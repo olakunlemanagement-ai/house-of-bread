@@ -21,11 +21,12 @@ export default function TeachingsPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="dust-light"
         eyebrow="Teachings"
         title="Teaching written to be understood"
         lead="A growing library from the ministry on doctrine, interpretation and the questions believers actually ask. Rigorous without being academic."
         actions={
-          <ButtonLink href="/subscribe" arrow>
+          <ButtonLink href="/subscribe">
             Subscribe for new teaching
           </ButtonLink>
         }

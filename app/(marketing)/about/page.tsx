@@ -3,7 +3,6 @@ import { ButtonLink } from "@/components/shared/Button";
 import { FeatureCard } from "@/components/shared/Card";
 import { ClosingBand } from "@/components/shared/ClosingBand";
 import { Flag } from "@/components/shared/Flags";
-import { LoopVideo } from "@/components/shared/LoopVideo";
 import { StepList } from "@/components/shared/Lists";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { ImageSlot } from "@/components/shared/ImageSlot";
@@ -24,13 +23,14 @@ export default function AboutPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="wheat-field"
         eyebrow="About the ministry"
         title="A teaching ministry for believers who want to be fed"
         lead={description}
       />
 
       <section id="mission" aria-labelledby="mission-heading" className="bg-surface">
-        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div className="container-page grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div className="lg:col-span-7">
             <SectionHeader id="mission-heading">Mission</SectionHeader>
             {/* Interim wording from the content pack, shown as a marked placeholder. */}
@@ -53,7 +53,7 @@ export default function AboutPage() {
       </section>
 
       <section id="the-name" aria-labelledby="the-name-heading" className="bg-surface-warm">
-        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div className="container-page grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
           <div className="lg:col-span-6">
             <SectionHeader id="the-name-heading">The name</SectionHeader>
             <p className="mt-7 font-serif text-2xl leading-relaxed text-ink">{nameText}</p>
@@ -61,12 +61,6 @@ export default function AboutPage() {
           <div className="lg:col-span-6">
             <ScriptureBlock variant="feature" passage="John 6:33-35" verses={john6_33to35} />
           </div>
-          <LoopVideo
-            id="wheat-field"
-            still
-            sizes="(min-width: 1280px) 1200px, 100vw"
-            className="aspect-video overflow-hidden rounded-card border border-border shadow-soft lg:col-span-12 lg:aspect-[21/8]"
-          />
         </div>
       </section>
 
@@ -135,7 +129,7 @@ export default function AboutPage() {
       </Section>
 
       <section id="leadership" aria-labelledby="leadership-heading" className="bg-surface-warm">
-        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
+        <div className="container-page grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
           <ImageSlot
             id="about-leadership"
             className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
@@ -158,7 +152,7 @@ export default function AboutPage() {
       </Section>
 
       <ClosingBand id="about-next" eyebrow="Study . Pray . Grow" title="Come and be fed by the Word.">
-        <ButtonLink href="/events" arrow>
+        <ButtonLink href="/events">
           Join a live session
         </ButtonLink>
         <ButtonLink href="/contact" variant="secondary">

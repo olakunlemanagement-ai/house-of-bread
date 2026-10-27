@@ -1,8 +1,7 @@
 import type { Route } from "next";
 import type { ReactNode } from "react";
 import type { EventData } from "@/lib/content/schemas";
-import type { PlainHref } from "./Button";
-import { TextCTA } from "./TextCTA";
+import { ButtonLink, type PlainHref } from "./Button";
 
 /**
  * The announcement bar itself. Gold is the live colour: gold while a session
@@ -34,13 +33,15 @@ export function AnnouncementBarView({
             </>
           )}
         </span>
-        {/* Light TextCTA: emerald-deep label on gold 4.19:1 is large text only, so pin it to ink. */}
-        <TextCTA
+        {/* An outline button pinned to ink: emerald-deep on gold 4.19:1 is large text only. */}
+        <ButtonLink
           href={href as Route | PlainHref}
-          className="min-h-9 [--cta-arrow:var(--ink)] [--cta-chip-border:var(--ink)] [--cta-label:var(--ink)] [--cta-chip-hover-bg:var(--ink)] [--cta-arrow-hover:var(--gold-soft)]"
+          variant="secondary"
+          size="sm"
+          className="border-on-gold! text-on-gold! hover:bg-gold-soft! active:bg-gold-soft!"
         >
           Watch on YouTube
-        </TextCTA>
+        </ButtonLink>
       </p>
     </div>
   );

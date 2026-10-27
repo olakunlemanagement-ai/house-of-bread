@@ -2,7 +2,7 @@
 
 import { useState, type MouseEvent } from "react";
 import { LoadingRegion, Skeleton } from "./Skeleton";
-import { TextCTA } from "./TextCTA";
+import { ButtonLink } from "./Button";
 
 export type YouTubeSource =
   /** One video. The id must already be validated (isVideoId) by the caller. */
@@ -93,11 +93,10 @@ export function YouTubeFacade({
           <path d="M7 4.5v15l12-7.5z" />
         </svg>
       </span>
-      {/* One line, truncated, so a long title never covers the play button. The full title stays in the link's name. */}
-      <span className="absolute inset-x-0 bottom-0 truncate bg-(--facade-bar) px-4 py-2.5 text-base font-semibold text-ink sm:px-5 sm:py-3">
+      {/* A plain play icon only: the title already shows beside or below the player. */}
+      <span className="sr-only">
         {live ? "Watch live: " : "Play: "}
-        {title}
-        <span className="sr-only"> (loads YouTube)</span>
+        {title} (loads YouTube)
       </span>
     </a>
   );
@@ -131,12 +130,9 @@ export function YouTubeFacadeSkeleton({
       </LoadingRegion>
       {link ? (
         <div className="absolute inset-0 flex items-center justify-center p-4">
-          {/* The pill is the link itself, so the focus ring follows its shape. .text-cta sets a radius outside the layers, hence the ! */}
-          <p>
-            <TextCTA href={link.href} className="rounded-full! bg-surface pl-5 pr-2 shadow-soft">
-              Watch on YouTube<span className="sr-only">: {link.name}</span>
-            </TextCTA>
-          </p>
+          <ButtonLink href={link.href} size="sm" className="shadow-soft">
+            Watch on YouTube<span className="sr-only">: {link.name}</span>
+          </ButtonLink>
         </div>
       ) : null}
     </div>

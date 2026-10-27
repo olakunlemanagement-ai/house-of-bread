@@ -2,12 +2,11 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { EventData, EventKind } from "@/lib/content/schemas";
 import { Button, ButtonLink } from "./Button";
-import { cardClass, interactiveCardClass } from "./Card";
+import { cardClass } from "./Card";
 import { Icon, IconTile } from "./icons";
 import { LocalTime } from "./LocalTime";
 import { Placeholder, PlaceholderBadge } from "./Placeholder";
 import { PlayChip } from "./PlayChip";
-import { TextCTA } from "./TextCTA";
 
 export const eventKindLabel: Record<EventKind, string> = {
   live: "Live",
@@ -96,7 +95,6 @@ export function LiveSessionCard({ event, idPrefix }: { event: EventData; idPrefi
             <ButtonLink
               href="/subscribe"
               variant={live ? "secondary" : "primary"}
-              arrow
               className={`w-full sm:w-auto ${live ? "" : "order-first"}`}
             >
               Set a reminder
@@ -126,7 +124,7 @@ export function LiveSessionCard({ event, idPrefix }: { event: EventData; idPrefi
 /** A session in a list. The whole card links to the session page. */
 export function EventCard({ event }: { event: EventData }) {
   return (
-    <li className={`${cardClass} ${interactiveCardClass} cta-host flex flex-col gap-5 sm:flex-row sm:items-center`}>
+    <li className={`${cardClass} relative flex flex-col gap-5 sm:flex-row sm:items-center`}>
       <IconTile name={event.kind === "live" ? "live" : "calendar"} size="lg" />
       <div className="flex-1">
         <p className="flex flex-wrap items-center gap-2">
@@ -142,9 +140,9 @@ export function EventCard({ event }: { event: EventData }) {
         </p>
       </div>
       {event.status === "scheduled" ? null : <PlayChip className="absolute right-4 top-4" />}
-      <TextCTA href={`/events/${event.slug}` as Route} stretch>
+      <ButtonLink href={`/events/${event.slug}` as Route} variant="tertiary" size="sm" className="self-start sm:self-center">
         Details<span className="sr-only">: {event.title}</span>
-      </TextCTA>
+      </ButtonLink>
     </li>
   );
 }

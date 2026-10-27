@@ -7,7 +7,6 @@ import { NewsletterCard } from "@/components/shared/NewsletterCard";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
-import { TextCTA } from "@/components/shared/TextCTA";
 import { MdxBody } from "@/components/shared/MdxBody";
 import { PassageList } from "@/components/shared/PassageList";
 import { getAll, getEntry } from "@/lib/content";
@@ -38,6 +37,7 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="dust-light"
         eyebrow={eventKindLabel[event.kind]}
         title={event.title}
         meta={
@@ -56,7 +56,7 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         actions={
           <>
             {event.youtubeUrl ? (
-              <ButtonLink href={event.youtubeUrl as `https://${string}`} arrow>
+              <ButtonLink href={event.youtubeUrl as `https://${string}`}>
                 Watch on YouTube
               </ButtonLink>
             ) : (
@@ -97,9 +97,9 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
 
       <nav aria-label="Sessions" className="bg-surface">
         <div className="container-page pt-10">
-          <TextCTA href="/events" direction="back">
+          <ButtonLink href="/events" variant="secondary" size="sm">
             Back to all sessions
-          </TextCTA>
+          </ButtonLink>
         </div>
       </nav>
 

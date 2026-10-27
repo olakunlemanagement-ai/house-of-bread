@@ -52,6 +52,7 @@ export default function AppPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="green-mesh"
         eyebrow="The official app"
         title="The official House of Bread app"
         lead="Bible study, trusted teaching and practical guidance all in one place. Equipping you for a deeper understanding of God's Word and a stronger walk with Him."
@@ -78,7 +79,7 @@ export default function AppPage() {
               aria-labelledby={`${feature.id}-heading`}
               className={flip ? "bg-surface-warm" : "bg-surface"}
             >
-              <div className="container-page reveal grid items-center gap-10 py-18 md:py-28 lg:grid-cols-12 lg:gap-16">
+              <div className="container-page grid items-center gap-10 py-18 md:py-28 lg:grid-cols-12 lg:gap-16">
                 <div className={`lg:col-span-7 ${flip ? "lg:order-2" : ""}`}>
                   <IconTile name={feature.icon} size="lg" />
                   <div className="mt-7">

@@ -22,11 +22,12 @@ export default function NewTestamentPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="open-bible"
         eyebrow="New Testament study"
         title="Study the New Testament, book by book"
         lead="House of Bread Global introduces every New Testament book before the verses are lifted out. Context is not decoration. A letter read without knowing what prompted it will be misread, and most misreadings of the New Testament begin exactly there."
         actions={
-          <ButtonLink href="#books" arrow>
+          <ButtonLink href="#books">
             Browse all 27 books
           </ButtonLink>
         }

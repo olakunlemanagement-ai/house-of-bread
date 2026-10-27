@@ -1,5 +1,4 @@
 import type { Metadata, Route } from "next";
-import Link from "next/link";
 import { Suspense } from "react";
 import { ButtonLink } from "@/components/shared/Button";
 import { CourseCard } from "@/components/shared/CourseCard";
@@ -9,7 +8,8 @@ import { ImageSlot } from "@/components/shared/ImageSlot";
 import { NumberedRows } from "@/components/shared/NumberedRows";
 import { Placeholder } from "@/components/shared/Placeholder";
 import { StoreButtons } from "@/components/shared/StoreButtons";
-import { TextCTA } from "@/components/shared/TextCTA";
+import { RevealHeading } from "@/components/shared/RevealHeading";
+import { Typewriter } from "@/components/shared/Typewriter";
 import { courseCatalog } from "@/lib/academy";
 import { siteConfig } from "@/lib/site-config";
 
@@ -19,12 +19,14 @@ export const metadata: Metadata = {
 };
 
 // One rhythm for every Home section: 48px on phones, 112px from md.
-const band = "container-page reveal py-12 md:py-28";
+const band = "container-page py-12 md:py-28";
 
 /**
  * Home, seven screens in the order of docs/RESET-BRIEF.md section 4, copy
  * word for word. One idea and one primary button per screen. Section tints
- * alternate white, cream and pale green, one per section.
+ * alternate white, cream and pale green, one per section. Every call to
+ * action is a button. The mission types itself out once; section headings
+ * reveal line by line once.
  */
 export default async function HomePage() {
   const courses = await courseCatalog.listCourses();
@@ -41,16 +43,17 @@ export default async function HomePage() {
       {/* Screen 2: the mission, a statement. */}
       <section aria-labelledby="mission-heading" className="bg-surface-warm">
         <div className={band}>
-          <h2 id="mission-heading" className="max-w-5xl text-statement">
-            We teach believers to read God&apos;s Word accurately, understand it deeply, and live it
-            fully, wherever they are.
-          </h2>
+          <Typewriter
+            id="mission-heading"
+            className="max-w-[72rem] text-mission"
+            text="We teach believers to read God's Word accurately, understand it deeply, and live it fully, wherever they are."
+          />
           <p className="mt-8 max-w-2xl text-lead text-ink-muted">
             The name comes from Bethlehem, the house of bread, where the Bread of Life was born.
           </p>
-          <p className="mt-5">
-            <TextCTA href="/about">Read our story</TextCTA>
-          </p>
+          <ButtonLink href="/about" variant="secondary" className="mt-6 w-full sm:w-auto">
+            Read our story
+          </ButtonLink>
         </div>
       </section>
 
@@ -59,9 +62,11 @@ export default async function HomePage() {
         <div className={band}>
           <div className="max-w-3xl">
             <p className="eyebrow">The Academy</p>
-            <h2 id="academy-heading" className="mt-4 text-h2">
-              Read the Bible for years and still feel you only know it in parts?
-            </h2>
+            <RevealHeading
+              id="academy-heading"
+              className="mt-4 text-h2"
+              text="Read the Bible for years and still feel you only know it in parts?"
+            />
             <p className="mt-4 text-lead text-ink-muted">
               Our free courses take you through it, one lesson at a time.
             </p>
@@ -71,18 +76,16 @@ export default async function HomePage() {
               <CourseCard key={course.slug} course={course} />
             ))}
           </ul>
-          <p className="mt-8">
-            <TextCTA href="/academy">Browse all free courses</TextCTA>
-          </p>
+          <ButtonLink href="/academy" className="mt-8 w-full sm:w-auto">
+            Browse all free courses
+          </ButtonLink>
         </div>
       </section>
 
       {/* Screen 4: where are you starting from? */}
       <section aria-labelledby="start-heading" className="bg-surface-mint">
         <div className={band}>
-          <h2 id="start-heading" className="max-w-3xl text-h2">
-            Where are you starting from?
-          </h2>
+          <RevealHeading id="start-heading" className="max-w-3xl text-h2" text="Where are you starting from?" />
           <NumberedRows
             className="mt-8 md:mt-12"
             items={[
@@ -90,16 +93,19 @@ export default async function HomePage() {
                 title: "New to the Bible.",
                 text: "Start with the foundations: what the Bible is and how to read it.",
                 href: courseHref(0),
+                action: "Start this course",
               },
               {
                 title: "You know the stories, but not how they connect.",
                 text: "Go book by book and see the whole picture.",
                 href: courseHref(1),
+                action: "Start this course",
               },
               {
                 title: "You're carrying a question.",
                 text: "Ask it. You don't need to give your name.",
                 href: "/ask",
+                action: "Ask a question",
               },
             ]}
           />
@@ -110,9 +116,7 @@ export default async function HomePage() {
       <section id="teachings" aria-labelledby="teachings-heading" className="bg-surface">
         <div className={band}>
           <div className="max-w-3xl">
-            <h2 id="teachings-heading" className="text-h2">
-              Need a word for this season?
-            </h2>
+            <RevealHeading id="teachings-heading" className="text-h2" text="Need a word for this season?" />
             <p className="mt-4 text-lead text-ink-muted">
               Sit under the teaching of the Word, wherever you are.
             </p>
@@ -128,21 +132,22 @@ export default async function HomePage() {
               See all teachings
             </ButtonLink>
           </div>
-          <p className="mt-6 text-base text-ink-muted">
-            New teaching live every Monday at 8 pm Lagos time.{" "}
-            <Link href={"/events#rhythm" as Route} className="link-inline whitespace-nowrap">
+          <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5">
+            <p className="text-base text-ink-muted">New teaching live every Monday at 8 pm Lagos time.</p>
+            <ButtonLink href={"/events#rhythm" as Route} variant="secondary" size="sm">
               See the session times
-            </Link>
-          </p>
+            </ButtonLink>
+          </div>
         </div>
       </section>
 
       {/* Screen 6: the teacher. */}
       <section aria-labelledby="teacher-heading" className="bg-surface-warm">
-        <div className={`${band} grid grid-cols-[6.5rem_1fr] items-start gap-5 sm:grid-cols-[minmax(0,14rem)_1fr] sm:items-center md:gap-14 lg:grid-cols-[minmax(0,20rem)_1fr]`}>
+        {/* Phones: the photo full width above the text. From sm: side by side. */}
+        <div className={`${band} grid gap-8 sm:grid-cols-[minmax(0,14rem)_1fr] sm:items-center md:gap-14 lg:grid-cols-[minmax(0,20rem)_1fr]`}>
           <ImageSlot
             id="home-teacher"
-            sizes="(min-width: 1024px) 20rem, (min-width: 640px) 14rem, 7rem"
+            sizes="(min-width: 1024px) 20rem, (min-width: 640px) 14rem, 100vw"
           />
           <div>
             <h2 id="teacher-heading" className="sr-only">
@@ -153,9 +158,13 @@ export default async function HomePage() {
               <Placeholder>[House of Bread Ministries International]</Placeholder>. He teaches Scripture
               verse by verse, with care for what the text actually says.
             </p>
-            <div className="col-span-2 flex flex-col items-start gap-1 sm:col-span-1 sm:mt-6 sm:flex-row sm:gap-8">
-              <TextCTA href="/about">Read our story</TextCTA>
-              <TextCTA href={"/about#handled" as Route}>What we believe</TextCTA>
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <ButtonLink href="/about" variant="secondary" className="w-full sm:w-auto">
+                Read our story
+              </ButtonLink>
+              <ButtonLink href={"/about#handled" as Route} variant="secondary" className="w-full sm:w-auto">
+                What we believe
+              </ButtonLink>
             </div>
           </div>
         </div>
@@ -164,9 +173,7 @@ export default async function HomePage() {
       {/* Screen 7: the app, just before the footer. */}
       <section aria-labelledby="app-heading" className="bg-surface-mint">
         <div className={band}>
-          <h2 id="app-heading" className="max-w-3xl text-h2">
-            Take the Word with you.
-          </h2>
+          <RevealHeading id="app-heading" className="max-w-3xl text-h2" text="Take the Word with you." />
           <p className="mt-4 max-w-2xl text-lead text-ink-muted">
             Daily reading and journeys through the New Testament, in your pocket.
           </p>

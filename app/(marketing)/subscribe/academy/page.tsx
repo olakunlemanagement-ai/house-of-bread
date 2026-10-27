@@ -23,6 +23,7 @@ export default function AcademySubscribePage({ searchParams }: PageProps<"/subsc
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="bread-steam"
         eyebrow="House of Bread Academy"
         title={academyCopy.closingHeading}
         lead={academyCopy.closingText}

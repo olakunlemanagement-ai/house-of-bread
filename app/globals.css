@@ -14,9 +14,9 @@
   - Brand primitives (--brand-*) hold raw values. Components never use them.
   - Palette tokens (--surface, --ink, --emerald and so on).
   - Contextual tokens (--fg, --fg-muted, --fg-heading, --fg-link, --fg-accent,
-    --ring and the --cta-* set) describe the role of a colour on the current
-    surface. They default to light and are redefined by .tone-deep (the
-    footer), so links, TextCTAs and focus rings are right on both.
+    --ring) describe the role of a colour on the current surface. They
+    default to light and are redefined by .tone-deep (the footer), so links
+    and focus rings are right on both.
 */
 :root {
   --brand-white: #ffffff;
@@ -38,7 +38,7 @@
   --brand-night: #0a1510;
   --brand-night-raised: #111e17;
   --brand-night-mint: #10211a;
-  --brand-night-warm: #16170f;
+  --brand-night-warm: #112018;
   --brand-night-gold: #1c1a10;
   --brand-night-tint: #163122;
   --brand-mist: #e9f0ea;
@@ -59,6 +59,9 @@
   --surface-gold: var(--brand-gold-50);
   /* Emerald at 8% over white: the nav pill, icon tiles, skeletons. */
   --tint: #edf3ef;
+  /* Emerald at 16% and 24% over white: tertiary button hover and press. */
+  --tint-strong: #dbe7de;
+  --tint-press: #c8dbce;
   --ink: var(--brand-ink);
   --ink-muted: var(--brand-ink-muted);
 
@@ -103,14 +106,6 @@
   --pill-current-ring: color-mix(in oklab, var(--glyph) 25%, transparent);
   --pill-current-fg: var(--emerald-deep);
 
-  /* TextCTA: label, then a 28px circular chip with an arrow. */
-  --cta-label: var(--emerald-deep);
-  --cta-chip-bg: transparent;
-  --cta-chip-border: rgb(27 107 51 / 0.25);
-  --cta-arrow: var(--emerald);
-  --cta-chip-hover-bg: var(--emerald);
-  --cta-arrow-hover: var(--brand-white);
-
   /* Soft, low opacity shadows tinted ink. */
   --elev-soft: 0 1px 2px rgb(11 36 18 / 0.04), 0 8px 24px rgb(11 36 18 / 0.05);
   --elev-raised: 0 2px 6px rgb(11 36 18 / 0.05), 0 16px 40px rgb(11 36 18 / 0.08);
@@ -142,6 +137,7 @@
   /* The primary pill: solid deep green, emerald on hover. */
   --fill-primary: var(--brand-green-deep);
   --fill-hover: var(--emerald);
+  --fill-press: var(--brand-green-night);
   --fill-disabled: var(--ink-muted);
   --on-gold: var(--brand-ink);
   --on-green-hover: var(--brand-mint-50);
@@ -197,6 +193,8 @@
     --surface-mint: var(--brand-night-mint);
     --surface-gold: var(--brand-night-gold);
     --tint: var(--brand-night-tint);
+    --tint-strong: #1d3f2c;
+    --tint-press: #255038;
     --ink: var(--brand-mist);
     --ink-muted: var(--brand-mist-muted);
 
@@ -205,6 +203,7 @@
     --glyph: var(--brand-sprout);
     --fill-primary: var(--brand-emerald-night);
     --fill-hover: var(--brand-emerald);
+    --fill-press: #175a2b;
     --fill-disabled: var(--brand-ink-muted);
     --fg-eyebrow: var(--lime);
 
@@ -212,8 +211,6 @@
     --border-strong: color-mix(in srgb, var(--brand-spring) 35%, var(--brand-night));
     --link-line: rgb(143 211 165 / 0.5);
     --link-line-hover: var(--brand-spring);
-    --cta-chip-border: rgb(143 211 165 / 0.3);
-    --cta-arrow: var(--brand-spring);
 
     /* Shadows barely read on night, so they go deeper and darker. */
     --elev-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.24);
@@ -363,12 +360,6 @@
   --pill-current-bg: rgb(255 255 255 / 0.15);
   --pill-current-ring: rgb(255 255 255 / 0.45);
   --pill-current-fg: var(--on-green);
-  --cta-label: var(--on-green);
-  --cta-chip-bg: rgb(255 255 255 / 0.15);
-  --cta-chip-border: transparent;
-  --cta-arrow: var(--on-green);
-  --cta-chip-hover-bg: var(--brand-white);
-  --cta-arrow-hover: var(--green-deep);
   color: var(--fg);
 }
 
@@ -381,6 +372,8 @@
   --color-surface-mint: var(--surface-mint);
   --color-surface-gold: var(--surface-gold);
   --color-tint: var(--tint);
+  --color-tint-strong: var(--tint-strong);
+  --color-tint-press: var(--tint-press);
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-emerald: var(--emerald);
@@ -397,6 +390,7 @@
   --color-glyph: var(--glyph);
   --color-fill-primary: var(--fill-primary);
   --color-fill-hover: var(--fill-hover);
+  --color-fill-press: var(--fill-press);
   --color-fill-disabled: var(--fill-disabled);
   --color-on-gold: var(--on-gold);
   --color-on-green-hover: var(--on-green-hover);
@@ -421,6 +415,10 @@
   --text-statement: clamp(2.5rem, 6vw, 5rem);
   --text-statement--line-height: 1.04;
   --text-statement--letter-spacing: -0.025em;
+  /* The Home mission: 34px on phones, about four lines on a wide measure at 1280. */
+  --text-mission: clamp(2.125rem, 0.9rem + 5vw, 4.75rem);
+  --text-mission--line-height: 1.08;
+  --text-mission--letter-spacing: -0.02em;
   --text-display: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
   --text-display--line-height: 1.1;
   --text-display--letter-spacing: -0.015em;
@@ -570,52 +568,6 @@
 }
 
 /*
-  TextCTA: a weight 600 label followed by a 28px circular arrow chip, never
-  underlined. Colours come from the --cta-* tokens. A card that stretches a
-  TextCTA over itself carries .cta-host, so hovering anywhere on the card
-  moves the chip.
-*/
-.text-cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  min-height: 2.75rem;
-  border-radius: 0.75rem;
-  color: var(--cta-label);
-  font-weight: 600;
-  line-height: 1.3;
-  text-decoration: none;
-}
-
-.text-cta-chip {
-  display: inline-flex;
-  flex-shrink: 0;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border: 1px solid var(--cta-chip-border);
-  border-radius: 9999px;
-  background-color: var(--cta-chip-bg);
-  color: var(--cta-arrow);
-}
-
-.text-cta-chip > svg {
-  width: 1rem;
-  height: 1rem;
-  transition: transform 200ms var(--ease-out);
-}
-
-.text-cta:hover .text-cta-chip,
-.text-cta:focus-visible .text-cta-chip,
-.cta-host:hover .text-cta-chip,
-.cta-host:focus-within .text-cta-chip {
-  border-color: var(--cta-chip-hover-bg);
-  background-color: var(--cta-chip-hover-bg);
-  color: var(--cta-arrow-hover);
-}
-
-/*
   Theme controls need JavaScript, so they stay hidden until the head script
   marks the page with data-js. Without it the menu is the five links only.
   While the theme switches, transitions pause for two frames, so colours
@@ -690,14 +642,80 @@ html[data-motion="off"] [data-motion-state="off"] {
 */
 
 /*
-  Scroll reveal: a section fades from 0.85, once, with no movement. At 0.85
-  every text pairing still passes 4.5:1, and the range ends 120px into
-  entry. See docs/PLACEHOLDERS.md, Motion and contrast.
+  Text motion (components/shared/Typewriter.tsx and RevealHeading.tsx).
+  Both run once, and only with Motion On and no reduced motion.
+
+  Typewriter: the server renders data-typewriter="pending". With script and
+  Motion On the text is hidden from first paint, holding its space, until
+  the component arms it and types it in view. Should the script never run,
+  the text shows after 4 s. Without script or with Motion Off it shows.
+  The cursor has no width, so no line moves while it blinks.
 */
-@keyframes reveal {
-  from {
-    opacity: 0.85;
+@keyframes tw-fallback {
+  to {
+    visibility: visible;
   }
+}
+
+@keyframes tw-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html[data-js]:not([data-motion="off"]) [data-typewriter="pending"] {
+    visibility: hidden;
+    animation: tw-fallback 0s 4s forwards;
+  }
+
+  html[data-js]:not([data-motion="off"]) [data-typewriter="armed"] {
+    visibility: hidden;
+  }
+}
+
+.tw-cursor {
+  position: relative;
+  display: inline-block;
+  width: 0;
+  height: 0.9em;
+  vertical-align: -0.08em;
+}
+
+.tw-cursor::after {
+  content: "";
+  position: absolute;
+  inset-block: 0;
+  left: 0.05em;
+  width: 0.07em;
+  border-radius: 1px;
+  background-color: var(--glyph);
+  animation: tw-blink 1s steps(1) infinite;
+}
+
+[data-typewriter="done"] .tw-cursor {
+  opacity: 0;
+  transition: opacity 600ms var(--ease-standard);
+}
+
+/*
+  Heading reveal: words carry their line number (--line); an armed heading
+  waits below the fold, then its lines fade in and rise 0.35em, 90ms apart.
+*/
+.rh-word {
+  display: inline-block;
+}
+
+[data-reveal="armed"] .rh-word {
+  opacity: 0;
+  transform: translateY(0.35em);
+}
+
+[data-reveal="shown"] .rh-word {
+  transition:
+    opacity 600ms var(--ease-out),
+    transform 600ms var(--ease-out);
+  transition-delay: calc(var(--line, 0) * 90ms);
 }
 
 @keyframes shimmer {
@@ -707,29 +725,8 @@ html[data-motion="off"] [data-motion-state="off"] {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  /* The TextCTA arrow slides 3px, backwards for a "back" link. */
-  .text-cta:hover .text-cta-chip > svg,
-  .text-cta:focus-visible .text-cta-chip > svg,
-  .cta-host:hover .text-cta-chip > svg,
-  .cta-host:focus-within .text-cta-chip > svg {
-    transform: translateX(3px);
-  }
-
-  .text-cta:hover .text-cta-chip[data-back] > svg,
-  .text-cta:focus-visible .text-cta-chip[data-back] > svg {
-    transform: translateX(-3px);
-  }
-
   .skeleton::after {
     animation: shimmer 1.6s ease-in-out infinite;
-  }
-
-  @supports (animation-timeline: view()) {
-    .reveal {
-      animation: reveal linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 120px;
-    }
   }
 }
 

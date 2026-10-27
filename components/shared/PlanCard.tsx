@@ -46,7 +46,7 @@ export function PlanCard({
       <p className="mt-2 text-lg leading-relaxed text-ink-muted">{line}</p>
       {href ? (
         <div className="mt-auto pt-7">
-          <ButtonLink href={href} variant={raised ? "primary" : "secondary"} arrow className="w-full">
+          <ButtonLink href={href} variant={raised ? "primary" : "secondary"} className="w-full">
             View journey
             <span className="sr-only">: {name}</span>
           </ButtonLink>

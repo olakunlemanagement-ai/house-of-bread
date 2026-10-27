@@ -59,7 +59,7 @@ export function WeeklySessionCard({
             )}
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <ButtonLink href="/subscribe" arrow className="w-full sm:w-auto">
+            <ButtonLink href="/subscribe" className="w-full sm:w-auto">
               Set a reminder
             </ButtonLink>
             <ButtonLink

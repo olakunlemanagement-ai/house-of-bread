@@ -195,28 +195,50 @@ describe("Motion controls", () => {
   it("places the one Motion control beside the theme choice in the footer, and nowhere else", () => {
     const footer = readFileSync("components/shared/SiteFooter.tsx", "utf8");
     expect(footer).toMatch(/<ThemeChoice[^>]*\/>\s*<MotionToggle/);
-    // Since the reset the header and its phone menu carry links only.
+    // The header carries the theme icon switch at every width, never the
+    // full theme choice or the Motion control.
     const header = readFileSync("components/shared/SiteHeader.tsx", "utf8");
-    expect(header).not.toMatch(/MotionToggle|ThemeChoice|ThemeToggle/);
+    expect(header).toMatch(/<ThemeToggle \/>/);
+    expect(header).not.toMatch(/MotionToggle|ThemeChoice/);
   });
 
-  it("moves only hero loops: every other LoopVideo is still", () => {
-    // The Home hero and each page's top header (PageHeader) may play a
-    // loop. A panel lower on a page passes `still`, so it shows its poster.
-    const heroes = new Set(["components/shared/Hero.tsx", "components/shared/PageHeader.tsx"]);
-    const walk = (dir: string): string[] =>
-      readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
-        const path = join(dir, entry.name);
-        if (entry.isDirectory()) return walk(path);
-        return /\.tsx$/.test(entry.name) ? [path] : [];
-      });
-    const files = [...walk("app"), ...walk("components")];
-    expect(files.some((file) => /about[\\/]page\.tsx$/.test(file))).toBe(true);
-    for (const file of files) {
-      const normalised = file.replace(/\\/g, "/");
-      if (heroes.has(normalised) || normalised.endsWith("/LoopVideo.tsx")) continue;
-      const uses = readFileSync(file, "utf8").match(/<LoopVideo\b[^>]*>/g) ?? [];
-      for (const use of uses) expect(use, normalised).toMatch(/\bstill\b/);
+  const walk = (dir: string): string[] =>
+    readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+      const path = join(dir, entry.name);
+      if (entry.isDirectory()) return walk(path);
+      return /\.tsx$/.test(entry.name) ? [path] : [];
+    });
+  const sources = () => [...walk("app"), ...walk("components")].map((file) => file.replace(/\\/g, "/"));
+
+  it("moves loops in heroes only: HeroBackdrop is the one place a LoopVideo renders", () => {
+    for (const file of sources()) {
+      if (file.endsWith("/HeroBackdrop.tsx") || file.endsWith("/LoopVideo.tsx")) continue;
+      expect(readFileSync(file, "utf8"), file).not.toMatch(/<LoopVideo\b/);
+    }
+  });
+
+  it("plays a phone loop only in the Home and Academy heroes", () => {
+    const optIns = sources().filter((file) => /<HeroBackdrop[^>]*\bphone(?=[\s/>])|<PageHeader[\s\S]*?\bphoneLoop\b/.test(readFileSync(file, "utf8")));
+    expect(optIns.sort()).toEqual(["app/(marketing)/academy/page.tsx", "components/shared/Hero.tsx"]);
+    // A loop without the opt in drops its phone crop, even when one exists.
+    expect(getLoop("open-bible", { phone: false }).phone).toBeUndefined();
+    expect(getLoop("open-bible", { phone: false }).dark?.phone).toBeUndefined();
+  });
+
+  it("frames each phone loop at its crop's shape, as built by the loop pipeline", () => {
+    const config = readFileSync("scripts/loops/config.mjs", "utf8");
+    const backdrop = readFileSync("components/shared/HeroBackdrop.tsx", "utf8");
+    for (const id of ["ambient-light", "open-bible"]) {
+      const crop = config.match(new RegExp(`id: "${id}"[\\s\\S]*?phone: \\{ aspect: \\[(\\d+), (\\d+)\\]`));
+      expect(crop, id).not.toBeNull();
+      expect(backdrop, id).toContain(`"${id}": "max-md:aspect-[${crop?.[1]}/${crop?.[2]}]"`);
+    }
+  });
+
+  it("gives every page header a loop", () => {
+    for (const file of sources()) {
+      const uses = readFileSync(file, "utf8").match(/<PageHeader\b[\s\S]*?\/>/g) ?? [];
+      for (const use of uses) expect(use, file).toMatch(/\bloop="[a-z-]+"/);
     }
   });
 

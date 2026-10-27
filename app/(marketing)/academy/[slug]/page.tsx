@@ -49,7 +49,7 @@ export default async function CoursePage({ params }: PageProps<"/academy/[slug]"
     who: course.audience,
     when: course.schedule,
     join: open ? (
-      <ButtonLink href={course.joinUrl as `https://${string}`} arrow>
+      <ButtonLink href={course.joinUrl as `https://${string}`}>
         Join this course
       </ButtonLink>
     ) : undefined,
@@ -59,17 +59,18 @@ export default async function CoursePage({ params }: PageProps<"/academy/[slug]"
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="open-bible"
         eyebrow="House of Bread Academy"
         title={course.title}
         lead={course.summary}
         meta={course.status === "coming-soon" ? <PlaceholderBadge label="Coming soon" /> : null}
         actions={
           open ? (
-            <ButtonLink href="#join" arrow>
+            <ButtonLink href="#join">
               See how to join
             </ButtonLink>
           ) : (
-            <ButtonLink href={academyCopy.waitlistHref} arrow>
+            <ButtonLink href={academyCopy.waitlistHref}>
               {academyCopy.waitlistLabel}
             </ButtonLink>
           )
@@ -83,7 +84,7 @@ export default async function CoursePage({ params }: PageProps<"/academy/[slug]"
               key={item.id}
               id={item.id}
               aria-labelledby={`${item.id}-heading`}
-              className={`reveal rounded-card border border-border p-6 shadow-soft sm:p-8 ${
+              className={`rounded-card border border-border p-6 shadow-soft sm:p-8 ${
                 index % 2 === 0 ? "bg-surface" : "bg-surface-mint"
               } ${index === 0 ? "md:col-span-2" : ""}`}
             >

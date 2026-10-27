@@ -67,8 +67,11 @@ const tileClasses =
 
 /**
  * The social accounts from siteConfig.links.social, each a brand mark in a
- * 44px white round tile. "icons" is a wrapping row of tiles (the footer);
- * "labelled" adds the platform name beside each tile (the Library page).
+ * 44px white round tile. "icons" is a row of tiles (the footer): it shows
+ * the ministry's YouTube channel only, since two identical YouTube marks
+ * cannot be told apart, and six tiles fit one row at 375px. "labelled" adds
+ * the platform name beside each tile and lists both channels (the Teachings
+ * page).
  * Links open in a new tab with rel="noopener noreferrer".
  */
 export function SocialLinks({ variant = "icons" }: { variant?: "icons" | "labelled" }) {
@@ -106,9 +109,10 @@ export function SocialLinks({ variant = "icons" }: { variant?: "icons" | "labell
     );
   }
 
+  const icons = social.filter((account) => !(account.platform === "youtube" && account.owner === "pastor"));
   return (
     <ul className="flex flex-wrap gap-2.5">
-      {social.map((account) => (
+      {icons.map((account) => (
         <li key={account.href}>
           <a
             href={account.href}

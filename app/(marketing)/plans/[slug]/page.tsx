@@ -45,6 +45,7 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="wheat-field"
         eyebrow="New Testament journeys"
         title={plan.name}
         meta={
@@ -61,7 +62,7 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
         }
         actions={
           <>
-            <ButtonLink href="/app" arrow>
+            <ButtonLink href="/app">
               Start a journey in the app
             </ButtonLink>
             <ButtonLink href="/plans" variant="secondary">

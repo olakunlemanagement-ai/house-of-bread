@@ -56,8 +56,10 @@ export const LOOP_IDS = [
 export type LoopId = (typeof LOOP_IDS)[number];
 
 /**
- * Hero loops with a phone rendition ("<id>-phone", and "<id>-dark-phone"),
- * the only loops that play on phones: Home and Academy (23 October 2026).
+ * Loops with a phone rendition ("<id>-phone", and "<id>-dark-phone"). Only
+ * the Home and Academy heroes play one (23 October 2026): every page hero
+ * shows a loop since 27 October 2026, so a page opts in with LoopVideo's
+ * `phone` prop, and open-bible on the New Testament pages stays a poster.
  * A 640 wide hero loop cost Home about 10 Lighthouse mobile points on 19
  * October 2026; these wait for load and idle and weigh 200 KB or less. Add
  * an id only with a Lighthouse A/B on mobile.
@@ -91,8 +93,12 @@ function rendition(name: string, phone: boolean): LoopRendition {
   };
 }
 
-export function getLoop(id: LoopId): Loop {
-  const phone = WITH_PHONE.has(id);
+/**
+ * A loop's files. `phone: false` drops the phone rendition, so the loop is
+ * a poster on phones even when a phone crop exists.
+ */
+export function getLoop(id: LoopId, { phone: allowPhone = true }: { phone?: boolean } = {}): Loop {
+  const phone = allowPhone && WITH_PHONE.has(id);
   return {
     ...rendition(id, phone),
     dark: WITH_DARK.has(id) ? rendition(`${id}-dark`, phone) : undefined,

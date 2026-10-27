@@ -73,12 +73,13 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="open-bible"
         eyebrow="New Testament study"
         title={found.data.title}
         meta={found.data.placeholder ? <PlaceholderBadge label="Sample" /> : null}
         actions={
           <>
-            <ButtonLink href="/app" arrow>
+            <ButtonLink href="/app">
               Read this book in the app
             </ButtonLink>
             <ButtonLink href="/new-testament" variant="secondary">

@@ -90,6 +90,7 @@ export default function PrivacyPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="green-mesh"
         eyebrow="Privacy"
         title="Privacy policy"
         lead="How House of Bread Global collects, uses and protects personal data."

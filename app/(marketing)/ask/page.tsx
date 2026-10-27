@@ -24,6 +24,7 @@ export default function AskPage({ searchParams }: PageProps<"/ask">) {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="dust-light"
         eyebrow="Ask a question"
         title="Ask a question about the Bible"
         lead="Questions about Scripture, doctrine and Christian living are welcome. Ask anonymously. No name or email needed."

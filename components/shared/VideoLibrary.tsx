@@ -3,10 +3,9 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import type { FeedVideo } from "@/lib/media/youtube-feed";
-import { Button } from "./Button";
+import { Button, ButtonLink } from "./Button";
 import { Icon } from "./icons";
 import { PlayChip } from "./PlayChip";
-import { TextCTA } from "./TextCTA";
 import { VideoTitle } from "./VideoTitle";
 import { YouTubeFacade } from "./YouTubeFacade";
 
@@ -76,11 +75,9 @@ function VideoCard({
             <Icon name="play" className="size-5" />
             Play here<span className="sr-only">: {video.title}</span>
           </Button>
-          <p className="mt-4">
-            <TextCTA href={video.url}>
-              Watch on YouTube<span className="sr-only">: {video.title}</span>
-            </TextCTA>
-          </p>
+          <ButtonLink href={video.url} variant="tertiary" size="sm" className="mt-3 w-full">
+            Watch on YouTube<span className="sr-only">: {video.title}</span>
+          </ButtonLink>
         </div>
       </div>
     </li>
@@ -153,9 +150,9 @@ export function VideoLibrary({
           <p className="mt-2 min-h-5 text-sm text-ink-muted">
             <PublishedDate video={selected} />
           </p>
-          <p className="mt-5">
-            <TextCTA href={selected.url}>Watch on YouTube</TextCTA>
-          </p>
+          <ButtonLink href={selected.url} variant="secondary" size="sm" className="mt-5">
+            Watch on YouTube
+          </ButtonLink>
         </div>
       </div>
 

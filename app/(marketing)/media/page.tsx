@@ -10,7 +10,6 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
 import { SocialLinks, YouTubeChannelButton } from "@/components/shared/SocialLinks";
-import { TextCTA } from "@/components/shared/TextCTA";
 import { VideoGrid, VideoGridSkeleton } from "@/components/shared/VideoGrid";
 import { getAll, upcomingEvents } from "@/lib/content";
 import { siteConfig } from "@/lib/site-config";
@@ -94,6 +93,7 @@ export default function MediaPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="water-light"
         eyebrow="Library"
         title="Everything the ministry shares, in one place"
         lead="Live sessions, replays, audio teaching and social pages. Watch, listen and follow wherever you are."
@@ -114,14 +114,14 @@ export default function MediaPage() {
           />
           {/* The featured card carries its own reminder button. */}
           {next ? null : (
-            <ButtonLink href="/subscribe" arrow className="w-full sm:order-first sm:w-auto">
+            <ButtonLink href="/subscribe" className="w-full sm:order-first sm:w-auto">
               Set a reminder
             </ButtonLink>
           )}
         </div>
-        <p className="mt-6">
-          <TextCTA href="/events">See the full schedule</TextCTA>
-        </p>
+        <ButtonLink href="/events" variant="tertiary" size="sm" className="mt-6">
+          See the full schedule
+        </ButtonLink>
       </Section>
 
       <Section

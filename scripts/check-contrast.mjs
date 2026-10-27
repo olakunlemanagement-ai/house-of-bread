@@ -39,7 +39,13 @@ const tokens = {
   night: "#0a1510",
   nightRaised: "#111e17",
   nightMint: "#10211a",
-  nightWarm: "#16170f",
+  // Dark green tint since 27 October 2026 (was #16170f, brown olive).
+  nightWarm: "#112018",
+  tintStrong: "#dbe7de",
+  tintPress: "#c8dbce",
+  nightTintStrong: "#1d3f2c",
+  nightTintPress: "#255038",
+  nightFillPress: "#175a2b",
   nightGold: "#1c1a10",
   nightTint: "#163122",
   mist: "#e9f0ea",
@@ -80,6 +86,10 @@ const roles = {
     // The primary pill: solid deep green, emerald on hover.
     fill: "greenDeep",
     fillHover: "emerald",
+    fillPress: "greenNight",
+    // Tertiary button: soft tint, deeper on hover and press.
+    tintStrong: "tintStrong",
+    tintPress: "tintPress",
     // The sticky header glass, and the worst thing that can scroll beneath
     // it (a black video thumbnail).
     glass: "white/0.94",
@@ -99,6 +109,9 @@ const roles = {
     ring: "spring",
     fill: "emeraldNight",
     fillHover: "emerald",
+    fillPress: "nightFillPress",
+    tintStrong: "nightTintStrong",
+    tintPress: "nightTintPress",
     // Header glass: night at 94% over white, the lightest thing beneath it.
     glass: "night/0.94",
     glassWorst: "white",
@@ -115,7 +128,7 @@ const shared = [
   ["Muted on raised", "@muted", ["@raised"], TEXT],
   ["Muted on warm band", "@muted", ["@warm"], TEXT],
   ["Muted on mint band", "@muted", ["@mint"], TEXT],
-  ["Accent (links, H1 phrase, TextCTA) on surface", "@accent", ["@surface"], TEXT],
+  ["Accent (links, H1 phrase) on surface", "@accent", ["@surface"], TEXT],
   ["Accent on raised", "@accent", ["@raised"], TEXT],
   ["Accent on warm band", "@accent", ["@warm"], TEXT],
   ["Accent on mint band", "@accent", ["@mint"], TEXT],
@@ -126,6 +139,11 @@ const shared = [
   // Buttons.
   ["Primary: white on fill", "white", ["@fill"], TEXT],
   ["Primary hover: white on fill hover", "white", ["@fillHover"], TEXT],
+  ["Primary press: white on fill press", "white", ["@fillPress"], TEXT],
+  ["Secondary press: accent on tint-strong", "@accent", ["@tintStrong"], TEXT],
+  ["Tertiary: accent on tint-strong", "@accent", ["@tintStrong"], TEXT],
+  ["Tertiary hover and press: accent on tint-press", "@accent", ["@tintPress"], TEXT],
+  ["Tertiary press ring: glyph on tint-press", "@glyph", ["@tintPress"], UI],
   ["Secondary: accent on raised", "@accent", ["@raised"], TEXT],
   ["Secondary outline: accent on surface", "@accent", ["@surface"], TEXT],
   ["Secondary outline: accent on warm band", "@accent", ["@warm"], TEXT],
@@ -133,9 +151,10 @@ const shared = [
   ["Secondary outline: glyph border on surface", "@glyph", ["@surface"], UI],
   ["Secondary outline: glyph border on warm band", "@glyph", ["@warm"], UI],
   ["Secondary outline: glyph border on mint band", "@glyph", ["@mint"], UI],
-  // Numbered rows: big accent numbers and glyph arrows, accent on the mint band.
+  // Numbered rows: big accent numbers, a tertiary button each, on the mint band.
   ["Numbered rows: number, accent on mint band", "@accent", ["@mint"], TEXT],
-  ["Numbered rows: arrow, glyph on mint band", "@glyph", ["@mint"], UI],
+  // Typewriter cursor (the glyph) on the warm band, while it blinks.
+  ["Typewriter cursor: glyph on warm band", "@glyph", ["@warm"], UI],
   ["Numbered rows: divider, border on mint band (decorative)", "@glyph/0.12", ["@mint"], UI, "decorative"],
   ["Secondary hover: accent on tint", "@accent", ["@tint"], TEXT],
   // Icon tiles, rules and the card glow ring.
@@ -170,14 +189,6 @@ const shared = [
   ["Academy question: ink on surface", "@ink", ["@surface"], TEXT],
   ["Academy answer: muted on surface", "@muted", ["@surface"], TEXT],
   ["Academy question chevron: glyph on surface", "@glyph", ["@surface"], UI],
-  // Scroll reveal: text at its 0.85 starting opacity, transient only.
-  ["Reveal 0.85: ink on surface", "@ink/0.85", ["@surface"], TEXT],
-  ["Reveal 0.85: muted on surface", "@muted/0.85", ["@surface"], TEXT],
-  ["Reveal 0.85: muted on mint", "@muted/0.85", ["@mint"], TEXT],
-  ["Reveal 0.85: muted on warm (app tile)", "@muted/0.85", ["@warm"], TEXT],
-  ["Reveal 0.85: accent on warm", "@accent/0.85", ["@warm"], TEXT],
-  ["Reveal 0.85: accent on mint (live tile)", "@accent/0.85", ["@mint"], TEXT],
-  ["Reveal 0.85: white on fill (live tile button)", "white/0.85", ["@fill"], TEXT],
   // Focus rings, 3px.
   ["Focus ring on surface", "@ring", ["@surface"], UI],
   ["Focus ring on raised", "@ring", ["@raised"], UI],
@@ -199,6 +210,15 @@ const lightOnly = [
   ["Hero loop: nav current pill over darkest pixel, 80% scrim", "emeraldDeep", ["loopLightDark", "white/0.8", "emerald/0.08"], TEXT],
   ["Hero loop: focus ring over darkest pixel, 80% scrim", "emeraldDeep", ["loopLightDark", "white/0.8"], UI],
   ["Hero loop: secondary outline border, glyph, darkest pixel, 80% scrim", "emerald", ["loopLightDark", "white/0.8"], UI],
+  // Every page hero since 27 October 2026 (HeroBackdrop): any loop, under
+  // the same 80% white scrim. The worst pixel across all seven light loops
+  // is pure black (npm run loops:sample, 27 October 2026).
+  ["Page hero, any loop: ink over black, 80% scrim", "ink", ["black", "white/0.8"], TEXT],
+  ["Page hero, any loop: ink-muted (lead) over black, 80% scrim", "inkMuted", ["black", "white/0.8"], TEXT],
+  ["Page hero, any loop: emerald-deep (eyebrow) over black, 80% scrim", "emeraldDeep", ["black", "white/0.8"], TEXT],
+  ["Page hero, any loop: focus ring over black, 80% scrim", "emeraldDeep", ["black", "white/0.8"], UI],
+  ["Page hero, any loop: secondary outline border over black, 80% scrim", "emerald", ["black", "white/0.8"], UI],
+  ["Page hero, any loop: secondary hover, accent on the solid tint", "emeraldDeep", ["tint"], TEXT],
   // Logo mark, no tile on light.
   ["Logo lid edge on white (header, plain pages)", "logoLid", ["white"], UI],
   // Never used: lime is a decorative dot only on light.
@@ -214,15 +234,24 @@ const darkOnly = [
   // night scrim. Light text is worst over the loop's brightest pixel.
   ["Dark hero loop: ink over brightest frame pixel, 80% night scrim", "mist", ["loopAmbientDarkBright", "night/0.8"], TEXT],
   ["Dark hero loop: muted over brightest frame pixel, 80% night scrim", "mistMuted", ["loopAmbientDarkBright", "night/0.8"], TEXT],
-  ["Dark hero loop: accent (H1 phrase, TextCTA), brightest pixel, 80% night scrim", "spring", ["loopAmbientDarkBright", "night/0.8"], TEXT],
+  ["Dark hero loop: accent (H1 phrase), brightest pixel, 80% night scrim", "spring", ["loopAmbientDarkBright", "night/0.8"], TEXT],
   ["Dark hero loop: lime eyebrow, brightest pixel, 80% night scrim", "lime", ["loopAmbientDarkBright", "night/0.8"], TEXT],
   ["Dark hero loop: nav current pill, brightest pixel, 80% night scrim", "spring", ["loopAmbientDarkBright", "night/0.8", "nightTint"], TEXT],
   ["Dark hero loop: focus ring, brightest pixel, 80% night scrim", "spring", ["loopAmbientDarkBright", "night/0.8"], UI],
   ["Dark hero loop: secondary outline border, glyph, brightest pixel, 80% night scrim", "sprout", ["loopAmbientDarkBright", "night/0.8"], UI],
+  // Every page hero (HeroBackdrop): any dark loop under the same 80% night
+  // scrim. The brightest pixel across the dark loops is pure white.
+  ["Dark page hero, any loop: ink over white, 80% night scrim", "mist", ["white", "night/0.8"], TEXT],
+  ["Dark page hero, any loop: muted (lead) over white, 80% night scrim", "mistMuted", ["white", "night/0.8"], TEXT],
+  ["Dark page hero, any loop: accent over white, 80% night scrim", "spring", ["white", "night/0.8"], TEXT],
+  ["Dark page hero, any loop: lime eyebrow over white, 80% night scrim", "lime", ["white", "night/0.8"], TEXT],
+  ["Dark page hero, any loop: focus ring over white, 80% night scrim", "spring", ["white", "night/0.8"], UI],
+  ["Dark page hero, any loop: secondary outline border over white, 80% night scrim", "sprout", ["white", "night/0.8"], UI],
+  ["Dark page hero, any loop: secondary hover, accent on the solid tint", "spring", ["nightTint"], TEXT],
   // Home hero swirl at its brightest overlap: the leaf ribbon, the lime breath and the emerald glow.
   ["Hero swirl peak: ink", "mist", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
   ["Hero swirl peak: muted", "mistMuted", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
-  ["Hero swirl peak: accent (H1 phrase, TextCTA)", "spring", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
+  ["Hero swirl peak: accent (H1 phrase)", "spring", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
   ["Hero swirl peak: lime eyebrow", "lime", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
   ["Hero swirl peak: focus ring", "spring", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], UI],
   // Logo mark in its white tile, and the tile itself on night.
@@ -245,6 +274,8 @@ const invariant = [
   ["Footer store badge: green-deep on white", "greenDeep", ["white"], TEXT],
   ["Footer placeholder border: off-white on green-deep", "offWhite", ["greenDeep"], UI],
   ["Footer secondary: white on 12% white over green-deep", "white", ["greenDeep", "white/0.12"], TEXT],
+  ["Footer secondary press: white on 25% white over green-deep", "white", ["greenDeep", "white/0.25"], TEXT],
+  ["Announcement button: ink outline and text on gold", "ink", ["gold"], UI],
   ["Footer focus ring: white on green-deep", "white", ["greenDeep"], UI],
   ["Footer logo tile: white tile on green-deep", "white", ["greenDeep"], UI],
   ["Logo lid edge on green-deep without a tile (not used, why the tile stays)", "logoLid", ["greenDeep"], UI, "not used"],

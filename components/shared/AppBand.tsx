@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { ButtonLink } from "./Button";
 import { HeroVisual } from "./HeroVisual";
 import { FeatureList, type FeatureItem } from "./Lists";
-import { LoopVideo } from "./LoopVideo";
 import { StoreButtons } from "./StoreButtons";
 
 /** What the official app carries. CONTENT-PACK section 3. */
@@ -42,7 +41,7 @@ export function AppBand({
   return (
     <section aria-labelledby={headingId} className="bg-panel-tint relative overflow-hidden border-y border-border">
       <div className="container-page relative grid items-center gap-12 py-20 md:py-30 lg:grid-cols-12">
-        <div className="reveal lg:col-span-7">
+        <div className="lg:col-span-7">
           <span aria-hidden="true" className="block h-0.5 w-10 rounded-full bg-glyph" />
           <p className="eyebrow mt-5">{eyebrow}</p>
           <h2 id={headingId} className="mt-3 text-h2">
@@ -54,7 +53,7 @@ export function AppBand({
           </div>
           <div className="mt-10 space-y-4">
             {action ? (
-              <ButtonLink href={action.href} arrow className="w-full sm:w-auto">
+              <ButtonLink href={action.href} className="w-full sm:w-auto">
                 {action.label}
               </ButtonLink>
             ) : null}
@@ -62,18 +61,8 @@ export function AppBand({
           </div>
           {note ? <div className="mt-6">{note}</div> : null}
         </div>
-        {/* Light on water, a still poster in a framed panel behind the phone. */}
-        <div className="reveal relative lg:col-span-5">
-          <LoopVideo
-            id="water-light"
-            still
-            fill
-            sizes="(min-width: 1024px) 40vw, 100vw"
-            className="overflow-hidden rounded-card border border-border shadow-soft"
-          />
-          <div className="relative px-4 py-6">
-            <HeroVisual showSession={false} />
-          </div>
+        <div className="lg:col-span-5">
+          <HeroVisual showSession={false} />
         </div>
       </div>
     </section>

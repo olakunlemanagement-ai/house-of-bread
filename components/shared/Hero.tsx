@@ -1,22 +1,16 @@
 import { ButtonLink } from "./Button";
-import { LoopVideo } from "./LoopVideo";
+import { HeroBackdrop } from "./HeroBackdrop";
 
 /**
- * Home hero: one statement, one line, one primary button. The ambient light
- * loop plays behind ink type under a white scrim (night in dark), checked
- * against its darkest frame (brightest in dark), as logged in
- * docs/PLACEHOLDERS.md. From lg the scrim eases off to the right, where no
- * text sits. It stands in until the photo of Isaac Ola teaching arrives.
+ * Home hero: one statement, one line, two buttons. The ambient light loop
+ * plays behind ink type (HeroBackdrop), and on phones too, from its phone
+ * crop. It stands in until the photo of Isaac Ola teaching arrives.
  * The sticky header sits above, so the top padding is clear space only.
  */
 export function Hero() {
   return (
-    <section aria-labelledby="hero-heading" className="relative overflow-x-clip bg-surface">
-      <LoopVideo id="ambient-light" fill priority sizes="100vw" />
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-(--scrim) lg:bg-transparent lg:[background-image:linear-gradient(to_right,var(--scrim)_0%,var(--scrim)_60%,var(--scrim-soft)_100%)]"
-      />
+    <section aria-labelledby="hero-heading" className="relative overflow-hidden bg-surface">
+      <HeroBackdrop loop="ambient-light" phone />
       <div className="container-page relative z-10 pb-20 pt-16 sm:pt-20 lg:pb-32 lg:pt-28">
         <div className="max-w-4xl">
           <h1 id="hero-heading" className="text-statement">

@@ -16,6 +16,7 @@ export default function ContactPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="bread-steam"
         eyebrow="Contact"
         title="Get in touch"
         lead="Questions about the ministry, live sessions, the Academy or the app are welcome."

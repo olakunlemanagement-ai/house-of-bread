@@ -90,9 +90,7 @@ export function VideoGridSkeleton() {
               </div>
               <div className="mt-auto pt-5">
                 <Skeleton className="h-12 w-full rounded-button sm:h-13" />
-                <div className="mt-4 flex h-11 items-center">
-                  <Skeleton className="h-7 w-44 rounded-full" />
-                </div>
+                <Skeleton className="mt-3 h-11 w-full rounded-button" />
               </div>
             </div>
           </li>

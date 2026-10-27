@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
 import { IconTile, type IconName } from "./icons";
-import { TextCTA, TextCTAChip, TextCTALabel } from "./TextCTA";
+import { ButtonLink } from "./Button";
 
 /** Card on light surfaces: white, 14% emerald edge, soft shadow, 24px radius. */
 export const cardClass = "rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8";
@@ -46,10 +46,7 @@ export function FeatureCard({
   );
 }
 
-/**
- * Icon tile, heading, one line and a TextCTA stretched over the card: one tab
- * stop, and hovering the card moves the arrow chip.
- */
+/** Icon tile, heading, one line and a tertiary button. Nothing moves on hover. */
 export function CTACard({
   icon,
   badge,
@@ -67,7 +64,7 @@ export function CTACard({
   className?: string;
 }) {
   return (
-    <Card as="li" className={`cta-host flex flex-col ${interactiveCardClass} ${className}`}>
+    <Card as="li" className={`flex flex-col ${className}`}>
       <div className="flex items-start justify-between gap-3">
         <IconTile name={icon} />
         {badge}
@@ -75,17 +72,19 @@ export function CTACard({
       <h3 className="mt-6 text-2xl leading-snug">{title}</h3>
       <p className="mt-3 leading-relaxed text-ink-muted">{children}</p>
       <div className="mt-auto pt-5">
-        <TextCTA href={cta.href} stretch>
+        <ButtonLink href={cta.href} variant="tertiary" size="sm" className="w-full sm:w-auto">
           {cta.label}
-        </TextCTA>
+        </ButtonLink>
       </div>
     </Card>
   );
 }
 
 /**
- * Card whose title is a link. The link's hit area is stretched over the
- * whole card, so there is one tab stop and the card text stays readable.
+ * A card for one page. Without a call to action the title is the link,
+ * stretched over the whole card (one tab stop, readable text, the edge
+ * deepens on hover). With one, the title is plain text and a tertiary button
+ * is the link, because anything that asks the visitor to act is a button.
  */
 export function LinkCard({
   href,
@@ -100,25 +99,36 @@ export function LinkCard({
   eyebrow?: ReactNode;
   children?: ReactNode;
   footer?: ReactNode;
-  /** Visible call to action label, such as "View class". The title is the link. */
+  /** Button label, such as "View class". The button is then the link. */
   cta?: string;
 }) {
   return (
-    <Card as="article" className={`cta-host flex w-full flex-col ${interactiveCardClass}`}>
+    <Card as="article" className={`flex w-full flex-col ${cta ? "" : interactiveCardClass}`}>
       {eyebrow ? <div className="mb-4 flex flex-wrap items-center gap-2 text-sm">{eyebrow}</div> : null}
       <h3 className="text-2xl leading-snug">
-        <Link
-          href={href}
-          className="rounded after:absolute after:inset-0 after:rounded-card after:content-[''] focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring"
-        >
-          {title}
-        </Link>
+        {cta ? (
+          title
+        ) : (
+          <Link
+            href={href}
+            className="rounded after:absolute after:inset-0 after:rounded-card after:content-[''] focus-visible:outline-none focus-visible:after:outline-3 focus-visible:after:outline-offset-2 focus-visible:after:outline-ring"
+          >
+            {title}
+          </Link>
+        )}
       </h3>
       {children ? <div className="mt-3 leading-relaxed text-ink-muted">{children}</div> : null}
-      <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
-        {footer}
-        <span className="ml-auto">{cta ? <TextCTALabel>{cta}</TextCTALabel> : <TextCTAChip />}</span>
-      </div>
+      {footer || cta ? (
+        <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-6">
+          {footer}
+          {cta ? (
+            <ButtonLink href={href} variant="tertiary" size="sm" className="ml-auto">
+              {cta}
+              <span className="sr-only">: {title}</span>
+            </ButtonLink>
+          ) : null}
+        </div>
+      ) : null}
     </Card>
   );
 }

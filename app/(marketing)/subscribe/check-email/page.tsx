@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { TextCTA } from "@/components/shared/TextCTA";
-import { IconTile } from "@/components/shared/icons";
+import { ButtonLink } from "@/components/shared/Button";
+import { PageHeader } from "@/components/shared/PageHeader";
 import { newsletterMessages } from "@/lib/newsletter/messages";
 
 export const metadata: Metadata = {
@@ -16,18 +16,17 @@ export default function CheckEmailPage() {
   return (
     // data-newsletter: the visitor has just signed up, so the footer strip stays hidden.
     <main id="main" data-newsletter tabIndex={-1} className="bg-surface">
-      <div className="container-page pb-20 pt-20 md:pb-32 md:pt-32">
-        <div className="max-w-2xl">
-          <IconTile name="mail" size="lg" />
-          <h1 className="mt-8 text-display">{newsletterMessages.successHeading}</h1>
-          <p className="mt-6 text-lead text-ink">{newsletterMessages.success}</p>
-          <p className="mt-10">
-            <TextCTA href="/" direction="back">
-              Back to the home page
-            </TextCTA>
-          </p>
-        </div>
-      </div>
+      <PageHeader
+        loop="bread-steam"
+        eyebrow="Newsletter"
+        title={newsletterMessages.successHeading}
+        lead={newsletterMessages.success}
+        actions={
+          <ButtonLink href="/" variant="secondary">
+            Back to the home page
+          </ButtonLink>
+        }
+      />
     </main>
   );
 }

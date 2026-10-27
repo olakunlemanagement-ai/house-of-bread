@@ -21,6 +21,7 @@ export default function SubscribePage({ searchParams }: PageProps<"/subscribe">)
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="bread-steam"
         eyebrow="Newsletter"
         title="Stay close to the ministry"
         lead="Reminders before each live session, new teaching and news from House of Bread Global, sent to your inbox. No spam, and you can leave at any time."

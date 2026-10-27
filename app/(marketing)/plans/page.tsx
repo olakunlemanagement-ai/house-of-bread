@@ -18,12 +18,13 @@ export default function PlansPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="wheat-field"
         eyebrow="New Testament journeys"
         title="Three journeys through the New Testament"
         lead="Each journey follows the order the books were written, as events developed in the early Church, so the story reads in order. Available in the official House of Bread app."
         actions={
           <>
-            <ButtonLink href="/app" arrow>
+            <ButtonLink href="/app">
               Start a journey in the app
             </ButtonLink>
             <ButtonLink href="#journeys" variant="secondary">
@@ -51,7 +52,7 @@ export default function PlansPage() {
       </Section>
 
       <section id="order" aria-labelledby="order-heading" className="bg-surface">
-        <div className="container-page reveal grid gap-10 py-18 md:py-28 lg:grid-cols-12">
+        <div className="container-page grid gap-10 py-18 md:py-28 lg:grid-cols-12">
           <div className="lg:col-span-5">
             <SectionHeader id="order-heading">Why the order matters</SectionHeader>
           </div>

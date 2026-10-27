@@ -14,7 +14,7 @@ export default function Error({ retry }: { error: unknown; retry: () => void }) 
             The page could not load. Try again, and if the problem continues, contact the ministry.
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-            <Button onClick={() => retry()} arrow className="w-full sm:w-auto">
+            <Button onClick={() => retry()} className="w-full sm:w-auto">
               Try again
             </Button>
             <ButtonLink href="/" variant="secondary" className="w-full sm:w-auto">

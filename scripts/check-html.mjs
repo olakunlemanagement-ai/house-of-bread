@@ -112,7 +112,7 @@ const EXTRA_ROUTES = ["/subscribe/check-email", "/ask/sent"];
  */
 const NOT_FOUND = {
   path: "/teachings/check-html-no-such-page",
-  h1: "This page could not be found",
+  h1: "This page isn't here.",
   key: "The link may be old, or the address may have been typed differently.",
 };
 

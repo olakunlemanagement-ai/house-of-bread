@@ -15,10 +15,10 @@ type LoopVideoProps = {
   /** Multiply the loop onto the page. Only for a loop keyed to pure white. */
   blend?: "multiply";
   /**
-   * Poster only, never a video. Since the reset only hero loops move (the
-   * Home hero and each page's top header); a panel lower on a page is still.
+   * Play the phone rendition on phones. Only the Home and Academy heroes
+   * pass it; every other loop is a poster on phones.
    */
-  still?: boolean;
+  phone?: boolean;
 };
 
 /**
@@ -39,9 +39,9 @@ export function LoopVideo({
   sizes,
   priority = false,
   blend,
-  still = false,
+  phone = false,
 }: LoopVideoProps) {
-  const loop = getLoop(id);
+  const loop = getLoop(id, { phone });
   const posters = (
     <>
       <Image
@@ -59,17 +59,13 @@ export function LoopVideo({
   );
   return (
     <div data-loop={id} className={`${fill ? "absolute inset-0" : "relative"} ${className}`}>
-      {still ? (
-        <div className={`absolute inset-0 overflow-hidden ${loop.dark ? "" : "dark:hidden"}`}>{posters}</div>
-      ) : (
-        <LoopVideoClient
-          light={videosOf(loop)}
-          dark={loop.dark ? videosOf(loop.dark) : undefined}
-          mediaClassName={blend === "multiply" ? "mix-blend-multiply" : ""}
-        >
-          {posters}
-        </LoopVideoClient>
-      )}
+      <LoopVideoClient
+        light={videosOf(loop)}
+        dark={loop.dark ? videosOf(loop.dark) : undefined}
+        mediaClassName={blend === "multiply" ? "mix-blend-multiply" : ""}
+      >
+        {posters}
+      </LoopVideoClient>
     </div>
   );
 }

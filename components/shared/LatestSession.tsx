@@ -4,7 +4,7 @@ import { getLatestVideos } from "@/lib/media/videos";
 import { isVideoId } from "@/lib/media/youtube-feed";
 import { siteConfig, YOUTUBE_CHANNEL_ID } from "@/lib/site-config";
 import { Skeleton } from "./Skeleton";
-import { TextCTA } from "./TextCTA";
+import { ButtonLink } from "./Button";
 import { VideoTitle } from "./VideoTitle";
 import { YouTubeFacade, YouTubeFacadeSkeleton } from "./YouTubeFacade";
 
@@ -85,14 +85,14 @@ export function LatestSession() {
         Sessions stream live on the ministry&apos;s YouTube channel. When the next one is live, it
         plays here.
       </p>
-      <p className="mt-5">
-        <TextCTA href={`https://www.youtube.com/watch?v=${id}`}>Watch on YouTube</TextCTA>
-      </p>
-      <p className="mt-3">
-        <TextCTA href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`}>
+      <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <ButtonLink href={`https://www.youtube.com/watch?v=${id}`} variant="secondary" size="sm">
+          Watch on YouTube
+        </ButtonLink>
+        <ButtonLink href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`} variant="tertiary" size="sm">
           Open the live page on YouTube
-        </TextCTA>
-      </p>
+        </ButtonLink>
+      </div>
     </Layout>
   );
 }
@@ -110,11 +110,9 @@ export function LivePlayer() {
         The player shows a YouTube message instead of a stream, or a countdown when the next
         session is already scheduled. The times on this page show when to come back.
       </p>
-      <p className="mt-5">
-        <TextCTA href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`}>
-          Open the live page on YouTube
-        </TextCTA>
-      </p>
+      <ButtonLink href={`https://www.youtube.com/channel/${YOUTUBE_CHANNEL_ID}/live`} variant="secondary" size="sm" className="mt-5">
+        Open the live page on YouTube
+      </ButtonLink>
     </Layout>
   );
 }

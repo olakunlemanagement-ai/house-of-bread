@@ -40,6 +40,7 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="dust-light"
         eyebrow="Teachings"
         title={entry.title}
         meta={
