@@ -309,8 +309,8 @@ image arrives, set the status to `final` and build it.
 
 | Id | Page | Ratio | Brief for the photo | Status |
 |---|---|---|---|---|
-| `home-live-session` | Home, Next live session | 4:5 | The teacher in a live session: on camera, mid teaching, Bible open, warm natural light. Portrait crop with space above the head | Real needed (person) |
-| `home-start-here` | Home, Start here (only if no video) | 16:9 | A first teaching for someone new to the ministry. Today `startHereVideoId` fills it, so this slot does not show | Interim allowed |
+| `home-teacher` | Home, The teacher | 4:5 | Isaac Ola teaching, Bible open, warm natural light. Portrait crop with space above the head. Also wanted: a photo of him teaching for the hero, which the ambient loop stands in for | Real needed (person) |
+| `home-start-here` | Home, Teachings (only if no video) | 16:9 | Stands in for the latest teaching when neither the feed nor `featuredVideoId` gives a video, so today it does not show | Interim allowed |
 | `about-mission` | `/about`, Mission | 16:9 | Believers following a live teaching online, with open Bibles: a laptop or phone showing the stream, hands on an open Bible | Real needed (community) |
 | `about-leadership` | `/about`, Leadership | 4:5 | A portrait of the teacher: head and shoulders, plain or softly blurred background, looking just off camera | Real needed (person) |
 | `academy-teacher` | `/academy`, Why learn here | 4:5 | The teacher leading an online class: on camera or at a desk, Bible open, warm natural light. Real photo needed, do not use generated people | Real needed (person) |
@@ -1310,3 +1310,58 @@ checks passed. No restart skipped or blanked a frame.
 
 Motion Off, reduced motion, Save-Data, 2g and 3g keep every loop still in
 both themes, as before.
+
+## Copy and design reset, phase 1 (27 October 2026)
+
+Branch `feat/reset`, from `docs/RESET-BRIEF.md`. Design system, header,
+footer and Home only. This section supersedes the glass, gradient, card
+motion and header rules in the White and green redesign, Come alive and
+Dark theme sections above wherever they disagree.
+
+### What changed in the tokens
+
+- `--brand-cream` is now `#f7f3ec` (warm cream band). Pale green stays `surface-mint`.
+- New `--fill-primary`: `green-deep` (#0a3616) in light, `emerald-night` (#1e7438) in dark. `--fill-hover` is emerald in light.
+- New `--header-glass`: white at 94% in light, night at 94% in dark. The header is the only translucent surface. No backdrop-filter.
+- New `--text-statement`: clamp(2.5rem, 6vw, 5rem), line height 1.04. The Home hero and mission only.
+- Buttons are pills (`--radius-button` 9999px). The secondary is an outline with a full strength glyph border.
+- Removed: `glass-card`, the hero, page and panel radial gradients (the utilities are now flat), the halo, card glow, card motion, lift, rise animations and the footer signup strip.
+
+### For the ministry to confirm
+
+| Item | Where | Shown as |
+|---|---|---|
+| Full ministry name | Footer, Home teacher line | [House of Bread Ministries International] |
+| Lessons per course and minutes per lesson | Home course cards | [6] lessons, about [20] minutes each, until `lessons` and `minutesPerLesson` are set in each class file |
+| The foundations course and the book by book course | Home rows 01 and 02 | Link to the first and second courses in the catalogue until named |
+| A beliefs page or section | Footer and Home "What we believe" | Links to /about#handled (How Scripture is handled) |
+| Photo of Isaac Ola teaching (hero) and a portrait (teacher section) | Home | Hero loop; `home-teacher` slot |
+
+### Reset pairings, WCAG 2.2 AA (npm run contrast)
+
+| Pairing | Light | Dark |
+|---|---|---|
+| Primary pill: white on fill-primary | 13.53 | 5.82 |
+| Primary pill hover: white on fill-hover | 6.57 | 6.57 |
+| Secondary outline: accent on surface, warm, mint | 7.65, 6.92, 6.92 | 10.67, 10.34, 9.59 |
+| Secondary outline border: glyph on surface, warm, mint | 6.57, 5.94, 5.94 | 8.39, 8.13, 7.54 |
+| Secondary outline border over the hero loop (light darkest pixel, dark brightest) | 4.51 | 5.43 |
+| Ink, muted, accent and eyebrow on the new cream | 14.89, 6.91, 6.92, 6.92 | 15.57, 9.00, 10.34, 9.48 |
+| Header glass over its worst background (black in light, white in dark): ink | 14.41 | 13.93 |
+| Header glass: accent (Menu label) and focus ring | 6.70 | 9.25 |
+| Header glass: Menu border, glyph | 5.75 | 7.27 |
+| Numbered rows: number (accent) and arrow (glyph) on mint | 6.92, 5.94 | 9.59, 7.54 |
+| Phone menu: ink links on surface | 16.47 | 16.07 |
+| Footer store badge: green-deep on white | 13.53 | same |
+
+Numbered row dividers are decorative hairlines (1.19 and 1.25), as before.
+
+### Home height (Playwright, production build)
+
+| Width | main | Whole page (header, main, footer) |
+|---|---|---|
+| 375px | 4,969px | 5,943px |
+| 1280px | 4,986px | 5,477px |
+
+The Academy cards carry three line placeholder summaries; real one line promises will shorten the phone page by about 150px.
+

@@ -3,7 +3,7 @@
 Operating instructions for Claude Code on the House of Bread Global website.
 Read this file at the start of every session. Follow it over general defaults.
 
-Last updated: 23 October 2026
+Last updated: 27 October 2026
 
 ---
 
@@ -288,42 +288,51 @@ themes), run `npm run contrast`, and log it before it ships.
   additions.
 - A colour that is both a fill and text gets two tokens. `emerald` is a
   fill that carries white text; `emerald-deep` is text and links; `glyph`
-  is icons, rules, progress fills and the card glow ring; `fill-hover` and
-  `fill-disabled` are button fills; `on-gold` is text on gold, brand ink
-  in both themes; `surface-raised` replaces white for inputs, pills and
-  secondary buttons.
+  is icons, rules, progress fills and outline borders; `fill-primary`,
+  `fill-hover` and `fill-disabled` are button fills; `on-gold` is text on gold, brand ink
+  in both themes; `surface-raised` replaces white for inputs, cards and
+  pills.
 - Dark is deep green black (`#0a1510`), never pure black, with raised
   surfaces a step lighter. The footer stays deep green in both themes.
 - The head script in `app/layout.tsx` sets `data-theme` from the saved
   choice before first paint, so the wrong theme never flashes. Do not move
   theme logic into a component that runs after hydration. Theme controls
   carry `data-theme-control` and stay hidden without JavaScript.
-- A loop with a dark rendition (`WITH_DARK` in `lib/media/loops.ts`,
-  built from its own dark clip) shows its dark poster and plays its dark
-  video in dark. A loop without one is light only: in dark,
-  `LoopVideoClient` loads no video and `[data-loop]` shows still radial
-  glows. Every loop still needs a dark glow in `app/globals.css`.
+
+### Simplicity first (the reset)
+
+`docs/RESET-BRIEF.md` sets the direction since 27 October 2026. The site
+has one job: get people into free courses (Academy) and teaching videos
+(Teachings). Where an older rule below or in `docs/PLACEHOLDERS.md`
+disagrees with the brief, the brief wins.
+
+- One idea and one primary button per screen. Lots of white space.
+- Question-led section headings. Lists of options are big numbered rows.
+- No sliders, carousels with dots, pop-ups or countdowns.
+- Live sessions, events and the newsletter are supporting detail: small
+  lines or the footer, never a main section. Every page ends with a next
+  step towards a course, a teaching or a question.
 
 ### Palette
 
-- The site is mostly white, with green built around it. Premium, demure,
-  calm: nothing shouts.
-- Surfaces: white carries the page. `surface-warm` (cream) and
-  `surface-mint` alternate as bands. `tint` (emerald at 8%) is for the
-  current nav pill, icon tiles and skeletons. Hero and page headers are
-  white with soft emerald radial gradients (`bg-hero-tint`,
-  `bg-page-tint`); the app band and closing bands are `bg-panel-tint`.
-  Radial gradients only, no blur filters.
+- The site is mostly white, with green built around it. Calm: nothing
+  shouts.
+- Surfaces: white carries the page. `surface-warm` (cream, `#f7f3ec`) and
+  `surface-mint` (pale green) alternate as section bands, one tint per
+  section. `tint` (emerald at 8%) is for the current nav pill, icon tiles
+  and skeletons. No decorative gradients anywhere: `bg-hero-tint`,
+  `bg-page-tint` and `bg-panel-tint` are flat.
 - Text on light is `ink` and `ink-muted`. Links, eyebrows, TextCTA labels,
-  heading accents and focus rings are `emerald-deep`. `emerald` is the
-  primary fill, icon glyphs and the short rule above section headings.
-- Deep green (`green-deep`, `green-night`) is the footer and small
-  elements only, such as the phone frame. No deep green section or panel
-  anywhere else, and no full bleed green hero.
-- `lime` is a decorative 6px dot at most (the eyebrow dot halo) on light.
-  Never a fill, a headline colour or a carrier of meaning. Lime on white is
-  1.90:1. In dark only, lime is the eyebrow text colour, as it passes 5.4:1
-  or more on every dark surface and glow.
+  heading accents and focus rings are `emerald-deep`. `fill-primary` (deep
+  green in light, emerald-night in dark) is the primary button. `emerald`
+  is icon glyphs, the primary hover and the short rule above section
+  headings.
+- Deep green (`green-deep`, `green-night`) is the footer, the primary
+  pill and small elements only. No deep green section or panel anywhere
+  else, and no full bleed green hero.
+- `lime` is a decorative 6px dot at most on light. Never a fill, a
+  headline colour or a carrier of meaning. Lime text only on `#0f4a22` or
+  darker: in dark, lime is the eyebrow text colour.
 - `gold` and `gold-soft` are fills for live states, badges and small
   highlights, always with ink text. Use them sparingly.
 - Borders are hairlines (emerald at 12%), deepening to 35% on hover.
@@ -331,56 +340,63 @@ themes), run `npm run contrast`, and log it before it ships.
 
 ### Type and shape
 
-- Literata for display and headings: H1 36 to 56px and H2 28 to 36px at
-  weight 500; h3 and smaller at 600. Geist for UI, nav, buttons and labels.
-  Body 18px, line height 1.7.
+- Literata for display and headings, Geist for UI, nav, buttons and
+  labels. Body 18px, line height 1.7.
+- `text-statement` (clamp 2.5rem to 5rem, line height 1.04) is huge
+  display type for statements only: the Home hero and mission. Inner page
+  H1 is `text-display` (36 to 56px), H2 `text-h2` (28 to 36px), both at
+  weight 500; h3 and smaller at 600.
 - Eyebrows: 0.75rem, uppercase, 0.14em tracking, emerald-deep, no pill.
-- Radii: buttons 12px, inputs 10px, icon tiles 14px, cards 20px.
-- Motion is CSS only and short: hero rise 8px over 500ms, scroll reveal
-  from 0.85 opacity and 10px, card lift 2px, button lift 2px with a 4px
-  arrow nudge, menu fade 180ms. Nothing runs under reduced motion.
-- Home cards carry `.card-motion`: a reveal staggered by animation range
-  (`--i`), a 4px lift on hover and keyboard focus, the 3D icon floating
-  4px with a 3 degree tilt, a green border glow by pseudo element opacity,
-  and a 0.98 press. Transform, translate and opacity only.
-- The hero eyebrow never touches the header: hero and page headers keep at
-  least 64px of top padding below the 72px header.
+- Radii: buttons are pills, inputs 10px, icon tiles 14px, cards 20px.
+- Motion is CSS only and minimal: the hero loop, one subtle fade as a
+  section enters (`.reveal`, from 0.85 opacity, no movement), the 4px
+  arrow nudge on buttons and TextCTAs, the menu fade (180ms) and the
+  skeleton shimmer. No card moves on hover (a linked card only deepens its
+  edge), no floating or 3D icons, no entrance animations. Nothing runs
+  under reduced motion.
+- Hero and page headers sit below the sticky header with at least 64px of
+  clear space above their first line.
 
 ### Translucent surfaces and glass
 
-- Translucent white (`glass-card`) is allowed ONLY on the hero floating
-  cards (next live session chip, phone card) and the newsletter card. Never
-  on full width sections or long lists. The header has no surface at all.
-- Opacity is set so text keeps AA over the worst background behind it:
-  cards are white at 84%. Under
-  `prefers-reduced-transparency` they turn solid white.
-- `backdrop-filter` is allowed on those surfaces only, with blur at 12px or
-  less, a solid or near solid fallback inside
-  `@supports not (backdrop-filter: blur(1px))`, and AA contrast against the
-  worst background. It ships off: a 4x CPU slowdown test on 17 October
-  2026 could not show it was cheap. Turn it on for a surface only after a
+- The sticky header is the only translucent surface (`glass-header`:
+  white at 94%, night at 94% in dark), so its text keeps AA over anything
+  that scrolls beneath, checked against black in light and white in dark.
+  Under `prefers-reduced-transparency` it turns solid. Cards, panels and
+  sections are always solid.
+- `backdrop-filter` ships off: a 4x CPU slowdown test on 17 October 2026
+  could not show it was cheap. Turn it on for the header only after a
   scroll check on a real mid range Android phone shows no more than a few
-  fps lost.
+  fps lost, at 12px blur or less, with the current colour as fallback.
 
 ### Loading states
 
-- Skeletons only where content really loads: the Library video grid
-  (Suspense fallback), route segments that await data (`loading.tsx`), and
-  a still tint behind `next/image` thumbnails. Never on static content.
+- Skeletons only where content really loads: the Library video grid and
+  Home's teaching block (Suspense fallbacks), route segments that await
+  data (`loading.tsx`), and a still tint behind `next/image` thumbnails.
+  Never on static content.
 - Use `components/shared/Skeleton.tsx`: `Skeleton` blocks inside a
   `LoadingRegion` (aria-busy plus a visually hidden "Loading"). The shimmer
   moves by transform only and stays still under reduced motion. Size every
-  skeleton like the real content, so nothing shifts.
+  skeleton like the real content, so nothing shifts
+  (`scripts/check-noscript.mjs` measures it).
 
 ### Decorative motion loops
 
 - Every loop renders through `components/shared/LoopVideo.tsx` and is listed
   in `lib/media/loops.ts`. Files in `public/media/loops` are built by
   `npm run loops:build` from raw clips kept outside the repo, never by hand.
+- Only hero loops move: the Home hero and the one loop in a page's top
+  header (`PageHeader`). Every other `LoopVideo` passes `still` and shows
+  its poster only. `motion.test.ts` guards this.
 - At most one loop above the fold per page. Loops sit in framed panels
   (20px radius), never behind text, except the Home hero, which has a
   white scrim checked against the darkest frame (in dark, a night scrim
   checked against the brightest frame of the dark loop).
+- A loop with a dark rendition (`WITH_DARK`) shows its dark poster and
+  plays its dark video in dark. A loop without one is light only: in dark,
+  `LoopVideoClient` loads no video and `[data-loop]` shows its still glow
+  in `app/globals.css`.
 - Phones (767px and below) play only the Home and Academy hero loops, from
   their phone rendition (`WITH_PHONE`): a centred crop to the hero's phone
   aspect, 540px wide at most, 12 fps, a 4 s loop opening on the poster's
@@ -404,12 +420,11 @@ themes), run `npm run contrast`, and log it before it ships.
 ### Motion
 
 - No loop, hero or panel carries a Pause/Play button. One "Motion" control
-  (On or Off) sits beside the theme choice in the footer and in the mobile
-  menu (`components/shared/theme/MotionToggle.tsx`). Why: WCAG 2.2.2 needs
-  a way to stop motion that lasts over five seconds, and a button on every
-  panel cluttered the calm, premium surfaces and repeated itself down the
-  page. One site wide control does the job once, where the theme choice
-  already lives.
+  (On or Off) sits beside the theme choice in the footer, and nowhere else
+  (`components/shared/theme/MotionToggle.tsx`). Why: WCAG 2.2.2 needs a
+  way to stop motion that lasts over five seconds, and one site wide
+  control does the job once, where the theme choice already lives. The
+  header and phone menu carry links only.
 - Off stops and hides every loop video: posters only, nothing moves. With
   no saved choice it follows prefers-reduced-motion. A choice is saved in
   localStorage (`hob:motion`, inside try/catch) and wins over the system
@@ -431,32 +446,42 @@ themes), run `npm run contrast`, and log it before it ships.
   by `node scripts/logo/make-transparent.mjs` (edge connected fill, so the
   white cross stays; 1px feathered and defringed), shown with `next/image`
   beside the text wordmark (`Logo.tsx`), with `priority` in the header,
-  straight on the hero tint with no tile. On the footer it sits in a white
-  tile, because the lid edge falls to 2.49:1 on green-deep, and in dark the
-  header mark gets the same tile (`.logo-mark`) until the ministry supplies
-  a reversed mark. `app/icon.png`, `app/apple-icon.png` and
+  straight on the header glass with no tile. On the footer it sits in a
+  white tile, because the lid edge falls to 2.49:1 on green-deep, and in
+  dark the header mark gets the same tile (`.logo-mark`) until the ministry
+  supplies a reversed mark. `app/icon.png`, `app/apple-icon.png` and
   `app/opengraph-image.png` come from the same source. Replace all of them
   when the SVG arrives.
 
 ### Buttons and calls to action
 
-- Every call to action is a `Button`, a `ButtonLink` or a `TextCTA`. No call to
-  action is underlined.
-- Buttons: 12px radius, at least 48px tall on mobile and 52px from `sm`, full
-  width and stacked in heroes and bands on mobile. Hover lifts 2px and the
-  arrow nudges 4px.
-  - Primary: emerald fill, white text, soft shadow, emerald-deep on hover.
-  - Secondary: white fill, 1.5px emerald border at 55%, emerald-deep text,
-    tint and a full emerald border on hover.
+- Every call to action is a `Button`, a `ButtonLink` or a `TextCTA`. No
+  call to action is underlined.
+- Button labels say exactly what happens. Use only the labels in the
+  table in `docs/RESET-BRIEF.md` section 2 (Start this course, Continue
+  learning, Browse free courses, Watch now, See all teachings, Ask a
+  question, Get the app, Read our story, What we believe), plus any label
+  the brief names for a specific page.
+- Buttons are pills with an arrow (`ButtonLink` shows it by default), at
+  least 48px tall on mobile and 52px from `sm`, full width and stacked in
+  heroes and bands on mobile. Nothing lifts; the arrow nudges 4px.
+  - Primary: solid deep green (`fill-primary`), white text, emerald on
+    hover.
+  - Secondary: an outline, a 1.5px `glyph` border, emerald-deep text, tint
+    on hover.
   - Footer (`tone="green"`): primary is white with green-deep text;
     secondary is white at 12% with a 1.5px white border.
   - Live: gold fill, ink text, only while a session is live.
-- `TextCTA`: a weight 600 label and a 28px circular arrow chip. On light the
-  label is emerald-deep and the chip has an emerald border at 25%; on hover
-  the chip fills emerald and the arrow turns white and slides 3px. In the
-  footer the label is white, the chip white at 15%, and hover fills it
-  white with a green-deep arrow. A card that stretches a TextCTA over
-  itself carries `.cta-host`.
+- `TextCTA`: a weight 600 label and a 28px circular arrow chip, for
+  secondary links such as "Read our story". On light the label is
+  emerald-deep and the chip has an emerald border at 25%; on hover the chip
+  fills emerald and the arrow turns white and slides 3px. In the footer
+  the label is white, the chip white at 15%, and hover fills it white with
+  a green-deep arrow. A card that stretches a TextCTA over itself carries
+  `.cta-host`.
+- Never use "Learn more", "Come and be fed", "Be fed by the Word",
+  "Transform your life", "Unforgettable" or "Journey of faith"
+  (`lib/content/reset-copy.test.ts` checks the pages reset so far).
 - Every interactive element has a visible focus ring: emerald-deep on
   light, white in the footer.
 
@@ -472,30 +497,23 @@ themes), run `npm run contrast`, and log it before it ships.
 
 ### Navigation
 
-- Header: 72px, not sticky. It scrolls away with the page and floats,
-  transparent with no border, over the hero or page header tint (a -72px
-  bottom margin; Hero and PageHeader add 72px to their top padding). Left:
-  logo, then Home, Academy, Library, About, Contact in ink (Library is
-  `/media`), the current page in a tint pill with an inset emerald ring.
-  Right: one primary button, "Explore Teachings", to `/academy`, then
-  the dark theme switch (a 44px round icon button with `aria-pressed`,
-  styled like the Menu button). Subscribe and the app are never in the
-  header: they live in the Home hero, the footer and the closing
-  newsletter card.
-- Below `xl`: logo (the name hides below 480px), a compact "Explore
-  Teachings" button (48px tall, "Explore" below `sm`), the theme switch
-  and a "Menu" button, all always visible.
-  The menu panel is solid white. The menu is a `details` element and
-  works without JavaScript: the five links as large tap targets, then the
-  Light, Dark or System theme choice and the Motion On or Off control
-  (both shown only with JavaScript), and nothing else.
-- Footer: Ministry in the header order (Academy, Library, Live sessions,
-  About, Contact, Subscribe), Learn (Teachings, Study the New Testament,
-  New Testament journeys, Get the official app), Follow. The first column
-  carries the Light, Dark or System theme choice and the Motion control. The "Stay close to the ministry" strip shows only
-  on pages that do not already offer signup (`[data-newsletter]`).
-- Pages close with the newsletter card: a translucent white card over soft
-  gold or mint radial tints, with an emerald button, never a green band.
+- Header: 64px, sticky, so it stays small and visible on scroll, on the
+  header glass with a hairline below. From `lg`: logo, then Teachings,
+  Academy, About and Ask in ink, the current page in a tint pill with an
+  inset emerald ring, then one primary pill, "Browse free courses", to
+  `/academy`. Teachings points at `/media` until the routes are renamed.
+- Below `lg`: the logo and a "Menu" button only. The menu is a `details`
+  element and works without JavaScript. Its panel fills the screen below
+  the header, solid surface: the four links as large serif items, then
+  the "Browse free courses" pill, and nothing else.
+- Footer: deep green in both themes, the site's trust block. The full
+  ministry name (in brackets until confirmed), socials, store badges once
+  the store links exist, one list of links (Teachings, Academy, About,
+  What we believe, Ask, Events, App, Subscribe, Contact, Privacy), and the
+  Light, Dark or System theme choice beside the Motion control.
+- The app has one section, just before the footer, on Home. Newsletter
+  signup lives on `/subscribe` and in the footer link, not in a closing
+  card on every page.
 
 ---
 

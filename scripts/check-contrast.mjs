@@ -19,7 +19,7 @@
 const tokens = {
   // Light palette.
   white: "#ffffff",
-  cream: "#fbf8f1",
+  cream: "#f7f3ec",
   mint50: "#eef6e8",
   gold50: "#fdf3d6",
   tint: "#edf3ef",
@@ -77,13 +77,13 @@ const roles = {
     eyebrow: "emeraldDeep",
     glyph: "emerald",
     ring: "emeraldDeep",
-    fill: "emerald",
-    fillHover: "emeraldDeep",
-    // Hero and page header tints at their peak: 10% emerald.
-    heroPeak: "white, emerald/0.1",
-    // Translucent cards, and the worst background each one meets.
-    glass: "white/0.84",
-    glassWorst: "greenNight",
+    // The primary pill: solid deep green, emerald on hover.
+    fill: "greenDeep",
+    fillHover: "emerald",
+    // The sticky header glass, and the worst thing that can scroll beneath
+    // it (a black video thumbnail).
+    glass: "white/0.94",
+    glassWorst: "black",
   },
   dark: {
     surface: "night",
@@ -99,10 +99,8 @@ const roles = {
     ring: "spring",
     fill: "emeraldNight",
     fillHover: "emerald",
-    // Hero tint peak: 16% leaf over night.
-    heroPeak: "night, leaf/0.16",
-    // Dark glass over white: the lightest thing that can sit behind it.
-    glass: "nightRaised/0.88",
+    // Header glass: night at 94% over white, the lightest thing beneath it.
+    glass: "night/0.94",
     glassWorst: "white",
   },
 };
@@ -125,35 +123,34 @@ const shared = [
   ["Eyebrow on raised", "@eyebrow", ["@raised"], TEXT],
   ["Eyebrow on mint band", "@eyebrow", ["@mint"], TEXT],
   ["Eyebrow on warm band", "@eyebrow", ["@warm"], TEXT],
-  ["Hero tint peak: ink", "@ink", ["@heroPeak"], TEXT],
-  ["Hero tint peak: muted", "@muted", ["@heroPeak"], TEXT],
-  ["Hero tint peak: accent", "@accent", ["@heroPeak"], TEXT],
-  ["Hero tint peak: eyebrow", "@eyebrow", ["@heroPeak"], TEXT],
   // Buttons.
   ["Primary: white on fill", "white", ["@fill"], TEXT],
   ["Primary hover: white on fill hover", "white", ["@fillHover"], TEXT],
   ["Secondary: accent on raised", "@accent", ["@raised"], TEXT],
+  ["Secondary outline: accent on surface", "@accent", ["@surface"], TEXT],
+  ["Secondary outline: accent on warm band", "@accent", ["@warm"], TEXT],
+  ["Secondary outline: accent on mint band", "@accent", ["@mint"], TEXT],
+  ["Secondary outline: glyph border on surface", "@glyph", ["@surface"], UI],
+  ["Secondary outline: glyph border on warm band", "@glyph", ["@warm"], UI],
+  ["Secondary outline: glyph border on mint band", "@glyph", ["@mint"], UI],
+  // Numbered rows: big accent numbers and glyph arrows, accent on the mint band.
+  ["Numbered rows: number, accent on mint band", "@accent", ["@mint"], TEXT],
+  ["Numbered rows: arrow, glyph on mint band", "@glyph", ["@mint"], UI],
+  ["Numbered rows: divider, border on mint band (decorative)", "@glyph/0.12", ["@mint"], UI, "decorative"],
   ["Secondary hover: accent on tint", "@accent", ["@tint"], TEXT],
   // Icon tiles, rules and the card glow ring.
   ["Icon glyph on tint", "@glyph", ["@tint"], UI],
   ["Glyph (clock, rules) on surface", "@glyph", ["@surface"], UI],
-  ["Card glow ring on surface", "@glyph", ["@surface"], UI],
-  ["Card glow ring on mint", "@glyph", ["@mint"], UI],
-  ["Card glow ring on warm", "@glyph", ["@warm"], UI],
-  // Header, transparent over the hero tint.
-  ["Header: ink nav over the hero tint peak", "@ink", ["@heroPeak"], TEXT],
-  // Theme switch, styled like the Menu button: accent glyph on raised, tint on hover.
-  ["Header theme switch: accent glyph on raised", "@accent", ["@raised"], UI],
-  ["Header theme switch hover: accent glyph on tint", "@accent", ["@tint"], UI],
-  ["Header theme switch and Menu: glyph border at 55% over the hero tint peak", "@glyph/0.55", ["@heroPeak"], UI, "glyph identifies the control"],
-  ["Nav current and theme choice: accent on tint pill over the hero tint peak", "@accent", ["@heroPeak", "@tint/0.9"], TEXT],
-  ["Theme choice current: accent on tint over surface (menu)", "@accent", ["@surface", "@tint"], TEXT],
-  // Translucent cards (hero floating cards, newsletter card).
-  ["Glass card: ink over its worst background", "@ink", ["@glassWorst", "@glass"], TEXT],
-  ["Glass card: muted over its worst background", "@muted", ["@glassWorst", "@glass"], TEXT],
-  ["Glass card: accent over its worst background", "@accent", ["@glassWorst", "@glass"], TEXT],
-  ["Glass card: eyebrow over its worst background", "@eyebrow", ["@glassWorst", "@glass"], TEXT],
-  ["Glass card: muted over the hero tint", "@muted", ["@heroPeak", "@glass"], TEXT],
+  // The sticky header glass, the only translucent surface, over the worst
+  // thing that can scroll beneath it.
+  ["Header glass: ink nav over its worst background", "@ink", ["@glassWorst", "@glass"], TEXT],
+  ["Header glass: accent (Menu label) over its worst background", "@accent", ["@glassWorst", "@glass"], TEXT],
+  ["Header glass: nav hover and current pill, accent on tint", "@accent", ["@tint"], TEXT],
+  ["Header glass: Menu border, glyph over its worst background", "@glyph", ["@glassWorst", "@glass"], UI],
+  ["Header glass: focus ring over its worst background", "@ring", ["@glassWorst", "@glass"], UI],
+  ["Header glass: logo name, ink over its worst background", "@ink", ["@glassWorst", "@glass"], TEXT],
+  // The phone menu panel, solid surface.
+  ["Phone menu: ink links on surface", "@ink", ["@surface"], TEXT],
   // Scripture panel: mint with a glyph rule and an emerald version pill.
   ["Scripture: ink on mint", "@ink", ["@mint"], TEXT],
   ["Scripture: reference, accent on mint", "@accent", ["@mint"], TEXT],
@@ -186,14 +183,11 @@ const shared = [
   ["Focus ring on raised", "@ring", ["@raised"], UI],
   ["Focus ring on mint", "@ring", ["@mint"], UI],
   ["Focus ring on warm", "@ring", ["@warm"], UI],
-  ["Focus ring over the hero tint peak", "@ring", ["@heroPeak"], UI],
   ["Focus ring on tint (current pill)", "@ring", ["@tint"], UI],
 ];
 
 /** Light only. Labels keep their earlier wording, so the log stays comparable. */
 const lightOnly = [
-  // Hero floating cards over the green-night phone frame (light glass).
-  ["Hero card: emerald-deep over green-night", "emeraldDeep", ["greenNight", "white/0.84"], TEXT],
   // Text over decorative loops. Backgrounds are each loop's darkest and
   // brightest single pixel over every frame of the final WebM (npm run
   // loops:sample, 18 October 2026). Dark text is worst over the darkest pixel.
@@ -204,20 +198,9 @@ const lightOnly = [
   ["Hero loop: ink over brightest frame pixel, 80% scrim", "ink", ["white", "white/0.8"], TEXT],
   ["Hero loop: nav current pill over darkest pixel, 80% scrim", "emeraldDeep", ["loopLightDark", "white/0.8", "emerald/0.08"], TEXT],
   ["Hero loop: focus ring over darkest pixel, 80% scrim", "emeraldDeep", ["loopLightDark", "white/0.8"], UI],
-  // Hero floating cards (84% white) where the scrim is lightest (20%).
-  ["Hero card over loop: ink-muted, darkest pixel, 20% scrim", "inkMuted", ["loopLightDark", "white/0.2", "white/0.84"], TEXT],
-  ["Hero card over loop: emerald-deep, darkest pixel, 20% scrim", "emeraldDeep", ["loopLightDark", "white/0.2", "white/0.84"], TEXT],
-  // App band: progress card (84% white) over light on water.
-  ["App band card over water: ink-muted, darkest pixel", "inkMuted", ["loopWaterDark", "white/0.84"], TEXT],
-  ["App band card over water: emerald-deep, darkest pixel", "emeraldDeep", ["loopWaterDark", "white/0.84"], TEXT],
-  // Newsletter card (84% white) over bread steam, whose darkest pixel is black.
-  ["Newsletter card over steam: ink, darkest pixel", "ink", ["black", "white/0.84"], TEXT],
-  ["Newsletter card over steam: ink-muted, darkest pixel", "inkMuted", ["black", "white/0.84"], TEXT],
-  ["Newsletter card over steam: emerald-deep, darkest pixel", "emeraldDeep", ["black", "white/0.84"], TEXT],
-  ["Newsletter card over steam: ink-muted, brightest pixel", "inkMuted", ["white", "white/0.84"], TEXT],
+  ["Hero loop: secondary outline border, glyph, darkest pixel, 80% scrim", "emerald", ["loopLightDark", "white/0.8"], UI],
   // Logo mark, no tile on light.
   ["Logo lid edge on white (header, plain pages)", "logoLid", ["white"], UI],
-  ["Logo lid edge over the hero tint peak", "logoLid", ["white", "emerald/0.1"], UI],
   // Never used: lime is a decorative dot only on light.
   ["Lime on white (never used for text or meaning)", "lime", ["white"], TEXT, "not used"],
 ];
@@ -235,30 +218,13 @@ const darkOnly = [
   ["Dark hero loop: lime eyebrow, brightest pixel, 80% night scrim", "lime", ["loopAmbientDarkBright", "night/0.8"], TEXT],
   ["Dark hero loop: nav current pill, brightest pixel, 80% night scrim", "spring", ["loopAmbientDarkBright", "night/0.8", "nightTint"], TEXT],
   ["Dark hero loop: focus ring, brightest pixel, 80% night scrim", "spring", ["loopAmbientDarkBright", "night/0.8"], UI],
-  // Hero floating cards (dark glass) where the scrim is lightest (20%).
-  ["Dark hero card over the loop: muted, brightest pixel, 20% night scrim", "mistMuted", ["loopAmbientDarkBright", "night/0.2", "nightRaised/0.88"], TEXT],
-  ["Dark hero card over the loop: accent, brightest pixel, 20% night scrim", "spring", ["loopAmbientDarkBright", "night/0.2", "nightRaised/0.88"], TEXT],
-  // App band: the progress card (dark glass) over the dark water loop, whose brightest pixel is white.
-  ["App band glass over dark water: muted, brightest pixel", "mistMuted", ["white", "nightRaised/0.88"], TEXT],
-  ["App band glass over dark water: accent, brightest pixel", "spring", ["white", "nightRaised/0.88"], TEXT],
+  ["Dark hero loop: secondary outline border, glyph, brightest pixel, 80% night scrim", "sprout", ["loopAmbientDarkBright", "night/0.8"], UI],
   // Home hero swirl at its brightest overlap: the leaf ribbon, the lime breath and the emerald glow.
   ["Hero swirl peak: ink", "mist", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
   ["Hero swirl peak: muted", "mistMuted", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
   ["Hero swirl peak: accent (H1 phrase, TextCTA)", "spring", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
   ["Hero swirl peak: lime eyebrow", "lime", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], TEXT],
   ["Hero swirl peak: focus ring", "spring", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28"], UI],
-  ["Hero card over the swirl peak: muted", "mistMuted", ["night", "leaf/0.22", "lime/0.06", "emerald/0.28", "nightRaised/0.88"], TEXT],
-  // Newsletter card: dark glass over the dark bread steam at its brightest
-  // pixel. Heading and body, consent text and its link.
-  ["Newsletter glass over dark steam: ink, brightest pixel", "mist", ["loopBreadDarkBright", "nightRaised/0.88"], TEXT],
-  ["Newsletter glass over dark steam: muted, brightest pixel", "mistMuted", ["loopBreadDarkBright", "nightRaised/0.88"], TEXT],
-  ["Newsletter glass over dark steam: accent (consent link), brightest pixel", "spring", ["loopBreadDarkBright", "nightRaised/0.88"], TEXT],
-  // Newsletter frame: warm gold and green glows over raised night, if the
-  // dark poster fails to load.
-  ["Newsletter frame glow: muted on glass over the gold glow", "mistMuted", ["nightRaised", "gold/0.1", "nightRaised/0.88"], TEXT],
-  // App band: the progress card (glass) over the water glow at its brightest.
-  ["App band glass over the water glow: muted", "mistMuted", ["nightRaised", "spring/0.14", "leaf/0.22", "nightRaised/0.88"], TEXT],
-  ["App band glass over the water glow: accent", "spring", ["nightRaised", "spring/0.14", "leaf/0.22", "nightRaised/0.88"], TEXT],
   // Logo mark in its white tile, and the tile itself on night.
   ["Logo tile: white tile on night", "white", ["night"], UI],
   ["Logo lid edge on the white tile", "logoLid", ["white"], UI],
@@ -276,6 +242,8 @@ const invariant = [
   ["Footer current pill and theme choice: off-white on 15% white over green-deep", "offWhite", ["greenDeep", "white/0.15"], TEXT],
   ["Footer primary: green-deep on white", "greenDeep", ["white"], TEXT],
   ["Footer primary hover: green-deep on mint", "greenDeep", ["mint50"], TEXT],
+  ["Footer store badge: green-deep on white", "greenDeep", ["white"], TEXT],
+  ["Footer placeholder border: off-white on green-deep", "offWhite", ["greenDeep"], UI],
   ["Footer secondary: white on 12% white over green-deep", "white", ["greenDeep", "white/0.12"], TEXT],
   ["Footer focus ring: white on green-deep", "white", ["greenDeep"], UI],
   ["Footer logo tile: white tile on green-deep", "white", ["greenDeep"], UI],
