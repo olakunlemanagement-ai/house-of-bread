@@ -3,17 +3,20 @@ import { Suspense } from "react";
 import { ButtonLink } from "./Button";
 import { Logo } from "./Logo";
 import { NavLinks, StaticNavLinks } from "./NavLinks";
+import { ThemeToggle } from "./theme/ThemeToggle";
 
 /**
  * A small 64px header that stays visible on scroll (sticky), on the site's
  * only translucent surface (glass-header: white at 94%, night in dark), with
  * a hairline below.
- * Wide screens (lg): logo, then Teachings, Academy, About and Ask, then one
- * primary pill, Browse free courses.
- * Phones and tablets: logo and a Menu button. The menu is a details element,
- * so it opens and closes without JavaScript. Its panel fills the screen
- * below the header: large links, then the same primary pill, nothing else.
- * Theme and Motion controls live in the footer.
+ * Wide screens (lg): logo, then Home, Academy, Teachings, About and Contact,
+ * then one primary pill, Browse free courses, and the theme switch.
+ * Below lg: logo, the pill (from sm), the theme switch and a Menu button.
+ * The menu is a details element, so it opens and closes without
+ * JavaScript. Its panel fills the screen below the header: the same five
+ * links, large, then the pill, nothing else.
+ * The theme switch shows at every width; the footer keeps the full theme
+ * choice and the site's one Motion control.
  */
 export function SiteHeader() {
   return (
@@ -24,7 +27,7 @@ export function SiteHeader() {
       >
         Skip to main content
       </a>
-      <div className="mx-auto flex h-16 w-full max-w-[75rem] items-center gap-3 px-4 sm:px-6 lg:gap-8">
+      <div className="mx-auto flex h-16 w-full max-w-[75rem] items-center gap-3 px-4 sm:px-6 lg:gap-6">
         <Link
           href="/"
           aria-label="House of Bread Global, home"
@@ -39,15 +42,16 @@ export function SiteHeader() {
           </Suspense>
         </nav>
 
-        <div className="ml-auto flex shrink-0 items-center">
+        <div className="ml-auto flex shrink-0 items-center gap-2">
           {/* Wrapped, because the button's own inline-flex would beat a hidden class on it. */}
-          <div className="hidden lg:block">
-            <ButtonLink href="/academy" size="compact" className="whitespace-nowrap lg:px-6 lg:text-base">
+          <div className="hidden sm:block">
+            <ButtonLink href="/academy" size="sm" className="whitespace-nowrap lg:px-5">
               Browse free courses
             </ButtonLink>
           </div>
+          <ThemeToggle />
           <details data-menu className="group lg:hidden">
-            <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded-button border-[1.5px] border-glyph px-4 text-sm font-semibold text-emerald-deep hover:bg-tint [&::-webkit-details-marker]:hidden">
+            <summary className="flex min-h-11 cursor-pointer list-none items-center gap-2 rounded-button border-[1.5px] border-glyph px-4 text-sm font-semibold text-emerald-deep hover:bg-tint active:bg-tint-strong [&::-webkit-details-marker]:hidden">
               <span aria-hidden="true" className="flex w-4 flex-col gap-1">
                 <span className="h-0.5 rounded bg-current transition-transform group-open:translate-y-1.5 group-open:rotate-45" />
                 <span className="h-0.5 rounded bg-current group-open:opacity-0" />

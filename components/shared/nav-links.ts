@@ -8,16 +8,18 @@ export type NavLink = {
 };
 
 /**
- * Main navigation: Teachings, Academy, About, Ask. The logo goes home. The
- * one header button, Browse free courses, sits apart on the right.
- * Teachings is the video page (/media) until the routes are renamed in a
- * later phase of the reset (docs/RESET-BRIEF.md).
+ * Main navigation, as on main before the reset: Home, Academy, Teachings,
+ * About, Contact. The one header button, Browse free courses, sits apart on
+ * the right. Teachings is the video page (/media, once labelled Library)
+ * until the routes are renamed. Ask lives in the footer and in Home's third
+ * numbered row.
  */
 export const primaryNav: NavLink[] = [
-  { href: "/media", label: "Teachings", also: ["/events", "/teachings"] },
+  { href: "/", label: "Home" },
   { href: "/academy", label: "Academy" },
+  { href: "/media", label: "Teachings", also: ["/events", "/teachings"] },
   { href: "/about", label: "About" },
-  { href: "/ask", label: "Ask" },
+  { href: "/contact", label: "Contact" },
 ];
 
 /**
