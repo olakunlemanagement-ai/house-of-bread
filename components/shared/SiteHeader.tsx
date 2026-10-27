@@ -3,60 +3,51 @@ import { Suspense } from "react";
 import { ButtonLink } from "./Button";
 import { Logo } from "./Logo";
 import { NavLinks, StaticNavLinks } from "./NavLinks";
-import { MotionToggle } from "./theme/MotionToggle";
-import { ThemeChoice } from "./theme/ThemeChoice";
-import { ThemeToggle } from "./theme/ThemeToggle";
 
 /**
- * 72px header that scrolls away with the page. It floats, transparent, over
- * the hero or page header tint: the negative bottom margin pulls the next
- * section up beneath it, and Hero and PageHeader add 72px to their top
- * padding. No bar or border, as nothing ever scrolls under it.
- * Wide screens: logo and the five nav links on the left; one emerald primary
- * button, Explore Teachings, then the dark theme switch on the right.
- * Subscribe and the app are reached from the Home hero, the footer and the
- * closing newsletter card.
- * Narrow screens: logo, a compact Explore Teachings button (still 48px tall,
- * "Explore" below sm), the theme switch and a Menu button, all always
- * visible. The menu is a details element, so it opens and closes
- * without JavaScript. Its panel is solid white (night in dark) and fades in
- * over 180ms. Below the links sit the Light, Dark or System choice and the
- * Motion On or Off control, which show only with JavaScript.
+ * A small 64px header that stays visible on scroll (sticky), on the site's
+ * only translucent surface (glass-header: white at 94%, night in dark), with
+ * a hairline below.
+ * Wide screens (lg): logo, then Teachings, Academy, About and Ask, then one
+ * primary pill, Browse free courses.
+ * Phones and tablets: logo and a Menu button. The menu is a details element,
+ * so it opens and closes without JavaScript. Its panel fills the screen
+ * below the header: large links, then the same primary pill, nothing else.
+ * Theme and Motion controls live in the footer.
  */
 export function SiteHeader() {
   return (
-    <header className="relative z-40 -mb-18">
+    <header className="glass-header sticky top-0 z-40 border-b border-border">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-button focus:bg-emerald focus:px-5 focus:py-3 focus:font-semibold focus:text-white"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-button focus:bg-fill-primary focus:px-5 focus:py-3 focus:font-semibold focus:text-white"
       >
         Skip to main content
       </a>
-      <div className="mx-auto flex h-18 w-full max-w-[75rem] items-center gap-3 px-4 sm:px-6 xl:gap-6">
+      <div className="mx-auto flex h-16 w-full max-w-[75rem] items-center gap-3 px-4 sm:px-6 lg:gap-8">
         <Link
           href="/"
           aria-label="House of Bread Global, home"
           className="shrink-0 rounded-lg py-2 text-sm text-ink sm:text-base"
         >
-          <Logo priority compact />
+          <Logo priority />
         </Link>
 
-        <nav aria-label="Main" className="hidden xl:block">
+        <nav aria-label="Main" className="hidden lg:block">
           <Suspense fallback={<StaticNavLinks layout="inline" />}>
             <NavLinks layout="inline" />
           </Suspense>
         </nav>
 
-        {/* One set of controls at every width. Below sm the button reads
-            "Explore", so all three keep full size tap targets at 375px. */}
-        <div className="ml-auto flex shrink-0 items-center gap-2">
-          <ButtonLink href="/academy" size="compact" className="whitespace-nowrap xl:px-6 xl:text-base">
-            <span className="sm:hidden">Explore</span>
-            <span className="hidden sm:inline">Explore Teachings</span>
-          </ButtonLink>
-          <ThemeToggle />
-          <details data-menu className="group xl:hidden">
-            <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded-button border-[1.5px] border-glyph/55 bg-surface-raised px-3.5 text-sm font-semibold text-emerald-deep hover:bg-tint [&::-webkit-details-marker]:hidden">
+        <div className="ml-auto flex shrink-0 items-center">
+          {/* Wrapped, because the button's own inline-flex would beat a hidden class on it. */}
+          <div className="hidden lg:block">
+            <ButtonLink href="/academy" size="compact" className="whitespace-nowrap lg:px-6 lg:text-base">
+              Browse free courses
+            </ButtonLink>
+          </div>
+          <details data-menu className="group lg:hidden">
+            <summary className="flex min-h-12 cursor-pointer list-none items-center gap-2 rounded-button border-[1.5px] border-glyph px-4 text-sm font-semibold text-emerald-deep hover:bg-tint [&::-webkit-details-marker]:hidden">
               <span aria-hidden="true" className="flex w-4 flex-col gap-1">
                 <span className="h-0.5 rounded bg-current transition-transform group-open:translate-y-1.5 group-open:rotate-45" />
                 <span className="h-0.5 rounded bg-current group-open:opacity-0" />
@@ -65,17 +56,16 @@ export function SiteHeader() {
               <span className="group-open:hidden">Menu</span>
               <span className="hidden group-open:inline">Close</span>
             </summary>
-            <div className="menu-panel absolute inset-x-0 top-full max-h-[calc(100dvh-4.5rem)] overflow-y-auto border-y border-border bg-surface shadow-raised">
-              <nav aria-label="Main" className="mx-auto w-full max-w-[75rem] px-4 py-5 sm:px-6">
+            <div className="menu-panel absolute inset-x-0 top-full h-[calc(100dvh-4rem)] overflow-y-auto border-t border-border bg-surface">
+              <nav aria-label="Main" className="mx-auto w-full max-w-[75rem] px-4 pb-6 pt-8 sm:px-6">
                 <Suspense fallback={<StaticNavLinks layout="stacked" />}>
                   <NavLinks layout="stacked" />
                 </Suspense>
               </nav>
-              <div data-theme-control className="mx-auto w-full max-w-[75rem] px-4 pb-6 sm:px-6">
-                <div className="flex flex-wrap gap-x-8 gap-y-5 border-t border-border pt-5">
-                  <ThemeChoice legendClassName="eyebrow" />
-                  <MotionToggle labelClassName="eyebrow" />
-                </div>
+              <div className="mx-auto w-full max-w-[75rem] px-4 pb-10 sm:px-6">
+                <ButtonLink href="/academy" className="w-full sm:w-auto">
+                  Browse free courses
+                </ButtonLink>
               </div>
             </div>
           </details>

@@ -8,43 +8,34 @@ export type NavLink = {
 };
 
 /**
- * Main navigation. The one header button, Explore Teachings, sits apart from
- * this list on the right of the header.
+ * Main navigation: Teachings, Academy, About, Ask. The logo goes home. The
+ * one header button, Browse free courses, sits apart on the right.
+ * Teachings is the video page (/media) until the routes are renamed in a
+ * later phase of the reset (docs/RESET-BRIEF.md).
  */
 export const primaryNav: NavLink[] = [
-  { href: "/", label: "Home" },
+  { href: "/media", label: "Teachings", also: ["/events", "/teachings"] },
   { href: "/academy", label: "Academy" },
-  // Live sessions are part of the Library.
-  { href: "/media", label: "Library", also: ["/events"] },
   { href: "/about", label: "About" },
-  { href: "/contact", label: "Contact" },
+  { href: "/ask", label: "Ask" },
 ];
 
-/** Footer link columns. The Follow column is rendered from SocialLinks. */
-export const footerNav: { heading: string; links: NavLink[] }[] = [
-  {
-    // Same order as the header. Subscribe stays here on every page, since the
-    // header no longer carries it.
-    heading: "Ministry",
-    links: [
-      { href: "/academy", label: "Academy" },
-      { href: "/media", label: "Library" },
-      { href: "/events", label: "Live sessions" },
-      { href: "/about", label: "About" },
-      { href: "/contact", label: "Contact" },
-      { href: "/subscribe", label: "Subscribe" },
-    ],
-  },
-  {
-    heading: "Learn",
-    links: [
-      { href: "/teachings", label: "Teachings" },
-      { href: "/new-testament", label: "Study the New Testament" },
-      { href: "/plans", label: "New Testament journeys" },
-      { href: "/app", label: "Get the official app" },
-      { href: "/ask", label: "Ask a question" },
-    ],
-  },
+/**
+ * The footer links, one list (docs/RESET-BRIEF.md section 3). What we
+ * believe points at the About page's "How Scripture is handled" until a
+ * beliefs section exists.
+ */
+export const footerNav: NavLink[] = [
+  { href: "/media", label: "Teachings" },
+  { href: "/academy", label: "Academy" },
+  { href: "/about", label: "About" },
+  { href: "/about#handled" as Route, label: "What we believe" },
+  { href: "/ask", label: "Ask" },
+  { href: "/events", label: "Events" },
+  { href: "/app", label: "App" },
+  { href: "/subscribe", label: "Subscribe" },
+  { href: "/contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy" },
 ];
 
 export function isCurrent(item: NavLink, pathname: string): boolean {
@@ -55,5 +46,3 @@ export function isCurrent(item: NavLink, pathname: string): boolean {
   );
 }
 
-/** The footer's bottom line. */
-export const legalNav: NavLink[] = [{ href: "/privacy", label: "Privacy" }];

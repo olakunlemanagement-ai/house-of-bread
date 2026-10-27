@@ -33,6 +33,7 @@ const allowed: { file: string; line: RegExp; why: string }[] = [
   { file: "components/shared/nav-styles.ts", line: /white\//, why: "Footer and legal pills on deep green" },
   { file: "components/shared/Button.tsx", line: /bg-white text-green-deep|border-white bg-white\/12/, why: "Footer buttons on deep green" },
   { file: "components/shared/forms.tsx", line: /border-white/, why: "Inputs on deep green" },
+  { file: "components/shared/StoreButtons.tsx", line: /bg-white font-semibold text-green-deep/, why: "Footer store badges on deep green" },
 ];
 
 function sourceFiles(dir: string): string[] {

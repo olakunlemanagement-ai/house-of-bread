@@ -16,8 +16,8 @@ import { resolveMotion } from "./motion-store";
 import { MOTION_KEY, THEME_KEY, themeScript } from "./theme-script";
 
 // CLAUDE.md section 7, Motion: one Motion control (On or Off) in the footer
-// and the mobile menu stops every loop (WCAG 2.2.2). There is no per loop
-// Pause/Play button.
+// stops every loop (WCAG 2.2.2). There is no per loop Pause/Play button,
+// and only hero loops move.
 
 /** Runs the head script against a stub html element, storage and media query. */
 function runHeadScript({ saved = {}, reduce = false, storageThrows = false }: {
@@ -192,10 +192,31 @@ describe("Motion controls", () => {
     expect(found).toEqual([]);
   });
 
-  it("places the Motion control beside the theme choice in the footer and the mobile menu", () => {
-    for (const file of ["components/shared/SiteFooter.tsx", "components/shared/SiteHeader.tsx"]) {
-      const source = readFileSync(file, "utf8");
-      expect(source, file).toMatch(/<ThemeChoice[^>]*\/>\s*<MotionToggle/);
+  it("places the one Motion control beside the theme choice in the footer, and nowhere else", () => {
+    const footer = readFileSync("components/shared/SiteFooter.tsx", "utf8");
+    expect(footer).toMatch(/<ThemeChoice[^>]*\/>\s*<MotionToggle/);
+    // Since the reset the header and its phone menu carry links only.
+    const header = readFileSync("components/shared/SiteHeader.tsx", "utf8");
+    expect(header).not.toMatch(/MotionToggle|ThemeChoice|ThemeToggle/);
+  });
+
+  it("moves only hero loops: every other LoopVideo is still", () => {
+    // The Home hero and each page's top header (PageHeader) may play a
+    // loop. A panel lower on a page passes `still`, so it shows its poster.
+    const heroes = new Set(["components/shared/Hero.tsx", "components/shared/PageHeader.tsx"]);
+    const walk = (dir: string): string[] =>
+      readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
+        const path = join(dir, entry.name);
+        if (entry.isDirectory()) return walk(path);
+        return /\.tsx$/.test(entry.name) ? [path] : [];
+      });
+    const files = [...walk("app"), ...walk("components")];
+    expect(files.some((file) => /about[\\/]page\.tsx$/.test(file))).toBe(true);
+    for (const file of files) {
+      const normalised = file.replace(/\\/g, "/");
+      if (heroes.has(normalised) || normalised.endsWith("/LoopVideo.tsx")) continue;
+      const uses = readFileSync(file, "utf8").match(/<LoopVideo\b[^>]*>/g) ?? [];
+      for (const use of uses) expect(use, normalised).toMatch(/\bstill\b/);
     }
   });
 
