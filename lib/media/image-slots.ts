@@ -41,16 +41,16 @@ export const REAL_PHOTO_NEEDED = "real photo needed, do not use generated people
 export const REAL_SCREENSHOT_NEEDED = "real app screenshot needed, do not use generated screens";
 
 export const IMAGE_SLOTS = {
-  "home-live-session": {
-    page: "Home, Next live session",
+  "home-teacher": {
+    page: "Home, The teacher",
     ratio: "4/5",
     kind: "photo",
-    brief: "the teacher in a live session",
-    alt: "The teacher on camera during a live teaching session, with the Bible open",
+    brief: "Isaac Ola teaching",
+    alt: "Isaac Ola teaching from an open Bible",
     status: "real-needed",
   },
   "home-start-here": {
-    page: "Home, Start here (only when no video resolves)",
+    page: "Home, Teachings (only when no video resolves)",
     ratio: "16/9",
     kind: "video",
     brief: "a first teaching for someone new to the ministry",

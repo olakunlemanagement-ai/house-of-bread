@@ -16,7 +16,7 @@ import { createRequire } from "node:module";
 import path from "node:path";
 
 const PAGES = [
-  { path: "/", lead: "A global teaching ministry serving believers" },
+  { path: "/", lead: "Free courses and teaching that bring you into an accurate understanding" },
   { path: "/about", lead: "House of Bread Global is a teaching ministry committed to doctrinal clarity" },
   { path: "/academy", lead: "House of Bread Academy will give believers a structured place to study the Bible" },
   { path: "/media", lead: "Live sessions, replays, audio teaching and social pages." },
@@ -30,7 +30,7 @@ const PAGES = [
 
 /** Async regions: the element whose height must not change when content replaces the fallback. */
 const REGIONS = [
-  { path: "/", name: "Start here video", selector: "#start .lg\\:col-span-7", fallbackLink: true },
+  { path: "/", name: "Home teachings", selector: "[data-region='home-teachings']", fallbackLink: true },
   { path: "/media", name: "Library video grid", selector: "#video .container-page > div > :last-child", fallbackLink: true },
   // The "Watch on YouTube" link beside the player is in the first HTML, so the fallback has none.
   { path: "/events", name: "Latest session player", selector: "#watch .container-page > div > :last-child", fallbackLink: false },

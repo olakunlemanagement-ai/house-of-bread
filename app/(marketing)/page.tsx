@@ -1,199 +1,183 @@
-import type { Metadata } from "next";
+import type { Metadata, Route } from "next";
+import Link from "next/link";
 import { Suspense } from "react";
-import { AppBand } from "@/components/shared/AppBand";
-import { AskCta } from "@/components/shared/AskCta";
-import { BentoGrid, BentoTile } from "@/components/shared/BentoGrid";
 import { ButtonLink } from "@/components/shared/Button";
-import { TextCTA } from "@/components/shared/TextCTA";
-import { StartHereVideo, StartHereVideoSkeleton } from "@/components/shared/StartHereVideo";
-import { FeatureCard } from "@/components/shared/Card";
+import { CourseCard } from "@/components/shared/CourseCard";
 import { Hero } from "@/components/shared/Hero";
-import { NewsletterCard } from "@/components/shared/NewsletterCard";
+import { HomeTeachings, HomeTeachingsSkeleton } from "@/components/shared/HomeTeachings";
 import { ImageSlot } from "@/components/shared/ImageSlot";
-import { PlanCard } from "@/components/shared/PlanCard";
-import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
-import { Section, SectionHeader } from "@/components/shared/Section";
-import { SocialLinks, YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
-import { nameText } from "@/lib/content/copy";
-import { placeholderPlans } from "@/lib/content/placeholder-data";
-import { getNextLiveSession } from "@/lib/schedule/next-session";
+import { NumberedRows } from "@/components/shared/NumberedRows";
+import { Placeholder } from "@/components/shared/Placeholder";
+import { StoreButtons } from "@/components/shared/StoreButtons";
+import { TextCTA } from "@/components/shared/TextCTA";
+import { courseCatalog } from "@/lib/academy";
 import { siteConfig } from "@/lib/site-config";
-import { WEEKLY_SESSION_TITLE, WeeklySessionCard } from "@/components/shared/WeeklySessionCard";
 
 export const metadata: Metadata = {
-  title: { absolute: "House of Bread Global | A teaching ministry" },
+  title: { absolute: "House of Bread Global | Understand the Bible you've been reading" },
   description: siteConfig.description,
 };
 
+// One rhythm for every Home section: 48px on phones, 112px from md.
+const band = "container-page reveal py-12 md:py-28";
+
+/**
+ * Home, seven screens in the order of docs/RESET-BRIEF.md section 4, copy
+ * word for word. One idea and one primary button per screen. Section tints
+ * alternate white, cream and pale green, one per section.
+ */
 export default async function HomePage() {
-  // One occurrence, cached for an hour at most, feeds the hero chip and the card.
-  const nextSession = await getNextLiveSession();
+  const courses = await courseCatalog.listCourses();
+  // Stand-ins until the ministry names the [foundations course] and the
+  // [book-by-book course]: the first and second courses in the catalogue.
+  const courseHref = (index: number): Route =>
+    courses[index] ? (`/academy/${courses[index].slug}` as Route) : "/academy";
 
   return (
     <main id="main" tabIndex={-1}>
-      <Hero
-        nextSession={{ title: WEEKLY_SESSION_TITLE, startsAtUtc: nextSession, timeZone: siteConfig.liveSession.timeZone }}
-      />
+      {/* Screen 1: hero. */}
+      <Hero />
 
-      {/*
-        The hero flows straight into this section. Its top padding adds to the
-        hero bottom padding (64px, 96px from lg) to give the same 80px and
-        120px step that sits between this section and the next.
-      */}
-      <section id="start" aria-labelledby="start-heading" className="bg-surface">
-        <div className="container-page pb-20 pt-4 md:pb-30 md:pt-14 lg:pt-6">
-          {/* Heading beside the start here video on desktop, the four ways below. */}
-          <div className="reveal grid gap-10 lg:grid-cols-12 lg:items-center lg:gap-14">
-            <div className="lg:col-span-5">
-              <SectionHeader id="start-heading">New here? Start here.</SectionHeader>
-            </div>
-            <div className="lg:col-span-7">
-              <Suspense fallback={<StartHereVideoSkeleton />}>
-                <StartHereVideo />
-              </Suspense>
-            </div>
-          </div>
-          {/* The next step for someone new: four ways in, each a card. */}
-          <div id="ways" className="mt-16 md:mt-24">
-            <SectionHeader id="ways-heading" as="h3" intro="Four ways to grow, wherever you are.">
-              Make the most of House of Bread
-            </SectionHeader>
-            <div className="mt-10 md:mt-12">
-              <BentoGrid>
-              <BentoTile
-                size="large"
-                surface="mint"
-                icon="live"
-                icon3d="television"
-                className="card-motion [--i:0]"
-                title="Join the live session"
-                cta={{ href: "/events", label: "See the live sessions" }}
-              >
-                Teaching streams live on YouTube every Monday evening, with reminders so no session
-                is missed.
-              </BentoTile>
-              <BentoTile
-                size="medium"
-                surface="white"
-                icon="people"
-                icon3d="graduation-cap"
-                className="card-motion [--i:1]"
-                title="Learn in the Academy"
-                cta={{ href: "/academy", label: "Explore the Academy" }}
-              >
-                Equipped in the truth. Bible classes that give believers a structured place to study
-                the Word, taught with care for context and doctrine.
-              </BentoTile>
-              <BentoTile
-                size="medium"
-                surface="white"
-                icon="scroll"
-                icon3d="scroll"
-                className="card-motion [--i:2]"
-                title="Study the Word in writing"
-                cta={{ href: "/teachings", label: "Read the teachings" }}
-              >
-                Doctrine, interpretation and the questions believers actually ask.
-              </BentoTile>
-              <BentoTile
-                size="small"
-                surface="warm"
-                icon="phone"
-                icon3d="mobile-phone"
-                className="card-motion [--i:3]"
-                title="Take the app with you"
-                cta={{ href: "/app", label: "Get the app" }}
-              >
-                Daily reading, New Testament journeys, six translations and the ministry&apos;s
-                teaching, in your pocket.
-              </BentoTile>
-              </BentoGrid>
-            </div>
-          </div>
+      {/* Screen 2: the mission, a statement. */}
+      <section aria-labelledby="mission-heading" className="bg-surface-warm">
+        <div className={band}>
+          <h2 id="mission-heading" className="max-w-5xl text-statement">
+            We teach believers to read God&apos;s Word accurately, understand it deeply, and live it
+            fully, wherever they are.
+          </h2>
+          <p className="mt-8 max-w-2xl text-lead text-ink-muted">
+            The name comes from Bethlehem, the house of bread, where the Bread of Life was born.
+          </p>
+          <p className="mt-5">
+            <TextCTA href="/about">Read our story</TextCTA>
+          </p>
         </div>
       </section>
 
-      <section id="next-live" aria-labelledby="next-live-heading" className="bg-surface">
-        <div className="container-page reveal grid gap-10 pb-18 md:pb-28 lg:grid-cols-12 lg:items-center lg:gap-14">
-          <div className="lg:col-span-7">
-            <SectionHeader id="next-live-heading">Next live session</SectionHeader>
-            <div className="mt-10">
-              <WeeklySessionCard serverIso={nextSession} idPrefix="home-next" />
-            </div>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
-              <YouTubeSubscribeButton />
-            </div>
+      {/* Screen 3: the Academy, the main action. */}
+      <section id="academy" aria-labelledby="academy-heading" className="bg-surface">
+        <div className={band}>
+          <div className="max-w-3xl">
+            <p className="eyebrow">The Academy</p>
+            <h2 id="academy-heading" className="mt-4 text-h2">
+              Read the Bible for years and still feel you only know it in parts?
+            </h2>
+            <p className="mt-4 text-lead text-ink-muted">
+              Our free courses take you through it, one lesson at a time.
+            </p>
           </div>
-          <ImageSlot
-            id="home-live-session"
-            className="mx-auto w-full max-w-sm lg:col-span-5 lg:max-w-none"
-            sizes="(min-width: 1024px) 40vw, (min-width: 640px) 384px, 100vw"
+          <ul className="mt-8 grid gap-4 md:mt-12 md:gap-5 lg:grid-cols-3">
+            {courses.slice(0, 3).map((course) => (
+              <CourseCard key={course.slug} course={course} />
+            ))}
+          </ul>
+          <p className="mt-8">
+            <TextCTA href="/academy">Browse all free courses</TextCTA>
+          </p>
+        </div>
+      </section>
+
+      {/* Screen 4: where are you starting from? */}
+      <section aria-labelledby="start-heading" className="bg-surface-mint">
+        <div className={band}>
+          <h2 id="start-heading" className="max-w-3xl text-h2">
+            Where are you starting from?
+          </h2>
+          <NumberedRows
+            className="mt-8 md:mt-12"
+            items={[
+              {
+                title: "New to the Bible.",
+                text: "Start with the foundations: what the Bible is and how to read it.",
+                href: courseHref(0),
+              },
+              {
+                title: "You know the stories, but not how they connect.",
+                text: "Go book by book and see the whole picture.",
+                href: courseHref(1),
+              },
+              {
+                title: "You're carrying a question.",
+                text: "Ask it. You don't need to give your name.",
+                href: "/ask",
+              },
+            ]}
           />
         </div>
       </section>
 
-      <Section id="stands-for" title="What the ministry stands for" tone="mint" reveal={false}>
-        <ul className="grid gap-5 md:grid-cols-3">
-          <FeatureCard icon="cross" icon3d="bread" className="card-motion lift [--i:0]" title="Doctrinal clarity">
-            Teaching that says plainly what Scripture says, and shows how the argument is built.
-          </FeatureCard>
-          <FeatureCard icon="book" icon3d="magnifying-glass" className="card-motion lift [--i:1]" title="Scripture in context">
-            Passages are read with the background that makes them land, and quoted in full with the
-            verses either side.
-          </FeatureCard>
-          <FeatureCard icon="heart" icon3d="green-heart" className="card-motion lift [--i:2]" title="Plain, warm and rigorous">
-            Written to be understood. Rigorous without being academic.
-          </FeatureCard>
-        </ul>
-      </Section>
-
-      <section id="name" aria-labelledby="name-heading" className="bg-surface">
-        <div className="container-page reveal grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-16">
-          <div className="lg:col-span-7">
-            <SectionHeader id="name-heading">Why House of Bread?</SectionHeader>
-            <p className="mt-7 max-w-2xl font-serif text-2xl leading-relaxed text-ink">{nameText}</p>
-            <p className="mt-8">
-              <TextCTA href="/about">About the ministry</TextCTA>
+      {/* Screen 5: teachings. The live line is the only mention of live meetings on Home. */}
+      <section id="teachings" aria-labelledby="teachings-heading" className="bg-surface">
+        <div className={band}>
+          <div className="max-w-3xl">
+            <h2 id="teachings-heading" className="text-h2">
+              Need a word for this season?
+            </h2>
+            <p className="mt-4 text-lead text-ink-muted">
+              Sit under the teaching of the Word, wherever you are.
             </p>
           </div>
-          <div className="lg:col-span-5">
-            <ScriptureBlock variant="feature" passage="John 6:33-35" verses={john6_33to35} />
+          {/* The async region: its height must match the skeleton's (scripts/check-noscript.mjs). */}
+          <div data-region="home-teachings" className="mt-10 md:mt-12">
+            <Suspense fallback={<HomeTeachingsSkeleton />}>
+              <HomeTeachings />
+            </Suspense>
+          </div>
+          <div className="mt-10">
+            <ButtonLink href="/media" className="w-full sm:w-auto">
+              See all teachings
+            </ButtonLink>
+          </div>
+          <p className="mt-6 text-base text-ink-muted">
+            New teaching live every Monday at 8 pm Lagos time.{" "}
+            <Link href={"/events#rhythm" as Route} className="link-inline whitespace-nowrap">
+              See the session times
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      {/* Screen 6: the teacher. */}
+      <section aria-labelledby="teacher-heading" className="bg-surface-warm">
+        <div className={`${band} grid grid-cols-[6.5rem_1fr] items-start gap-5 sm:grid-cols-[minmax(0,14rem)_1fr] sm:items-center md:gap-14 lg:grid-cols-[minmax(0,20rem)_1fr]`}>
+          <ImageSlot
+            id="home-teacher"
+            sizes="(min-width: 1024px) 20rem, (min-width: 640px) 14rem, 7rem"
+          />
+          <div>
+            <h2 id="teacher-heading" className="sr-only">
+              The teacher
+            </h2>
+            <p className="max-w-2xl font-serif text-xl leading-snug text-ink sm:text-2xl md:text-3xl md:leading-snug">
+              Taught by Isaac Ola, team leader of{" "}
+              <Placeholder>[House of Bread Ministries International]</Placeholder>. He teaches Scripture
+              verse by verse, with care for what the text actually says.
+            </p>
+            <div className="col-span-2 flex flex-col items-start gap-1 sm:col-span-1 sm:mt-6 sm:flex-row sm:gap-8">
+              <TextCTA href="/about">Read our story</TextCTA>
+              <TextCTA href={"/about#handled" as Route}>What we believe</TextCTA>
+            </div>
           </div>
         </div>
       </section>
 
-      <AppBand idPrefix="home-app" />
-
-      <Section
-        id="journeys"
-        title="A journey through the New Testament"
-        intro="Three guided routes from Matthew to Revelation, in the order the books were written."
-        tone="warm"
-        reveal={false}
-      >
-        <ul className="grid gap-5 md:grid-cols-3">
-          {placeholderPlans.map((plan, index) => (
-            <PlanCard key={plan.slug} {...plan} className={`card-motion lift [--i:${index}]`} />
-          ))}
-        </ul>
-        <div className="mt-10">
-          <ButtonLink href="/plans" arrow className="w-full sm:w-auto">
-            Start a journey in the app
-          </ButtonLink>
+      {/* Screen 7: the app, just before the footer. */}
+      <section aria-labelledby="app-heading" className="bg-surface-mint">
+        <div className={band}>
+          <h2 id="app-heading" className="max-w-3xl text-h2">
+            Take the Word with you.
+          </h2>
+          <p className="mt-4 max-w-2xl text-lead text-ink-muted">
+            Daily reading and journeys through the New Testament, in your pocket.
+          </p>
+          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+            <ButtonLink href="/app" className="w-full sm:w-auto">
+              Get the app
+            </ButtonLink>
+            <StoreButtons hideMissing />
+          </div>
         </div>
-      </Section>
-
-      <Section
-        id="follow"
-        title="Follow the ministry"
-        intro="Live sessions stream on YouTube, and the ministry shares teaching on its social pages."
-      >
-        <SocialLinks />
-      </Section>
-
-      <AskCta />
-
-      <NewsletterCard idPrefix="home-newsletter" />
+      </section>
     </main>
   );
 }

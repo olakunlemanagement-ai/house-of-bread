@@ -2,7 +2,6 @@ import type { Metadata, Route } from "next";
 import { ButtonLink } from "@/components/shared/Button";
 import { CTACard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
-import type { Icon3DName } from "@/components/shared/Icon3D";
 import { Icon } from "@/components/shared/icons";
 import { ImageSlot } from "@/components/shared/ImageSlot";
 import { StepList } from "@/components/shared/Lists";
@@ -19,11 +18,6 @@ export const metadata: Metadata = {
   description:
     "House of Bread Academy: Bible courses from House of Bread Global, taught from the King James Version in plain English, with Scripture read in its context. See the courses in preparation and hear when the Academy opens.",
 };
-
-// Literal classes, so Tailwind generates each card's reveal index.
-const revealIndex = ["[--i:0]", "[--i:1]", "[--i:2]", "[--i:3]", "[--i:4]", "[--i:5]"];
-
-const courseIcons: Icon3DName[] = ["graduation-cap", "scroll", "bread", "magnifying-glass", "green-heart", "television"];
 
 export default async function AcademyPage() {
   const courses = (await courseCatalog.listCourses()).slice(0, 6);
@@ -44,18 +38,16 @@ export default async function AcademyPage() {
         loop="open-bible"
       />
 
-      <Section id="courses" title={copy.courses.title} intro={copy.courses.intro} reveal={false}>
+      <Section id="courses" title={copy.courses.title} intro={copy.courses.intro}>
         {courses.length > 0 ? (
           <ul className={`grid gap-5 ${courseGrid}`}>
-            {courses.map((course, index) => (
+            {courses.map((course) => (
               <CTACard
                 key={course.slug}
                 icon="book"
-                icon3d={courseIcons[index % courseIcons.length]}
                 badge={course.status === "coming-soon" ? <PlaceholderBadge label="Coming soon" /> : null}
                 title={course.title}
                 cta={{ href: `/academy/${course.slug}` as Route, label: copy.courses.cta }}
-                className={`card-motion ${revealIndex[index]}`}
               >
                 {course.summary}
               </CTACard>

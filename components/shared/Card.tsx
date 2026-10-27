@@ -1,14 +1,13 @@
 import Link from "next/link";
 import type { Route } from "next";
 import type { ReactNode } from "react";
-import { Icon3D, type Icon3DName } from "./Icon3D";
 import { IconTile, type IconName } from "./icons";
 import { TextCTA, TextCTAChip, TextCTALabel } from "./TextCTA";
 
 /** Card on light surfaces: white, 14% emerald edge, soft shadow, 24px radius. */
 export const cardClass = "rounded-card border border-border bg-surface p-6 shadow-soft sm:p-8";
 
-/** Lift 4px, raised shadow and a stronger edge on hover and focus. See .lift. */
+/** A stronger edge on hover and focus, nothing moves. See .lift. */
 export const interactiveCardClass = "lift";
 
 export function Card({
@@ -26,15 +25,12 @@ export function Card({
 /** Icon tile, heading and one line. Used for feature and topic grids. */
 export function FeatureCard({
   icon,
-  icon3d,
   className = "",
   title,
   children,
   headingLevel = 3,
 }: {
   icon: IconName;
-  /** A Fluent 3D icon in place of the line icon (Home). */
-  icon3d?: Icon3DName;
   className?: string;
   title: string;
   children: ReactNode;
@@ -43,7 +39,7 @@ export function FeatureCard({
   const Heading = headingLevel === 2 ? "h2" : "h3";
   return (
     <Card as="li" className={`flex flex-col ${className}`}>
-      {icon3d ? <Icon3D name={icon3d} /> : <IconTile name={icon} />}
+      <IconTile name={icon} />
       <Heading className="mt-6 text-2xl leading-snug">{title}</Heading>
       <p className="mt-3 leading-relaxed text-ink-muted">{children}</p>
     </Card>
@@ -52,11 +48,10 @@ export function FeatureCard({
 
 /**
  * Icon tile, heading, one line and a TextCTA stretched over the card: one tab
- * stop, and the whole card lifts and moves the arrow chip on hover.
+ * stop, and hovering the card moves the arrow chip.
  */
 export function CTACard({
   icon,
-  icon3d,
   badge,
   title,
   children,
@@ -64,8 +59,6 @@ export function CTACard({
   className = "",
 }: {
   icon: IconName;
-  /** A Fluent 3D icon in place of the line icon. */
-  icon3d?: Icon3DName;
   /** A small label beside the icon, such as a "Coming soon" badge. */
   badge?: ReactNode;
   title: string;
@@ -76,7 +69,7 @@ export function CTACard({
   return (
     <Card as="li" className={`cta-host flex flex-col ${interactiveCardClass} ${className}`}>
       <div className="flex items-start justify-between gap-3">
-        {icon3d ? <Icon3D name={icon3d} /> : <IconTile name={icon} />}
+        <IconTile name={icon} />
         {badge}
       </div>
       <h3 className="mt-6 text-2xl leading-snug">{title}</h3>

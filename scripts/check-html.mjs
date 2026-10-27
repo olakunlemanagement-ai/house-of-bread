@@ -25,8 +25,8 @@ import { pathToFileURL } from "node:url";
  */
 const EXACT = {
   "/": {
-    h1: "Come and be fed by the Word.",
-    key: "A global teaching ministry serving believers across the United Kingdom, Africa and the United States",
+    h1: "Understand the Bible you've been reading.",
+    key: "Free courses and teaching that bring you into an accurate understanding of God's Word",
   },
   "/about": {
     h1: "A teaching ministry for believers who want to be fed",
