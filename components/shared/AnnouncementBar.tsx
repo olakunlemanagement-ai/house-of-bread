@@ -4,8 +4,8 @@ import { AnnouncementBarClient } from "./AnnouncementBarClient";
 import { AnnouncementBarView } from "./AnnouncementBarView";
 
 /**
- * Lime bar above the header, shown only when a session is live or starts
- * within 24 hours. Pages are static, so:
+ * Gold bar above the header, shown only while a session is live. Pages are
+ * static, so:
  * - an event marked live renders here, in the server HTML;
  * - otherwise, if any dated session exists, a small client script checks the
  *   visitor's clock against it;

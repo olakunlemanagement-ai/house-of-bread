@@ -93,7 +93,7 @@ export function SocialLinks({ variant = "icons" }: { variant?: "icons" | "labell
               target="_blank"
               rel="noopener noreferrer"
               aria-label={`${accountLabel(account)} (opens in a new tab)`}
-              className="social-link flex min-h-16 items-center gap-4 rounded-card border border-border bg-surface px-4 py-3 font-semibold text-ink shadow-soft hover:border-border-strong"
+              className="flex min-h-16 items-center gap-4 rounded-card border border-border bg-surface px-4 py-3 font-semibold text-ink shadow-soft hover:border-border-strong"
             >
               <span className={tileClasses}>
                 <SocialIcon platform={account.platform} />
@@ -115,7 +115,7 @@ export function SocialLinks({ variant = "icons" }: { variant?: "icons" | "labell
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`${accountLabel(account)} (opens in a new tab)`}
-            className={`social-link ${tileClasses} hover:border-border-strong`}
+            className={`${tileClasses} hover:border-border-strong`}
           >
             <SocialIcon platform={account.platform} />
           </a>

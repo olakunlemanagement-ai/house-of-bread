@@ -28,7 +28,7 @@ type AppBandProps = {
   note?: ReactNode;
 };
 
-/** The official app band: a soft mint panel with a radial tint, feature list, CSS phone frame. */
+/** The official app band: a pale green panel, feature list, CSS phone frame. */
 export function AppBand({
   idPrefix,
   eyebrow = "The official app",
@@ -62,10 +62,11 @@ export function AppBand({
           </div>
           {note ? <div className="mt-6">{note}</div> : null}
         </div>
-        {/* Light on water in a framed panel behind the phone. Only the glass card's text sits over it. */}
+        {/* Light on water, a still poster in a framed panel behind the phone. */}
         <div className="reveal relative lg:col-span-5">
           <LoopVideo
             id="water-light"
+            still
             fill
             sizes="(min-width: 1024px) 40vw, 100vw"
             className="overflow-hidden rounded-card border border-border shadow-soft"

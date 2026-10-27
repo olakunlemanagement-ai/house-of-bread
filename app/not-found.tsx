@@ -27,7 +27,7 @@ export default function NotFound() {
       <AnnouncementBar />
       <SiteHeader />
       <main id="main" tabIndex={-1} className="bg-surface">
-        <div className="container-page pb-20 pt-38 md:pb-32 md:pt-50">
+        <div className="container-page pb-20 pt-20 md:pb-32 md:pt-32">
           <div className="max-w-3xl">
             <IconTile name="compass" size="lg" />
             <h1 className="mt-8 text-display">This page could not be found</h1>

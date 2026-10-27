@@ -20,7 +20,7 @@
 */
 :root {
   --brand-white: #ffffff;
-  --brand-cream: #fbf8f1;
+  --brand-cream: #f7f3ec;
   --brand-mint-50: #eef6e8;
   --brand-gold-50: #fdf3d6;
   --brand-ink: #0b2412;
@@ -49,7 +49,10 @@
 
   color-scheme: light;
 
-  /* Surfaces. White carries the page; warm and mint alternate as bands. */
+  /*
+    Surfaces. White carries the page; warm cream (#f7f3ec) and pale green
+    alternate as section bands, one tint per section.
+  */
   --surface: var(--brand-white);
   --surface-warm: var(--brand-cream);
   --surface-mint: var(--brand-mint-50);
@@ -113,13 +116,11 @@
   --elev-raised: 0 2px 6px rgb(11 36 18 / 0.05), 0 16px 40px rgb(11 36 18 / 0.08);
 
   /*
-    Translucent white for the hero floating cards and the
-    newsletter card. Opacity is set so text keeps AA over the worst
-    background behind it (the green-night phone frame). See
-    docs/PLACEHOLDERS.md.
+    The sticky header is the only translucent surface: white at 94%, so its
+    text keeps AA over anything that scrolls beneath, even pure black (see
+    npm run contrast and docs/PLACEHOLDERS.md).
   */
-  --glass-card: rgb(255 255 255 / 0.84);
-  --glass-edge: inset 0 1px 0 rgb(255 255 255 / 0.6);
+  --header-glass: rgb(255 255 255 / 0.94);
 
   /*
     Theme roles. Each holds its light value here and is redefined for dark
@@ -129,15 +130,18 @@
     - glyph: icon glyphs, short rules, progress fills, decorative dots and
       the card glow ring. Emerald on light; in dark the accent green, since
       emerald glyphs on a dark tint fall below 3:1.
-    - fill-hover and fill-disabled: the primary button's hover and disabled
-      fills. Kept apart from emerald-deep, which is text.
+    - fill-primary, fill-hover and fill-disabled: the primary button's
+      fill, hover and disabled fills. Kept apart from emerald-deep, which
+      is text.
     - on-gold: text on gold fills. Always brand ink, in both themes.
     - on-green-hover: the footer primary button's hover. The footer is deep
       green in both themes, so this never changes.
   */
   --surface-raised: var(--brand-white);
   --glyph: var(--emerald);
-  --fill-hover: var(--emerald-deep);
+  /* The primary pill: solid deep green, emerald on hover. */
+  --fill-primary: var(--brand-green-deep);
+  --fill-hover: var(--emerald);
   --fill-disabled: var(--ink-muted);
   --on-gold: var(--brand-ink);
   --on-green-hover: var(--brand-mint-50);
@@ -145,18 +149,10 @@
   /* Overlays and glows, one token each so dark can restate them. */
   --scrim: rgb(255 255 255 / 0.8);
   --scrim-soft: rgb(255 255 255 / 0.2);
-  --glass-border: rgb(255 255 255 / 0.7);
   --facade-bar: rgb(255 255 255 / 0.95);
   --skeleton-sheen: rgb(255 255 255 / 0.55);
   --fill-highlight: rgb(255 255 255 / 0.18);
-  --hero-glow-1: rgb(27 107 51 / 0.1);
-  --hero-glow-2: rgb(27 107 51 / 0.06);
-  --page-glow: rgb(27 107 51 / 0.08);
-  --panel-light: rgb(255 255 255 / 0.7);
-  --panel-glow: rgb(27 107 51 / 0.06);
-  --halo: rgb(27 107 51 / 0.12);
   --slot-glow: rgb(27 107 51 / 0.14);
-  --card-glow: rgb(27 107 51 / 0.32);
   --flag-edge: rgb(11 36 18 / 0.15);
   --phone-shadow: 0 2px 6px rgb(4 41 14 / 0.12), 0 24px 48px rgb(4 41 14 / 0.18);
 
@@ -207,6 +203,7 @@
     --emerald: var(--brand-emerald-night);
     --emerald-deep: var(--brand-spring);
     --glyph: var(--brand-sprout);
+    --fill-primary: var(--brand-emerald-night);
     --fill-hover: var(--brand-emerald);
     --fill-disabled: var(--brand-ink-muted);
     --fg-eyebrow: var(--lime);
@@ -222,24 +219,15 @@
     --elev-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.24);
     --elev-raised: 0 2px 6px rgb(0 0 0 / 0.32), 0 16px 40px rgb(0 0 0 / 0.4);
 
-    /* Glass: raised night at 88%, so muted text keeps 5.99:1 even over white. */
-    --glass-card: rgb(17 30 23 / 0.88);
-    --glass-edge: inset 0 1px 0 rgb(255 255 255 / 0.06);
-    --glass-border: rgb(143 211 165 / 0.14);
+    /* Header glass: night at 94%, checked over pure white beneath. */
+    --header-glass: rgb(10 21 16 / 0.94);
 
     /* Night over the dark hero loop, checked against its brightest pixel. */
     --scrim: rgb(10 21 16 / 0.8);
     --scrim-soft: rgb(10 21 16 / 0.2);
     --facade-bar: rgb(17 30 23 / 0.95);
     --skeleton-sheen: rgb(255 255 255 / 0.06);
-    --hero-glow-1: rgb(46 158 79 / 0.16);
-    --hero-glow-2: rgb(46 158 79 / 0.08);
-    --page-glow: rgb(46 158 79 / 0.12);
-    --panel-light: rgb(143 211 165 / 0.05);
-    --panel-glow: rgb(46 158 79 / 0.1);
-    --halo: rgb(46 158 79 / 0.2);
     --slot-glow: rgb(46 158 79 / 0.16);
-    --card-glow: rgb(46 158 79 / 0.35);
     --flag-edge: rgb(255 255 255 / 0.2);
     --phone-shadow: 0 0 0 1px rgb(143 211 165 / 0.16), 0 24px 48px rgb(0 0 0 / 0.5);
   }
@@ -355,15 +343,6 @@
   }
 }
 
-/* 3D icon wells: a faint top light and edge in dark, so the well holds its shape. */
-.icon-well {
-  @variant dark {
-    box-shadow:
-      inset 0 1px 0 rgb(255 255 255 / 0.06),
-      inset 0 0 0 1px rgb(143 211 165 / 0.08);
-  }
-}
-
 /*
   The footer: green-deep to green-night. White text and links, white focus
   ring (13.53:1). Muted text is safe here. No lime text.
@@ -416,6 +395,7 @@
   --color-on-green-muted: var(--on-green-muted);
   --color-surface-raised: var(--surface-raised);
   --color-glyph: var(--glyph);
+  --color-fill-primary: var(--fill-primary);
   --color-fill-hover: var(--fill-hover);
   --color-fill-disabled: var(--fill-disabled);
   --color-on-gold: var(--on-gold);
@@ -433,7 +413,14 @@
   --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
   --font-serif: var(--font-literata), Georgia, "Times New Roman", serif;
 
-  /* Type scale. Display is the H1 (36 to 56px), h2 the section heading. */
+  /*
+    Type scale. Statement is the huge display type, for statements only
+    (the Home hero and mission). Display is the inner page H1, h2 the
+    section heading.
+  */
+  --text-statement: clamp(2.5rem, 6vw, 5rem);
+  --text-statement--line-height: 1.04;
+  --text-statement--letter-spacing: -0.025em;
   --text-display: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
   --text-display--line-height: 1.1;
   --text-display--letter-spacing: -0.015em;
@@ -446,8 +433,8 @@
   --shadow-soft: var(--elev-soft);
   --shadow-raised: var(--elev-raised);
 
-  /* Radii: buttons 12px, inputs 10px, icon tiles 14px, cards 20px. */
-  --radius-button: 12px;
+  /* Radii: buttons are pills, inputs 10px, icon tiles 14px, cards 20px. */
+  --radius-button: 9999px;
   --radius-input: 10px;
   --radius-tile: 14px;
   --radius-card: 20px;
@@ -460,46 +447,34 @@
 }
 
 /*
-  Soft emerald light behind the hero and page headers. Radial gradients
-  only, no blur filters. Peaks at 10% emerald, so ink text over any part
-  stays above 14:1.
+  Hero, page header and panel surfaces. Flat since the reset (27 October
+  2026): no decorative gradients anywhere.
 */
 @utility bg-hero-tint {
   background-color: var(--surface);
-  background-image:
-    radial-gradient(60rem 32rem at 85% -10%, var(--hero-glow-1), transparent 70%),
-    radial-gradient(40rem 28rem at -10% 110%, var(--hero-glow-2), transparent 70%);
 }
 
 @utility bg-page-tint {
   background-color: var(--surface);
-  background-image: radial-gradient(56rem 26rem at 90% -20%, var(--page-glow), transparent 70%);
 }
 
-/* A soft tinted panel: the app band and closing bands. */
 @utility bg-panel-tint {
   background-color: var(--surface-mint);
-  background-image:
-    radial-gradient(40rem 24rem at 100% 0%, var(--panel-light), transparent 70%),
-    radial-gradient(36rem 24rem at 0% 100%, var(--panel-glow), transparent 70%);
 }
 
 /*
-  Translucent surfaces, scoped to the hero floating cards and
-  the newsletter card. No backdrop-filter yet: a 4x CPU slowdown test on
-  17 October 2026 was too noisy to show blur costs no more than a few fps.
-  Turn it on per surface only after a scroll check on a real mid range
-  Android phone, at 12px or less, with these colours as the fallback.
+  The header is the only translucent surface. No backdrop-filter yet: a 4x
+  CPU slowdown test on 17 October 2026 was too noisy to show blur costs no
+  more than a few fps. Turn it on only after a scroll check on a real mid
+  range Android phone, at 12px or less, with this colour as the fallback.
 */
-
-@utility glass-card {
-  background-color: var(--glass-card);
-  box-shadow: var(--glass-edge), var(--elev-raised);
+@utility glass-header {
+  background-color: var(--header-glass);
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .glass-card {
-    background-color: var(--surface-raised);
+  .glass-header {
+    background-color: var(--surface);
   }
 }
 
@@ -521,7 +496,7 @@
   color: var(--fg-eyebrow, var(--fg-accent));
 }
 
-/* Eyebrow led by a 6px emerald dot with a faint lime halo. Decorative. */
+/* Eyebrow led by a 6px emerald dot. Decorative. */
 @utility eyebrow-dot {
   display: inline-flex;
   align-items: center;
@@ -534,13 +509,13 @@
     height: 6px;
     border-radius: 9999px;
     background-color: var(--glyph);
-    box-shadow: 0 0 0 3px rgb(166 200 89 / 0.35);
   }
 }
 
 @layer base {
+  /* Clears the 64px sticky header when jumping to an anchor. */
   html {
-    scroll-padding-top: 1.5rem;
+    scroll-padding-top: 5.5rem;
   }
 
   body {
@@ -676,83 +651,17 @@ html[data-motion="off"] [data-motion-state="off"] {
 }
 
 /*
-  The footer's "Stay close to the ministry" strip repeats the newsletter
-  card, so it shows only on pages that do not already offer signup:
-  [data-newsletter] marks the newsletter card, the /subscribe form and the
-  check-email page.
+  No card moves on hover since the reset. A linked card only deepens its
+  edge, an instant colour change. The "Watch" chip on video cards always
+  shows. Social tiles stay still too.
 */
-body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
-  display: none;
-}
-
-/*
-  Cards that lift on hover and focus. Only transform and opacity animate: the
-  raised shadow sits on a pseudo element and fades in.
-*/
-/* Social tiles lift 2px on hover. Transform only, still under reduced motion. */
-.social-link {
-  transition:
-    transform 200ms var(--ease-standard),
-    border-color 200ms var(--ease-standard);
-}
-
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .social-link:hover {
-    transform: translateY(-2px);
-  }
-}
-
 .lift {
   position: relative;
-  transition: transform 200ms var(--ease-out), border-color 200ms var(--ease-out);
-}
-
-.lift::before {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  box-shadow: var(--elev-raised);
-  opacity: 0;
-  transition: opacity 200ms var(--ease-out);
-  pointer-events: none;
 }
 
 .lift:hover,
 .lift:focus-within {
   border-color: var(--border-strong);
-}
-
-.lift:hover::before,
-.lift:focus-within::before {
-  opacity: 1;
-}
-
-/*
-  "Watch" chip on cards with something to watch. Decorative: the card's own
-  button or link carries the action. It fades in and rises 6px with the
-  card's lift. Touch screens have no hover, so there it simply shows.
-*/
-.play-chip {
-  opacity: 0;
-  transform: translateY(6px);
-  transition:
-    opacity 300ms var(--ease-standard),
-    transform 300ms var(--ease-standard);
-  pointer-events: none;
-}
-
-.lift:hover .play-chip,
-.lift:focus-within .play-chip {
-  opacity: 1;
-  transform: none;
-}
-
-@media (hover: none) {
-  .play-chip {
-    opacity: 1;
-    transform: none;
-  }
 }
 
 /*
@@ -775,32 +684,19 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
 }
 
 /*
-  Motion, CSS only. Everything here is opt in through no-preference, so a
-  visitor who asks for reduced motion gets none of it.
+  Motion, CSS only, opt in through no-preference. Since the reset the only
+  movement is the hero loop, one subtle fade as a section enters, the
+  button and TextCTA arrow nudge and the skeleton shimmer.
 */
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-}
-
-/* The H1 rises without fading, so the largest text paints at once. */
-@keyframes rise-only {
-  from {
-    transform: translateY(8px);
-  }
-}
 
 /*
-  Scroll reveal: a section fades from 0.85 and rises 10px, once. At 0.85
+  Scroll reveal: a section fades from 0.85, once, with no movement. At 0.85
   every text pairing still passes 4.5:1, and the range ends 120px into
   entry. See docs/PLACEHOLDERS.md, Motion and contrast.
 */
 @keyframes reveal {
   from {
     opacity: 0.85;
-    transform: translateY(10px);
   }
 }
 
@@ -811,11 +707,6 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .lift:hover,
-  .lift:focus-within {
-    transform: translateY(-2px);
-  }
-
   /* The TextCTA arrow slides 3px, backwards for a "back" link. */
   .text-cta:hover .text-cta-chip > svg,
   .text-cta:focus-visible .text-cta-chip > svg,
@@ -829,20 +720,6 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
     transform: translateX(-3px);
   }
 
-  .rise {
-    animation: rise 500ms var(--ease-out) both;
-  }
-
-  .rise-text {
-    animation: rise-only 500ms var(--ease-out) both;
-  }
-
-  .rise-1 { animation-delay: 60ms; }
-  .rise-2 { animation-delay: 120ms; }
-  .rise-3 { animation-delay: 180ms; }
-  .rise-4 { animation-delay: 240ms; }
-  .rise-5 { animation-delay: 300ms; }
-
   .skeleton::after {
     animation: shimmer 1.6s ease-in-out infinite;
   }
@@ -852,92 +729,6 @@ body:has(main[data-newsletter], main [data-newsletter]) .footer-cta {
       animation: reveal linear both;
       animation-timeline: view();
       animation-range: entry 0% entry 120px;
-    }
-  }
-}
-
-/*
-  Home cards (.card-motion, with --i as the card's index). CSS only, and
-  only transform, translate and opacity move:
-  - a staggered scroll reveal from 0.85 opacity and 12px, on `translate` so
-    it never fights the hover `transform`. Time delays are ignored on scroll
-    timelines, so the stagger shifts each card's animation range instead;
-  - a 4px lift on hover and keyboard focus, with the 3D icon floating 4px
-    and tilting 3 degrees;
-  - a soft green border glow, a pseudo element fading in by opacity;
-  - a pressed scale of 0.98 for touch.
-  The label and arrow chip always show, so nothing depends on hover. All
-  movement sits under no-preference; the glow (opacity only) stays.
-*/
-.card-motion::after {
-  content: "";
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  box-shadow:
-    0 0 0 1px var(--glyph),
-    0 12px 32px -10px var(--card-glow);
-  opacity: 0;
-  transition: opacity 220ms var(--ease-out);
-  pointer-events: none;
-}
-
-.card-motion:has(:focus-visible)::after {
-  opacity: 1;
-}
-
-@media (hover: hover) {
-  .card-motion:hover::after {
-    opacity: 1;
-  }
-}
-
-@keyframes card-reveal {
-  from {
-    opacity: 0.85;
-    translate: 0 12px;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .card-motion {
-    transition:
-      transform 220ms var(--ease-out),
-      border-color 200ms var(--ease-out);
-  }
-
-  .card-motion .icon-3d {
-    transition: transform 320ms var(--ease-out);
-  }
-
-  .card-motion:has(:focus-visible) {
-    transform: translateY(-4px);
-  }
-
-  .card-motion:has(:focus-visible) .icon-3d {
-    transform: translateY(-4px) rotate(-3deg);
-  }
-
-  @media (hover: hover) {
-    .card-motion:hover {
-      transform: translateY(-4px);
-    }
-
-    .card-motion:hover .icon-3d {
-      transform: translateY(-4px) rotate(-3deg);
-    }
-  }
-
-  .card-motion:active {
-    transform: scale(0.98);
-    transition-duration: 90ms;
-  }
-
-  @supports (animation-timeline: view()) {
-    .card-motion {
-      animation: card-reveal linear both;
-      animation-timeline: view();
-      animation-range: entry calc(var(--i, 0) * 8%) entry calc(55% + var(--i, 0) * 8%);
     }
   }
 }

@@ -63,6 +63,7 @@ export default function AboutPage() {
           </div>
           <LoopVideo
             id="wheat-field"
+            still
             sizes="(min-width: 1280px) 1200px, 100vw"
             className="aspect-video overflow-hidden rounded-card border border-border shadow-soft lg:col-span-12 lg:aspect-[21/8]"
           />

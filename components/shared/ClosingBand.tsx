@@ -4,7 +4,7 @@ import { LoopVideo } from "./LoopVideo";
 /**
  * Short closing call to action on a soft mint panel. Centred on small
  * screens, as short closing bands are. From lg the text sits left and the
- * green mesh loop plays in a framed panel on the right, never behind text.
+ * green mesh poster sits still in a framed panel on the right.
  */
 export function ClosingBand({
   id,
@@ -34,6 +34,7 @@ export function ClosingBand({
         <div className="hidden lg:col-span-5 lg:block">
           <LoopVideo
             id="green-mesh"
+            still
             sizes="(min-width: 1024px) 40vw, 1px"
             className="aspect-video overflow-hidden rounded-card border border-border shadow-soft"
           />

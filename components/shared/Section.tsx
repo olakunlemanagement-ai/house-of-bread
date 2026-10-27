@@ -23,7 +23,7 @@ type SectionProps = {
   width?: "wide" | "narrow";
   /** Centre only short closing bands. Content stays left aligned. */
   align?: "left" | "center";
-  /** False when the cards inside reveal one by one (.card-motion), so nothing fades twice. */
+  /** False to skip the section fade. */
   reveal?: boolean;
   children?: ReactNode;
 };

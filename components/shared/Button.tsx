@@ -11,28 +11,29 @@ export type ButtonTone = "light" | "green";
 /** An in-page anchor or an external address. Rendered as a plain anchor. */
 export type PlainHref = `#${string}` | `https://${string}`;
 
-// 48px tall on mobile, 52px from sm. Hover lifts 2px over 300ms. No button is underlined.
-// Only the transform animates: colour changes are instant.
+// Pills, 48px tall on mobile and 52px from sm. No button is underlined and
+// none lifts: only the arrow nudges on hover. Colour changes are instant.
 const base =
-  "group/button inline-flex min-h-12 items-center justify-center gap-2 rounded-button py-3 font-semibold leading-tight no-underline transition-transform duration-300 ease-(--ease-standard) sm:min-h-13 motion-safe:hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:hover:translate-y-0";
+  "group/button inline-flex min-h-12 items-center justify-center gap-2 rounded-button py-3 font-semibold leading-tight no-underline sm:min-h-13 disabled:cursor-not-allowed";
 
 // Pairings and ratios are logged in docs/PLACEHOLDERS.md.
 const styles: Record<ButtonTone, Record<ButtonVariant, string>> = {
   light: {
-    // White on emerald 6.57:1, on emerald-deep 7.65:1.
-    primary: "bg-emerald text-white shadow-soft hover:bg-fill-hover disabled:bg-fill-disabled",
-    // Emerald-deep text on white 7.65:1, on tint 6.81:1.
+    // Solid deep green. White on green-deep 13.53:1, on the emerald hover
+    // 6.57:1. Dark: white on emerald-night 5.82:1.
+    primary: "bg-fill-primary text-white hover:bg-fill-hover disabled:bg-fill-disabled",
+    // Outline. Emerald-deep text on white 7.65:1, on tint 6.81:1.
     secondary:
-      "border-[1.5px] border-glyph/55 bg-surface-raised text-emerald-deep hover:border-glyph hover:bg-tint disabled:border-dashed disabled:border-ink-muted disabled:text-ink-muted disabled:hover:bg-surface-raised",
-    live: "bg-gold text-on-gold shadow-soft hover:bg-gold-soft",
+      "border-[1.5px] border-glyph bg-transparent text-emerald-deep hover:bg-tint disabled:border-dashed disabled:border-ink-muted disabled:text-ink-muted disabled:hover:bg-transparent",
+    live: "bg-gold text-on-gold hover:bg-gold-soft",
   },
   green: {
     // Green-deep on white 13.53:1.
-    primary: "bg-white text-green-deep shadow-soft hover:bg-on-green-hover disabled:bg-on-green-muted",
+    primary: "bg-white text-green-deep hover:bg-on-green-hover disabled:bg-on-green-muted",
     // White at 12% over green-deep 9.43:1.
     secondary:
       "border-[1.5px] border-white bg-white/12 text-white hover:bg-white/20 disabled:border-dashed disabled:bg-transparent",
-    live: "bg-gold text-on-gold shadow-soft hover:bg-gold-soft",
+    live: "bg-gold text-on-gold hover:bg-gold-soft",
   },
 };
 
@@ -53,7 +54,7 @@ export function buttonClasses(
   return `${base} ${sizes[size]} ${styles[tone][variant]} ${className}`;
 }
 
-/** Arrow for "go to" buttons. It nudges 4px right on hover. */
+/** The arrow every pill link carries by default. It nudges 4px right on hover. */
 function Arrow() {
   return (
     <Icon
@@ -78,7 +79,7 @@ export function ButtonLink({
   variant = "primary",
   tone = "light",
   size = "default",
-  arrow = false,
+  arrow = true,
   className,
   children,
 }: ButtonLinkProps) {

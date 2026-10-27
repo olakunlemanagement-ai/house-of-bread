@@ -5,15 +5,13 @@ import { Placeholder } from "./Placeholder";
 /** The session the floating card shows: on Home, the next weekly session. */
 export type HeroSession = { title: string; startsAtUtc: string; timeZone: string | null };
 
-// Translucent white over the hero tint and the phone. 84% keeps ink-muted
-// above 4.5:1 even where the card overlaps the dark phone frame.
-const floating = "glass-card absolute z-10 rounded-tile border border-(--glass-border) p-4";
+// Solid raised cards over the phone. No glass since the reset.
+const floating = "absolute z-10 rounded-tile border border-border bg-surface-raised p-4 shadow-soft";
 
 /**
  * Hero visual: a CSS phone with two floating cards. Illustrative, not a
  * screenshot and not live data, except that the session card shows the next
- * next real session (on Home, the next weekly session). A soft emerald radial sits behind the
- * phone.
+ * next real session.
  */
 export function HeroVisual({
   nextSession,
@@ -33,10 +31,6 @@ export function HeroVisual({
       }
       className="relative mx-auto w-full max-w-[26rem] py-6"
     >
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute left-1/2 top-1/2 size-[22rem] -translate-x-1/2 -translate-y-1/2 rounded-full [background-image:radial-gradient(closest-side,var(--halo),transparent)] lg:size-[30rem]"
-      />
       <div aria-hidden="true" className="relative">
         <PhoneFrame className="mx-auto" />
 

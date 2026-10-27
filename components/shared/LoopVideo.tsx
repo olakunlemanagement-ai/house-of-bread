@@ -14,6 +14,11 @@ type LoopVideoProps = {
   priority?: boolean;
   /** Multiply the loop onto the page. Only for a loop keyed to pure white. */
   blend?: "multiply";
+  /**
+   * Poster only, never a video. Since the reset only hero loops move (the
+   * Home hero and each page's top header); a panel lower on a page is still.
+   */
+  still?: boolean;
 };
 
 /**
@@ -27,27 +32,44 @@ type LoopVideoProps = {
  * loads lazily, so light never fetches it (display: none never intersects).
  * See LoopVideoClient for when it plays.
  */
-export function LoopVideo({ id, className = "", fill = false, sizes, priority = false, blend }: LoopVideoProps) {
+export function LoopVideo({
+  id,
+  className = "",
+  fill = false,
+  sizes,
+  priority = false,
+  blend,
+  still = false,
+}: LoopVideoProps) {
   const loop = getLoop(id);
+  const posters = (
+    <>
+      <Image
+        src={loop.poster}
+        alt=""
+        fill
+        sizes={sizes}
+        priority={priority}
+        className={`object-cover ${loop.dark ? "dark:hidden" : ""}`}
+      />
+      {loop.dark ? (
+        <Image src={loop.dark.poster} alt="" fill sizes={sizes} className="hidden object-cover dark:block" />
+      ) : null}
+    </>
+  );
   return (
     <div data-loop={id} className={`${fill ? "absolute inset-0" : "relative"} ${className}`}>
-      <LoopVideoClient
-        light={videosOf(loop)}
-        dark={loop.dark ? videosOf(loop.dark) : undefined}
-        mediaClassName={blend === "multiply" ? "mix-blend-multiply" : ""}
-      >
-        <Image
-          src={loop.poster}
-          alt=""
-          fill
-          sizes={sizes}
-          priority={priority}
-          className={`object-cover ${loop.dark ? "dark:hidden" : ""}`}
-        />
-        {loop.dark ? (
-          <Image src={loop.dark.poster} alt="" fill sizes={sizes} className="hidden object-cover dark:block" />
-        ) : null}
-      </LoopVideoClient>
+      {still ? (
+        <div className={`absolute inset-0 overflow-hidden ${loop.dark ? "" : "dark:hidden"}`}>{posters}</div>
+      ) : (
+        <LoopVideoClient
+          light={videosOf(loop)}
+          dark={loop.dark ? videosOf(loop.dark) : undefined}
+          mediaClassName={blend === "multiply" ? "mix-blend-multiply" : ""}
+        >
+          {posters}
+        </LoopVideoClient>
+      )}
     </div>
   );
 }
