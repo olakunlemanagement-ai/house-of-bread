@@ -1454,3 +1454,54 @@ rather than balance. Measured after: no layout shift at 375 or 767px.
 The phone page grew by the full width teacher photo (4:5 at 343px wide)
 and the buttons that replaced text links. Real one line course promises
 would take about 150px off.
+
+## Reset fixes 3 (28 October 2026)
+
+### Hero scrim
+
+From lg the scrim holds 80% over the text column and then eases to 6%
+over the next 20% of the width (`hero-scrim` in app/globals.css), where
+it used to fall in a straight line from 80% at 60% to 20% at the right
+edge. The hold is 60% on inner pages and 70% on Home, whose heading ran
+to 67% at 1024, past the old 60% hold. Below lg the text spans the hero,
+so the scrim stays 80% there. `scripts/check-noscript.mjs` now fails if
+hero text crosses the hold (measured at 1024, 1280 and 1920 on ten pages;
+the closest is Home at 1024, 67.0% against 70%).
+
+Text inside the hold sits on the same 80% scrim as before, so its
+contrast is unchanged. `npm run loops:sample` on 28 October 2026 gave the
+same worst pixels: pure black across the light loops, pure white across
+the dark ones. Dark text in light is worst over the darkest pixel; light
+text in dark is worst over the brightest.
+
+| Pairing (minimum 4.5, borders 3) | Light | Dark |
+|---|---|---|
+| Heading, any loop | 10.25 | 8.68 |
+| Lead, muted, any loop | 4.76 | 5.02 |
+| Eyebrow and accent, any loop | 4.77 | 5.28 (lime), 5.76 (spring) |
+| Secondary outline border, any loop | 4.09 | 4.53 |
+| Lead over the Home loop's own worst pixel (`#00402b` light, `#aece9b` dark) | 5.26 | 6.00 |
+
+### Home teaching block with a short feed
+
+It lays out only the videos it has (`components/shared/home-teachings-layout.ts`):
+the lead alone full width (the featured video when the feed fails), two
+side by side from sm, the lead with two stacked cards from lg, and the
+full layout with three. Checked by screenshot with 0 to 4 videos at 375,
+768 and 1280. The skeleton draws the full layout, so with a short feed the
+block changes height when it arrives (below the fold, by about 230px at
+1280 for a lone video).
+
+### Home height (Playwright, production build, 28 October 2026)
+
+Two course cards below 768px, three from 768. Section padding 40px on
+phones (was 48), hero bottom 48px on phones (was 80), numbered rows 20px
+(was 28), the teacher photo 144px wide on phones (was full width), and a
+few inner gaps 32px (were 40).
+
+| Width | Whole page, full feed |
+|---|---|
+| 375px | 5,681px (6,475px before) |
+| 1280px | 5,439px (5,443px before) |
+
+The footer is 855px of the 375 figure.

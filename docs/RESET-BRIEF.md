@@ -134,7 +134,7 @@ Heading: "Read the Bible for years and still feel you only know it in parts?"
 
 Text: "Our free courses take you through it, one lesson at a time."
 
-Show three course cards from the catalogue, each with a small "Free" badge, title, one-line promise, "[6] lessons · [20] min each" on one line and the button **Start this course**.
+Show three course cards from the catalogue (two on phones, below 768px: amended 28 October 2026), each with a small "Free" badge, title, one-line promise, "[6] lessons · [20] min each" on one line and the button **Start this course**.
 
 Button under the cards: **Browse all free courses**
 

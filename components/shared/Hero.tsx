@@ -11,7 +11,7 @@ export function Hero() {
   return (
     <section aria-labelledby="hero-heading" className="relative overflow-hidden bg-surface">
       <HeroBackdrop loop="ambient-light" phone hold={70} />
-      <div className="container-page relative z-10 pb-20 pt-16 sm:pt-20 lg:pb-32 lg:pt-28">
+      <div className="container-page relative z-10 pb-12 pt-16 sm:pb-20 sm:pt-20 lg:pb-32 lg:pt-28">
         <div data-hero-text className="max-w-4xl">
           <h1 id="hero-heading" className="text-statement">
             Understand the Bible you&apos;ve been reading.
@@ -20,7 +20,7 @@ export function Hero() {
             Free courses and teaching that bring you into an accurate understanding of God&apos;s Word,
             and a real encounter with Him.
           </p>
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
             <ButtonLink href="/academy" className="w-full sm:w-auto">
               Browse free courses
             </ButtonLink>

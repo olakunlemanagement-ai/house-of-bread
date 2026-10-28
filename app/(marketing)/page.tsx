@@ -18,8 +18,8 @@ export const metadata: Metadata = {
   description: siteConfig.description,
 };
 
-// One rhythm for every Home section: 48px on phones, 112px from md.
-const band = "container-page py-12 md:py-28";
+// One rhythm for every Home section: 40px on phones, 112px from md.
+const band = "container-page py-10 md:py-28";
 
 /**
  * Home, seven screens in the order of docs/RESET-BRIEF.md section 4, copy
@@ -48,7 +48,7 @@ export default async function HomePage() {
             className="max-w-[72rem] text-mission"
             text="We teach believers to read God's Word accurately, understand it deeply, and live it fully, wherever they are."
           />
-          <p className="mt-8 max-w-2xl text-lead text-ink-muted">
+          <p className="mt-6 max-w-2xl text-lead text-ink-muted md:mt-8">
             The name comes from Bethlehem, the house of bread, where the Bread of Life was born.
           </p>
           <ButtonLink href="/about" variant="secondary" className="mt-6 w-full sm:w-auto">
@@ -71,12 +71,13 @@ export default async function HomePage() {
               Our free courses take you through it, one lesson at a time.
             </p>
           </div>
-          <ul className="mt-8 grid gap-4 md:mt-12 md:gap-5 lg:grid-cols-3">
+          {/* Two courses on phones, three from md. */}
+          <ul className="mt-6 grid gap-4 md:mt-12 md:gap-5 lg:grid-cols-3 max-md:[&>li:nth-child(n+3)]:hidden">
             {courses.slice(0, 3).map((course) => (
               <CourseCard key={course.slug} course={course} />
             ))}
           </ul>
-          <ButtonLink href="/academy" className="mt-8 w-full sm:w-auto">
+          <ButtonLink href="/academy" className="mt-6 w-full sm:w-auto md:mt-8">
             Browse all free courses
           </ButtonLink>
         </div>
@@ -87,7 +88,7 @@ export default async function HomePage() {
         <div className={band}>
           <RevealHeading id="start-heading" className="max-w-3xl text-h2" text="Where are you starting from?" />
           <NumberedRows
-            className="mt-8 md:mt-12"
+            className="mt-6 md:mt-12"
             items={[
               {
                 title: "New to the Bible.",
@@ -122,17 +123,17 @@ export default async function HomePage() {
             </p>
           </div>
           {/* The async region: its height must match the skeleton's (scripts/check-noscript.mjs). */}
-          <div data-region="home-teachings" className="mt-10 md:mt-12">
+          <div data-region="home-teachings" className="mt-8 md:mt-12">
             <Suspense fallback={<HomeTeachingsSkeleton />}>
               <HomeTeachings />
             </Suspense>
           </div>
-          <div className="mt-10">
+          <div className="mt-8 md:mt-10">
             <ButtonLink href="/media" className="w-full sm:w-auto">
               See all teachings
             </ButtonLink>
           </div>
-          <div className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center sm:gap-5">
+          <div className="mt-6 flex flex-col items-start gap-3 md:mt-8 sm:flex-row sm:items-center sm:gap-5">
             <p className="text-base text-ink-muted">New teaching live every Monday at 8 pm Lagos time.</p>
             <ButtonLink href={"/events#rhythm" as Route} variant="secondary" size="sm">
               See the session times
@@ -143,11 +144,12 @@ export default async function HomePage() {
 
       {/* Screen 6: the teacher. */}
       <section aria-labelledby="teacher-heading" className="bg-surface-warm">
-        {/* Phones: the photo full width above the text. From sm: side by side. */}
-        <div className={`${band} grid gap-8 sm:grid-cols-[minmax(0,14rem)_1fr] sm:items-center md:gap-14 lg:grid-cols-[minmax(0,20rem)_1fr]`}>
+        {/* Phones: a small photo above the text. From sm: side by side. */}
+        <div className={`${band} grid gap-6 sm:grid-cols-[minmax(0,14rem)_1fr] md:gap-8 sm:items-center md:gap-14 lg:grid-cols-[minmax(0,20rem)_1fr]`}>
           <ImageSlot
             id="home-teacher"
-            sizes="(min-width: 1024px) 20rem, (min-width: 640px) 14rem, 100vw"
+            className="max-sm:w-36"
+            sizes="(min-width: 1024px) 20rem, (min-width: 640px) 14rem, 9rem"
           />
           <div>
             <h2 id="teacher-heading" className="sr-only">

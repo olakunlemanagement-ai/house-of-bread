@@ -22,7 +22,7 @@ export function NumberedRows({ items, className = "" }: { items: NumberedRow[]; 
       {items.map((item, index) => (
         <li
           key={item.href + item.title}
-          className="grid grid-cols-[3rem_1fr] items-start gap-x-4 border-t border-border py-7 sm:grid-cols-[5.5rem_1fr_auto] sm:items-center sm:gap-x-8 sm:py-9"
+          className="grid grid-cols-[3rem_1fr] items-start gap-x-4 border-t border-border py-5 sm:grid-cols-[5.5rem_1fr_auto] sm:items-center sm:gap-x-8 sm:py-9"
         >
           <span aria-hidden="true" className="font-serif text-4xl font-medium leading-none text-emerald-deep sm:text-6xl">
             {String(index + 1).padStart(2, "0")}
