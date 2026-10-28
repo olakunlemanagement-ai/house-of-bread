@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import { getLoop, videosOf, type LoopId } from "@/lib/media/loops";
 import { LoopVideoClient } from "./LoopVideoClient";
 
@@ -30,6 +30,9 @@ type LoopVideoProps = {
  * A loop with a dark rendition carries both posters, and CSS shows the one
  * for the theme in effect, so the right one paints first. The dark poster
  * loads lazily, so light never fetches it (display: none never intersects).
+ * On a priority (hero) loop the dark poster also gets a preload limited to
+ * prefers-color-scheme: dark, so in dark it is fetched at once rather than
+ * after layout: it is the dark hero's LCP (Lighthouse, 28 October 2026).
  * See LoopVideoClient for when it plays.
  */
 export function LoopVideo({
@@ -42,8 +45,20 @@ export function LoopVideo({
   phone = false,
 }: LoopVideoProps) {
   const loop = getLoop(id, { phone });
+  const darkPreload =
+    priority && loop.dark ? getImageProps({ src: loop.dark.poster, alt: "", fill: true, sizes }).props : null;
   const posters = (
     <>
+      {darkPreload ? (
+        <link
+          rel="preload"
+          as="image"
+          imageSrcSet={darkPreload.srcSet}
+          imageSizes={darkPreload.sizes}
+          media="(prefers-color-scheme: dark)"
+          fetchPriority="high"
+        />
+      ) : null}
       <Image
         src={loop.poster}
         alt=""
