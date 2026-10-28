@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, type MouseEvent } from "react";
-import { closeMenusOnNavigation } from "./menu";
+import { closeMenuOnEscape, closeMenusOnNavigation } from "./menu";
 import { isCurrent, primaryNav, type NavLink } from "./nav-links";
 import { navLinkClass, navListClass, type NavLayout } from "./nav-styles";
 
@@ -25,6 +25,14 @@ export function NavLinks({ layout, items = primaryNav }: { layout: NavLayout; it
   useEffect(() => {
     closeMenusOnNavigation(lastPath, pathname, document);
   }, [pathname]);
+
+  // In the phone menu, Escape closes it and returns focus to Menu.
+  useEffect(() => {
+    if (layout !== "stacked") return;
+    const onKey = (event: KeyboardEvent) => closeMenuOnEscape(event.key, document);
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [layout]);
 
   return (
     <ul className={navListClass[layout]}>

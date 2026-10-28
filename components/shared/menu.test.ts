@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import { MENU_SELECTOR, closeMenus, closeMenusOnNavigation } from "./menu";
+import { MENU_SELECTOR, closeMenuOnEscape, closeMenus, closeMenusOnNavigation } from "./menu";
 
 // CLAUDE.md section 7, Navigation: the mobile menu is a details element that
 // works without JavaScript. A tap on Menu at any point in load must open it,
@@ -92,5 +92,35 @@ describe("mobile menu without JavaScript", () => {
     for (const rule of noJsRules) {
       expect(rule).not.toMatch(/data-menu|menu-panel|summary/);
     }
+  });
+});
+
+describe("Escape in the mobile menu", () => {
+  function menuPage(open: boolean) {
+    const attrs = new Set(open ? ["open"] : []);
+    let focused = false;
+    const menu = {
+      hasAttribute: (name: string) => attrs.has(name),
+      removeAttribute: (name: string) => attrs.delete(name),
+      querySelector: (selector: string) => (selector === "summary" ? { focus: () => (focused = true) } : null),
+    };
+    const root = { querySelectorAll: (selector: string) => (selector === MENU_SELECTOR ? [menu] : []) };
+    return { root, isOpen: () => attrs.has("open"), focused: () => focused };
+  }
+
+  it("closes an open menu and returns focus to Menu", () => {
+    const { root, isOpen, focused } = menuPage(true);
+    expect(closeMenuOnEscape("Escape", root)).toBe(true);
+    expect(isOpen()).toBe(false);
+    expect(focused()).toBe(true);
+  });
+
+  it("ignores other keys and closed menus", () => {
+    const open = menuPage(true);
+    expect(closeMenuOnEscape("Enter", open.root)).toBe(false);
+    expect(open.isOpen()).toBe(true);
+    const closed = menuPage(false);
+    expect(closeMenuOnEscape("Escape", closed.root)).toBe(false);
+    expect(closed.focused()).toBe(false);
   });
 });

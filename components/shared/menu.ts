@@ -12,6 +12,21 @@ export function closeMenus(root: MenuRoot) {
   Array.from(root.querySelectorAll(MENU_SELECTOR)).forEach((menu) => menu.removeAttribute("open"));
 }
 
+type EscapeMenu = { hasAttribute(name: string): boolean; removeAttribute(name: string): void; querySelector(selector: string): { focus(): void } | null };
+
+/**
+ * Escape closes an open menu and returns focus to its Menu button (the
+ * summary), as a disclosure should. Returns true when it closed one.
+ */
+export function closeMenuOnEscape(key: string, root: { querySelectorAll(selector: string): ArrayLike<EscapeMenu> }) {
+  if (key !== "Escape") return false;
+  const open = Array.from(root.querySelectorAll(MENU_SELECTOR)).find((menu) => menu.hasAttribute("open"));
+  if (!open) return false;
+  open.removeAttribute("open");
+  open.querySelector("summary")?.focus();
+  return true;
+}
+
 /**
  * Closes the menus only when the path differs from the one last seen. The
  * ref starts at the path rendered at hydration, so the mount effect (run
