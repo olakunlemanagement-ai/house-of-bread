@@ -59,7 +59,7 @@ export default function AboutPage() {
               <p>
                 Its purpose is to bring believers into an accurate understanding of God&apos;s Word, and a
                 revelation of Him through it, beyond the four walls of a church building. The teaching is
-                free, online, and verse by verse.
+                online and verse by verse.
               </p>
               <p>
                 Today it reaches believers in the United Kingdom, across Africa, in the United States, and
@@ -113,8 +113,8 @@ export default function AboutPage() {
         </ButtonLink>
       </Section>
 
-      <NextStep tone="warm" title="Ready to start?" text="Our free courses take you through it, one lesson at a time.">
-        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      <NextStep tone="warm" title="Ready to start?" text="Our courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>
   );

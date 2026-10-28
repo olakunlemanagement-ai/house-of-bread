@@ -58,8 +58,8 @@ export default function TeachingsPage() {
         )}
       </Section>
 
-      <NextStep title="Ready to go deeper?" text="Our free courses take you through it, one lesson at a time.">
-        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      <NextStep title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>
   );

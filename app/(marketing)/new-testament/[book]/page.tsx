@@ -101,8 +101,8 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
         </div>
       </nav>
 
-      <NextStep tone="warm" title="Want a guide through it?" text="Our free courses take you through it, one lesson at a time.">
-        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      <NextStep tone="warm" title="Want a guide through it?" text="Our courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>
   );

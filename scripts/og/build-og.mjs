@@ -16,7 +16,7 @@ import { fileURLToPath } from "node:url";
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..", "..");
 const OUT = path.join(ROOT, "app", "opengraph-image.png");
 export const HEADLINE = "Understand the Bible you've been reading.";
-export const LINE = "Free Bible courses and teaching";
+export const LINE = "Bible courses and teaching";
 
 const base = process.argv[2];
 const playwrightPath = process.env.PLAYWRIGHT;

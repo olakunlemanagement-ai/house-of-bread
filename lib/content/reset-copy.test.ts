@@ -39,7 +39,13 @@ const retired = [
   "Compare the three paces",
   "View journey",
   "Back to the home page",
+  // Pricing is not decided (28 October 2026): no button calls courses free.
+  "Browse free courses",
+  "Browse all free courses",
 ];
+
+// Nothing says or shows that a course is free until pricing is decided.
+const freeCourse = /\bfree(?: bible)? courses?\b|\bfree, always\b|\bcourse[^.]{0,40}\bfree\b|>\s*free\s*</;
 
 function sourceFiles(dir: string): string[] {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -71,6 +77,11 @@ describe("reset copy rules", () => {
       const text = copyOf(file);
       return banned.filter((phrase) => text.includes(phrase.toLowerCase())).map((phrase) => `${file}: ${phrase}`);
     });
+    expect(found).toEqual([]);
+  });
+
+  it("never calls a course free", () => {
+    const found = files.filter((file) => freeCourse.test(copyOf(file)));
     expect(found).toEqual([]);
   });
 

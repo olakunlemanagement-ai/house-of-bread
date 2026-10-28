@@ -23,7 +23,7 @@ export default function CheckEmailPage() {
         lead={newsletterMessages.success}
         actions={
           <>
-            <ButtonLink href="/academy">Browse free courses</ButtonLink>
+            <ButtonLink href="/academy">Browse courses</ButtonLink>
             <ButtonLink href="/" variant="secondary">
               Go home
             </ButtonLink>

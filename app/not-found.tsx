@@ -25,7 +25,7 @@ export default function NotFound() {
           lead="The link may be old, or the address may have been typed differently."
           actions={
             <>
-              <ButtonLink href="/academy">Browse free courses</ButtonLink>
+              <ButtonLink href="/academy">Browse courses</ButtonLink>
               <ButtonLink href="/" variant="secondary">
                 Go home
               </ButtonLink>

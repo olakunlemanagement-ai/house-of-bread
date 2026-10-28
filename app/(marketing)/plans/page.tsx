@@ -51,8 +51,8 @@ export default function PlansPage() {
         </div>
       </section>
 
-      <NextStep title="Want a guide through it?" text="Our free courses take you through it, one lesson at a time.">
-        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      <NextStep title="Want a guide through it?" text="Our courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>
   );

@@ -11,9 +11,9 @@ import { courseCatalog } from "@/lib/academy";
 import { academyCopy as copy } from "@/lib/content/copy";
 
 export const metadata: Metadata = {
-  title: "Free Bible courses",
+  title: "Bible courses",
   description:
-    "Self-paced video lessons that take you through Scripture in context. Free, always. Find where you are starting from and choose a course.",
+    "Self-paced video lessons that take you through Scripture in context. Find where you are starting from and choose a course.",
 };
 
 /**
@@ -34,8 +34,8 @@ export default async function AcademyPage() {
     <main id="main" tabIndex={-1}>
       <PageHeader
         eyebrow="The Academy"
-        title="Free Bible courses"
-        lead="Self-paced video lessons that take you through Scripture in context. Free, always."
+        title="Bible courses"
+        lead="Self-paced video lessons that take you through Scripture in context."
         meta={<p className="max-w-2xl text-base text-ink-muted">{copy.courses.intro}</p>}
         actions={<ButtonLink href={copy.waitlistHref}>{copy.waitlistLabel}</ButtonLink>}
         loop="open-bible"

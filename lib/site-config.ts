@@ -43,7 +43,7 @@ export const siteConfig = {
   name: "House of Bread Global",
   url: "https://hobglobal.online",
   description:
-    "Free courses and teaching that bring you into an accurate understanding of God's Word, and a real encounter with Him. A teaching ministry serving believers in the UK, Africa and the United States.",
+    "Courses and teaching that bring you into an accurate understanding of God's Word, and a real encounter with Him. A teaching ministry serving believers in the UK, Africa and the United States.",
   /**
    * Global noindex flag. While true, every page tells search engines not to
    * index or follow it. Flip to false only at launch, once placeholder copy

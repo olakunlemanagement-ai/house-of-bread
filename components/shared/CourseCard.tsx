@@ -4,11 +4,12 @@ import { ButtonLink } from "./Button";
 import { Placeholder, PlaceholderBadge } from "./Placeholder";
 
 /**
- * A course from the catalogue: a small "Free" badge, the title, its
- * one-line promise, lessons and time on one line, and one tertiary button.
- * Lesson count and length show as marked placeholders until the ministry
- * supplies them. With showStatus (the Academy), a course that has no way
- * to join yet also carries its "Coming soon" badge. Nothing moves on hover.
+ * A course from the catalogue: the title, its one-line promise, lessons
+ * and time on one line, and one tertiary button. No price or "Free" badge
+ * until pricing is decided (docs/PLACEHOLDERS.md). Lesson count and length
+ * show as marked placeholders until the ministry supplies them. With
+ * showStatus (the Academy), a course that has no way to join yet carries
+ * its "Coming soon" badge above the title. Nothing moves on hover.
  */
 export function CourseCard({
   course,
@@ -24,14 +25,12 @@ export function CourseCard({
   const minutes = course.minutesPerLesson ?? <Placeholder>[20]</Placeholder>;
   return (
     <li className="flex flex-col rounded-card border border-border bg-surface-raised p-5 sm:p-8">
-      {/* Gold-soft with ink text, the palette's badge pairing (11.85:1). */}
-      <div className="flex flex-wrap items-center gap-2">
-        <p className="rounded-full bg-gold-soft px-2.5 py-0.5 text-xs font-semibold uppercase tracking-[0.08em] text-on-gold">
-          Free
-        </p>
-        {showStatus && course.status === "coming-soon" ? <PlaceholderBadge label="Coming soon" /> : null}
-      </div>
-      <Heading className="mt-4 text-xl leading-snug sm:text-2xl">{course.title}</Heading>
+      {showStatus && course.status === "coming-soon" ? (
+        <div className="mb-4 flex flex-wrap items-center gap-2">
+          <PlaceholderBadge label="Coming soon" />
+        </div>
+      ) : null}
+      <Heading className="text-xl leading-snug sm:text-2xl">{course.title}</Heading>
       <p className="mt-2 leading-relaxed text-ink-muted">{course.summary}</p>
       <p className="mt-3 whitespace-nowrap text-base text-ink">
         {lessons} lessons · {minutes} min each

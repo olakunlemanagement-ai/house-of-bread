@@ -26,8 +26,8 @@ export default function SubscribePage({ searchParams }: PageProps<"/subscribe">)
 
       <SignupSection source="subscribe-page" idPrefix="subscribe" searchParams={searchParams} />
 
-      <NextStep title="Want to start now?" text="Our free courses take you through it, one lesson at a time.">
-        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      <NextStep title="Want to start now?" text="Our courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>
   );

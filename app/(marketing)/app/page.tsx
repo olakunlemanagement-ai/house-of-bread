@@ -70,8 +70,8 @@ export default function AppPage() {
         </p>
       </Section>
 
-      <NextStep title="Prefer to learn on the web?" text="Our free courses take you through it, one lesson at a time.">
-        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      <NextStep title="Prefer to learn on the web?" text="Our courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>
   );

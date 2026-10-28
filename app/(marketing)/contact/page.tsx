@@ -49,8 +49,8 @@ export default function ContactPage() {
         </div>
       </div>
 
-      <NextStep tone="warm" title="Ready to start?" text="Our free courses take you through it, one lesson at a time.">
-        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      <NextStep tone="warm" title="Ready to start?" text="Our courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>
   );

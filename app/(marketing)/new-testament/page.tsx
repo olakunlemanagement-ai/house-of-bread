@@ -37,8 +37,8 @@ export default function NewTestamentPage() {
         <BookGrid groups={bookGroups} books={bookListings(new Set(getAll("book").map((book) => book.slug)))} />
       </Section>
 
-      <NextStep tone="warm" title="Want a guide through it?" text="Our free courses take you through it, one lesson at a time.">
-        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      <NextStep tone="warm" title="Want a guide through it?" text="Our courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse courses</ButtonLink>
         <ButtonLink href="/app" variant="secondary">
           Get the app
         </ButtonLink>

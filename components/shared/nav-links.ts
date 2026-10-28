@@ -9,7 +9,7 @@ export type NavLink = {
 
 /**
  * Main navigation, as on main before the reset: Home, Academy, Teachings,
- * About, Contact. The one header button, Browse free courses, sits apart on
+ * About, Contact. The one header button, Browse courses, sits apart on
  * the right. Teachings is the video page (/media, once labelled Library)
  * until the routes are renamed. Ask lives in the footer and in Home's third
  * numbered row.

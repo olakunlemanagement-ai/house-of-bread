@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: PageProps<"/academy/[slug]">)
   const { slug } = await params;
   const course = await courseCatalog.getCourse(slug);
   if (!course) return {};
-  return { title: `${course.title}: a free course`, description: course.summary };
+  return { title: `${course.title}: a Bible course`, description: course.summary };
 }
 
 const placeholderOutcomes = ["[What you'll learn, 1]", "[What you'll learn, 2]", "[What you'll learn, 3]"];
@@ -53,13 +53,13 @@ export default async function CoursePage({ params }: PageProps<"/academy/[slug]"
     <main id="main" tabIndex={-1}>
       <PageHeader
         loop="open-bible"
-        eyebrow="Free course"
+        eyebrow="Course"
         title={course.title}
         lead={course.summary}
         meta={
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-base text-ink">
-              {lessons} lessons · about {minutes} min each · Free
+              {lessons} lessons · about {minutes} min each
             </p>
             {open ? null : <PlaceholderBadge label="Coming soon" />}
           </div>
@@ -119,7 +119,7 @@ export default async function CoursePage({ params }: PageProps<"/academy/[slug]"
         </NextStep>
       ) : (
         <NextStep title="Ready for the next course?">
-          <ButtonLink href="/academy">Browse all free courses</ButtonLink>
+          <ButtonLink href="/academy">Browse all courses</ButtonLink>
         </NextStep>
       )}
     </main>

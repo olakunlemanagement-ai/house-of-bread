@@ -26,15 +26,15 @@ import { pathToFileURL } from "node:url";
 const EXACT = {
   "/": {
     h1: "Understand the Bible you've been reading.",
-    key: "Free courses and teaching that bring you into an accurate understanding of God's Word",
+    key: "Courses and teaching that bring you into an accurate understanding of God's Word",
   },
   "/about": {
     h1: "A teaching ministry",
     key: "The name comes from Bethlehem, the house of bread, where the Bread of Life was born.",
   },
   "/academy": {
-    h1: "Free Bible courses",
-    key: "Self-paced video lessons that take you through Scripture in context. Free, always.",
+    h1: "Bible courses",
+    key: "Self-paced video lessons that take you through Scripture in context.",
   },
   "/app": {
     h1: "Take the Word with you.",
