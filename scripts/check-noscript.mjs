@@ -20,7 +20,7 @@ const PAGES = [
   { path: "/about", lead: "The name comes from Bethlehem, the house of bread" },
   { path: "/academy", lead: "Self-paced video lessons that take you through Scripture in context." },
   { path: "/media", lead: "Every message, in one place." },
-  { path: "/events", lead: "House of Bread Global teaches live on YouTube." },
+  { path: "/events", lead: "New teaching live every Monday at 8 pm Lagos time." },
   { path: "/app", lead: "Daily reading and journeys through the New Testament, in your pocket." },
   { path: "/contact", lead: "Questions about the ministry, live sessions, the Academy or the app are welcome." },
   { path: "/subscribe", lead: "Reminders before each live session, new teaching and news" },
@@ -32,8 +32,6 @@ const PAGES = [
 const REGIONS = [
   { path: "/", name: "Home teachings", selector: "[data-region='home-teachings']", fallbackLink: true },
   { path: "/media", name: "Library video grid", selector: "#video .container-page > div > :last-child", fallbackLink: true },
-  // The "Watch on YouTube" link beside the player is in the first HTML, so the fallback has none.
-  { path: "/events", name: "Latest session player", selector: "#watch .container-page > div > :last-child", fallbackLink: false },
 ];
 
 const VIEWPORTS = [

@@ -1,128 +1,46 @@
 import type { Metadata } from "next";
 import { ButtonLink } from "@/components/shared/Button";
-import { EmptyState } from "@/components/shared/EmptyState";
-import { StepList } from "@/components/shared/Lists";
-import { EventCard, LiveSessionCard } from "@/components/shared/LiveSessionCard";
-import { NewsletterCard } from "@/components/shared/NewsletterCard";
+import { EventCard } from "@/components/shared/LiveSessionCard";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { ImageSlot } from "@/components/shared/ImageSlot";
+import { Section } from "@/components/shared/Section";
 import { SessionTimes } from "@/components/shared/SessionTimes";
-import { WeeklySessionCard } from "@/components/shared/WeeklySessionCard";
-import { Section, SectionHeader } from "@/components/shared/Section";
-import { YouTubeSubscribeButton } from "@/components/shared/SocialLinks";
-import { LatestSession, LivePlayer, showLatestSession } from "@/components/shared/LatestSession";
-import { getAll, replayEvents, upcomingEvents } from "@/lib/content";
+import { getAll, upcomingEvents } from "@/lib/content";
 import { sessionTimeRegions } from "@/lib/content/copy";
 import { getNextLiveSession } from "@/lib/schedule/next-session";
 import { timeIn } from "@/lib/schedule/weekly";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
-  title: "Live sessions and events",
+  title: "Live every Monday",
   description:
-    "House of Bread Global teaches live on YouTube. See what is coming, in your local time, and set a reminder.",
+    "New teaching live every Monday at 8 pm Lagos time, on YouTube. See the session times where you are.",
 };
 
+/**
+ * Events, per docs/RESET-BRIEF.md section 5: "Live every Monday", the
+ * session times block unchanged (#rhythm, which Home and Teachings link
+ * to), any dated session or training that is coming up, then the next
+ * step to the latest teaching. Live meetings are supporting detail, so
+ * nothing else.
+ */
 export default async function EventsPage() {
-  const events = getAll("event");
-  const [next, ...rest] = upcomingEvents(events);
+  const upcoming = upcomingEvents(getAll("event"));
   const weekly = await getNextLiveSession();
-  // A dated content event leads only when it comes before the weekly session.
-  const eventFirst = next !== undefined && Date.parse(next.startsAtUtc) < Date.parse(weekly);
   const rule = siteConfig.liveSession;
   const ministryTime = timeIn(new Date(weekly), rule.timeZone);
   const ministryRegion = sessionTimeRegions.find((region) => region.timeZone === rule.timeZone)?.name;
-  const replays = replayEvents(events);
-  const latest = showLatestSession({
-    liveNow: events.some((event) => event.status === "live"),
-    hasReplay: replays.length > 0,
-  });
 
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
         loop="dust-light"
         eyebrow="Live"
-        title="Live teaching, wherever you are"
-        lead="House of Bread Global teaches live on YouTube. See what is coming in your local time, and never miss a session."
-        actions={
-          <>
-            <ButtonLink href="/subscribe">
-              Set a reminder
-            </ButtonLink>
-            <YouTubeSubscribeButton />
-          </>
-        }
+        title="Live every Monday"
+        lead="New teaching live every Monday at 8 pm Lagos time."
       />
 
-      <Section id="next-up" title="Next up">
-        {next && eventFirst ? (
-          <LiveSessionCard event={next} idPrefix="events-next" />
-        ) : (
-          <WeeklySessionCard serverIso={weekly} idPrefix="events-next" linkTitle={false} />
-        )}
-      </Section>
-
-      {latest ? (
-        <Section
-          id="watch"
-          title="Watch the latest session"
-          intro="Until the next session is live, the most recent one is here. Press play to watch here, or open YouTube."
-          tone="mint"
-        >
-          <LatestSession />
-        </Section>
-      ) : (
-        <Section
-          id="watch"
-          title="Watch live"
-          intro="Live sessions stream on the ministry's YouTube channel. Press play to watch here, or open YouTube."
-          tone="mint"
-        >
-          <LivePlayer />
-        </Section>
-      )}
-
-      <section id="how" aria-labelledby="how-heading" className="bg-surface-warm">
-        <div className="container-page grid gap-12 py-18 md:py-28 lg:grid-cols-12 lg:items-center lg:gap-14">
-          <div className="lg:col-span-8">
-            <SectionHeader id="how-heading">How it works</SectionHeader>
-            <div className="mt-10">
-              <StepList
-                columns={2}
-                steps={[
-                  { icon: "search", text: "Find a session." },
-                  { icon: "bell", text: "Add it to your calendar or ask for an email reminder." },
-                  { icon: "play", text: "Join on YouTube when it starts." },
-                  { icon: "clock", text: "Watch the replay if you miss it." },
-                ]}
-              />
-            </div>
-          </div>
-          <ImageSlot
-            id="events-how-it-works"
-            className="mx-auto w-full max-w-sm lg:col-span-4 lg:max-w-none"
-            sizes="(min-width: 1024px) 33vw, (min-width: 640px) 384px, 100vw"
-          />
-        </div>
-      </section>
-
-      <Section id="upcoming" title="Upcoming">
-        {rest.length > 0 ? (
-          <ul className="space-y-4">
-            {rest.map((event) => (
-              <EventCard key={event.slug} event={event} />
-            ))}
-          </ul>
-        ) : (
-          <EmptyState icon="calendar">
-            Sessions are announced here and by email. Ask for a reminder and the next date arrives
-            in your inbox.
-          </EmptyState>
-        )}
-      </Section>
-
-      <Section id="rhythm" title="Weekly rhythm" tone="mint">
+      <Section id="rhythm" title="Weekly rhythm">
         <p className="max-w-2xl text-lead text-ink">
           Every {ministryTime.weekday} at {ministryTime.time} {ministryRegion} time, live on YouTube.
           Every session is online, so join from wherever you are.
@@ -132,23 +50,23 @@ export default async function EventsPage() {
         </div>
       </Section>
 
-      <Section id="replays" title="Replays">
-        {replays.length > 0 ? (
+      {upcoming.length > 0 ? (
+        <Section id="upcoming" title="What else is coming up?" tone="mint">
           <ul className="space-y-4">
-            {replays.map((event) => (
+            {upcoming.map((event) => (
               <EventCard key={event.slug} event={event} />
             ))}
           </ul>
-        ) : (
-          <EmptyState icon="play">Replays will appear here after each session.</EmptyState>
-        )}
-      </Section>
+        </Section>
+      ) : null}
 
-      <NewsletterCard
-        idPrefix="events-newsletter"
-        heading="Get a reminder before each session"
-        source="live-notify"
-      />
+      <NextStep
+        tone={upcoming.length > 0 ? "warm" : "mint"}
+        title="Need a word for this season?"
+        text="Sit under the teaching of the Word, wherever you are."
+      >
+        <ButtonLink href="/media">Watch the latest teaching</ButtonLink>
+      </NextStep>
     </main>
   );
 }

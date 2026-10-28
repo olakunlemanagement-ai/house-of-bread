@@ -53,8 +53,8 @@ const EXACT = {
     key: "Questions about the ministry, live sessions, the Academy or the app are welcome.",
   },
   "/events": {
-    h1: "Live teaching, wherever you are",
-    key: "House of Bread Global teaches live on YouTube.",
+    h1: "Live every Monday",
+    key: "New teaching live every Monday at 8 pm Lagos time.",
   },
   "/media": {
     h1: "Need a word for this season?",

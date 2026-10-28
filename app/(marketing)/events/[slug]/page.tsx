@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
+import type { Metadata, Route } from "next";
 import { notFound } from "next/navigation";
-import { Button, ButtonLink } from "@/components/shared/Button";
+import { ButtonLink } from "@/components/shared/Button";
 import { Icon } from "@/components/shared/icons";
 import { EventDuration, EventWhen, eventKindLabel } from "@/components/shared/LiveSessionCard";
-import { NewsletterCard } from "@/components/shared/NewsletterCard";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
@@ -56,26 +56,18 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         actions={
           <>
             {event.youtubeUrl ? (
-              <ButtonLink href={event.youtubeUrl as `https://${string}`}>
-                Watch on YouTube
+              <ButtonLink href={event.youtubeUrl as `https://${string}`} variant={event.status === "live" ? "live" : "primary"}>
+                Watch now
               </ButtonLink>
-            ) : (
-              <Button disabled aria-describedby="youtube-note">
-                Watch on YouTube
-              </Button>
-            )}
-            {/* TODO: link to the .ics file generated at build time once events carry real dates. */}
-            <Button variant="secondary" disabled aria-describedby="calendar-note">
-              <Icon name="calendar" className="size-5" />
-              Add to calendar
-            </Button>
+            ) : null}
+            {/* TODO: an "Add to calendar" button to the .ics file generated at build time, once events carry real dates. */}
             <div className="basis-full space-y-1 text-sm text-ink-muted">
               {event.youtubeUrl ? null : (
-                <p id="youtube-note">
+                <p>
                   <Placeholder>[YOUTUBE LINK TO BE SUPPLIED]</Placeholder>
                 </p>
               )}
-              <p id="calendar-note">
+              <p>
                 <Placeholder>[CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED]</Placeholder>
               </p>
             </div>
@@ -95,19 +87,12 @@ export default async function EventPage({ params }: PageProps<"/events/[slug]">)
         )}
       </Section>
 
-      <nav aria-label="Sessions" className="bg-surface">
-        <div className="container-page pt-10">
-          <ButtonLink href="/events" variant="secondary" size="sm">
-            Back to all sessions
-          </ButtonLink>
-        </div>
-      </nav>
-
-      <NewsletterCard
-        idPrefix="event-newsletter"
-        heading="Get a reminder before each session"
-        source="live-notify"
-      />
+      <NextStep title="Need a word for this season?" text="Sit under the teaching of the Word, wherever you are.">
+        <ButtonLink href="/media">Watch the latest teaching</ButtonLink>
+        <ButtonLink href={"/events#rhythm" as Route} variant="secondary">
+          See the session times
+        </ButtonLink>
+      </NextStep>
     </main>
   );
 }
