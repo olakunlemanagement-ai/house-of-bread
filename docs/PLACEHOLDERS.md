@@ -1505,3 +1505,33 @@ few inner gaps 32px (were 40).
 | 1280px | 5,439px (5,443px before) |
 
 The footer is 855px of the 375 figure.
+
+## Carry-over fixes (28 October 2026)
+
+### Hero scrim, light
+
+The light loops are pale (the Home loop's average luma runs 189 to 197 of
+255), so from lg the light scrim now clears to nothing past the text
+column (`--scrim-tail: 0%`) and eases out over 15 points of the width
+instead of 20. Dark keeps its 6% trace. The text column keeps the full
+80% scrim, so every pairing in "Reset fixes 3" is unchanged.
+
+If the Home loop still reads too faint, the next step is a stronger light
+clip: re-grade `clip-1.mp4` in `npm run loops:build` (a gentle contrast
+and saturation lift so the ribbon reaches about luma 150 at its deepest
+green), or replace it with a clip whose colour fills the right half. Both
+need `npm run loops:sample` and the contrast check again.
+
+### Motion default in screenshots
+
+Motion defaults to On for a visitor with no saved choice and no reduced
+motion setting (`themeScript`, `resolveMotion`). The Phase 1 screenshots
+showed Off because the throwaway screenshot script emulated
+prefers-reduced-motion. `scripts/screenshots.mjs` now takes every
+screenshot with no reduced motion (REDUCED=1 to emulate it), after
+scrolling the page so reveals and the typewriter have run.
+
+### Teacher photo on phones
+
+Back to full width above the text, as the brief says (screen 6). Home at
+375 is 5,910px with the full feed (5,681px with the 144px photo).
