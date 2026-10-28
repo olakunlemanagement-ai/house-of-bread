@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import type { Route } from "next";
 import { ButtonLink } from "@/components/shared/Button";
-import { FeatureCard, LinkCard } from "@/components/shared/Card";
+import { LinkCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { NewsletterCard } from "@/components/shared/NewsletterCard";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
@@ -16,6 +16,7 @@ export const metadata: Metadata = {
     "Written teaching from House of Bread Global on doctrine, interpretation and the questions believers actually ask.",
 };
 
+/** Written teaching: every piece as a card, then the next step to the Academy. */
 export default function TeachingsPage() {
   const teachings = getAll("teaching");
   return (
@@ -25,29 +26,9 @@ export default function TeachingsPage() {
         eyebrow="Teachings"
         title="Teaching written to be understood"
         lead="A growing library from the ministry on doctrine, interpretation and the questions believers actually ask. Rigorous without being academic."
-        actions={
-          <ButtonLink href="/subscribe">
-            Subscribe for new teaching
-          </ButtonLink>
-        }
       />
 
-      {/* Visual only until filtering is built. */}
-      <Section id="topics" title="Topics">
-        <ul className="grid gap-5 md:grid-cols-3">
-          <FeatureCard icon="cross" title="Doctrine">
-            What Scripture teaches, and how the argument is built.
-          </FeatureCard>
-          <FeatureCard icon="search" title="Interpretation">
-            How to read a passage the way its first readers did.
-          </FeatureCard>
-          <FeatureCard icon="question" title="Questions believers ask">
-            Clear answers, grounded in the text.
-          </FeatureCard>
-        </ul>
-      </Section>
-
-      <Section id="latest" title="Latest teachings" tone="warm">
+      <Section id="latest" title="What would you like to read?">
         {teachings.length > 0 ? (
           <ul className="grid gap-5 md:grid-cols-2">
             {teachings.map((entry) => (
@@ -71,13 +52,15 @@ export default function TeachingsPage() {
             ))}
           </ul>
         ) : (
-          <EmptyState icon="scroll" action={{ href: "/subscribe", label: "Subscribe for new teaching" }}>
+          <EmptyState icon="scroll" action={{ href: "/subscribe", label: "Get new teaching by email" }}>
             The first teachings are being prepared. Subscribe to be told when they are published.
           </EmptyState>
         )}
       </Section>
 
-      <NewsletterCard idPrefix="teachings-newsletter" />
+      <NextStep title="Ready to go deeper?" text="Our free courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      </NextStep>
     </main>
   );
 }

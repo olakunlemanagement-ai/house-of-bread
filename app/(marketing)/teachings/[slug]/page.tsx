@@ -3,11 +3,12 @@ import type { Route } from "next";
 import { notFound } from "next/navigation";
 import { LinkCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { NewsletterCard } from "@/components/shared/NewsletterCard";
+import { ButtonLink } from "@/components/shared/Button";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { MdxBody } from "@/components/shared/MdxBody";
-import { Section } from "@/components/shared/Section";
+import { bandClass, Section } from "@/components/shared/Section";
 import { getAll, getEntry } from "@/lib/content";
 import { formatContentDate } from "@/lib/content/dates";
 import { canonicalise } from "@/lib/scripture";
@@ -54,7 +55,7 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
       />
 
       <article aria-labelledby="body-heading" className="bg-surface">
-        <div className="container-page py-18 md:py-24">
+        <div className={bandClass}>
           <div className="mx-auto max-w-[68ch]">
             <h2 id="body-heading" className="sr-only">
               {entry.title}
@@ -80,13 +81,15 @@ export default async function TeachingPage({ params }: PageProps<"/teachings/[sl
             ))}
           </ul>
         ) : (
-          <EmptyState icon="scroll" action={{ href: "/subscribe", label: "Subscribe for new teaching" }}>
+          <EmptyState icon="scroll" action={{ href: "/subscribe", label: "Get new teaching by email" }}>
             The first teachings are being prepared. Subscribe to be told when they are published.
           </EmptyState>
         )}
       </Section>
 
-      <NewsletterCard idPrefix="teaching-newsletter" />
+      <NextStep title="Ready to go deeper?" text="Our free courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      </NextStep>
     </main>
   );
 }
