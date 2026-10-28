@@ -42,7 +42,7 @@ const EXACT = {
   },
   "/ask": {
     h1: "Ask a question about the Bible",
-    key: "Ask anonymously. No name or email needed.",
+    key: "No name or email needed. We read every question, and some are answered in our teaching.",
   },
   "/ask/sent": {
     h1: "Thank you, your question has been sent",

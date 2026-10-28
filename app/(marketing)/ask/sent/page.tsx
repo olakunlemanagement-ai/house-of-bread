@@ -16,14 +16,14 @@ export default function AskSentPage() {
     <main id="main" tabIndex={-1} className="bg-surface">
       <PageHeader
         loop="dust-light"
-        eyebrow="Ask a question"
+        eyebrow="Ask"
         title={questionMessages.successHeading}
         lead={questionMessages.success}
         actions={
           <>
-            <ButtonLink href="/ask">Ask another question</ButtonLink>
-            <ButtonLink href="/" variant="secondary">
-              Back to the home page
+            <ButtonLink href="/media">Watch the latest teaching</ButtonLink>
+            <ButtonLink href="/ask" variant="secondary">
+              Ask a question
             </ButtonLink>
           </>
         }

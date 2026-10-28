@@ -25,7 +25,7 @@ const PAGES = [
   { path: "/contact", lead: "Questions about the ministry, live sessions, the Academy or the app are welcome." },
   { path: "/subscribe", lead: "Reminders before each live session, new teaching and news" },
   { path: "/subscribe/academy", lead: "Be among the first to know when the first courses open" },
-  { path: "/ask", lead: "Questions about Scripture, doctrine and Christian living are welcome." },
+  { path: "/ask", lead: "No name or email needed. We read every question" },
 ];
 
 /** Async regions: the element whose height must not change when content replaces the fallback. */

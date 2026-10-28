@@ -1,17 +1,18 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import { ButtonLink } from "@/components/shared/Button";
 import { IconTile, type IconName } from "@/components/shared/icons";
-import { NewsletterCard } from "@/components/shared/NewsletterCard";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder } from "@/components/shared/Placeholder";
-import { SectionHeader } from "@/components/shared/Section";
+import { bandClass, SectionHeader } from "@/components/shared/Section";
 import { AskError } from "./AskError";
 import { AskForm } from "./AskForm";
 
 export const metadata: Metadata = {
   title: "Ask a question about the Bible",
   description:
-    "Ask House of Bread Global a question about Scripture, doctrine or Christian living. Anonymous, with no name or email needed.",
+    "Ask a question about the Bible. No name or email needed. Every question is read, and some are answered in the teaching.",
 };
 
 const points: { icon: IconName; text: string }[] = [
@@ -25,14 +26,14 @@ export default function AskPage({ searchParams }: PageProps<"/ask">) {
     <main id="main" tabIndex={-1}>
       <PageHeader
         loop="dust-light"
-        eyebrow="Ask a question"
+        eyebrow="Ask"
         title="Ask a question about the Bible"
-        lead="Questions about Scripture, doctrine and Christian living are welcome. Ask anonymously. No name or email needed."
+        lead="No name or email needed. We read every question, and some are answered in our teaching."
       />
 
       <section id="ask-form" aria-labelledby="ask-form-heading" className="scroll-mt-6 bg-surface">
-        <div className="container-page grid gap-8 py-18 md:py-24 lg:grid-cols-12 lg:gap-10">
-          <div className="rounded-card border border-border bg-surface p-6 shadow-raised sm:p-10 lg:col-span-7">
+        <div className={`${bandClass} grid gap-8 lg:grid-cols-12 lg:gap-10`}>
+          <div className="rounded-card border border-border bg-surface-raised p-6 shadow-soft sm:p-10 lg:col-span-7">
             <h2 id="ask-form-heading" className="mb-8 text-3xl">
               Send a question
             </h2>
@@ -61,7 +62,9 @@ export default function AskPage({ searchParams }: PageProps<"/ask">) {
         </div>
       </section>
 
-      <NewsletterCard idPrefix="ask-newsletter" surface="mint" />
+      <NextStep tone="warm" title="Need a word for this season?" text="Sit under the teaching of the Word, wherever you are.">
+        <ButtonLink href="/media">Watch the latest teaching</ButtonLink>
+      </NextStep>
     </main>
   );
 }
