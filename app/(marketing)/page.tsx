@@ -1,5 +1,6 @@
 import type { Metadata, Route } from "next";
 import { Suspense } from "react";
+import { AppMockup } from "@/components/shared/AppMockup";
 import { ButtonLink } from "@/components/shared/Button";
 import { CourseCard } from "@/components/shared/CourseCard";
 import { Hero } from "@/components/shared/Hero";
@@ -10,9 +11,10 @@ import { Placeholder } from "@/components/shared/Placeholder";
 import { StoreButtons } from "@/components/shared/StoreButtons";
 import { RevealHeading } from "@/components/shared/RevealHeading";
 import { bandClass as band } from "@/components/shared/Section";
-import { StartingRows } from "@/components/shared/StartingRows";
+import { StartingCards } from "@/components/shared/StartingCards";
 import { Typewriter } from "@/components/shared/Typewriter";
 import { courseCatalog } from "@/lib/academy";
+import { getNextLiveSession } from "@/lib/schedule/next-session";
 import { siteConfig } from "@/lib/site-config";
 
 export const metadata: Metadata = {
@@ -29,6 +31,8 @@ export const metadata: Metadata = {
  */
 export default async function HomePage() {
   const courses = await courseCatalog.listCourses();
+  // The next weekly session, cached for an hour at most, for the app mockup's live card.
+  const nextSession = await getNextLiveSession();
 
   return (
     <main id="main" tabIndex={-1}>
@@ -43,12 +47,16 @@ export default async function HomePage() {
             className="max-w-[72rem] text-mission"
             text="We teach believers to read God's Word accurately, understand it deeply, and live it fully, wherever they are."
           />
-          <p className="mt-6 max-w-2xl text-lead text-ink-muted md:mt-8">
-            The name comes from Bethlehem, the house of bread, where the Bread of Life was born.
-          </p>
-          <ButtonLink href="/about" variant="secondary" className="mt-6 w-full sm:w-auto">
-            Read our story
-          </ButtonLink>
+          {/* The name, set below the mission as a centred pull quote, its button under it. */}
+          <div className="mt-12 flex flex-col items-center text-center md:mt-20">
+            <span aria-hidden="true" className="block h-px w-12 bg-glyph" />
+            <p className="mt-8 max-w-3xl font-serif text-2xl leading-snug text-ink sm:text-3xl sm:leading-snug">
+              &ldquo;The name comes from Bethlehem, the house of bread, where the Bread of Life was born.&rdquo;
+            </p>
+            <ButtonLink href="/about" variant="secondary" className="mt-8 w-full sm:w-auto">
+              Read our story
+            </ButtonLink>
+          </div>
         </div>
       </section>
 
@@ -63,7 +71,7 @@ export default async function HomePage() {
               text="Read the Bible for years and still feel you only know it in parts?"
             />
             <p className="mt-4 text-lead text-ink-muted">
-              Our free courses take you through it, one lesson at a time.
+              Our courses take you through it, one lesson at a time.
             </p>
           </div>
           {/* Two courses on phones, three from md. */}
@@ -73,16 +81,18 @@ export default async function HomePage() {
             ))}
           </ul>
           <ButtonLink href="/academy" className="mt-6 w-full sm:w-auto md:mt-8">
-            Browse all free courses
+            Browse all courses
           </ButtonLink>
         </div>
       </section>
 
-      {/* Screen 4: where are you starting from? */}
-      <section aria-labelledby="start-heading" className="bg-surface-mint">
-        <div className={band}>
-          <RevealHeading id="start-heading" className="max-w-3xl text-h2" text="Where are you starting from?" />
-          <StartingRows courses={courses} className="mt-6 md:mt-12" />
+      {/*
+        Screen 4: where are you starting from? A mint panel on white, right
+        after the Academy's white band, so it takes no top padding of its own.
+      */}
+      <section aria-labelledby="start-heading" className="bg-surface">
+        <div className="container-page pb-10 md:pb-28">
+          <StartingCards courses={courses} />
         </div>
       </section>
 
@@ -139,19 +149,26 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Screen 7: the app, just before the footer. */}
-      <section aria-labelledby="app-heading" className="bg-surface-mint">
-        <div className={band}>
-          <RevealHeading id="app-heading" className="max-w-3xl text-h2" text="Take the Word with you." />
-          <p className="mt-4 max-w-2xl text-lead text-ink-muted">
-            Daily reading and journeys through the New Testament, in your pocket.
-          </p>
-          <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
-            <ButtonLink href="/app" className="w-full sm:w-auto">
-              Get the app
-            </ButtonLink>
-            <StoreButtons hideMissing />
+      {/*
+        Screen 7: the app, just before the footer. Text and button on the
+        left, the phone mockup on the right; on phones the mockup sits below
+        the button.
+      */}
+      <section aria-labelledby="app-heading" className="overflow-hidden bg-surface-mint">
+        <div className={`${band} grid items-center gap-8 md:grid-cols-2 md:gap-12`}>
+          <div>
+            <RevealHeading id="app-heading" className="max-w-3xl text-h2" text="Take the Word with you." />
+            <p className="mt-4 max-w-xl text-lead text-ink-muted">
+              Daily reading and journeys through the New Testament, in your pocket.
+            </p>
+            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+              <ButtonLink href="/app" className="w-full sm:w-auto">
+                Get the app
+              </ButtonLink>
+              <StoreButtons hideMissing />
+            </div>
           </div>
+          <AppMockup rule={siteConfig.liveSession} nextSessionIso={nextSession} />
         </div>
       </section>
     </main>
