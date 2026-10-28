@@ -24,14 +24,13 @@ export const primaryNav: NavLink[] = [
 
 /**
  * The footer links, one list (docs/RESET-BRIEF.md section 3). What we
- * believe points at the About page's "How Scripture is handled" until a
- * beliefs section exists.
+ * believe points at the About page's beliefs section.
  */
 export const footerNav: NavLink[] = [
   { href: "/media", label: "Teachings" },
   { href: "/academy", label: "Academy" },
   { href: "/about", label: "About" },
-  { href: "/about#handled" as Route, label: "What we believe" },
+  { href: "/about#beliefs" as Route, label: "What we believe" },
   { href: "/ask", label: "Ask" },
   { href: "/events", label: "Events" },
   { href: "/app", label: "App" },

@@ -29,8 +29,8 @@ const EXACT = {
     key: "Free courses and teaching that bring you into an accurate understanding of God's Word",
   },
   "/about": {
-    h1: "A teaching ministry for believers who want to be fed",
-    key: "House of Bread Global is a teaching ministry committed to doctrinal clarity and careful handling of Scripture",
+    h1: "A teaching ministry",
+    key: "The name comes from Bethlehem, the house of bread, where the Bread of Life was born.",
   },
   "/academy": {
     h1: "Free Bible courses",

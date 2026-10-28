@@ -17,7 +17,7 @@ import path from "node:path";
 
 const PAGES = [
   { path: "/", lead: "Free courses and teaching that bring you into an accurate understanding" },
-  { path: "/about", lead: "House of Bread Global is a teaching ministry committed to doctrinal clarity" },
+  { path: "/about", lead: "The name comes from Bethlehem, the house of bread" },
   { path: "/academy", lead: "Self-paced video lessons that take you through Scripture in context." },
   { path: "/media", lead: "Every message, in one place." },
   { path: "/events", lead: "House of Bread Global teaches live on YouTube." },

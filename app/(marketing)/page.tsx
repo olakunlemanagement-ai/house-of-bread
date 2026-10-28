@@ -131,7 +131,7 @@ export default async function HomePage() {
               <ButtonLink href="/about" variant="secondary" className="w-full sm:w-auto">
                 Read our story
               </ButtonLink>
-              <ButtonLink href={"/about#handled" as Route} variant="secondary" className="w-full sm:w-auto">
+              <ButtonLink href={"/about#beliefs" as Route} variant="secondary" className="w-full sm:w-auto">
                 What we believe
               </ButtonLink>
             </div>
