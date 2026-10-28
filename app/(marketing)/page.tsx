@@ -144,12 +144,11 @@ export default async function HomePage() {
 
       {/* Screen 6: the teacher. */}
       <section aria-labelledby="teacher-heading" className="bg-surface-warm">
-        {/* Phones: a small photo above the text. From sm: side by side. */}
-        <div className={`${band} grid gap-6 sm:grid-cols-[minmax(0,14rem)_1fr] md:gap-8 sm:items-center md:gap-14 lg:grid-cols-[minmax(0,20rem)_1fr]`}>
+        {/* Phones: the photo full width above the text (brief, screen 6). From sm: side by side. */}
+        <div className={`${band} grid gap-6 sm:grid-cols-[minmax(0,14rem)_1fr] sm:items-center md:gap-14 lg:grid-cols-[minmax(0,20rem)_1fr]`}>
           <ImageSlot
             id="home-teacher"
-            className="max-sm:w-36"
-            sizes="(min-width: 1024px) 20rem, (min-width: 640px) 14rem, 9rem"
+            sizes="(min-width: 1024px) 20rem, (min-width: 640px) 14rem, 100vw"
           />
           <div>
             <h2 id="teacher-heading" className="sr-only">
