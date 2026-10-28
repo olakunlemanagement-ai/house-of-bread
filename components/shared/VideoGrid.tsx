@@ -43,8 +43,8 @@ export async function VideoGrid() {
 /**
  * Suspense fallback for VideoGrid: the player, with a link to the channel's
  * videos page on it, and its caption, then six cards the size of the real
- * ones (16:9 frame, two title lines, the date line, the Play button and the
- * YouTube link). The player box carries the loading status; the rest is
+ * ones (16:9 frame, two title lines, the date line and the Watch now
+ * button). The player box carries the loading status; the rest is
  * hidden from assistive technology.
  */
 export function VideoGridSkeleton() {
@@ -71,9 +71,6 @@ export function VideoGridSkeleton() {
           <div className="mt-2 flex h-5 items-center">
             <Skeleton className="h-3 w-32 rounded-full" />
           </div>
-          <div className="mt-5 flex h-11 items-center">
-            <Skeleton className="h-7 w-44 rounded-full" />
-          </div>
         </div>
       </div>
       <ul aria-hidden="true" className="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
@@ -90,7 +87,6 @@ export function VideoGridSkeleton() {
               </div>
               <div className="mt-auto pt-5">
                 <Skeleton className="h-12 w-full rounded-button sm:h-13" />
-                <Skeleton className="mt-3 h-11 w-full rounded-button" />
               </div>
             </div>
           </li>

@@ -57,8 +57,8 @@ const EXACT = {
     key: "House of Bread Global teaches live on YouTube.",
   },
   "/media": {
-    h1: "Everything the ministry shares, in one place",
-    key: "Live sessions, replays, audio teaching and social pages.",
+    h1: "Need a word for this season?",
+    key: "Every message, in one place. Watch, then go deeper in the Academy.",
   },
   "/new-testament": {
     h1: "Study the New Testament, book by book",

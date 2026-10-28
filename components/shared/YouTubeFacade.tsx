@@ -85,7 +85,7 @@ export function YouTubeFacade({
       )}
       <span
         aria-hidden="true"
-        className={`absolute left-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-emerald text-white shadow-raised transition-transform duration-200 motion-safe:group-hover:scale-105 ${
+        className={`absolute left-1/2 flex size-18 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-emerald text-white shadow-raised group-hover:bg-fill-press ${
           live ? "top-[42%]" : "top-[44%] sm:top-1/2"
         }`}
       >
@@ -104,7 +104,7 @@ export function YouTubeFacade({
 
 /**
  * Stands in for the facade while its video loads: the same 16:9 box, with a
- * plain "Watch on YouTube" link centred on it. React streams the real player
+ * plain "Watch now" link to YouTube centred on it. React streams the real player
  * in a chunk only script reveals, so without script this link is how the
  * video stays reachable. It sits outside the hidden loading region, so it
  * stays focusable, and on a white pill, so it keeps the TextCTA colours.
@@ -131,7 +131,7 @@ export function YouTubeFacadeSkeleton({
       {link ? (
         <div className="absolute inset-0 flex items-center justify-center p-4">
           <ButtonLink href={link.href} size="sm" className="shadow-soft">
-            Watch on YouTube<span className="sr-only">: {link.name}</span>
+            Watch now<span className="sr-only">: {link.name}</span>
           </ButtonLink>
         </div>
       ) : null}

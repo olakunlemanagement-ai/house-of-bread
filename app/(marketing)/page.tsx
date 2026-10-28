@@ -5,6 +5,7 @@ import { CourseCard } from "@/components/shared/CourseCard";
 import { Hero } from "@/components/shared/Hero";
 import { HomeTeachings, HomeTeachingsSkeleton } from "@/components/shared/HomeTeachings";
 import { ImageSlot } from "@/components/shared/ImageSlot";
+import { LiveLine } from "@/components/shared/LiveLine";
 import { Placeholder } from "@/components/shared/Placeholder";
 import { StoreButtons } from "@/components/shared/StoreButtons";
 import { RevealHeading } from "@/components/shared/RevealHeading";
@@ -105,12 +106,7 @@ export default async function HomePage() {
               See all teachings
             </ButtonLink>
           </div>
-          <div className="mt-6 flex flex-col items-start gap-3 md:mt-8 sm:flex-row sm:items-center sm:gap-5">
-            <p className="text-base text-ink-muted">New teaching live every Monday at 8 pm Lagos time.</p>
-            <ButtonLink href={"/events#rhythm" as Route} variant="secondary" size="sm">
-              See the session times
-            </ButtonLink>
-          </div>
+          <LiveLine className="mt-6 md:mt-8" />
         </div>
       </section>
 

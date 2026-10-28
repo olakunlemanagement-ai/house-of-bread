@@ -19,7 +19,7 @@ const PAGES = [
   { path: "/", lead: "Free courses and teaching that bring you into an accurate understanding" },
   { path: "/about", lead: "House of Bread Global is a teaching ministry committed to doctrinal clarity" },
   { path: "/academy", lead: "Self-paced video lessons that take you through Scripture in context." },
-  { path: "/media", lead: "Live sessions, replays, audio teaching and social pages." },
+  { path: "/media", lead: "Every message, in one place." },
   { path: "/events", lead: "House of Bread Global teaches live on YouTube." },
   { path: "/app", lead: "Bible study, trusted teaching and practical guidance all in one place." },
   { path: "/contact", lead: "Questions about the ministry, live sessions, the Academy or the app are welcome." },

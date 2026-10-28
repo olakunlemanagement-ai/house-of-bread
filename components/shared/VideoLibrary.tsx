@@ -1,10 +1,9 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type MouseEvent } from "react";
 import type { FeedVideo } from "@/lib/media/youtube-feed";
-import { Button, ButtonLink } from "./Button";
-import { Icon } from "./icons";
+import { buttonClasses } from "./Button";
 import { PlayChip } from "./PlayChip";
 import { VideoTitle } from "./VideoTitle";
 import { YouTubeFacade } from "./YouTubeFacade";
@@ -34,7 +33,7 @@ function VideoCard({
   onPlay: () => void;
 }) {
   return (
-    <li className="lift flex flex-col overflow-hidden rounded-card border border-border bg-surface shadow-soft">
+    <li className="flex flex-col overflow-hidden rounded-card border border-border bg-surface shadow-soft">
       {/* A still tint holds the frame while the thumbnail loads. No shimmer under real images. */}
       <div className="relative aspect-video bg-tint">
         {/* hqdefault is 4:3 with letterbox bars; cover crops them to 16:9. */}
@@ -71,13 +70,18 @@ function VideoCard({
           <PublishedDate video={video} />
         </p>
         <div className="mt-auto pt-5">
-          <Button variant="secondary" onClick={onPlay} className="w-full">
-            <Icon name="play" className="size-5" />
-            Play here<span className="sr-only">: {video.title}</span>
-          </Button>
-          <ButtonLink href={video.url} variant="tertiary" size="sm" className="mt-3 w-full">
-            Watch on YouTube<span className="sr-only">: {video.title}</span>
-          </ButtonLink>
+          {/* A link to YouTube without script; with script it plays here, in the player above. */}
+          <a
+            href={video.url}
+            onClick={(event: MouseEvent<HTMLAnchorElement>) => {
+              if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+              event.preventDefault();
+              onPlay();
+            }}
+            className={buttonClasses("tertiary", "light", "w-full")}
+          >
+            Watch now<span className="sr-only">: {video.title}</span>
+          </a>
         </div>
       </div>
     </li>
@@ -87,10 +91,9 @@ function VideoCard({
 /**
  * The Library page player and the latest videos. The lead video (the
  * featured video, or the newest) waits in the click to load facade at the
- * top. A card's Play button (or its thumbnail) loads that video into the
- * player and starts it, scrolls the player into view and moves focus to it.
- * Every card keeps a plain link to YouTube, which also works without
- * JavaScript.
+ * top. A card's Watch now button (or its thumbnail) loads that video into
+ * the player and starts it, scrolls the player into view and moves focus to
+ * it. Without JavaScript the button is a plain link to the video on YouTube.
  */
 export function VideoLibrary({
   lead,
@@ -150,9 +153,6 @@ export function VideoLibrary({
           <p className="mt-2 min-h-5 text-sm text-ink-muted">
             <PublishedDate video={selected} />
           </p>
-          <ButtonLink href={selected.url} variant="secondary" size="sm" className="mt-5">
-            Watch on YouTube
-          </ButtonLink>
         </div>
       </div>
 
