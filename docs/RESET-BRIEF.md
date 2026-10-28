@@ -1,6 +1,8 @@
 # House of Bread: Copy and Design Reset
 
 Status: approved direction, to be implemented page by page. Home first.
+Amended 28 October 2026 after the Phase 1 review: navigation, buttons only,
+text motion and an animated hero on every page (marked "Amended").
 
 ## 1. What the website is for
 
@@ -43,7 +45,7 @@ Rules:
    - "Unforgettable"
    - "Journey of faith"
    - "Learn more"
-7. Buttons say exactly what happens. Use only these labels:
+7. Buttons say exactly what happens. Anything that asks the visitor to act is a button, never a text link (Amended). Use only these labels:
 
 | Use | Button label |
 |---|---|
@@ -56,6 +58,8 @@ Rules:
 | App | Get the app |
 | About | Read our story |
 | Beliefs | What we believe |
+| Academy, after the course cards | Browse all free courses |
+| Live line, to the session times | See the session times |
 
 Square brackets mark facts the ministry must confirm. Keep them visible until confirmed.
 
@@ -68,20 +72,20 @@ Simplicity first, in the spirit of Fyreworks, in our own white and green.
 | One idea and one primary button per screen. Lots of white space. | Fyreworks |
 | Huge display type for statements only (clamp about 2.5rem to 5rem, tight leading). Readable body type everywhere else. | Fyreworks |
 | Big numbered rows (01, 02, 03) with thin dividers for lists of options | Fyreworks |
-| Pill buttons with an arrow (→). Primary: solid deep green. Secondary: outline. | Fyreworks, Bevere |
+| Pill buttons, label only, no arrow (Amended). Primary: solid deep green. Secondary: outline. Tertiary: soft tinted fill, for cards and rows. Sizes md and sm, 44px tap height or more. | Fyreworks, Bevere |
 | Full-screen menu on phones: large items, nothing else | Fyreworks |
 | Question-led section headings | BibleProject |
 | Soft tinted section backgrounds (white, then warm cream `#F7F3EC`, then pale green) alternating, never more than one per section | BibleProject, Bevere |
 | Real photos of real people, rounded corners, never stock | Bevere |
 | Trust in the footer: what we believe, contact, policies, socials | AWMI |
-| Course cards show lessons, time and "Free" | Ligonier, Bevere |
+| Course cards show lessons and time on one line ("6 lessons · 20 min each") and a small "Free" badge | Ligonier, Bevere |
 | A dark footer with app badges | BibleProject |
 
 Strip back:
 
 - Glass effects: keep only on the header. Remove them from cards and sections.
 - Card hover animations, floating icons and decorative gradients: remove.
-- Motion: keep the hero loop only (existing loop rules stand). Section reveals: a single subtle fade at most.
+- Motion (Amended): every page has an animated hero, its loop full bleed behind the text under a scrim (existing loop rules stand; phone loops on Home and Academy only). The Home mission types itself out once. Section headings reveal line by line once. Nothing else moves, and Motion Off or reduced motion stills all of it.
 - No sliders, carousels with dots, pop-ups or countdowns.
 - Phones: Home should be about 5,000px or less.
 
@@ -89,7 +93,7 @@ Keep:
 
 - Existing tokens, both themes (light and dark), the contrast rules, the Motion control, the loop pipeline, the seams (`lib/academy`, `lib/app-integration`), and the anonymous questions flow.
 
-Header: logo, then Teachings, Academy, About and Ask, then one primary pill button, "Browse free courses". On phones: logo and menu button. The header stays small and visible on scroll.
+Header (Amended): logo, then Home, Academy, Teachings, About and Contact, then one primary pill button, "Browse free courses", and the theme icon switch at every width. On phones: logo, theme switch and menu button; the full-screen menu holds the five links and the button. Ask lives in the footer and in Home row 03. The header stays small and visible on scroll.
 
 Footer:
 
@@ -120,7 +124,7 @@ Large display text, one sentence:
 
 "We teach believers to read God's Word accurately, understand it deeply, and live it fully, wherever they are."
 
-Small line under it: "The name comes from Bethlehem, the house of bread, where the Bread of Life was born." Link: **Read our story →**
+Small line under it: "The name comes from Bethlehem, the house of bread, where the Bread of Life was born." Button: **Read our story**
 
 ### Screen 3: Academy (main action)
 
@@ -130,13 +134,13 @@ Heading: "Read the Bible for years and still feel you only know it in parts?"
 
 Text: "Our free courses take you through it, one lesson at a time."
 
-Show three course cards from the catalogue, each with title, one-line promise, "[6] lessons · about [20] minutes each · Free" and the button **Start this course**.
+Show three course cards from the catalogue, each with a small "Free" badge, title, one-line promise, "[6] lessons · [20] min each" on one line and the button **Start this course**.
 
-Link under the cards: **Browse all free courses →**
+Button under the cards: **Browse all free courses**
 
 ### Screen 4: Where are you starting from?
 
-Big numbered rows:
+Big numbered rows, each ending with a small button (Start this course, Start this course, Ask a question):
 
 - **01. New to the Bible.** "Start with the foundations: what the Bible is and how to read it." Links to [foundations course].
 - **02. You know the stories, but not how they connect.** "Go book by book and see the whole picture." Links to [book-by-book course].
@@ -152,7 +156,7 @@ One large video (the latest from the ministry channel), title and date. Then thr
 
 Button: **See all teachings**
 
-Small line: "New teaching live every Monday at 8 pm Lagos time." Link to the session times. That is the only mention of live meetings on Home.
+Small line: "New teaching live every Monday at 8 pm Lagos time." with a small button, **See the session times**. That is the only mention of live meetings on Home.
 
 ### Screen 6: The teacher
 
@@ -160,7 +164,7 @@ Small line: "New teaching live every Monday at 8 pm Lagos time." Link to the ses
 
 "Taught by Isaac Ola, team leader of House of Bread Ministries International. He teaches Scripture verse by verse, with care for what the text actually says."
 
-Links: **Read our story →** and **What we believe →**
+Buttons: **Read our story** and **What we believe**. On phones the photo sits full width above the text.
 
 ### Screen 7: App (before the footer)
 

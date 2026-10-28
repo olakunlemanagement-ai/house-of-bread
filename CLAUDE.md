@@ -3,7 +3,7 @@
 Operating instructions for Claude Code on the House of Bread Global website.
 Read this file at the start of every session. Follow it over general defaults.
 
-Last updated: 27 October 2026
+Last updated: 28 October 2026
 
 ---
 
@@ -319,14 +319,16 @@ disagrees with the brief, the brief wins.
   shouts.
 - Surfaces: white carries the page. `surface-warm` (cream, `#f7f3ec`) and
   `surface-mint` (pale green) alternate as section bands, one tint per
-  section. `tint` (emerald at 8%) is for the current nav pill, icon tiles
-  and skeletons. No decorative gradients anywhere: `bg-hero-tint`,
+  section. In dark the cream band is a dark green tint (`#112018`), never
+  brown. `tint` (emerald at 8%) is for the current nav pill, icon tiles,
+  skeletons and the tertiary button; `tint-strong` and `tint-press` are
+  its hover and press. No decorative gradients anywhere: `bg-hero-tint`,
   `bg-page-tint` and `bg-panel-tint` are flat.
-- Text on light is `ink` and `ink-muted`. Links, eyebrows, TextCTA labels,
-  heading accents and focus rings are `emerald-deep`. `fill-primary` (deep
+- Text on light is `ink` and `ink-muted`. Links, eyebrows, heading
+  accents and focus rings are `emerald-deep`. `fill-primary` (deep
   green in light, emerald-night in dark) is the primary button. `emerald`
   is icon glyphs, the primary hover and the short rule above section
-  headings.
+  headings. `fill-press` is the primary press.
 - Deep green (`green-deep`, `green-night`) is the footer, the primary
   pill and small elements only. No deep green section or panel anywhere
   else, and no full bleed green hero.
@@ -343,17 +345,19 @@ disagrees with the brief, the brief wins.
 - Literata for display and headings, Geist for UI, nav, buttons and
   labels. Body 18px, line height 1.7.
 - `text-statement` (clamp 2.5rem to 5rem, line height 1.04) is huge
-  display type for statements only: the Home hero and mission. Inner page
+  display type for the Home hero. `text-mission` (34px on phones, about
+  76px at 1280, a 72rem measure so it sets in about four lines) is the
+  Home mission. Inner page
   H1 is `text-display` (36 to 56px), H2 `text-h2` (28 to 36px), both at
   weight 500; h3 and smaller at 600.
 - Eyebrows: 0.75rem, uppercase, 0.14em tracking, emerald-deep, no pill.
 - Radii: buttons are pills, inputs 10px, icon tiles 14px, cards 20px.
-- Motion is CSS only and minimal: the hero loop, one subtle fade as a
-  section enters (`.reveal`, from 0.85 opacity, no movement), the 4px
-  arrow nudge on buttons and TextCTAs, the menu fade (180ms) and the
-  skeleton shimmer. No card moves on hover (a linked card only deepens its
-  edge), no floating or 3D icons, no entrance animations. Nothing runs
-  under reduced motion.
+- Motion is minimal: the hero loops, the Home mission typewriter, the
+  one time heading reveal (both under Motion, below), the menu fade
+  (180ms) and the skeleton shimmer. No button or card moves on hover (a
+  linked card only deepens its edge), no floating or 3D icons. Nothing
+  loops except hero loops and a skeleton. Nothing runs under reduced
+  motion.
 - Hero and page headers sit below the sticky header with at least 64px of
   clear space above their first line.
 
@@ -386,23 +390,33 @@ disagrees with the brief, the brief wins.
 - Every loop renders through `components/shared/LoopVideo.tsx` and is listed
   in `lib/media/loops.ts`. Files in `public/media/loops` are built by
   `npm run loops:build` from raw clips kept outside the repo, never by hand.
-- Only hero loops move: the Home hero and the one loop in a page's top
-  header (`PageHeader`). Every other `LoopVideo` passes `still` and shows
-  its poster only. `motion.test.ts` guards this.
-- At most one loop above the fold per page. Loops sit in framed panels
-  (20px radius), never behind text, except the Home hero, which has a
-  white scrim checked against the darkest frame (in dark, a night scrim
-  checked against the brightest frame of the dark loop).
+- Every page has an animated hero (since 27 October 2026): Home's `Hero`
+  and every inner page's `PageHeader` draw their loop full bleed behind
+  the text through `components/shared/HeroBackdrop.tsx`, the only place a
+  `LoopVideo` renders. No loop sits in a lower panel. `PageHeader` takes
+  a required `loop`; the loop per page is logged in
+  `docs/PLACEHOLDERS.md` ("Hero loop per page"). `motion.test.ts` guards
+  this.
+- The scrim is white at 80% (night at 80% in dark), solid on phones and
+  tablets, easing to 20% at the right edge from `lg`, where no text sits.
+  Hero text stays in the left seven columns. It is checked against the
+  worst pixel of every loop: pure black in light, pure white in dark
+  (`npm run loops:sample`). A new loop or a weaker scrim needs the same
+  check.
 - A loop with a dark rendition (`WITH_DARK`) shows its dark poster and
   plays its dark video in dark. A loop without one is light only: in dark,
   `LoopVideoClient` loads no video and `[data-loop]` shows its still glow
   in `app/globals.css`.
 - Phones (767px and below) play only the Home and Academy hero loops, from
-  their phone rendition (`WITH_PHONE`): a centred crop to the hero's phone
-  aspect, 540px wide at most, 12 fps, a 4 s loop opening on the poster's
-  frame, 200 KB or less, light and dark, served by `<source media>`. Every
-  other loop is a poster on phones. Add a phone loop only with an
-  interleaved mobile Lighthouse A/B on Home (docs/PLACEHOLDERS.md).
+  their phone rendition (`WITH_PHONE`): a centred crop, 540px wide at most,
+  12 fps, a 4 s loop opening on the poster's frame, 200 KB or less, light
+  and dark, served by `<source media>`. A hero opts in with
+  `HeroBackdrop phone` (Home) or `PageHeader phoneLoop` (Academy); every
+  other hero shows its poster on phones, even with the same loop
+  (`getLoop(id, { phone: false })`). On phones the loop frame keeps the
+  crop's shape (`PHONE_FRAME`), covers the hero and is clipped, so poster
+  and video line up. Add a phone loop only with an interleaved mobile
+  Lighthouse A/B on Home (docs/PLACEHOLDERS.md).
 - No loop video exists until window load, an idle moment
   (requestIdleCallback, or a timeout) and then `LOOP_START_DELAY_MS` (3 s,
   `lib/media/loops.ts`) have passed, and every loop has preload="none".
@@ -415,7 +429,8 @@ disagrees with the brief, the brief wins.
   (slow-2g, 2g, 3g) or prefers-reduced-motion (through the Motion
   default). Offscreen it pauses and resumes on return.
 - Every loop is seamless: `npm run loops:seams` checks the wrap of every
-  file, and `scripts/check-loops.mjs` measures the restart in a browser.
+  file, and `scripts/check-loops.mjs` measures the restart in a browser
+  on seven pages that cover all seven loops.
 
 ### Motion
 
@@ -424,7 +439,8 @@ disagrees with the brief, the brief wins.
   (`components/shared/theme/MotionToggle.tsx`). Why: WCAG 2.2.2 needs a
   way to stop motion that lasts over five seconds, and one site wide
   control does the job once, where the theme choice already lives. The
-  header and phone menu carry links only.
+  header carries the theme icon switch (`ThemeToggle`) at every width;
+  the phone menu carries links and the one button only.
 - Off stops and hides every loop video: posters only, nothing moves. With
   no saved choice it follows prefers-reduced-motion. A choice is saved in
   localStorage (`hob:motion`, inside try/catch) and wins over the system
@@ -439,6 +455,21 @@ disagrees with the brief, the brief wins.
   `components/shared/theme/motion.test.ts` guards all of this.
 - A loop blended with `multiply` must be keyed to pure white and pass
   `npm run loops:verify`.
+- Text motion runs once and only with Motion On and no reduced motion:
+  - The Home mission types itself out (`Typewriter.tsx`) over about 2.7 s
+    when it scrolls into view, with a blinking cursor that fades after. The
+    full text holds its space throughout: the untyped rest is laid out
+    invisibly after an empty marker span, the cursor is a bar outside the
+    text moved by transform, and the heading wraps plainly (no balance),
+    so no line moves and no layout shift is counted. Screen readers get
+    the sentence at once. Without JavaScript, with Motion Off or reduced motion: full
+    text, no cursor. A CSS fallback shows it after 4 s if the script never
+    runs.
+  - Section headings (`RevealHeading.tsx`, used by `SectionHeader` and
+    Home's h2s) fade in and rise 0.35em, line by line, 90ms apart. A
+    heading arms only after mount and only while below the fold, so
+    nothing hides without JavaScript and nothing on screen blinks. Hero
+    h1s stay static.
 
 ### Logo
 
@@ -455,30 +486,28 @@ disagrees with the brief, the brief wins.
 
 ### Buttons and calls to action
 
-- Every call to action is a `Button`, a `ButtonLink` or a `TextCTA`. No
-  call to action is underlined.
+- Buttons only: anything that asks the visitor to act is a `Button` or a
+  `ButtonLink` (`components/shared/Button.tsx`). No text link CTAs and no
+  arrow icons on buttons. Links in the header and footer lists and links
+  inside sentences stay links. No call to action is underlined.
 - Button labels say exactly what happens. Use only the labels in the
-  table in `docs/RESET-BRIEF.md` section 2 (Start this course, Continue
-  learning, Browse free courses, Watch now, See all teachings, Ask a
-  question, Get the app, Read our story, What we believe), plus any label
-  the brief names for a specific page.
-- Buttons are pills with an arrow (`ButtonLink` shows it by default), at
-  least 48px tall on mobile and 52px from `sm`, full width and stacked in
-  heroes and bands on mobile. Nothing lifts; the arrow nudges 4px.
+  table in `docs/RESET-BRIEF.md` section 2, plus any label the brief names
+  for a specific page.
+- Variants, all pills with a text label only:
   - Primary: solid deep green (`fill-primary`), white text, emerald on
-    hover.
+    hover, `fill-press` on press. One per screen.
   - Secondary: an outline, a 1.5px `glyph` border, emerald-deep text, tint
-    on hover.
+    on hover, `tint-strong` on press.
+  - Tertiary: a soft `tint` fill with emerald-deep text, `tint-strong` on
+    hover, `tint-press` on press. For actions inside cards and rows.
   - Footer (`tone="green"`): primary is white with green-deep text;
     secondary is white at 12% with a 1.5px white border.
   - Live: gold fill, ink text, only while a session is live.
-- `TextCTA`: a weight 600 label and a 28px circular arrow chip, for
-  secondary links such as "Read our story". On light the label is
-  emerald-deep and the chip has an emerald border at 25%; on hover the chip
-  fills emerald and the arrow turns white and slides 3px. In the footer
-  the label is white, the chip white at 15%, and hover fills it white with
-  a green-deep arrow. A card that stretches a TextCTA over itself carries
-  `.cta-host`.
+- Sizes: `md` (48px tall, 52px from `sm`) and `sm` (44px, for cards,
+  rows and the header). Full width and stacked in heroes and bands on
+  mobile. Nothing moves: hover and press change colour only.
+- Two buttons with the same label in one list carry a visually hidden
+  suffix naming their item ("Start this course: <title>").
 - Never use "Learn more", "Come and be fed", "Be fed by the Word",
   "Transform your life", "Unforgettable" or "Journey of faith"
   (`lib/content/reset-copy.test.ts` checks the pages reset so far).
@@ -498,16 +527,21 @@ disagrees with the brief, the brief wins.
 ### Navigation
 
 - Header: 64px, sticky, so it stays small and visible on scroll, on the
-  header glass with a hairline below. From `lg`: logo, then Teachings,
-  Academy, About and Ask in ink, the current page in a tint pill with an
-  inset emerald ring, then one primary pill, "Browse free courses", to
-  `/academy`. Teachings points at `/media` until the routes are renamed.
-- Below `lg`: the logo and a "Menu" button only. The menu is a `details`
-  element and works without JavaScript. Its panel fills the screen below
-  the header, solid surface: the four links as large serif items, then
-  the "Browse free courses" pill, and nothing else.
+  header glass with a hairline below. From `lg`: logo, then Home,
+  Academy, Teachings, About and Contact in ink, the current page in a tint
+  pill with an inset emerald ring, then one primary pill, "Browse free
+  courses", to `/academy`, and the theme icon switch. Teachings points at
+  `/media` (once labelled Library) until the routes are renamed. Ask lives
+  in the footer and in Home's third numbered row, not the header.
+- Below `lg`: the logo, the "Browse free courses" pill from `sm`, the
+  theme switch and a "Menu" button. The menu is a `details` element and
+  works without JavaScript. Its panel fills the screen below the header,
+  solid surface: the five links as large serif items, then the "Browse
+  free courses" pill, and nothing else.
 - Footer: deep green in both themes, the site's trust block. The full
-  ministry name (in brackets until confirmed), socials, store badges once
+  ministry name (in brackets until confirmed), socials (the icon row shows
+  the ministry's YouTube channel only; both channels are labelled on
+  `/media`), store badges once
   the store links exist, one list of links (Teachings, Academy, About,
   What we believe, Ask, Events, App, Subscribe, Contact, Privacy), and the
   Light, Dark or System theme choice beside the Motion control.

@@ -1365,3 +1365,92 @@ Numbered row dividers are decorative hairlines (1.19 and 1.25), as before.
 
 The Academy cards carry three line placeholder summaries; real one line promises will shorten the phone page by about 150px.
 
+## Phase 1 corrections (28 October 2026)
+
+Branch `feat/reset`, after the Phase 1 review. Supersedes Phase 1 above on
+the nav, buttons, loops and motion.
+
+- Nav back to main's five links (Home, Academy, Teachings at `/media`, About, Contact), Browse free courses as the header button, the theme icon switch in the header at every width.
+- Buttons only: `TextCTA` is gone. Primary, secondary and a new tertiary (soft fill for cards and rows), sizes md (48/52px) and sm (44px), no arrows. Press states by colour.
+- Every page has an animated hero (`HeroBackdrop`). No loop sits in a lower panel any more (About wheat, App band water, newsletter steam, closing band mesh removed).
+- Text motion: the Home mission types itself out once; section headings reveal line by line once. The scroll linked `.reveal` fade is removed.
+- Dark cream band: `--brand-night-warm` from `#16170f` (brown olive) to `#112018` (dark green tint).
+- Footer socials: the icon row shows the ministry YouTube channel only (six tiles, one row at 375px). Both channels stay labelled on `/media`.
+- Motion showed "Off" in the Phase 1 screenshots because that screenshot script set `reducedMotion: "reduce"`. The site default was and is On (no saved choice and no reduced motion gives On; `motion.test.ts`).
+
+### Hero loop per page
+
+| Page | Loop | Phones |
+|---|---|---|
+| Home | ambient-light | phone loop (2:3 crop) |
+| Academy | open-bible | phone loop (4:3 crop) |
+| Academy course page | open-bible | poster |
+| Teachings (`/media`) | water-light | poster |
+| Teachings articles (`/teachings`, `/teachings/[slug]`) | dust-light | poster |
+| Events, event page | dust-light | poster |
+| About | wheat-field | poster |
+| New Testament, book pages | open-bible | poster |
+| Plans, plan page | wheat-field | poster |
+| App | green-mesh | poster |
+| Ask, Ask sent | dust-light | poster |
+| Contact | bread-steam | poster |
+| Subscribe, check email, Academy waitlist | bread-steam | poster |
+| Privacy | green-mesh | poster |
+| 404 | green-mesh | poster |
+
+On phones the Home and Academy loop frame keeps its crop's shape, covers
+the hero and is clipped (`PHONE_FRAME` in `HeroBackdrop.tsx`), so poster
+and video line up at any hero height. Inner pages now load their hero
+poster on phones too (7 to 59 KB webp each).
+
+### Scrim over every loop (npm run loops:sample, 27 October 2026)
+
+The darkest pixel across all seven light loops is pure black, and the
+brightest across the dark loops is pure white, so one 80% scrim per theme
+is checked against those.
+
+| Pairing | Light (white 80% over black) | Dark (night 80% over white) |
+|---|---|---|
+| Heading, ink | 10.25 | 8.70 |
+| Lead, muted | 4.76 | 5.03 |
+| Eyebrow (emerald-deep; lime in dark) | 4.77 | 5.30 |
+| Accent and focus ring | 4.77 | 5.78 |
+| Secondary outline border (3:1) | 4.09 | 4.54 |
+| Secondary hover, accent on the solid tint | 6.80 | 8.04 |
+
+### New pairings, WCAG 2.2 AA (npm run contrast)
+
+| Pairing | Light | Dark |
+|---|---|---|
+| Primary press: white on fill-press (green-night; `#175a2b` in dark) | 15.81 | 8.29 |
+| Secondary press: accent on tint-strong | 6.01 | 6.68 |
+| Tertiary: accent on tint-strong | 6.01 | 6.68 |
+| Tertiary hover and press: accent on tint-press | 5.28 | 5.27 |
+| Tertiary press ring: glyph on tint-press (3:1) | 4.53 | 4.14 |
+| Typewriter cursor: glyph on the warm band (3:1) | 5.94 | 7.61 |
+| Ink, muted, accent, eyebrow on the dark warm band (`#112018`) | | 14.57, 8.42, 9.67, 8.87 |
+| Free badge: ink on gold-soft | 11.85 | same |
+| Announcement button: ink outline on gold | 9.02 | same |
+| Footer secondary press: white on 25% white over green-deep | 6.22 | same |
+
+The 0.85 reveal pairings are removed with the reveal.
+
+### Text motion and layout shift
+
+The typewriter first moved its cursor inside the text. Generated content
+at the split point breaks text shaping, so a half typed word grew by
+about 1.7px and could drop to a new line for a frame (a 0.0018 layout
+shift at 767px). The text now holds only an empty marker span, the cursor
+is a separate bar moved by transform, and the heading uses plain wrapping
+rather than balance. Measured after: no layout shift at 375 or 767px.
+
+### Home height (Playwright, production build, 28 October 2026)
+
+| Width | Whole page (header, main, footer) |
+|---|---|
+| 375px | 6,419px (5,943px after Phase 1) |
+| 1280px | 5,443px (5,477px after Phase 1) |
+
+The phone page grew by the full width teacher photo (4:5 at 343px wide)
+and the buttons that replaced text links. Real one line course promises
+would take about 150px off.
