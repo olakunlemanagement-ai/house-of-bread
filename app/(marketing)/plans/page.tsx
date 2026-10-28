@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { AppBand } from "@/components/shared/AppBand";
 import { ButtonLink } from "@/components/shared/Button";
-import { StepList } from "@/components/shared/Lists";
+import { NextStep } from "@/components/shared/NextStep";
+import { NumberedList } from "@/components/shared/NumberedList";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { PlanCard } from "@/components/shared/PlanCard";
-import { Section, SectionHeader } from "@/components/shared/Section";
+import { bandClass, Section, SectionHeader } from "@/components/shared/Section";
 import { journeySteps } from "@/lib/content/copy";
 import { placeholderPlans } from "@/lib/content/placeholder-data";
 
@@ -14,6 +14,7 @@ export const metadata: Metadata = {
     "Three guided reading plans through the New Testament, in the order the books were written. 30, 60 and 90 day journeys in the official House of Bread app.",
 };
 
+/** The three journeys, how one works and why the order matters, then the next step to the Academy. */
 export default function PlansPage() {
   return (
     <main id="main" tabIndex={-1}>
@@ -22,41 +23,27 @@ export default function PlansPage() {
         eyebrow="New Testament journeys"
         title="Three journeys through the New Testament"
         lead="Each journey follows the order the books were written, as events developed in the early Church, so the story reads in order. Available in the official House of Bread app."
-        actions={
-          <>
-            <ButtonLink href="/app">
-              Start a journey in the app
-            </ButtonLink>
-            <ButtonLink href="#journeys" variant="secondary">
-              Compare the three paces
-            </ButtonLink>
-          </>
-        }
+        actions={<ButtonLink href="/app">Get the app</ButtonLink>}
       />
 
-      <Section id="journeys" title="Choose a pace">
-        <ul className="grid gap-5 pt-4 md:grid-cols-3 md:items-stretch">
-          {placeholderPlans.map((plan, index) => (
-            <PlanCard key={plan.slug} {...plan} href={`/plans/${plan.slug}`} raised={index === 1} />
+      <Section id="journeys" title="Which pace suits you?">
+        <ul className="grid gap-4 md:grid-cols-3 md:items-stretch md:gap-5">
+          {placeholderPlans.map((plan) => (
+            <PlanCard key={plan.slug} {...plan} href={`/plans/${plan.slug}`} />
           ))}
         </ul>
       </Section>
 
-      <Section id="how" title="How a journey works" tone="warm">
-        <StepList
-          steps={journeySteps.map((step, index) => ({
-            ...step,
-            icon: (["route", "phone", "check", "clock"] as const)[index],
-          }))}
-        />
+      <Section id="how" title="How does a journey work?" tone="warm">
+        <NumberedList items={journeySteps} />
       </Section>
 
       <section id="order" aria-labelledby="order-heading" className="bg-surface">
-        <div className="container-page grid gap-10 py-18 md:py-28 lg:grid-cols-12">
+        <div className={`${bandClass} grid gap-6 lg:grid-cols-12 lg:gap-10`}>
           <div className="lg:col-span-5">
-            <SectionHeader id="order-heading">Why the order matters</SectionHeader>
+            <SectionHeader id="order-heading">Why does the order matter?</SectionHeader>
           </div>
-          <p className="font-serif text-2xl leading-relaxed text-ink lg:col-span-7 lg:pt-10">
+          <p className="font-serif text-xl leading-relaxed text-ink sm:text-2xl lg:col-span-7">
             Reading the books in the order they were written lets each letter be heard against the
             events that prompted it. The same passage reads differently once the situation behind it
             is known.
@@ -64,7 +51,9 @@ export default function PlansPage() {
         </div>
       </section>
 
-      <AppBand idPrefix="plans-app" action={{ href: "/app", label: "Start a journey in the app" }} />
+      <NextStep title="Want a guide through it?" text="Our free courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      </NextStep>
     </main>
   );
 }

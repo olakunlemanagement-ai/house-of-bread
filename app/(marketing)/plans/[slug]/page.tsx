@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { AppBand } from "@/components/shared/AppBand";
 import { ButtonLink } from "@/components/shared/Button";
 import { IconTile } from "@/components/shared/icons";
-import { StepList } from "@/components/shared/Lists";
+import { NextStep } from "@/components/shared/NextStep";
+import { NumberedList } from "@/components/shared/NumberedList";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
@@ -62,11 +62,9 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
         }
         actions={
           <>
-            <ButtonLink href="/app">
-              Start a journey in the app
-            </ButtonLink>
+            <ButtonLink href="/app">Get the app</ButtonLink>
             <ButtonLink href="/plans" variant="secondary">
-              Compare the three paces
+              See all three journeys
             </ButtonLink>
           </>
         }
@@ -104,20 +102,20 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
         )}
       </Section>
 
-      <Section id="follow" title="How to follow it in the app">
-        <StepList steps={journeySteps} />
+      <Section id="follow" title="How do you follow it in the app?">
+        <NumberedList items={journeySteps} />
+        <p className="mt-6 text-base text-ink-muted">
+          <Placeholder>[APP DEEP LINK TO BE CONFIRMED]</Placeholder>
+        </p>
       </Section>
 
       <Section id="faq" title="Frequently asked" tone="mint" width="narrow">
         <Placeholder block>[FREQUENTLY ASKED QUESTIONS TO BE SUPPLIED]</Placeholder>
       </Section>
 
-      <AppBand
-        idPrefix="plan-app"
-        heading="Open this journey in the app"
-        action={{ href: "/app", label: "Start a journey in the app" }}
-        note={<Placeholder>[APP DEEP LINK TO BE CONFIRMED]</Placeholder>}
-      />
+      <NextStep tone="warm" title="Want a guide through it?" text="Our free courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      </NextStep>
     </main>
   );
 }
