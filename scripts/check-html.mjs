@@ -73,8 +73,8 @@ const EXACT = {
     key: "How House of Bread Global collects, uses and protects personal data.",
   },
   "/subscribe": {
-    h1: "Stay close to the ministry",
-    key: "Reminders before each live session, new teaching and news from House of Bread Global",
+    h1: "New teaching in your inbox",
+    key: "One email when something new is ready. Nothing else.",
     source: "subscribe-page",
   },
   "/subscribe/academy": {

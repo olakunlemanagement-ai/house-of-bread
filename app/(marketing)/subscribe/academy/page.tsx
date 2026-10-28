@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { ButtonLink } from "@/components/shared/Button";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { academyCopy } from "@/lib/content/copy";
 import { SignupSection, type ExpectItem } from "../SubscribeForm";
@@ -35,6 +37,10 @@ export default function AcademySubscribePage({ searchParams }: PageProps<"/subsc
         expect={expect}
         searchParams={searchParams}
       />
+
+      <NextStep title="Need a word for this season?" text="Sit under the teaching of the Word, wherever you are.">
+        <ButtonLink href="/media">Watch the latest teaching</ButtonLink>
+      </NextStep>
     </main>
   );
 }

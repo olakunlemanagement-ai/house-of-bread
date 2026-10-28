@@ -1,44 +1,34 @@
 import type { Metadata } from "next";
-import { AppBand } from "@/components/shared/AppBand";
+import { ButtonLink } from "@/components/shared/Button";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
-import { Section } from "@/components/shared/Section";
-import { SocialLinks } from "@/components/shared/SocialLinks";
-import { SignupSection, type ExpectItem } from "./SubscribeForm";
+import { SignupSection } from "./SubscribeForm";
 
 export const metadata: Metadata = {
-  title: "Join the newsletter",
-  description:
-    "Live session reminders, new teaching and news from House of Bread Global, sent to your inbox.",
+  title: "New teaching in your inbox",
+  description: "One email when something new is ready from House of Bread Global. Nothing else.",
 };
 
-const expect: ExpectItem[] = [
-  { icon: "bell", text: "Reminders before live sessions." },
-  { icon: "scroll", text: "New teaching and journeys." },
-  { icon: "globe", text: "Occasional news from the ministry." },
-];
-
+/**
+ * Subscribe, per docs/RESET-BRIEF.md section 5: "New teaching in your
+ * inbox", the brief's line, the signup form with its consent wording, then
+ * the next step to the Academy.
+ */
 export default function SubscribePage({ searchParams }: PageProps<"/subscribe">) {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
         loop="bread-steam"
         eyebrow="Newsletter"
-        title="Stay close to the ministry"
-        lead="Reminders before each live session, new teaching and news from House of Bread Global, sent to your inbox. No spam, and you can leave at any time."
+        title="New teaching in your inbox"
+        lead="One email when something new is ready. Nothing else."
       />
 
-      <SignupSection source="subscribe-page" idPrefix="subscribe" expect={expect} searchParams={searchParams} />
+      <SignupSection source="subscribe-page" idPrefix="subscribe" searchParams={searchParams} />
 
-      <Section
-        id="follow"
-        title="Follow the ministry"
-        intro="Live sessions stream on YouTube, and the ministry shares teaching on its social pages."
-        tone="warm"
-      >
-        <SocialLinks />
-      </Section>
-
-      <AppBand idPrefix="subscribe-app" action={{ href: "/app", label: "Get the app" }} />
+      <NextStep title="Want to start now?" text="Our free courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      </NextStep>
     </main>
   );
 }

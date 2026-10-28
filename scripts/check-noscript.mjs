@@ -23,7 +23,7 @@ const PAGES = [
   { path: "/events", lead: "New teaching live every Monday at 8 pm Lagos time." },
   { path: "/app", lead: "Daily reading and journeys through the New Testament, in your pocket." },
   { path: "/contact", lead: "Questions about the ministry, live sessions, the Academy or the app are welcome." },
-  { path: "/subscribe", lead: "Reminders before each live session, new teaching and news" },
+  { path: "/subscribe", lead: "One email when something new is ready. Nothing else." },
   { path: "/subscribe/academy", lead: "Be among the first to know when the first courses open" },
   { path: "/ask", lead: "No name or email needed. We read every question" },
 ];
