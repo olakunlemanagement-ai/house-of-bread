@@ -16,7 +16,7 @@ import { createRequire } from "node:module";
 import path from "node:path";
 
 const PAGES = [
-  { path: "/", lead: "Free courses and teaching that bring you into an accurate understanding" },
+  { path: "/", lead: "Courses and teaching that bring you into an accurate understanding" },
   { path: "/about", lead: "The name comes from Bethlehem, the house of bread" },
   { path: "/academy", lead: "Self-paced video lessons that take you through Scripture in context." },
   { path: "/media", lead: "Every message, in one place." },
@@ -119,18 +119,86 @@ try {
             for (const rect of range.getClientRects()) right = Math.max(right, rect.right);
           }
         }
+        // The transparent header's nav sits on the same scrim (SiteHeader).
+        let navRight = 0;
+        for (const link of document.querySelectorAll('header nav[aria-label="Main"] a')) {
+          if (link.getClientRects().length === 0) continue;
+          navRight = Math.max(navRight, link.getBoundingClientRect().right);
+        }
         const hold = Number(scrim.getAttribute("data-scrim-hold"));
-        return { hold, textEnd: ((right - box.left) / box.width) * 100 };
+        return {
+          hold,
+          textEnd: ((right - box.left) / box.width) * 100,
+          navEnd: navRight ? ((navRight - box.left) / box.width) * 100 : null,
+        };
       });
       if (!result) {
         fail(`${route} at ${width}px has no hero scrim or no marked hero text`);
       } else {
-        const ok = result.textEnd <= result.hold;
+        // Below xl (1280) the scrim holds to 70% at least, for the header nav (hero-scrim, globals.css).
+        if (width < 1280) result.hold = Math.max(result.hold, 70);
+        const navOk = result.navEnd !== null && result.navEnd <= result.hold;
+        const ok = result.textEnd <= result.hold && navOk;
         console.log(
-          `${String(width).padStart(4)}px  ${route.padEnd(20)} text ends at ${result.textEnd.toFixed(1)}%  hold ${result.hold}%  ${ok ? "ok" : ""}`,
+          `${String(width).padStart(4)}px  ${route.padEnd(20)} text ends at ${result.textEnd.toFixed(1)}%  header nav at ${result.navEnd?.toFixed(1) ?? "-"}%  hold ${result.hold}%  ${ok ? "ok" : ""}`,
         );
-        if (!ok) fail(`${route} at ${width}px: hero text runs to ${result.textEnd.toFixed(1)}%, past the scrim hold of ${result.hold}%`);
+        if (result.textEnd > result.hold) fail(`${route} at ${width}px: hero text runs to ${result.textEnd.toFixed(1)}%, past the scrim hold of ${result.hold}%`);
+        if (!navOk) fail(`${route} at ${width}px: header nav ${result.navEnd === null ? "not found" : `runs to ${result.navEnd.toFixed(1)}%`}, past the scrim hold of ${result.hold}%`);
       }
+      await page.close();
+    }
+    await context.close();
+  }
+
+  // Every hero fills the first screen, header included (heroFrameClass): the
+  // next section starts at or below the fold, the hero text fits inside the
+  // hero, and it sits centred in the screen below the header. With script
+  // and Motion On the page settles (loops fade in over their posters, the
+  // typewriter holds its space) without a layout shift.
+  console.log("\nFull screen hero, the next section below the fold, no layout shift");
+  for (const viewport of VIEWPORTS) {
+    const context = await browser.newContext({ viewport, reducedMotion: "no-preference" });
+    await context.addInitScript(() => {
+      window.__cls = 0;
+      new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) if (!entry.hadRecentInput) window.__cls += entry.value;
+      }).observe({ type: "layout-shift", buffered: true });
+    });
+    for (const { path: route } of PAGES) {
+      const page = await context.newPage();
+      await page.goto(new URL(route, base).href, { waitUntil: "load" });
+      await page.waitForTimeout(4500);
+      const r = await page.evaluate(() => {
+        const hero = document.querySelector("main > :first-child");
+        const text = hero?.querySelector("[data-hero-text]");
+        const header = document.querySelector("[data-site-header]");
+        if (!hero || !text || !header) return null;
+        const h = hero.getBoundingClientRect();
+        const t = text.getBoundingClientRect();
+        const next = hero.nextElementSibling ?? document.querySelector("footer");
+        return {
+          fold: window.innerHeight,
+          heroBottom: h.bottom + window.scrollY,
+          nextTop: next ? next.getBoundingClientRect().top + window.scrollY : Infinity,
+          fits: t.bottom <= h.bottom + 0.5,
+          above: t.top - header.getBoundingClientRect().bottom,
+          below: h.bottom - t.bottom,
+          cls: window.__cls,
+        };
+      });
+      if (!r) {
+        fail(`${route} at ${viewport.width}px has no hero, marked hero text or header`);
+        await page.close();
+        continue;
+      }
+      const filled = r.heroBottom >= r.fold - 0.5 && r.nextTop >= r.fold - 0.5;
+      const cls = Math.round(r.cls * 10000) / 10000;
+      console.log(
+        `${String(viewport.width).padStart(4)}px  ${route.padEnd(20)} hero ${Math.round(r.heroBottom)} of ${r.fold}  next at ${Math.round(r.nextTop)}  space above ${Math.round(r.above)} below ${Math.round(r.below)}  CLS ${cls}`,
+      );
+      if (!filled) fail(`${route} at ${viewport.width}px: the next section shows above the fold`);
+      if (!r.fits) fail(`${route} at ${viewport.width}px: hero text overflows the hero`);
+      if (cls > 0.01) fail(`${route} at ${viewport.width}px: layout shift ${cls}`);
       await page.close();
     }
     await context.close();

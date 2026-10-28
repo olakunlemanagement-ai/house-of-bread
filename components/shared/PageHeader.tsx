@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import type { LoopId } from "@/lib/media/loops";
-import { HeroBackdrop } from "./HeroBackdrop";
+import { HeroBackdrop, heroBodyClass, heroFrameClass } from "./HeroBackdrop";
 
 type PageHeaderProps = {
   eyebrow: string;
@@ -19,16 +19,17 @@ type PageHeaderProps = {
 };
 
 /**
- * Opens every inner page as a hero, like Home: the page's loop moves behind
- * the text (HeroBackdrop), a hairline below. The text sits in the left seven
- * columns, inside the scrim's full strength. It sits below the sticky
- * header, with 64px or more of clear space above the eyebrow.
+ * Opens every inner page as a hero, like Home: it fills the first screen
+ * with the header over its top (heroFrameClass), the page's loop moving
+ * behind the text (HeroBackdrop), a hairline below. The text sits in the
+ * left seven columns, inside the scrim's full strength, centred in the
+ * screen below the header.
  */
 export function PageHeader({ eyebrow, title, lead, meta, actions, visual, loop, phoneLoop = false }: PageHeaderProps) {
   return (
-    <div className="relative overflow-hidden border-b border-border bg-surface">
+    <div className={`${heroFrameClass} border-b border-border`}>
       <HeroBackdrop loop={loop} phone={phoneLoop} />
-      <div className="container-page relative z-10 grid items-center gap-12 pb-16 pt-16 sm:pb-20 sm:pt-20 lg:grid-cols-12 lg:pb-24">
+      <div className={`${heroBodyClass} grid content-center items-center gap-12 lg:grid-cols-12`}>
         <div data-hero-text className="lg:col-span-7">
           <p className="eyebrow eyebrow-dot">{eyebrow}</p>
           <h1 className="mt-5 max-w-3xl text-display">{title}</h1>

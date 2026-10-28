@@ -90,10 +90,14 @@ const roles = {
     // Tertiary button: soft tint, deeper on hover and press.
     tintStrong: "tintStrong",
     tintPress: "tintPress",
-    // The sticky header glass, and the worst thing that can scroll beneath
-    // it (a black video thumbnail).
-    glass: "white/0.94",
-    glassWorst: "black",
+    // The header sits transparent over every hero, on the hero scrim (white
+    // at 80%), over the worst pixel of any light loop (pure black).
+    scrim: "white/0.8",
+    heroWorst: "black",
+    // Glass: Home's app mockup floating cards, white at 84%, over the worst
+    // thing beneath them (the green-night phone frame).
+    glass: "white/0.84",
+    glassWorst: "greenNight",
   },
   dark: {
     surface: "night",
@@ -112,8 +116,12 @@ const roles = {
     fillPress: "nightFillPress",
     tintStrong: "nightTintStrong",
     tintPress: "nightTintPress",
-    // Header glass: night at 94% over white, the lightest thing beneath it.
-    glass: "night/0.94",
+    // The header over every dark hero: night scrim at 80% over the
+    // brightest pixel of any dark loop (pure white).
+    scrim: "night/0.8",
+    heroWorst: "white",
+    // Dark glass, raised night at 88%, over white: lighter than anything beneath it.
+    glass: "nightRaised/0.88",
     glassWorst: "white",
   },
 };
@@ -160,14 +168,29 @@ const shared = [
   // Icon tiles, rules and the card glow ring.
   ["Icon glyph on tint", "@glyph", ["@tint"], UI],
   ["Glyph (clock, rules) on surface", "@glyph", ["@surface"], UI],
-  // The sticky header glass, the only translucent surface, over the worst
-  // thing that can scroll beneath it.
-  ["Header glass: ink nav over its worst background", "@ink", ["@glassWorst", "@glass"], TEXT],
-  ["Header glass: accent (Menu label) over its worst background", "@accent", ["@glassWorst", "@glass"], TEXT],
-  ["Header glass: nav hover and current pill, accent on tint", "@accent", ["@tint"], TEXT],
-  ["Header glass: Menu border, glyph over its worst background", "@glyph", ["@glassWorst", "@glass"], UI],
-  ["Header glass: focus ring over its worst background", "@ring", ["@glassWorst", "@glass"], UI],
-  ["Header glass: logo name, ink over its worst background", "@ink", ["@glassWorst", "@glass"], TEXT],
+  // The header, transparent and not sticky since 28 October 2026, sits over
+  // the top of every hero, on the hero scrim at full strength (from lg the
+  // nav ends inside the scrim hold: scripts/check-noscript.mjs). Checked
+  // over the worst loop pixel beneath. The Browse courses pill and the theme
+  // switch carry their own solid fills.
+  ["Header over hero: ink nav over the worst loop pixel, 80% scrim", "@ink", ["@heroWorst", "@scrim"], TEXT],
+  ["Header over hero: logo name, ink over the worst loop pixel, 80% scrim", "@ink", ["@heroWorst", "@scrim"], TEXT],
+  ["Header over hero: accent (Menu label) over the worst loop pixel, 80% scrim", "@accent", ["@heroWorst", "@scrim"], TEXT],
+  ["Header over hero: nav hover and current pill, accent on tint over the scrim", "@accent", ["@heroWorst", "@scrim", "@tint"], TEXT],
+  ["Header over hero: Menu border, glyph over the worst loop pixel, 80% scrim", "@glyph", ["@heroWorst", "@scrim"], UI],
+  ["Header over hero: focus ring over the worst loop pixel, 80% scrim", "@ring", ["@heroWorst", "@scrim"], UI],
+  // Home's app mockup: the floating glass cards, the one translucent
+  // surface since 28 October 2026, over their worst background.
+  ["App mockup glass card: ink over its worst background", "@ink", ["@glassWorst", "@glass"], TEXT],
+  ["App mockup glass card: muted (session time, Day 1 of 30) over its worst background", "@muted", ["@glassWorst", "@glass"], TEXT],
+  ["App mockup glass card: accent (card titles) over its worst background", "@accent", ["@glassWorst", "@glass"], TEXT],
+  ["App mockup glass card: eyebrow over its worst background", "@eyebrow", ["@glassWorst", "@glass"], TEXT],
+  ["App mockup glass card: eyebrow dot, glyph over its worst background", "@glyph", ["@glassWorst", "@glass"], UI, "decorative"],
+  // Starting cards (Home): number and title on the raised card, the tertiary button inside.
+  ["Starting card: number, accent on raised", "@accent", ["@raised"], TEXT],
+  ["Starting card: line, muted on raised", "@muted", ["@raised"], TEXT],
+  // Mission pull quote, ink on the warm band, with a glyph rule above (decorative).
+  ["Mission pull quote: ink on warm band", "@ink", ["@warm"], TEXT],
   // The phone menu panel, solid surface.
   ["Phone menu: ink links on surface", "@ink", ["@surface"], TEXT],
   // Scripture panel: mint with a glyph rule and an emerald version pill.
@@ -222,6 +245,7 @@ const lightOnly = [
   ["Page hero, any loop: secondary hover, accent on the solid tint", "emeraldDeep", ["tint"], TEXT],
   // Logo mark, no tile on light.
   ["Logo lid edge on white (header, plain pages)", "logoLid", ["white"], UI],
+  ["Logo lid edge over the hero: 80% white scrim over black", "logoLid", ["black", "white/0.8"], UI],
   // Never used: lime is a decorative dot only on light.
   ["Lime on white (never used for text or meaning)", "lime", ["white"], TEXT, "not used"],
 ];

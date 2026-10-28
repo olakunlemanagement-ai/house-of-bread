@@ -6,11 +6,13 @@ import { NavLinks, StaticNavLinks } from "./NavLinks";
 import { ThemeToggle } from "./theme/ThemeToggle";
 
 /**
- * A small 64px header that stays visible on scroll (sticky), on the site's
- * only translucent surface (glass-header: white at 94%, night in dark), with
- * a hairline below.
+ * A small 64px header that sits transparent on top of the hero and scrolls
+ * away with the page: no background, border or blur. A negative margin
+ * pulls the page's first element (always a full screen hero: Hero or
+ * PageHeader) up beneath it, so its text sits on the hero scrim, which
+ * holds full strength behind the nav (scripts/check-noscript.mjs).
  * Wide screens (lg): logo, then Home, Academy, Teachings, About and Contact,
- * then one primary pill, Browse free courses, and the theme switch.
+ * then one primary pill, Browse courses, and the theme switch.
  * Below lg: logo, the pill (from sm), the theme switch and a Menu button.
  * The menu is a details element, so it opens and closes without
  * JavaScript. Its panel fills the screen below the header: the same five
@@ -20,7 +22,7 @@ import { ThemeToggle } from "./theme/ThemeToggle";
  */
 export function SiteHeader() {
   return (
-    <header className="glass-header sticky top-0 z-40 border-b border-border">
+    <header data-site-header className="relative z-40 -mb-16">
       <a
         href="#main"
         className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-3 focus:z-50 focus:rounded-button focus:bg-fill-primary focus:px-5 focus:py-3 focus:font-semibold focus:text-white"
@@ -46,7 +48,7 @@ export function SiteHeader() {
           {/* Wrapped, because the button's own inline-flex would beat a hidden class on it. */}
           <div className="hidden sm:block">
             <ButtonLink href="/academy" size="sm" className="whitespace-nowrap lg:px-5">
-              Browse free courses
+              Browse courses
             </ButtonLink>
           </div>
           <ThemeToggle />
@@ -68,7 +70,7 @@ export function SiteHeader() {
               </nav>
               <div className="mx-auto w-full max-w-[75rem] px-4 pb-10 sm:px-6">
                 <ButtonLink href="/academy" className="w-full sm:w-auto">
-                  Browse free courses
+                  Browse courses
                 </ButtonLink>
               </div>
             </div>

@@ -111,11 +111,24 @@
   --elev-raised: 0 2px 6px rgb(11 36 18 / 0.05), 0 16px 40px rgb(11 36 18 / 0.08);
 
   /*
-    The sticky header is the only translucent surface: white at 94%, so its
-    text keeps AA over anything that scrolls beneath, even pure black (see
-    npm run contrast and docs/PLACEHOLDERS.md).
+    Glass: the floating cards over Home's app mockup only (AppMockup), the
+    one translucent surface. White at 84% keeps muted text above 4.5:1 even
+    where a card overlaps the green-night phone frame (npm run contrast).
   */
-  --header-glass: rgb(255 255 255 / 0.94);
+  --glass-card: rgb(255 255 255 / 0.84);
+  --glass-edge: inset 0 1px 0 rgb(255 255 255 / 0.6);
+  --glass-border: rgb(255 255 255 / 0.7);
+  --phone-shadow: 0 2px 6px rgb(4 41 14 / 0.12), 0 24px 48px rgb(4 41 14 / 0.18);
+
+  /*
+    Button option hairlines (/dev/buttons, a preview until one is chosen).
+    On the primary fill, deep green in both themes, so neither changes in
+    dark. Decorative: the label carries the contrast.
+  */
+  --on-fill: var(--brand-white);
+  --hairline-on-fill: rgb(255 255 255 / 0.32);
+  --rule-on-fill: rgb(255 255 255 / 0.75);
+
 
   /*
     Theme roles. Each holds its light value here and is redefined for dark
@@ -154,7 +167,7 @@
   --flag-edge: rgb(11 36 18 / 0.15);
 
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
-  /* Fades: the typewriter cursor and the menu. */
+  /* Fades: the menu. */
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -218,8 +231,12 @@
     --elev-soft: 0 1px 2px rgb(0 0 0 / 0.3), 0 8px 24px rgb(0 0 0 / 0.24);
     --elev-raised: 0 2px 6px rgb(0 0 0 / 0.32), 0 16px 40px rgb(0 0 0 / 0.4);
 
-    /* Header glass: night at 94%, checked over pure white beneath. */
-    --header-glass: rgb(10 21 16 / 0.94);
+    /* Glass: raised night at 88%, so muted text keeps AA even over white. */
+    --glass-card: rgb(17 30 23 / 0.88);
+    --glass-edge: inset 0 1px 0 rgb(255 255 255 / 0.06);
+    --glass-border: rgb(143 211 165 / 0.14);
+    --phone-shadow: 0 0 0 1px rgb(143 211 165 / 0.16), 0 24px 48px rgb(0 0 0 / 0.5);
+
 
     /* Night over the dark hero loop, checked against its brightest pixel. */
     --scrim: rgb(10 21 16 / 0.8);
@@ -450,18 +467,18 @@
 }
 
 /*
-  The header is the only translucent surface. No backdrop-filter yet: a 4x
-  CPU slowdown test on 17 October 2026 was too noisy to show blur costs no
-  more than a few fps. Turn it on only after a scroll check on a real mid
-  range Android phone, at 12px or less, with this colour as the fallback.
+  Glass, for the floating cards over Home's app mockup only. No
+  backdrop-filter (a 4x CPU slowdown test on 17 October 2026 could not show
+  it was cheap). Solid under prefers-reduced-transparency.
 */
-@utility glass-header {
-  background-color: var(--header-glass);
+@utility glass-card {
+  background-color: var(--glass-card);
+  box-shadow: var(--glass-edge), var(--elev-raised);
 }
 
 @media (prefers-reduced-transparency: reduce) {
-  .glass-header {
-    background-color: var(--surface);
+  .glass-card {
+    background-color: var(--surface-raised);
   }
 }
 
@@ -478,18 +495,23 @@
 @utility hero-scrim {
   background-color: var(--scrim);
   @variant lg {
+    /* 1024 to 1279: the header nav runs to about 68%, so the hold reaches 70% at least. */
+    --hold: max(var(--scrim-hold, 60%), 70%);
     background-color: transparent;
     background-image: linear-gradient(
       to right,
       var(--scrim) 0%,
-      var(--scrim) var(--scrim-hold, 60%),
-      color-mix(in srgb, var(--scrim) 88%, transparent) calc(var(--scrim-hold, 60%) + 3%),
-      color-mix(in srgb, var(--scrim) 64%, transparent) calc(var(--scrim-hold, 60%) + 6%),
-      color-mix(in srgb, var(--scrim) 36%, transparent) calc(var(--scrim-hold, 60%) + 9%),
-      color-mix(in srgb, var(--scrim) 14%, transparent) calc(var(--scrim-hold, 60%) + 12%),
-      color-mix(in srgb, var(--scrim) var(--scrim-tail), transparent) calc(var(--scrim-hold, 60%) + 15%),
+      var(--scrim) var(--hold),
+      color-mix(in srgb, var(--scrim) 88%, transparent) calc(var(--hold) + 3%),
+      color-mix(in srgb, var(--scrim) 64%, transparent) calc(var(--hold) + 6%),
+      color-mix(in srgb, var(--scrim) 36%, transparent) calc(var(--hold) + 9%),
+      color-mix(in srgb, var(--scrim) 14%, transparent) calc(var(--hold) + 12%),
+      color-mix(in srgb, var(--scrim) var(--scrim-tail), transparent) calc(var(--hold) + 15%),
       color-mix(in srgb, var(--scrim) var(--scrim-tail), transparent) 100%
     );
+  }
+  @variant xl {
+    --hold: var(--scrim-hold, 60%);
   }
 }
 
@@ -528,9 +550,15 @@
 }
 
 @layer base {
-  /* Clears the 64px sticky header when jumping to an anchor. */
-  html {
-    scroll-padding-top: 5.5rem;
+  /*
+    The header scrolls away with the page, so the open phone menu, which
+    hangs from it, holds the page still beneath its panel. Below lg only,
+    where the menu shows.
+  */
+  @media (max-width: 1023.98px) {
+    html:has(details[data-menu][open]) {
+      overflow: hidden;
+    }
   }
 
   body {
@@ -694,6 +722,8 @@ html[data-motion="off"] [data-motion-state="off"] {
 /*
   The cursor: a bar laid over the heading at its top left, moved onto the
   typed text's end by transform (Typewriter sets its height and position).
+  Once typed it stays at the end and keeps blinking. Motion Off and reduced
+  motion never show it: the component removes it, and CSS hides it too.
 */
 .tw-caret {
   position: absolute;
@@ -706,9 +736,14 @@ html[data-motion="off"] [data-motion-state="off"] {
   animation: tw-blink 1s steps(1) infinite;
 }
 
-[data-typewriter="done"] + .tw-caret {
-  opacity: 0;
-  transition: opacity 600ms var(--ease-standard);
+html[data-motion="off"] .tw-caret {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tw-caret {
+    display: none;
+  }
 }
 
 /*
@@ -729,6 +764,79 @@ html[data-motion="off"] [data-motion-state="off"] {
     opacity 600ms var(--ease-out),
     transform 600ms var(--ease-out);
   transition-delay: calc(var(--line, 0) * 90ms);
+}
+
+/*
+  Starting cards (components/shared/StartingCards.tsx, Home). From md three
+  cards in a fan: the middle one in front and raised, the side ones turned
+  5 degrees about their foot, tucked 1.5rem behind it. Armed (FanReveal,
+  below the fold, Motion On) folds them into a stack behind the middle
+  card; open lets them fan out once. A hovered or focused card comes to the
+  front, and with Motion On lifts 0.5rem (the translate property, so it
+  adds to the fan's transform). Phones stack the cards with no fan. Motion
+  Off and reduced motion: the still fan, no lift.
+*/
+@media (min-width: 768px) {
+  .fan-card {
+    position: relative;
+    transform-origin: 50% 100%;
+  }
+
+  .fan-card + .fan-card {
+    margin-left: -1.5rem;
+  }
+
+  .fan-card[data-pos="left"] {
+    z-index: 1;
+    transform: translateY(1.5rem) rotate(-5deg);
+  }
+
+  .fan-card[data-pos="mid"] {
+    z-index: 2;
+    transform: translateY(-0.75rem);
+  }
+
+  .fan-card[data-pos="right"] {
+    z-index: 1;
+    transform: translateY(1.5rem) rotate(5deg);
+  }
+
+  .fan-card:hover,
+  .fan-card:focus-within {
+    z-index: 3;
+    border-color: var(--border-strong);
+  }
+
+  [data-fan="armed"] .fan-card[data-pos="left"] {
+    transform: translateX(calc(100% - 1.5rem)) translateY(0.5rem) rotate(-2deg);
+  }
+
+  [data-fan="armed"] .fan-card[data-pos="right"] {
+    transform: translateX(calc(-100% + 1.5rem)) translateY(0.5rem) rotate(2deg);
+  }
+
+  [data-fan="armed"] .fan-card[data-pos="mid"] {
+    transform: translateY(0);
+  }
+}
+
+/* Movement only with Motion On and no reduced motion. The fold into the stack happens below the fold, unseen. */
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="off"]) .fan-card {
+    transition:
+      transform 900ms var(--ease-out),
+      translate 250ms var(--ease-out);
+  }
+
+  html:not([data-motion="off"]) .fan-card[data-pos="left"],
+  html:not([data-motion="off"]) .fan-card[data-pos="right"] {
+    transition-delay: 80ms, 0ms;
+  }
+
+  html:not([data-motion="off"]) .fan-card:hover,
+  html:not([data-motion="off"]) .fan-card:focus-within {
+    translate: 0 -0.5rem;
+  }
 }
 
 @keyframes shimmer {

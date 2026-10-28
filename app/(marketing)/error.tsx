@@ -1,12 +1,15 @@
 "use client";
 
 import { Button, ButtonLink } from "@/components/shared/Button";
+import { heroBodyClass, heroFrameClass } from "@/components/shared/HeroBackdrop";
 import { IconTile } from "@/components/shared/icons";
 
+// No loop here, but the same full screen frame as every hero, so the
+// transparent header sits over clear space.
 export default function Error({ retry }: { error: unknown; retry: () => void }) {
   return (
-    <main id="main" tabIndex={-1} className="bg-surface">
-      <div className="container-page pb-20 pt-20 md:pb-32 md:pt-32">
+    <main id="main" tabIndex={-1} className={heroFrameClass}>
+      <div className={`${heroBodyClass} flex flex-col justify-center`}>
         <div className="max-w-3xl">
           <IconTile name="alert" size="lg" />
           <h1 className="mt-8 text-display">Something went wrong</h1>
