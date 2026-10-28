@@ -33,8 +33,8 @@ const EXACT = {
     key: "House of Bread Global is a teaching ministry committed to doctrinal clarity and careful handling of Scripture",
   },
   "/academy": {
-    h1: "House of Bread Academy",
-    key: "House of Bread Academy will give believers a structured place to study the Bible",
+    h1: "Free Bible courses",
+    key: "Self-paced video lessons that take you through Scripture in context. Free, always.",
   },
   "/app": {
     h1: "The official House of Bread app",
@@ -93,7 +93,7 @@ const EXACT = {
 };
 
 const PATTERNS = [
-  { pattern: /^\/academy\/[^/]+$/, key: "What it covers" },
+  { pattern: /^\/academy\/[^/]+$/, key: "What you'll learn" },
   { pattern: /^\/events\/[^/]+$/, key: "About this session" },
   { pattern: /^\/teachings\/[^/]+$/, key: "Related teachings" },
   { pattern: /^\/new-testament\/[^/]+$/, key: "Browse all 27 books" },

@@ -1,13 +1,11 @@
-import type { Metadata } from "next";
-import type { ReactNode } from "react";
+import type { Metadata, Route } from "next";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/shared/Button";
-import { IconTile, type IconName } from "@/components/shared/icons";
-import { NewsletterCard } from "@/components/shared/NewsletterCard";
+import { MdxBody } from "@/components/shared/MdxBody";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
-import { SectionHeader } from "@/components/shared/Section";
-import { MdxBody } from "@/components/shared/MdxBody";
+import { bandClass, Section } from "@/components/shared/Section";
 import { courseCatalog } from "@/lib/academy";
 import { academyCopy } from "@/lib/content/copy";
 
@@ -20,96 +18,110 @@ export async function generateStaticParams() {
   return courses.map((course) => ({ slug: course.slug }));
 }
 
-export async function generateMetadata({
-  params,
-}: PageProps<"/academy/[slug]">): Promise<Metadata> {
+export async function generateMetadata({ params }: PageProps<"/academy/[slug]">): Promise<Metadata> {
   const { slug } = await params;
   const course = await courseCatalog.getCourse(slug);
   if (!course) return {};
-  return { title: course.title, description: course.summary };
+  return { title: `${course.title}: a free course`, description: course.summary };
 }
 
-type DetailId = "covers" | "who" | "when" | "join" | "cost";
+const placeholderOutcomes = ["[What you'll learn, 1]", "[What you'll learn, 2]", "[What you'll learn, 3]"];
+const placeholderOutline = ["[Lesson 1 title]", "[Lesson 2 title]", "[Lesson 3 title]"];
 
-const details: { id: DetailId; title: string; icon: IconName }[] = [
-  { id: "covers", title: "What it covers", icon: "book" },
-  { id: "who", title: "Who it is for", icon: "people" },
-  { id: "when", title: "When it runs", icon: "calendar" },
-  { id: "join", title: "How to join", icon: "arrow-right" },
-  { id: "cost", title: "Cost", icon: "compass" },
-];
-
+/**
+ * One course, per docs/RESET-BRIEF.md section 5: title, promise, lessons
+ * and time, the start button, what you'll learn, the lessons, who teaches
+ * it, then the next course. Until a course has a join link it is "Coming
+ * soon" and the button is the Academy waitlist (the status copy is kept
+ * until the launch decision in docs/PLACEHOLDERS.md).
+ */
 export default async function CoursePage({ params }: PageProps<"/academy/[slug]">) {
   const { slug } = await params;
   const course = await courseCatalog.getCourse(slug);
   if (!course) notFound();
+
+  const courses = await courseCatalog.listCourses();
+  const index = courses.findIndex((item) => item.slug === course.slug);
+  const next = courses[index + 1];
   const open = course.status === "open" && course.joinUrl;
-  const detail: Record<DetailId, ReactNode> = {
-    covers: <MdxBody source={course.overview} />,
-    who: course.audience,
-    when: course.schedule,
-    join: open ? (
-      <ButtonLink href={course.joinUrl as `https://${string}`}>
-        Join this course
-      </ButtonLink>
-    ) : undefined,
-    cost: course.cost,
-  };
+  const lessons = course.lessons ?? <Placeholder>[N]</Placeholder>;
+  const minutes = course.minutesPerLesson ?? <Placeholder>[N]</Placeholder>;
+  const outcomes = course.outcomes ?? placeholderOutcomes;
+  const outline = course.outline ?? placeholderOutline;
 
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
         loop="open-bible"
-        eyebrow="House of Bread Academy"
+        eyebrow="Free course"
         title={course.title}
         lead={course.summary}
-        meta={course.status === "coming-soon" ? <PlaceholderBadge label="Coming soon" /> : null}
+        meta={
+          <div className="flex flex-wrap items-center gap-3">
+            <p className="text-base text-ink">
+              {lessons} lessons · about {minutes} min each · Free
+            </p>
+            {open ? null : <PlaceholderBadge label="Coming soon" />}
+          </div>
+        }
         actions={
           open ? (
-            <ButtonLink href="#join">
-              See how to join
-            </ButtonLink>
+            <ButtonLink href={course.joinUrl as `https://${string}`}>Start this course</ButtonLink>
           ) : (
-            <ButtonLink href={academyCopy.waitlistHref}>
-              {academyCopy.waitlistLabel}
-            </ButtonLink>
+            <ButtonLink href={academyCopy.waitlistHref}>{academyCopy.waitlistLabel}</ButtonLink>
           )
         }
       />
 
-      <div className="bg-surface">
-        <div className="container-page grid gap-5 py-18 md:grid-cols-2 md:py-28">
-          {details.map((item, index) => (
-            <section
-              key={item.id}
-              id={item.id}
-              aria-labelledby={`${item.id}-heading`}
-              className={`rounded-card border border-border p-6 shadow-soft sm:p-8 ${
-                index % 2 === 0 ? "bg-surface" : "bg-surface-mint"
-              } ${index === 0 ? "md:col-span-2" : ""}`}
-            >
-              <div className="flex items-start gap-5">
-                <IconTile name={item.icon} />
-                <div className="flex-1">
-                  <SectionHeader id={`${item.id}-heading`} size="compact">
-                    {item.title}
-                  </SectionHeader>
-                  <div className="mt-6">
-                    {detail[item.id] ?? <Placeholder block>[COURSE DETAILS TO BE SUPPLIED]</Placeholder>}
-                  </div>
-                </div>
-              </div>
-            </section>
+      <Section id="learn" title="What you'll learn" width="narrow">
+        <MdxBody source={course.overview} />
+        <ul className="mt-6 space-y-3">
+          {outcomes.map((item) => (
+            <li key={item} className="flex gap-3 text-lg leading-relaxed text-ink">
+              <span aria-hidden="true" className="mt-3 size-1.5 shrink-0 rounded-full bg-glyph" />
+              <span>{course.outcomes ? item : <Placeholder>{item}</Placeholder>}</span>
+            </li>
           ))}
-        </div>
-      </div>
+        </ul>
+      </Section>
 
-      <NewsletterCard
-        idPrefix="course-newsletter"
-        heading={academyCopy.closingHeading}
-        text={academyCopy.closingText}
-        source="academy-waitlist"
-      />
+      <Section id="lessons" title="Lessons" tone="warm" width="narrow">
+        <ol className="border-b border-border">
+          {outline.map((title, lesson) => (
+            <li key={title} className="grid grid-cols-[3rem_1fr] items-baseline gap-x-4 border-t border-border py-4 sm:grid-cols-[4rem_1fr]">
+              <span aria-hidden="true" className="font-serif text-2xl font-medium text-emerald-deep">
+                {String(lesson + 1).padStart(2, "0")}
+              </span>
+              <span className="text-lg leading-snug text-ink">
+                {course.outline ? title : <Placeholder>{title}</Placeholder>}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </Section>
+
+      <section aria-labelledby="teacher-heading" className="bg-surface">
+        <div className={bandClass}>
+          <h2 id="teacher-heading" className="sr-only">
+            The teacher
+          </h2>
+          <p className="max-w-2xl font-serif text-xl leading-snug text-ink sm:text-2xl md:text-3xl md:leading-snug">
+            Taught by {course.teacher ?? <Placeholder>[Isaac Ola]</Placeholder>}.
+          </p>
+        </div>
+      </section>
+
+      {next ? (
+        <NextStep title="Ready for the next course?" text={next.title}>
+          <ButtonLink href={`/academy/${next.slug}` as Route}>
+            Start this course<span className="sr-only">: {next.title}</span>
+          </ButtonLink>
+        </NextStep>
+      ) : (
+        <NextStep title="Ready for the next course?">
+          <ButtonLink href="/academy">Browse all free courses</ButtonLink>
+        </NextStep>
+      )}
     </main>
   );
 }

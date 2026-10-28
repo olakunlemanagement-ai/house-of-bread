@@ -12,6 +12,9 @@ export type ClassRecord = {
   joinUrl?: string;
   lessons?: number;
   minutesPerLesson?: number;
+  outcomes?: string[];
+  outline?: string[];
+  teacher?: string;
 };
 
 /** Where the static catalog reads classes from. lib/academy/index.ts passes lib/content. */
@@ -52,6 +55,9 @@ export class StaticCourseCatalog implements CourseCatalog {
       schedule: data.schedule,
       cost: data.cost,
       joinUrl: data.joinUrl,
+      outcomes: data.outcomes,
+      outline: data.outline,
+      teacher: data.teacher,
     };
   }
 }

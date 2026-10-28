@@ -61,6 +61,12 @@ export const classSchema = z.strictObject({
   lessons: z.number().int().positive().optional(),
   /** Typical length of one lesson in minutes. Until supplied, cards show "[20]". */
   minutesPerLesson: z.number().int().positive().optional(),
+  /** "What you'll learn" on the course page: three to five short lines. */
+  outcomes: z.array(z.string().min(1)).min(3).max(5).optional(),
+  /** "Lessons" on the course page: the lesson titles, in order. */
+  outline: z.array(z.string().min(1)).min(1).optional(),
+  /** Who teaches it. Until supplied, the page shows "[Isaac Ola]". */
+  teacher: z.string().min(1).optional(),
 });
 
 export const eventKinds = ["live", "training", "meeting"] as const;

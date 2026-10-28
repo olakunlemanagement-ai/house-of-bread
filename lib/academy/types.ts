@@ -28,6 +28,12 @@ export type CourseDetail = Course & {
   cost?: string;
   /** https only. Present only when the course is open. */
   joinUrl?: string;
+  /** "What you'll learn": three to five short lines, once supplied. */
+  outcomes?: string[];
+  /** Lesson titles in order, once supplied. */
+  outline?: string[];
+  /** Who teaches it, once confirmed. */
+  teacher?: string;
 };
 
 export interface CourseCatalog {

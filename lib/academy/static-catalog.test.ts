@@ -15,6 +15,9 @@ const records: ClassRecord[] = [
     joinUrl: "https://example.com/join",
     lessons: 6,
     minutesPerLesson: 20,
+    outcomes: ["One", "Two", "Three"],
+    outline: ["Lesson one", "Lesson two"],
+    teacher: "Isaac Ola",
   },
 ];
 
@@ -62,6 +65,9 @@ describe("StaticCourseCatalog", () => {
       schedule: "Weekly",
       cost: "Free",
       joinUrl: "https://example.com/join",
+      outcomes: ["One", "Two", "Three"],
+      outline: ["Lesson one", "Lesson two"],
+      teacher: "Isaac Ola",
     });
   });
 
