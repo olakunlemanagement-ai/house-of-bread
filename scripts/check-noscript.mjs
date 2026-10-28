@@ -21,7 +21,7 @@ const PAGES = [
   { path: "/academy", lead: "Self-paced video lessons that take you through Scripture in context." },
   { path: "/media", lead: "Every message, in one place." },
   { path: "/events", lead: "House of Bread Global teaches live on YouTube." },
-  { path: "/app", lead: "Bible study, trusted teaching and practical guidance all in one place." },
+  { path: "/app", lead: "Daily reading and journeys through the New Testament, in your pocket." },
   { path: "/contact", lead: "Questions about the ministry, live sessions, the Academy or the app are welcome." },
   { path: "/subscribe", lead: "Reminders before each live session, new teaching and news" },
   { path: "/subscribe/academy", lead: "Be among the first to know when the first courses open" },

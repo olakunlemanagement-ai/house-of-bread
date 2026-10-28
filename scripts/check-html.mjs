@@ -37,8 +37,8 @@ const EXACT = {
     key: "Self-paced video lessons that take you through Scripture in context. Free, always.",
   },
   "/app": {
-    h1: "The official House of Bread app",
-    key: "Bible study, trusted teaching and practical guidance all in one place.",
+    h1: "Take the Word with you.",
+    key: "Daily reading and journeys through the New Testament, in your pocket.",
   },
   "/ask": {
     h1: "Ask a question about the Bible",
