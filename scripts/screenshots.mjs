@@ -21,7 +21,7 @@ import path from "node:path";
 const ROUTES = [
   "/",
   "/academy",
-  "/academy/how-to-read-the-bible",
+  "/academy/sample-class",
   "/media",
   "/about",
   "/ask",
@@ -33,7 +33,7 @@ const ROUTES = [
   "/subscribe/check-email",
   "/contact",
   "/new-testament",
-  "/new-testament/john",
+  "/new-testament/matthew",
   "/plans",
   "/privacy",
   "/this-page-is-not-here",

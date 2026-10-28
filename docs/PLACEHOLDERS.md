@@ -1541,3 +1541,127 @@ scrolling the page so reveals and the typewriter have run.
 
 Back to full width above the text, as the brief says (screen 6). Home at
 375 is 5,910px with the full feed (5,681px with the 144px photo).
+
+## Phase 2 reset (28 October 2026)
+
+Every page now follows docs/RESET-BRIEF.md section 5, in Home's rhythm,
+ending with a `NextStep`. Launch inputs are gathered in
+`docs/LAUNCH-CHECKLIST.md`.
+
+### Decisions
+
+- Where the brief gives a heading but no line, or a section with no copy,
+  existing approved lines are reused (Home's "Our free courses take you
+  through it, one lesson at a time." and "Sit under the teaching of the
+  Word, wherever you are.") and new section headings are question led:
+  "Which course will you start with?", "Ready for the next course?",
+  "Ready to go deeper?", "Ready to start?", "Want a guide through it?",
+  "Want to talk to someone?", "Who teaches?", "What's in the app?",
+  "Which pace suits you?", "How does a journey work?", "Why does the order
+  matter?", "What does each introduction cover?", "Which book will you
+  read?", "What would you like to read?", "What else is coming up?".
+- About's story (96 words) is written from the brief's three points; the
+  John 6:33-35 block beside it carries the full quotation, and Strong's
+  H1035 (Beyth Lechem) is woven in.
+- Academy: the status line and Notify me button stay in the hero; the
+  steps, why, questions (FAQ) and inline waitlist card are gone. The FAQ's
+  open questions (free or paid, access length) are in the checklist.
+- Course pages gain optional `outcomes`, `outline` and `teacher` in the
+  class schema and the academy seam; until supplied they show marked
+  placeholders. A course without a join link keeps the waitlist button.
+- Section headings lose the short emerald rule, so inner pages match Home.
+- Teachings (/media): audio, social, read and study and the live card are
+  gone; both YouTube channels, written teaching, the New Testament and the
+  plans stay one link away in a sentence (links in sentences are allowed).
+- Events: only the session times block and any dated event stay; the
+  player went, so /events no longer frames YouTube.
+- Newsletter cards and app bands are gone from every page; signup lives on
+  /subscribe and the footer link, the app on Home and /app.
+- The Subscribe page drops its "What to expect" panel, which promised
+  reminders and news the brief's "Nothing else." rules out; the form and
+  its optional live reminder box are unchanged.
+- The share image carried "Come and be fed by the Word."; it is rebuilt
+  with the Home headline by `scripts/og/build-og.mjs`.
+- Unused image slots stay in the registry for later: about-mission,
+  academy-teacher, events-how-it-works and the four app slots.
+
+### Retired button labels
+
+Mapped to the brief's table where one fits, otherwise to a plain verb.
+`lib/content/reset-copy.test.ts` fails if an old label returns.
+
+| Old | Now |
+|---|---|
+| Join a live session, Contact the ministry (About closing band) | Removed with the band; About ends with Browse free courses, and Send a message (plain verb) in its contact section |
+| See the course (Academy cards) | Start this course |
+| Join this course, See how to join (course page) | Start this course (to the join link), or Notify me when the Academy opens until a course opens |
+| Set a reminder | Removed with the session cards; reminders live on /subscribe |
+| Watch on YouTube, Watch live on YouTube, Play here | Watch now |
+| Add to calendar (always disabled) | Removed; the calendar placeholder note stays until dates exist |
+| Listen on ... | Removed with the audio section |
+| See what is inside (App hero) | Removed; the list follows the hero |
+| Subscribe for new teaching | Get new teaching by email (plain verb, empty states only) |
+| Stay close to the ministry (Subscribe H1) | New teaching in your inbox (brief) |
+| Browse all 27 books | See all 27 books (plain verb) |
+| Read this book in the app, Start a journey in the app | Get the app |
+| Compare the three paces | See all three journeys (plain verb) |
+| View journey | See this journey (plain verb) |
+| Details (event cards) | See the details (plain verb) |
+| Back to the home page | Go home (brief, 404) |
+| Ask another question (sent page) | Ask a question; the in-form reset after sending keeps Ask another question, as a form verb |
+
+### Performance and launch readiness (28 October 2026)
+
+Mobile Lighthouse 13.4.1, production build on this machine, medians of
+three interleaved runs. The machine was busy (another dev server running),
+and blocking time swung from 0.5 to 3.9 s between identical runs, so only
+the relative picture holds. Windows is in dark mode, so default headless
+runs measured the dark theme; light runs set preferredColorScheme.
+
+| Page | Theme | Perf | A11y | Best practices | SEO | LCP | CLS | TBT |
+|---|---|---|---|---|---|---|---|---|
+| Home | light | 68 | 100 | 100 | 63 | 3.73 s | 0 | 860 ms |
+| Home | dark | 58 | 100 | 100 | 63 | 4.15 s | 0 | 1,766 ms |
+| Academy | light | 70 | 100 | 100 | 63 | 3.79 s | 0 | 761 ms |
+| Academy | dark | 53 | 100 | 100 | 63 | 4.72 s | 0 | 1,259 ms |
+| Teachings | light | 66 | 100 | 100 | 63 | 4.14 s | 0 | 805 ms |
+| Teachings | dark | 62 | 100 | 100 | 63 | 4.28 s | 0 | 845 ms |
+| About | light | 71 | 100 | 100 | 63 | 3.55 s | 0 | 801 ms |
+| About | dark | 64 | 100 | 100 | 63 | 4.09 s | 0 | 940 ms |
+
+- SEO 63 is the global noindex flag alone (`is-crawlable`); every other
+  SEO audit passes. It clears when noindex is turned off at launch.
+- LCP is the hero poster. Observed LCP on Home is 0.74 s; the simulated
+  3.5 to 4.7 s is Lighthouse's slow 4G model applied to 166 KB of
+  framework script (React DOM 73 KB, the Next runtime 48 KB) and 70 KB of
+  fonts, plus main thread time on this machine.
+- Fixed: in dark the hero's dark poster loaded lazily, after layout, and
+  was the LCP with a 300 to 500 ms load delay. `LoopVideo` now preloads
+  it for prefers-color-scheme: dark only; the delay fell to 30 to 100 ms.
+  Light visitors do not fetch it.
+- Rerun on the Vercel preview before trusting absolute numbers.
+
+Page weight at 375, everything transferred after load, a full scroll and
+7 s (loops included, cache off):
+
+| Page | Light KB (loop) | Dark KB (loop) |
+|---|---|---|
+| Home | 418 (30) | 433 (41) |
+| Academy | 408 (42) | 432 (57) |
+| Course page | 369 | 379 |
+| Teachings | 457 | 473 |
+| About | 369 | 396 |
+| Ask | 361 | 383 |
+| App | 364 | 372 |
+| Events | 360 | 382 |
+| Subscribe | 370 | 386 |
+| Contact | 362 | 379 |
+| New Testament | 365 | 375 |
+| Matthew | 364 | 373 |
+| Plans | 381 | 406 |
+| 30 day plan | 377 | 404 |
+| Privacy | 353 | 361 |
+| Written teachings | 362 | 384 |
+
+Dark weighs a little more because the light poster keeps its preload for
+everyone (it is the default theme) and dark adds its own.

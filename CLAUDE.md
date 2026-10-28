@@ -312,6 +312,14 @@ disagrees with the brief, the brief wins.
 - Live sessions, events and the newsletter are supporting detail: small
   lines or the footer, never a main section. Every page ends with a next
   step towards a course, a teaching or a question.
+- Shared pieces, so every page matches Home: `Section` and `bandClass`
+  (one rhythm, 40px on phones and 112px from md, no rule above the
+  heading), `NextStep` (the closing band every page ends with),
+  `StartingRows` (Home and Academy), `NumberedRows` (rows with a
+  button), `NumberedList` (rows without), `LiveLine` (the one live
+  line, Home and Teachings). `lib/content/reset-copy.test.ts` fails on a
+  banned phrase or a retired button label anywhere in app, components,
+  lib or content.
 
 ### Palette
 
@@ -322,13 +330,13 @@ disagrees with the brief, the brief wins.
   section. In dark the cream band is a dark green tint (`#112018`), never
   brown. `tint` (emerald at 8%) is for the current nav pill, icon tiles,
   skeletons and the tertiary button; `tint-strong` and `tint-press` are
-  its hover and press. No decorative gradients anywhere: `bg-hero-tint`,
-  `bg-page-tint` and `bg-panel-tint` are flat.
+  its hover and press. No decorative gradients anywhere, the footer
+  included; `bg-panel-tint` is flat.
 - Text on light is `ink` and `ink-muted`. Links, eyebrows, heading
   accents and focus rings are `emerald-deep`. `fill-primary` (deep
   green in light, emerald-night in dark) is the primary button. `emerald`
-  is icon glyphs, the primary hover and the short rule above section
-  headings. `fill-press` is the primary press.
+  is icon glyphs and the primary hover. `fill-press` is the primary
+  press.
 - Deep green (`green-deep`, `green-night`) is the footer, the primary
   pill and small elements only. No deep green section or panel anywhere
   else, and no full bleed green hero.
@@ -514,7 +522,8 @@ disagrees with the brief, the brief wins.
   suffix naming their item ("Start this course: <title>").
 - Never use "Learn more", "Come and be fed", "Be fed by the Word",
   "Transform your life", "Unforgettable" or "Journey of faith"
-  (`lib/content/reset-copy.test.ts` checks the pages reset so far).
+  (`lib/content/reset-copy.test.ts` checks every route, with the retired
+  button labels).
 - Every interactive element has a visible focus ring: emerald-deep on
   light, white in the footer.
 
