@@ -63,7 +63,7 @@ describe("securityHeaders", () => {
   });
 
   it("lists exactly the routes that render an embed", () => {
-    expect([...EMBED_ROUTES]).toEqual(["/", "/media", "/events"]);
+    expect([...EMBED_ROUTES]).toEqual(["/", "/media"]);
   });
 
   it("gives no other rule a YouTube frame", () => {

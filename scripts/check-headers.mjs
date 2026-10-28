@@ -7,7 +7,7 @@
 // dependencies: uses the global fetch in Node 18 and later.
 
 // Keep in step with EMBED_ROUTES in lib/security/headers.ts.
-const EMBED_ROUTES = new Set(["/", "/media", "/events"]);
+const EMBED_ROUTES = new Set(["/", "/media"]);
 const ROUTES = ["/", "/media", "/events", "/about", "/app", "/contact", "/subscribe", "/ask", "/teachings", "/privacy"];
 const YOUTUBE_FRAME = "https://www.youtube-nocookie.com";
 
