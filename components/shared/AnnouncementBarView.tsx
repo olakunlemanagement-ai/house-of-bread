@@ -40,7 +40,7 @@ export function AnnouncementBarView({
           size="sm"
           className="border-on-gold! text-on-gold! hover:bg-gold-soft! active:bg-gold-soft!"
         >
-          Watch on YouTube
+          Watch now
         </ButtonLink>
       </p>
     </div>

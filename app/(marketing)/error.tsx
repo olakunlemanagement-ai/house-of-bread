@@ -11,7 +11,7 @@ export default function Error({ retry }: { error: unknown; retry: () => void }) 
           <IconTile name="alert" size="lg" />
           <h1 className="mt-8 text-display">Something went wrong</h1>
           <p className="mt-6 text-lead text-ink">
-            The page could not load. Try again, and if the problem continues, contact the ministry.
+            The page could not load. Try again, and if the problem continues, send a message through the Contact page.
           </p>
           <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
             <Button onClick={() => retry()} className="w-full sm:w-auto">

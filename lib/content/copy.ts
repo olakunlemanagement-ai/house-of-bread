@@ -17,41 +17,6 @@ export const journeySteps = [
   { text: "Come back any time and continue exactly where the last session ended." },
 ];
 
-
-/** Who the app is for. */
-export const appAudience = [
-  "New believers who want a structured way into the New Testament",
-  "Readers who have started Bible plans before and stalled",
-  "Students and teachers who want translation comparison without a desk full of books",
-  "Anyone who wants to know the Scriptures rather than simply own one",
-];
-
-/** The shared line about the ministry's name, used on Home and About. */
-export const nameText =
-  "The name comes from Bethlehem, the house of bread, and from the One who claimed the title for himself. The aim is not information for its own sake, but Scripture read well, understood clearly, and allowed to feed.";
-
-/**
- * The three countries the region chips and the About page name, each with
- * its flag. Nigeria stands for the ministry's work in Africa; prose that
- * says "Africa" stays as written.
- */
-export const regions = [
-  { name: "United Kingdom", flag: "gb" },
-  { name: "Nigeria", flag: "ng" },
-  { name: "United States", flag: "us" },
-] as const;
-
-/**
- * Where live sessions are watched, with the IANA zone each region's time is
- * shown in. The US zone is Eastern until the ministry confirms otherwise
- * (docs/PLACEHOLDERS.md).
- */
-export const sessionRegions = [
-  { name: "United Kingdom", flag: "gb", timeZone: "Europe/London", zoneLabel: "UK time" },
-  { name: "Nigeria", flag: "ng", timeZone: "Africa/Lagos", zoneLabel: "Lagos time" },
-  { name: "United States", flag: "us", timeZone: "America/New_York", zoneLabel: "Eastern time" },
-] as const;
-
 /**
  * The regions shown under the weekly live session, each with the IANA zone
  * its local time is worked out in. The first is the ministry's own zone. The
@@ -67,72 +32,18 @@ export const sessionTimeRegions = [
   { name: "United States (Eastern)", flag: "us", timeZone: "America/New_York" },
 ] as const;
 
-export const newsletterCopy = {
-  heading: "Stay close to the ministry",
-  text: "Reminders before each live session, new teaching, and news from House of Bread Global, sent to your inbox.",
-} as const;
-
 /**
- * House of Bread Academy (/academy). The Academy is not open yet: the steps
- * and answers describe what it will offer, and are ministry copy to confirm
- * (docs/PLACEHOLDERS.md). Never claim certificates, live Q and A, lesson
- * counts, durations or prices here until the ministry supplies them.
+ * The Academy's open or closed status and its waitlist, kept as they were
+ * until the ministry decides whether courses are live at launch
+ * (docs/PLACEHOLDERS.md, launch blocker). Never claim certificates, live Q
+ * and A, lesson counts, durations or prices here until the ministry
+ * supplies them.
  */
 export const academyCopy = {
-  tagline: "Equipped in the truth",
-  lead: "House of Bread Academy will give believers a structured place to study the Bible, one course at a time and at their own pace.",
   waitlistLabel: "Notify me when the Academy opens",
   waitlistHref: "/subscribe/academy",
   courses: {
-    title: "Courses in preparation",
     intro: "The first courses are being prepared now, and each one opens here when it is ready.",
-    cta: "See the course",
-  },
-  steps: {
-    title: "How the Academy will work",
-    intro: "This is what the Academy is being built to offer.",
-    items: [
-      { title: "Create an account.", text: "One account opens every course." },
-      { title: "Choose a course.", text: "Start with the one that meets you where you are." },
-      {
-        title: "Learn at your own pace.",
-        text: "Work through each lesson when it suits you, and see your progress as you go.",
-      },
-    ],
-  },
-  why: {
-    title: "Why learn here",
-    intro: "Teaching that keeps every passage in its context and explains it in plain English.",
-    items: [
-      {
-        title: "Who it is for",
-        text: "Believers who want to go further than reading alone, from new believers to those who already teach others.",
-      },
-      { title: "Who teaches", text: undefined },
-      {
-        title: "How it teaches",
-        text: "From the King James Version, in plain contemporary English, with Scripture always read in its context.",
-      },
-    ],
-  },
-  questions: {
-    title: "Questions",
-    intro: "What people ask most about the Academy before it opens.",
-    items: [
-      { question: "Will the Academy be free or paid?", answer: undefined, confirm: "free, paid, or some of each" },
-      {
-        question: "What will I need to take part?",
-        answer: "A phone, tablet or computer with an internet connection.",
-        confirm: "device and connection",
-      },
-      { question: "How long will I have access to a course?", answer: undefined, confirm: "how long access lasts" },
-      {
-        question: "Will I need to attend anything live?",
-        answer: "Courses are planned to be self paced, so nothing needs to be attended live.",
-        confirm: "no live attendance",
-      },
-    ],
-    ask: "Ask a question anonymously",
   },
   closingHeading: "Hear when the Academy opens",
   closingText:

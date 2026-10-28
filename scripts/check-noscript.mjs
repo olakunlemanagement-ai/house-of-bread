@@ -161,10 +161,10 @@ try {
     await contexts.content.close();
   }
 
-  // Each region must offer exactly one visible "Watch on YouTube" link without
+  // Each region must offer exactly one visible "Watch now" link without
   // script: on the skeleton where the region has a fallback link, beside it
   // where the page already carries one in the first HTML.
-  console.log('\n"Watch on YouTube" without JavaScript, reached by Tab');
+  console.log('\n"Watch now" without JavaScript, reached by Tab');
   const keyboard = await browser.newContext({ javaScriptEnabled: false, viewport: VIEWPORTS[0] });
   for (const region of REGIONS) {
     const page = await keyboard.newPage();
@@ -172,7 +172,7 @@ try {
     const found = await page.$eval(region.selector, (root) => {
       const links = [...root.querySelectorAll("a[href]")].filter(
         (a) =>
-          a.textContent.trim().startsWith("Watch on YouTube") &&
+          a.textContent.trim().startsWith("Watch now") &&
           a.getClientRects().length > 0 &&
           !a.closest('[aria-hidden="true"], [aria-busy="true"]'),
       );
@@ -199,7 +199,7 @@ try {
     console.log(
       `${region.path.padEnd(8)} ${region.name.padEnd(26)} ${found.length} link(s)  ${link ? `"${link.name}" ${where} -> ${link.href}` : ""}  ${reached ? `reached after ${tabs} Tab presses` : "not reached by Tab"}`,
     );
-    if (found.length !== 1) fail(`${region.name} has ${found.length} visible "Watch on YouTube" links, expected 1`);
+    if (found.length !== 1) fail(`${region.name} has ${found.length} visible "Watch now" links, expected 1`);
     if (link) {
       if (link.onSkeleton !== region.fallbackLink) {
         fail(`${region.name} link is ${where}, expected ${region.fallbackLink ? "on the skeleton" : "beside the player"}`);
