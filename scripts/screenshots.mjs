@@ -64,6 +64,12 @@ try {
         colorScheme,
         reducedMotion: process.env.REDUCED ? "reduce" : "no-preference",
       });
+      // Light is the default whatever the system says: dark is a saved choice.
+      await context.addInitScript((value) => {
+        try {
+          localStorage.setItem("hob:theme", value);
+        } catch {}
+      }, colorScheme);
       const page = await context.newPage();
       for (const route of routes) {
         await page.goto(new URL(route, base).href, { waitUntil: "load" });

@@ -28,14 +28,13 @@ export const metadata: Metadata = {
     : { index: true, follow: true },
 };
 
-// Both themes are supported. The browser chrome follows the system; an
-// explicit choice rewrites both colours (components/shared/theme).
+// Light is the default theme, so the browser chrome starts light. Once the
+// page runs, the theme store paints it in the theme in effect
+// (components/shared/theme/theme-store.ts). The root's color-scheme comes
+// from the stylesheet, which also knows dark.
 export const viewport: Viewport = {
-  colorScheme: "light dark",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: THEME_COLOR.light },
-    { media: "(prefers-color-scheme: dark)", color: THEME_COLOR.dark },
-  ],
+  colorScheme: "light",
+  themeColor: THEME_COLOR.light,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

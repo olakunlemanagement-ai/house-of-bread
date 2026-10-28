@@ -63,14 +63,29 @@ describe("head script", () => {
     expect(runHeadScript({ saved: { [MOTION_KEY]: "paused" }, reduce: true }).get("data-motion")).toBe("off");
   });
 
-  it("still sets Motion when storage throws", () => {
+  it("still sets Motion, and light, when storage throws", () => {
     const attrs = runHeadScript({ storageThrows: true, reduce: true });
     expect(attrs.get("data-motion")).toBe("off");
-    expect(attrs.has("data-theme")).toBe(false);
+    expect(attrs.get("data-theme")).toBe("light");
   });
 
-  it("still applies a saved theme", () => {
+  it("lands a first visit on light, whatever the system prefers", () => {
+    expect(runHeadScript({}).get("data-theme")).toBe("light");
+  });
+
+  it("applies a saved theme, system included", () => {
     expect(runHeadScript({ saved: { [THEME_KEY]: "dark" } }).get("data-theme")).toBe("dark");
+    expect(runHeadScript({ saved: { [THEME_KEY]: "light" } }).get("data-theme")).toBe("light");
+    expect(runHeadScript({ saved: { [THEME_KEY]: "system" } }).get("data-theme")).toBe("system");
+    expect(runHeadScript({ saved: { [THEME_KEY]: "sepia" } }).get("data-theme")).toBe("light");
+  });
+
+  it("reads dark only from data-theme dark, or system while the system prefers dark", () => {
+    const css = readFileSync("app/globals.css", "utf8");
+    const variant = css.match(/@custom-variant dark \{[\s\S]*?\n\}/)?.[0] ?? "";
+    expect(variant).toMatch(/@media \(prefers-color-scheme: dark\) \{\s*&:where\(\[data-theme="system"\], \[data-theme="system"\] \*\)/);
+    expect(variant).toContain('&:where([data-theme="dark"], [data-theme="dark"] *)');
+    expect(variant).not.toMatch(/:not\(/);
   });
 });
 

@@ -545,13 +545,24 @@ async function checkStoppers(browser, viewport) {
   }
 }
 
+// Light is the default theme whatever the system says, so dark is a saved
+// choice, written before any page script runs.
+async function themed(context, theme) {
+  await context.addInitScript((value) => {
+    try {
+      localStorage.setItem("hob:theme", value);
+    } catch {}
+  }, theme);
+  return context;
+}
+
 const only = process.env.ONLY;
 const browser = await chromium.launch();
 try {
   if (only !== "phone") {
     for (const theme of ["light", "dark"]) {
       console.log(`\nEvery loop, ${theme}, ${DESKTOP.width}px`);
-      const context = await browser.newContext({ viewport: DESKTOP, colorScheme: theme });
+      const context = await themed(await browser.newContext({ viewport: DESKTOP, colorScheme: theme }), theme);
       await checkLoopsOn(context, theme);
       if (theme === "light") await checkOffscreen(context);
       await context.close();
@@ -560,7 +571,7 @@ try {
   if (only !== "desktop") {
     for (const theme of ["light", "dark"]) {
       console.log(`\nEvery loop, ${theme}, ${PHONE.width}px`);
-      const context = await browser.newContext({ viewport: PHONE, isMobile: true, hasTouch: true, colorScheme: theme });
+      const context = await themed(await browser.newContext({ viewport: PHONE, isMobile: true, hasTouch: true, colorScheme: theme }), theme);
       await checkLoopsOn(context, theme, true);
       if (theme === "light") await checkOffscreen(context, true);
       await context.close();

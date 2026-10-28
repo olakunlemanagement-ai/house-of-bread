@@ -159,15 +159,16 @@
 }
 
 /*
-  Dark theme. One variant with two ways in: the system preference when the
-  visitor has not chosen (no data-theme, which is also the no JavaScript
-  case), and data-theme="dark", set before first paint by the head script
-  in app/layout.tsx from the saved choice. data-theme="light" opts out.
-  The same variant drives dark: utilities in components.
+  Dark theme. Light is the default: a first visit, no saved choice and the
+  no JavaScript case all paint light, whatever the system says. Two ways
+  into dark, both set before first paint by the head script in
+  app/layout.tsx from the saved choice: data-theme="dark", or
+  data-theme="system" while the system prefers dark. The same variant
+  drives dark: utilities in components.
 */
 @custom-variant dark {
   @media (prefers-color-scheme: dark) {
-    &:not([data-theme="light"], [data-theme="light"] *) {
+    &:where([data-theme="system"], [data-theme="system"] *) {
       @slot;
     }
   }
