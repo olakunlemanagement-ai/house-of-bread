@@ -9,7 +9,7 @@ import { journeySteps } from "@/lib/content/copy";
 import { placeholderPlans } from "@/lib/content/placeholder-data";
 
 export const metadata: Metadata = {
-  title: "New Testament journeys (reading plans)",
+  title: "Three journeys through the New Testament",
   description:
     "Three guided reading plans through the New Testament, in the order the books were written. 30, 60 and 90 day journeys in the official House of Bread app.",
 };

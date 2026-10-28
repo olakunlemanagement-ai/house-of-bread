@@ -11,7 +11,7 @@ import { getAll } from "@/lib/content";
 import { canonicalise } from "@/lib/scripture";
 
 export const metadata: Metadata = {
-  title: "Teachings",
+  title: "Written teachings",
   description:
     "Written teaching from House of Bread Global on doctrine, interpretation and the questions believers actually ask.",
 };
