@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { LoopId } from "@/lib/media/loops";
 import { LoopVideo } from "./LoopVideo";
 
@@ -19,22 +20,28 @@ const phoneFrame =
 
 /**
  * The moving background of every hero: the page's loop behind a scrim
- * (white at 80% in light, night at 80% in dark). On phones and tablets the
- * scrim covers the whole hero. From lg it holds full strength over the left
- * 60%, where the text sits, then eases to 20% at the right edge, so the
- * loop shows there. Measured against every loop's darkest pixel (pure black)
- * in light and brightest (pure white) in dark: muted text 4.76:1 and 5.03:1
- * (docs/PLACEHOLDERS.md). Decorative and hidden from assistive tech.
- * The only place a LoopVideo renders (motion.test.ts). The hero clips it.
+ * (white at 80% in light, night at 80% in dark; `hero-scrim` in
+ * app/globals.css). Below lg the text spans the hero, so the scrim covers
+ * it at full strength. From lg it holds full strength over the text column,
+ * to `hold` percent of the hero's width (60 by default, 70 on Home, whose
+ * heading runs to 67% at 1024), then eases to 6% over the next 20% of the
+ * width, so the loop shows clearly on the right. Text inside the hold is measured
+ * against every loop's worst pixel: pure black in light, pure white in
+ * dark, muted text 4.76:1 and 5.02:1 (docs/PLACEHOLDERS.md).
+ * scripts/check-noscript.mjs fails if hero text crosses the hold.
+ * Decorative and hidden from assistive tech. The only place a LoopVideo
+ * renders (motion.test.ts). The hero clips it.
  */
-export function HeroBackdrop({ loop, phone = false }: { loop: LoopId; phone?: boolean }) {
+export function HeroBackdrop({ loop, phone = false, hold = 60 }: { loop: LoopId; phone?: boolean; hold?: number }) {
   const frame = phone && PHONE_FRAME[loop] ? `${phoneFrame} ${PHONE_FRAME[loop]}` : "";
   return (
     <>
       <LoopVideo id={loop} fill priority phone={phone} sizes="100vw" className={frame} />
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 bg-(--scrim) lg:bg-transparent lg:[background-image:linear-gradient(to_right,var(--scrim)_0%,var(--scrim)_60%,var(--scrim-soft)_100%)]"
+        data-scrim-hold={hold}
+        style={{ "--scrim-hold": `${hold}%` } as CSSProperties}
+        className="hero-scrim pointer-events-none absolute inset-0"
       />
     </>
   );

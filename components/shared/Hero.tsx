@@ -10,9 +10,9 @@ import { HeroBackdrop } from "./HeroBackdrop";
 export function Hero() {
   return (
     <section aria-labelledby="hero-heading" className="relative overflow-hidden bg-surface">
-      <HeroBackdrop loop="ambient-light" phone />
+      <HeroBackdrop loop="ambient-light" phone hold={70} />
       <div className="container-page relative z-10 pb-20 pt-16 sm:pt-20 lg:pb-32 lg:pt-28">
-        <div className="max-w-4xl">
+        <div data-hero-text className="max-w-4xl">
           <h1 id="hero-heading" className="text-statement">
             Understand the Bible you&apos;ve been reading.
           </h1>

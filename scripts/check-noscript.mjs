@@ -95,6 +95,49 @@ try {
   }
   await noJs.close();
 
+  // From lg the hero scrim holds full strength only to its hold point, then
+  // fades so the loop shows (HeroBackdrop). Every line of hero text, every
+  // button edge included, must end inside the hold, or it sits over a
+  // weaker scrim than the contrast check assumes.
+  console.log("\nHero text inside the scrim's full strength (lg and up)");
+  for (const width of [1024, 1280, 1920]) {
+    const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width, height: 900 } });
+    for (const { path: route } of PAGES) {
+      const page = await context.newPage();
+      await page.goto(new URL(route, base).href, { waitUntil: "load" });
+      const result = await page.evaluate(() => {
+        const scrim = document.querySelector("main [data-scrim-hold]");
+        const text = document.querySelector("main [data-hero-text]");
+        if (!scrim || !text) return null;
+        const box = scrim.getBoundingClientRect();
+        let right = 0;
+        for (const el of text.querySelectorAll("*")) {
+          // Text runs, and the boxes of buttons and pills (their outline sits on the scrim too).
+          if (el.matches("a, button")) right = Math.max(right, el.getBoundingClientRect().right);
+          for (const node of el.childNodes) {
+            if (node.nodeType !== Node.TEXT_NODE || !node.textContent.trim()) continue;
+            const range = document.createRange();
+            range.selectNodeContents(node);
+            for (const rect of range.getClientRects()) right = Math.max(right, rect.right);
+          }
+        }
+        const hold = Number(scrim.getAttribute("data-scrim-hold"));
+        return { hold, textEnd: ((right - box.left) / box.width) * 100 };
+      });
+      if (!result) {
+        fail(`${route} at ${width}px has no hero scrim or no marked hero text`);
+      } else {
+        const ok = result.textEnd <= result.hold;
+        console.log(
+          `${String(width).padStart(4)}px  ${route.padEnd(20)} text ends at ${result.textEnd.toFixed(1)}%  hold ${result.hold}%  ${ok ? "ok" : ""}`,
+        );
+        if (!ok) fail(`${route} at ${width}px: hero text runs to ${result.textEnd.toFixed(1)}%, past the scrim hold of ${result.hold}%`);
+      }
+      await page.close();
+    }
+    await context.close();
+  }
+
   console.log("\nAsync region heights, fallback (no JavaScript) against content (JavaScript)");
   for (const viewport of VIEWPORTS) {
     const contexts = {

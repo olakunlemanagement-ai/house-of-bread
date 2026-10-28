@@ -397,12 +397,15 @@ disagrees with the brief, the brief wins.
   a required `loop`; the loop per page is logged in
   `docs/PLACEHOLDERS.md` ("Hero loop per page"). `motion.test.ts` guards
   this.
-- The scrim is white at 80% (night at 80% in dark), solid on phones and
-  tablets, easing to 20% at the right edge from `lg`, where no text sits.
-  Hero text stays in the left seven columns. It is checked against the
-  worst pixel of every loop: pure black in light, pure white in dark
-  (`npm run loops:sample`). A new loop or a weaker scrim needs the same
-  check.
+- The scrim (`hero-scrim`) is white at 80% (night at 80% in dark), solid
+  on phones and tablets, where the text spans the hero. From `lg` it holds
+  80% over the text column, to `HeroBackdrop`'s `hold` (60% of the width,
+  70% on Home), then eases in and out to 6% over the next 20 points, so
+  the loop shows clearly on the right. Hero text stays inside the
+  hold; `scripts/check-noscript.mjs` measures it at 1024, 1280 and 1920.
+  Text is checked against the worst pixel of every loop: pure black in
+  light, pure white in dark (`npm run loops:sample`). A new loop, a wider
+  text column or a weaker scrim needs the same check.
 - A loop with a dark rendition (`WITH_DARK`) shows its dark poster and
   plays its dark video in dark. A loop without one is light only: in dark,
   `LoopVideoClient` loads no video and `[data-loop]` shows its still glow

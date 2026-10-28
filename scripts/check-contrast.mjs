@@ -211,7 +211,8 @@ const lightOnly = [
   ["Hero loop: focus ring over darkest pixel, 80% scrim", "emeraldDeep", ["loopLightDark", "white/0.8"], UI],
   ["Hero loop: secondary outline border, glyph, darkest pixel, 80% scrim", "emerald", ["loopLightDark", "white/0.8"], UI],
   // Every page hero since 27 October 2026 (HeroBackdrop): any loop, under
-  // the same 80% white scrim. The worst pixel across all seven light loops
+  // the same 80% white scrim. From lg the scrim fades to 6% past the text
+  // column (hero-scrim), and no text sits there (check-noscript.mjs). The worst pixel across all seven light loops
   // is pure black (npm run loops:sample, 27 October 2026).
   ["Page hero, any loop: ink over black, 80% scrim", "ink", ["black", "white/0.8"], TEXT],
   ["Page hero, any loop: ink-muted (lead) over black, 80% scrim", "inkMuted", ["black", "white/0.8"], TEXT],

@@ -144,7 +144,6 @@
 
   /* Overlays and glows, one token each so dark can restate them. */
   --scrim: rgb(255 255 255 / 0.8);
-  --scrim-soft: rgb(255 255 255 / 0.2);
   --facade-bar: rgb(255 255 255 / 0.95);
   --skeleton-sheen: rgb(255 255 255 / 0.55);
   --fill-highlight: rgb(255 255 255 / 0.18);
@@ -221,7 +220,6 @@
 
     /* Night over the dark hero loop, checked against its brightest pixel. */
     --scrim: rgb(10 21 16 / 0.8);
-    --scrim-soft: rgb(10 21 16 / 0.2);
     --facade-bar: rgb(17 30 23 / 0.95);
     --skeleton-sheen: rgb(255 255 255 / 0.06);
     --slot-glow: rgb(46 158 79 / 0.16);
@@ -473,6 +471,34 @@
 @media (prefers-reduced-transparency: reduce) {
   .glass-header {
     background-color: var(--surface);
+  }
+}
+
+/*
+  The scrim over every hero loop (HeroBackdrop). Below lg the text spans
+  the hero, so the scrim is full strength (80%) throughout. From lg it
+  holds full strength to --scrim-hold, past the end of the hero text (60%
+  on inner pages, 70% on Home), then eases out and in over 20 points of
+  the width, to 6% (an 80% scrim at 7.5%), so the loop shows clearly on
+  the right where no text sits. The stops follow an ease in out curve, so
+  the fade has no visible edge. scripts/check-noscript.mjs fails if hero
+  text crosses the hold.
+*/
+@utility hero-scrim {
+  background-color: var(--scrim);
+  @variant lg {
+    background-color: transparent;
+    background-image: linear-gradient(
+      to right,
+      var(--scrim) 0%,
+      var(--scrim) var(--scrim-hold, 60%),
+      color-mix(in srgb, var(--scrim) 90%, transparent) calc(var(--scrim-hold, 60%) + 3%),
+      color-mix(in srgb, var(--scrim) 70%, transparent) calc(var(--scrim-hold, 60%) + 6.5%),
+      color-mix(in srgb, var(--scrim) 40%, transparent) calc(var(--scrim-hold, 60%) + 10.5%),
+      color-mix(in srgb, var(--scrim) 18%, transparent) calc(var(--scrim-hold, 60%) + 15%),
+      color-mix(in srgb, var(--scrim) 7.5%, transparent) calc(var(--scrim-hold, 60%) + 20%),
+      color-mix(in srgb, var(--scrim) 7.5%, transparent) 100%
+    );
   }
 }
 

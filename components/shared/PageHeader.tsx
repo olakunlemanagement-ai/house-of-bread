@@ -29,7 +29,7 @@ export function PageHeader({ eyebrow, title, lead, meta, actions, visual, loop, 
     <div className="relative overflow-hidden border-b border-border bg-surface">
       <HeroBackdrop loop={loop} phone={phoneLoop} />
       <div className="container-page relative z-10 grid items-center gap-12 pb-16 pt-16 sm:pb-20 sm:pt-20 lg:grid-cols-12 lg:pb-24">
-        <div className="lg:col-span-7">
+        <div data-hero-text className="lg:col-span-7">
           <p className="eyebrow eyebrow-dot">{eyebrow}</p>
           <h1 className="mt-5 max-w-3xl text-display">{title}</h1>
           {lead ? <p className="mt-5 max-w-2xl text-lead text-ink-muted">{lead}</p> : null}
