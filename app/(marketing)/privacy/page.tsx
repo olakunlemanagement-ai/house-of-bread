@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { NewsletterCard } from "@/components/shared/NewsletterCard";
+import { ButtonLink } from "@/components/shared/Button";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
+import { bandClass } from "@/components/shared/Section";
 
 export const metadata: Metadata = {
   title: "Privacy policy",
@@ -86,6 +88,7 @@ const sections: { id: string; title: string; body: ReactNode }[] = [
   },
 ];
 
+/** The draft policy, a section list beside it from lg (sticky below the header), then a next step. */
 export default function PrivacyPage() {
   return (
     <main id="main" tabIndex={-1}>
@@ -98,8 +101,8 @@ export default function PrivacyPage() {
       />
 
       <div className="bg-surface">
-        <div className="container-page grid gap-12 py-18 md:py-24 lg:grid-cols-[16rem_1fr]">
-          <nav aria-label="Policy sections" className="lg:sticky lg:top-6 lg:self-start">
+        <div className={`${bandClass} grid gap-12 lg:grid-cols-[16rem_1fr]`}>
+          <nav aria-label="Policy sections" className="lg:sticky lg:top-24 lg:self-start">
             <ol className="space-y-1 rounded-card bg-surface-mint p-5 text-sm">
               {sections.map((section, index) => (
                 <li key={section.id}>
@@ -117,8 +120,8 @@ export default function PrivacyPage() {
           <ol className="max-w-[68ch] space-y-12">
             {sections.map((section, index) => (
               <li key={section.id}>
-                <section id={section.id} aria-labelledby={`${section.id}-heading`} className="scroll-mt-6">
-                  <h2 id={`${section.id}-heading`} className="flex items-baseline gap-3 text-3xl">
+                <section id={section.id} aria-labelledby={`${section.id}-heading`}>
+                  <h2 id={`${section.id}-heading`} className="flex items-baseline gap-3 text-h2">
                     <span className="font-sans text-base text-ink-muted">{index + 1}.</span>
                     {section.title}
                   </h2>
@@ -130,7 +133,9 @@ export default function PrivacyPage() {
         </div>
       </div>
 
-      <NewsletterCard idPrefix="privacy-newsletter" />
+      <NextStep tone="mint" title="Ready to start?" text="Our free courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      </NextStep>
     </main>
   );
 }
