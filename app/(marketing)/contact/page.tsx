@@ -30,7 +30,7 @@ export default function ContactPage() {
             aria-labelledby="message-heading"
             className="rounded-card border border-border bg-surface-raised p-6 shadow-soft sm:p-10 lg:col-span-7"
           >
-            <h2 id="message-heading" className="mb-8 text-3xl">
+            <h2 id="message-heading" className="mb-8 text-2xl leading-tight">
               Send a message
             </h2>
             <ContactForm />

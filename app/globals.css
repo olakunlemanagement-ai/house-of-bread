@@ -152,10 +152,9 @@
   --fill-highlight: rgb(255 255 255 / 0.18);
   --slot-glow: rgb(27 107 51 / 0.14);
   --flag-edge: rgb(11 36 18 / 0.15);
-  --phone-shadow: 0 2px 6px rgb(4 41 14 / 0.12), 0 24px 48px rgb(4 41 14 / 0.18);
 
   --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
-  /* Buttons: 300ms on the standard curve for the lift and arrow nudge. */
+  /* Fades: the typewriter cursor and the menu. */
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -228,7 +227,6 @@
     --skeleton-sheen: rgb(255 255 255 / 0.06);
     --slot-glow: rgb(46 158 79 / 0.16);
     --flag-edge: rgb(255 255 255 / 0.2);
-    --phone-shadow: 0 0 0 1px rgb(143 211 165 / 0.16), 0 24px 48px rgb(0 0 0 / 0.5);
   }
 }
 
@@ -440,24 +438,12 @@
   --radius-card: 20px;
 }
 
-/* Deep green: the footer only. */
+/* Deep green: the footer only. Flat, like every surface since the reset. */
 @utility bg-green-footer {
-  background-color: var(--green-night);
-  background-image: linear-gradient(180deg, var(--green-deep), var(--green-night));
+  background-color: var(--green-deep);
 }
 
-/*
-  Hero, page header and panel surfaces. Flat since the reset (27 October
-  2026): no decorative gradients anywhere.
-*/
-@utility bg-hero-tint {
-  background-color: var(--surface);
-}
-
-@utility bg-page-tint {
-  background-color: var(--surface);
-}
-
+/* The still panel behind a live stream's click to load facade. Flat. */
 @utility bg-panel-tint {
   background-color: var(--surface-mint);
 }

@@ -28,7 +28,7 @@ export function SignupSection({
     <section id="signup" data-newsletter aria-labelledby="signup-heading" className="scroll-mt-6 bg-surface">
       <div className={`${bandClass} grid gap-8 lg:grid-cols-12 lg:gap-10`}>
         <div className="rounded-card border border-border bg-surface-raised p-6 shadow-soft sm:p-10 lg:col-span-7">
-          <h2 id="signup-heading" className="mb-8 text-3xl">
+          <h2 id="signup-heading" className="mb-8 text-2xl leading-tight">
             Subscribe
           </h2>
           <Suspense fallback={null}>
