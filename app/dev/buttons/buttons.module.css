@@ -1,0 +1,265 @@
+/*
+  Three classic button options for review (/dev/buttons). Tokens only: every
+  colour is a var() from app/globals.css. Text pairings match the current
+  buttons (white on fill-primary, emerald-deep on tint and on surfaces),
+  already checked by npm run contrast. Hairlines are decorative. Hover and
+  press change colour or draw a line; nothing changes size. Motion (the
+  line reveal and the sweep) runs only with Motion On and no reduced motion;
+  otherwise the end state shows at once. [data-force] pins a state for the
+  side by side states row.
+*/
+
+.base {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0.75rem 1.75rem;
+  text-align: center;
+  line-height: 1.2;
+  text-decoration: none;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.sm {
+  min-height: 2.75rem;
+  padding: 0.5rem 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .base:not(.sm) {
+    min-height: 3.25rem;
+  }
+}
+
+/* A: Bookplate. Literata small caps, 3px radius, a double rule. */
+.a {
+  border-radius: 3px;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 1.0625rem;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.09em;
+}
+
+.aPrimary {
+  background-color: var(--fill-primary);
+  color: var(--on-fill);
+  box-shadow:
+    inset 0 0 0 3px var(--fill-primary),
+    inset 0 0 0 4px var(--hairline-on-fill);
+}
+
+.aPrimary:hover,
+.aPrimary[data-force="hover"] {
+  background-color: var(--fill-hover);
+  box-shadow:
+    inset 0 0 0 3px var(--fill-hover),
+    inset 0 0 0 4px var(--hairline-on-fill);
+}
+
+.aPrimary:active,
+.aPrimary[data-force="press"] {
+  background-color: var(--fill-press);
+  box-shadow:
+    inset 0 0 0 3px var(--fill-press),
+    inset 0 0 0 4px var(--hairline-on-fill);
+}
+
+.aSecondary {
+  background-color: transparent;
+  color: var(--emerald-deep);
+  box-shadow:
+    inset 0 0 0 1px var(--glyph),
+    inset 0 0 0 4px transparent,
+    inset 0 0 0 5px var(--border-strong);
+}
+
+.aSecondary:hover,
+.aSecondary[data-force="hover"] {
+  background-color: var(--tint);
+}
+
+.aSecondary:active,
+.aSecondary[data-force="press"] {
+  background-color: var(--tint-strong);
+}
+
+.aTertiary {
+  background-color: var(--tint-strong);
+  color: var(--emerald-deep);
+  box-shadow: inset 0 0 0 3px var(--tint-strong), inset 0 0 0 4px var(--border-strong);
+}
+
+.aTertiary:hover,
+.aTertiary[data-force="hover"],
+.aTertiary:active,
+.aTertiary[data-force="press"] {
+  background-color: var(--tint-press);
+  box-shadow: inset 0 0 0 3px var(--tint-press), inset 0 0 0 4px var(--glyph);
+}
+
+/* B: Ruled. Literata sentence case, 2px radius, a rule drawn under the label on hover. */
+.b {
+  border-radius: 2px;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 1.0625rem;
+  letter-spacing: 0.01em;
+}
+
+.b .label {
+  position: relative;
+  padding-bottom: 0.2em;
+}
+
+.b .label::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: 50% 50%;
+}
+
+.b:hover .label::after,
+.b[data-force="hover"] .label::after,
+.b:focus-visible .label::after {
+  transform: scaleX(1);
+}
+
+.bPrimary {
+  background-color: var(--fill-primary);
+  color: var(--on-fill);
+  box-shadow: inset 0 0 0 1px var(--hairline-on-fill);
+}
+
+.bPrimary .label::after {
+  background-color: var(--rule-on-fill);
+}
+
+.bPrimary:active,
+.bPrimary[data-force="press"] {
+  background-color: var(--fill-press);
+}
+
+.bSecondary {
+  background-color: transparent;
+  color: var(--emerald-deep);
+  box-shadow: inset 0 0 0 1px var(--glyph);
+}
+
+.bSecondary:active,
+.bSecondary[data-force="press"] {
+  background-color: var(--tint);
+}
+
+.bTertiary {
+  background-color: var(--tint-strong);
+  color: var(--emerald-deep);
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+
+.bTertiary:active,
+.bTertiary[data-force="press"] {
+  background-color: var(--tint-press);
+}
+
+/* C: Engraved. Geist small caps, wide tracking, 6px radius, a fill that sweeps in from the left. */
+.c {
+  border-radius: 6px;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-variant-caps: all-small-caps;
+  letter-spacing: 0.16em;
+}
+
+.c::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+}
+
+.c:hover::before,
+.c[data-force="hover"]::before,
+.c:active::before,
+.c[data-force="press"]::before {
+  transform: scaleX(1);
+}
+
+.cPrimary {
+  background-color: var(--fill-primary);
+  color: var(--on-fill);
+  box-shadow: inset 0 0 0 1px var(--hairline-on-fill);
+}
+
+.cPrimary::before {
+  background-color: var(--fill-hover);
+}
+
+.cPrimary:active::before,
+.cPrimary[data-force="press"]::before {
+  background-color: var(--fill-press);
+}
+
+.cSecondary {
+  background-color: transparent;
+  color: var(--emerald-deep);
+  box-shadow:
+    inset 0 0 0 1px var(--glyph),
+    inset 0 0 0 3px transparent,
+    inset 0 0 0 4px var(--border);
+}
+
+.cSecondary::before {
+  background-color: var(--tint);
+}
+
+.cSecondary:active::before,
+.cSecondary[data-force="press"]::before {
+  background-color: var(--tint-strong);
+}
+
+.cTertiary {
+  background-color: var(--tint-strong);
+  color: var(--emerald-deep);
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+
+.cTertiary::before {
+  background-color: var(--tint-press);
+}
+
+/* Disabled, every option: muted, dashed for outlines, no hover. */
+.base:disabled {
+  cursor: not-allowed;
+  background-color: var(--fill-disabled);
+  color: var(--on-fill);
+  box-shadow: none;
+}
+
+.base:disabled::before,
+.base:disabled .label::after {
+  display: none;
+}
+
+/* The line reveal and the sweep move only with Motion On and no reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  :global(html:not([data-motion="off"])) .b .label::after {
+    transition: transform 260ms var(--ease-out);
+  }
+
+  :global(html:not([data-motion="off"])) .c::before {
+    transition: transform 320ms var(--ease-out);
+  }
+}
