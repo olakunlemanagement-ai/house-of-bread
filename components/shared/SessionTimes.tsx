@@ -22,7 +22,9 @@ type SessionTimesProps = {
 /**
  * "Session times by region": the next weekly session in each region's local
  * time. Rendered on the server, so every time shows without script. With
- * script, a "Your time" row is added in the visitor's own zone.
+ * script, a "Your time" row shows the visitor's own zone. Its row is in the
+ * first HTML, invisible until the zone is known, so nothing below it moves;
+ * without script (no data-js on the html element) it is not displayed.
  * Ink and ink-muted on white hold 16.1 and 7.3:1 (scripts/check-contrast.mjs).
  */
 export function SessionTimes({ rule, serverIso, headingId, headingLevel = 4 }: SessionTimesProps) {
@@ -55,18 +57,19 @@ export function SessionTimes({ rule, serverIso, headingId, headingLevel = 4 }: S
             </span>
           </li>
         ))}
-        {yours ? (
-          <li className="flex items-center gap-3 border-b border-border py-2.5 sm:col-span-2">
-            <Icon name="clock" className="size-6 shrink-0 text-glyph" />
-            <span className="text-base font-semibold text-emerald-deep">Your time</span>
-            <span className="ml-auto whitespace-nowrap text-right text-base font-semibold tabular-nums text-ink">
-              {yours.time}
-              {yours.weekday === ministryDay ? null : (
-                <span className="ml-1.5 text-sm font-normal text-ink-muted">{yours.weekday}</span>
-              )}
-            </span>
-          </li>
-        ) : null}
+        <li
+          aria-hidden={yours ? undefined : true}
+          className={`flex items-center gap-3 border-b border-border py-2.5 sm:col-span-2 [html:not([data-js])_&]:hidden ${yours ? "" : "invisible"}`}
+        >
+          <Icon name="clock" className="size-6 shrink-0 text-glyph" />
+          <span className="text-base font-semibold text-emerald-deep">Your time</span>
+          <span className="ml-auto whitespace-nowrap text-right text-base font-semibold tabular-nums text-ink">
+            {yours ? yours.time : rows[0]?.time}
+            {yours && yours.weekday !== ministryDay ? (
+              <span className="ml-1.5 text-sm font-normal text-ink-muted">{yours.weekday}</span>
+            ) : null}
+          </span>
+        </li>
       </ul>
     </div>
   );
