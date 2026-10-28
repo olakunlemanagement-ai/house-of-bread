@@ -649,7 +649,7 @@ html[data-motion="off"] [data-motion-state="off"] {
   Motion On the text is hidden from first paint, holding its space, until
   the component arms it and types it in view. Should the script never run,
   the text shows after 4 s. Without script or with Motion Off it shows.
-  The cursor has no width, so no line moves while it blinks.
+  The cursor is a bar outside the text, so no line moves while it types.
 */
 @keyframes tw-fallback {
   to {
@@ -674,26 +674,22 @@ html[data-motion="off"] [data-motion-state="off"] {
   }
 }
 
-.tw-cursor {
-  position: relative;
-  display: inline-block;
-  width: 0;
-  height: 0.9em;
-  vertical-align: -0.08em;
-}
-
-.tw-cursor::after {
-  content: "";
+/*
+  The cursor: a bar laid over the heading at its top left, moved onto the
+  typed text's end by transform (Typewriter sets its height and position).
+*/
+.tw-caret {
   position: absolute;
-  inset-block: 0;
-  left: 0.05em;
+  top: 0;
+  left: 0;
   width: 0.07em;
   border-radius: 1px;
   background-color: var(--glyph);
+  pointer-events: none;
   animation: tw-blink 1s steps(1) infinite;
 }
 
-[data-typewriter="done"] .tw-cursor {
+[data-typewriter="done"] + .tw-caret {
   opacity: 0;
   transition: opacity 600ms var(--ease-standard);
 }

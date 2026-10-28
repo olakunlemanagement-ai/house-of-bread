@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { REDUCED_MOTION_QUERY } from "./theme/theme-script";
 import { useMotion } from "./theme/motion-store";
 
@@ -14,11 +14,12 @@ function motionAllowed(): boolean {
  * A heading typed out once, with a blinking cursor, when it first scrolls
  * into view. Screen readers get the whole sentence at once (sr-only copy);
  * the typed layer is hidden from them. The full text always holds its
- * space: the untyped rest is laid out invisibly after the cursor, and the
- * cursor has no width, so no line ever moves. While typing, the cursor is a
- * new element for each character, so the browser reads it as inserted, not
- * shifted (no layout shift is counted). Once typed it blinks for a second,
- * then fades out.
+ * space: the untyped rest is laid out invisibly, after an empty marker span.
+ * Nothing else sits in the text, because generated content there breaks
+ * text shaping, widens a split word by a pixel or two and can push a word
+ * to the next line. The cursor is a separate bar, moved onto the marker by
+ * transform (a transform is never a layout shift). Once typed it blinks for
+ * a second, then fades out.
  * The phase (pending, armed, typing, done, static) lives on the layer's
  * data-typewriter attribute, written directly. The server renders
  * "pending": with script and Motion On, CSS hides the text from first
@@ -40,6 +41,8 @@ export function Typewriter({
 }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const layerRef = useRef<HTMLSpanElement>(null);
+  const markerRef = useRef<HTMLSpanElement>(null);
+  const caretRef = useRef<HTMLSpanElement>(null);
   // Characters typed so far, or null when the whole text shows.
   const [count, setCount] = useState<number | null>(null);
   const motion = useMotion();
@@ -108,8 +111,22 @@ export function Typewriter({
     };
   }, [motion, text, durationMs]);
 
+  // Put the cursor bar on the marker after each typed character.
+  useLayoutEffect(() => {
+    const heading = headingRef.current;
+    const marker = markerRef.current;
+    const caret = caretRef.current;
+    if (!heading || !marker || !caret) return;
+    const box = heading.getBoundingClientRect();
+    const at = marker.getBoundingClientRect();
+    caret.style.height = `${at.height * 0.62}px`;
+    caret.style.transform = `translate(${at.left - box.left}px, ${at.top - box.top + at.height * 0.2}px)`;
+  }, [count]);
+
   return (
-    <h2 ref={headingRef} id={id} className={className}>
+    // Plain wrapping, not the headings' balance: balancing a half typed
+    // sentence can pick a different number of lines for a frame.
+    <h2 ref={headingRef} id={id} className={`relative text-wrap ${className}`}>
       <span className="sr-only">{text}</span>
       <span ref={layerRef} aria-hidden="true" data-typewriter="pending">
         {count === null ? (
@@ -117,11 +134,12 @@ export function Typewriter({
         ) : (
           <>
             {text.slice(0, count)}
-            <span key={count} className="tw-cursor" />
+            <span ref={markerRef} />
             <span className="invisible">{text.slice(count)}</span>
           </>
         )}
       </span>
+      {count === null ? null : <span ref={caretRef} aria-hidden="true" className="tw-caret" />}
     </h2>
   );
 }
