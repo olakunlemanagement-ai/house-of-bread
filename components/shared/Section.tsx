@@ -3,15 +3,21 @@ import { RevealHeading } from "./RevealHeading";
 
 /**
  * Section surfaces. Pages are white, with warm (cream) and mint bands for
- * rhythm. There are no green or deep green sections.
+ * rhythm, one tint per section. There are no green or deep green sections.
  */
 export type SectionTone = "white" | "warm" | "mint";
 
-const toneClass: Record<SectionTone, string> = {
+export const toneClass: Record<SectionTone, string> = {
   white: "bg-surface",
   warm: "bg-surface-warm",
   mint: "bg-surface-mint",
 };
+
+/** One rhythm for every section on every page: 40px on phones, 112px from md. */
+export const bandClass = "container-page py-10 md:py-28";
+
+/** The gap between a section's heading block and its content. */
+export const bandBodyClass = "mt-6 md:mt-12";
 
 type SectionProps = {
   /** Used for the heading id, so the section is labelled by its heading. */
@@ -22,35 +28,19 @@ type SectionProps = {
   tone?: SectionTone;
   /** Narrow keeps reading width for text heavy sections. */
   width?: "wide" | "narrow";
-  /** Centre only short closing bands. Content stays left aligned. */
-  align?: "left" | "center";
   children?: ReactNode;
 };
 
-/** A page section: 80px vertical rhythm on mobile, 120px on desktop. */
-export function Section({
-  id,
-  eyebrow,
-  title,
-  intro,
-  tone = "white",
-  width = "wide",
-  align = "left",
-  children,
-}: SectionProps) {
+/** A page section in the Home rhythm: a question-led heading, an optional line, then content. */
+export function Section({ id, eyebrow, title, intro, tone = "white", width = "wide", children }: SectionProps) {
   return (
     <section id={id} aria-labelledby={`${id}-heading`} className={toneClass[tone]}>
-      <div className="container-page relative py-20 md:py-30">
+      <div className={bandClass}>
         <div className={width === "narrow" ? "max-w-3xl" : ""}>
-          <SectionHeader
-            id={`${id}-heading`}
-            eyebrow={eyebrow}
-            intro={intro}
-            align={align}
-          >
+          <SectionHeader id={`${id}-heading`} eyebrow={eyebrow} intro={intro}>
             {title}
           </SectionHeader>
-          {children ? <div className="mt-10 md:mt-12">{children}</div> : null}
+          {children ? <div className={bandBodyClass}>{children}</div> : null}
         </div>
       </div>
     </section>
@@ -58,15 +48,13 @@ export function Section({
 }
 
 /**
- * The recurring motif: a short emerald rule above the heading, then an
- * optional eyebrow and intro. A plain text heading reveals line by line
- * once, as it enters (RevealHeading).
+ * An optional eyebrow, the heading and an optional intro, as on Home. A
+ * plain text heading reveals line by line once, as it enters (RevealHeading).
  */
 export function SectionHeader({
   id,
   eyebrow,
   intro,
-  align = "left",
   as: Heading = "h2",
   size = "large",
   children,
@@ -74,25 +62,15 @@ export function SectionHeader({
   id?: string;
   eyebrow?: string;
   intro?: ReactNode;
-  align?: "left" | "center";
   as?: "h2" | "h3";
-  /** Compact for headings inside cards. */
+  /** Compact for headings inside cards, such as a form's. */
   size?: "large" | "compact";
   children: ReactNode;
 }) {
-  const centred = align === "center";
-  const headingClass = `${eyebrow ? "mt-3" : "mt-5"} ${size === "large" ? "text-h2" : "text-2xl leading-tight"}`;
+  const headingClass = `${eyebrow ? "mt-4" : ""} ${size === "large" ? "text-h2" : "text-2xl leading-tight"}`;
   return (
-    <div className={centred ? "mx-auto max-w-3xl text-center" : "max-w-3xl"}>
-      <span
-        aria-hidden="true"
-        className={`block h-0.5 w-10 rounded-full bg-glyph ${centred ? "mx-auto" : ""}`}
-      />
-      {eyebrow ? (
-        <p className="mt-5">
-          <span className="eyebrow">{eyebrow}</span>
-        </p>
-      ) : null}
+    <div className="max-w-3xl">
+      {eyebrow ? <p className="eyebrow">{eyebrow}</p> : null}
       {typeof children === "string" ? (
         <RevealHeading as={Heading} id={id} text={children} className={headingClass} />
       ) : (
@@ -100,10 +78,7 @@ export function SectionHeader({
           {children}
         </Heading>
       )}
-      {/* Body text stays left aligned on phones, even under a centred heading. */}
-      {intro ? (
-        <div className={`mt-4 text-lead text-fg-muted ${centred ? "text-left sm:text-center" : ""}`}>{intro}</div>
-      ) : null}
+      {intro ? <div className="mt-4 text-lead text-ink-muted">{intro}</div> : null}
     </div>
   );
 }

@@ -5,10 +5,11 @@ import { CourseCard } from "@/components/shared/CourseCard";
 import { Hero } from "@/components/shared/Hero";
 import { HomeTeachings, HomeTeachingsSkeleton } from "@/components/shared/HomeTeachings";
 import { ImageSlot } from "@/components/shared/ImageSlot";
-import { NumberedRows } from "@/components/shared/NumberedRows";
 import { Placeholder } from "@/components/shared/Placeholder";
 import { StoreButtons } from "@/components/shared/StoreButtons";
 import { RevealHeading } from "@/components/shared/RevealHeading";
+import { bandClass as band } from "@/components/shared/Section";
+import { StartingRows } from "@/components/shared/StartingRows";
 import { Typewriter } from "@/components/shared/Typewriter";
 import { courseCatalog } from "@/lib/academy";
 import { siteConfig } from "@/lib/site-config";
@@ -17,9 +18,6 @@ export const metadata: Metadata = {
   title: { absolute: "House of Bread Global | Understand the Bible you've been reading" },
   description: siteConfig.description,
 };
-
-// One rhythm for every Home section: 40px on phones, 112px from md.
-const band = "container-page py-10 md:py-28";
 
 /**
  * Home, seven screens in the order of docs/RESET-BRIEF.md section 4, copy
@@ -30,10 +28,6 @@ const band = "container-page py-10 md:py-28";
  */
 export default async function HomePage() {
   const courses = await courseCatalog.listCourses();
-  // Stand-ins until the ministry names the [foundations course] and the
-  // [book-by-book course]: the first and second courses in the catalogue.
-  const courseHref = (index: number): Route =>
-    courses[index] ? (`/academy/${courses[index].slug}` as Route) : "/academy";
 
   return (
     <main id="main" tabIndex={-1}>
@@ -87,29 +81,7 @@ export default async function HomePage() {
       <section aria-labelledby="start-heading" className="bg-surface-mint">
         <div className={band}>
           <RevealHeading id="start-heading" className="max-w-3xl text-h2" text="Where are you starting from?" />
-          <NumberedRows
-            className="mt-6 md:mt-12"
-            items={[
-              {
-                title: "New to the Bible.",
-                text: "Start with the foundations: what the Bible is and how to read it.",
-                href: courseHref(0),
-                action: "Start this course",
-              },
-              {
-                title: "You know the stories, but not how they connect.",
-                text: "Go book by book and see the whole picture.",
-                href: courseHref(1),
-                action: "Start this course",
-              },
-              {
-                title: "You're carrying a question.",
-                text: "Ask it. You don't need to give your name.",
-                href: "/ask",
-                action: "Ask a question",
-              },
-            ]}
-          />
+          <StartingRows courses={courses} className="mt-6 md:mt-12" />
         </div>
       </section>
 
