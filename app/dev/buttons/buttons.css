@@ -1,5 +1,6 @@
 /*
-  Three classic button options for review (/dev/buttons). Tokens only: every
+  Three classic button options for review (/dev/buttons), imported by that
+  route only, every class prefixed bo-. Tokens only: every
   colour is a var() from app/globals.css. Text pairings match the current
   buttons (white on fill-primary, emerald-deep on tint and on surfaces),
   already checked by npm run contrast. Hairlines are decorative. Hover and
@@ -9,7 +10,7 @@
   side by side states row.
 */
 
-.base {
+.bo-base {
   position: relative;
   isolation: isolate;
   display: inline-flex;
@@ -24,19 +25,19 @@
   cursor: pointer;
 }
 
-.sm {
+.bo-sm {
   min-height: 2.75rem;
   padding: 0.5rem 1.25rem;
 }
 
 @media (min-width: 640px) {
-  .base:not(.sm) {
+  .bo-base:not(.bo-sm) {
     min-height: 3.25rem;
   }
 }
 
 /* A: Bookplate. Literata small caps, 3px radius, a double rule. */
-.a {
+.bo-a {
   border-radius: 3px;
   font-family: var(--font-serif);
   font-weight: 600;
@@ -45,7 +46,7 @@
   letter-spacing: 0.09em;
 }
 
-.aPrimary {
+.bo-aPrimary {
   background-color: var(--fill-primary);
   color: var(--on-fill);
   box-shadow:
@@ -53,57 +54,64 @@
     inset 0 0 0 4px var(--hairline-on-fill);
 }
 
-.aPrimary:hover,
-.aPrimary[data-force="hover"] {
+.bo-aPrimary:hover,
+.bo-aPrimary[data-force="hover"] {
   background-color: var(--fill-hover);
   box-shadow:
     inset 0 0 0 3px var(--fill-hover),
     inset 0 0 0 4px var(--hairline-on-fill);
 }
 
-.aPrimary:active,
-.aPrimary[data-force="press"] {
+.bo-aPrimary:active,
+.bo-aPrimary[data-force="press"] {
   background-color: var(--fill-press);
   box-shadow:
     inset 0 0 0 3px var(--fill-press),
     inset 0 0 0 4px var(--hairline-on-fill);
 }
 
-.aSecondary {
+.bo-aSecondary {
   background-color: transparent;
   color: var(--emerald-deep);
-  box-shadow:
-    inset 0 0 0 1px var(--glyph),
-    inset 0 0 0 4px transparent,
-    inset 0 0 0 5px var(--border-strong);
+  box-shadow: inset 0 0 0 1px var(--glyph);
 }
 
-.aSecondary:hover,
-.aSecondary[data-force="hover"] {
+/* The inner rule of the double frame, 3px inside the edge, over any band. */
+.bo-aSecondary::after {
+  content: "";
+  position: absolute;
+  inset: 3px;
+  border: 1px solid var(--border-strong);
+  border-radius: 1px;
+  pointer-events: none;
+}
+
+.bo-aSecondary:hover,
+.bo-aSecondary[data-force="hover"] {
   background-color: var(--tint);
 }
 
-.aSecondary:active,
-.aSecondary[data-force="press"] {
+.bo-aSecondary:active,
+.bo-aSecondary[data-force="press"] {
   background-color: var(--tint-strong);
 }
 
-.aTertiary {
+.bo-aTertiary {
   background-color: var(--tint-strong);
   color: var(--emerald-deep);
   box-shadow: inset 0 0 0 3px var(--tint-strong), inset 0 0 0 4px var(--border-strong);
 }
 
-.aTertiary:hover,
-.aTertiary[data-force="hover"],
-.aTertiary:active,
-.aTertiary[data-force="press"] {
+.bo-aTertiary:hover,
+.bo-aTertiary[data-force="hover"],
+.bo-aTertiary:active,
+.bo-aTertiary[data-force="press"] {
   background-color: var(--tint-press);
   box-shadow: inset 0 0 0 3px var(--tint-press), inset 0 0 0 4px var(--glyph);
 }
 
 /* B: Ruled. Literata sentence case, 2px radius, a rule drawn under the label on hover. */
-.b {
+.bo-b {
   border-radius: 2px;
   font-family: var(--font-serif);
   font-weight: 500;
@@ -111,12 +119,12 @@
   letter-spacing: 0.01em;
 }
 
-.b .label {
+.bo-b .bo-label {
   position: relative;
   padding-bottom: 0.2em;
 }
 
-.b .label::after {
+.bo-b .bo-label::after {
   content: "";
   position: absolute;
   left: 0;
@@ -128,51 +136,51 @@
   transform-origin: 50% 50%;
 }
 
-.b:hover .label::after,
-.b[data-force="hover"] .label::after,
-.b:focus-visible .label::after {
+.bo-b:hover .bo-label::after,
+.bo-b[data-force="hover"] .bo-label::after,
+.bo-b:focus-visible .bo-label::after {
   transform: scaleX(1);
 }
 
-.bPrimary {
+.bo-bPrimary {
   background-color: var(--fill-primary);
   color: var(--on-fill);
   box-shadow: inset 0 0 0 1px var(--hairline-on-fill);
 }
 
-.bPrimary .label::after {
+.bo-bPrimary .bo-label::after {
   background-color: var(--rule-on-fill);
 }
 
-.bPrimary:active,
-.bPrimary[data-force="press"] {
+.bo-bPrimary:active,
+.bo-bPrimary[data-force="press"] {
   background-color: var(--fill-press);
 }
 
-.bSecondary {
+.bo-bSecondary {
   background-color: transparent;
   color: var(--emerald-deep);
   box-shadow: inset 0 0 0 1px var(--glyph);
 }
 
-.bSecondary:active,
-.bSecondary[data-force="press"] {
+.bo-bSecondary:active,
+.bo-bSecondary[data-force="press"] {
   background-color: var(--tint);
 }
 
-.bTertiary {
+.bo-bTertiary {
   background-color: var(--tint-strong);
   color: var(--emerald-deep);
   box-shadow: inset 0 0 0 1px var(--border-strong);
 }
 
-.bTertiary:active,
-.bTertiary[data-force="press"] {
+.bo-bTertiary:active,
+.bo-bTertiary[data-force="press"] {
   background-color: var(--tint-press);
 }
 
 /* C: Engraved. Geist small caps, wide tracking, 6px radius, a fill that sweeps in from the left. */
-.c {
+.bo-c {
   border-radius: 6px;
   font-family: var(--font-sans);
   font-weight: 600;
@@ -181,7 +189,7 @@
   letter-spacing: 0.16em;
 }
 
-.c::before {
+.bo-c::before {
   content: "";
   position: absolute;
   inset: 0;
@@ -190,76 +198,87 @@
   transform-origin: 0 50%;
 }
 
-.c:hover::before,
-.c[data-force="hover"]::before,
-.c:active::before,
-.c[data-force="press"]::before {
+/* The lines sit on a layer above the sweep. */
+.bo-c::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid var(--bo-line);
+  border-radius: inherit;
+  outline: 1px solid var(--bo-inner, transparent);
+  outline-offset: -4px;
+  pointer-events: none;
+}
+
+.bo-c:hover::before,
+.bo-c[data-force="hover"]::before,
+.bo-c:active::before,
+.bo-c[data-force="press"]::before {
   transform: scaleX(1);
 }
 
-.cPrimary {
+.bo-cPrimary {
   background-color: var(--fill-primary);
   color: var(--on-fill);
-  box-shadow: inset 0 0 0 1px var(--hairline-on-fill);
+  --bo-line: var(--hairline-on-fill);
 }
 
-.cPrimary::before {
+.bo-cPrimary::before {
   background-color: var(--fill-hover);
 }
 
-.cPrimary:active::before,
-.cPrimary[data-force="press"]::before {
+.bo-cPrimary:active::before,
+.bo-cPrimary[data-force="press"]::before {
   background-color: var(--fill-press);
 }
 
-.cSecondary {
+.bo-cSecondary {
   background-color: transparent;
   color: var(--emerald-deep);
-  box-shadow:
-    inset 0 0 0 1px var(--glyph),
-    inset 0 0 0 3px transparent,
-    inset 0 0 0 4px var(--border);
+  --bo-line: var(--glyph);
+  --bo-inner: var(--border-strong);
 }
 
-.cSecondary::before {
+.bo-cSecondary::before {
   background-color: var(--tint);
 }
 
-.cSecondary:active::before,
-.cSecondary[data-force="press"]::before {
+.bo-cSecondary:active::before,
+.bo-cSecondary[data-force="press"]::before {
   background-color: var(--tint-strong);
 }
 
-.cTertiary {
+.bo-cTertiary {
   background-color: var(--tint-strong);
   color: var(--emerald-deep);
-  box-shadow: inset 0 0 0 1px var(--border-strong);
+  --bo-line: var(--border-strong);
 }
 
-.cTertiary::before {
+.bo-cTertiary::before {
   background-color: var(--tint-press);
 }
 
 /* Disabled, every option: muted, dashed for outlines, no hover. */
-.base:disabled {
+.bo-base:disabled {
   cursor: not-allowed;
   background-color: var(--fill-disabled);
   color: var(--on-fill);
   box-shadow: none;
 }
 
-.base:disabled::before,
-.base:disabled .label::after {
+.bo-base:disabled::before,
+.bo-base:disabled::after,
+.bo-base:disabled .bo-label::after {
   display: none;
 }
 
 /* The line reveal and the sweep move only with Motion On and no reduced motion. */
 @media (prefers-reduced-motion: no-preference) {
-  :global(html:not([data-motion="off"])) .b .label::after {
+  html:not([data-motion="off"]) .bo-b .bo-label::after {
     transition: transform 260ms var(--ease-out);
   }
 
-  :global(html:not([data-motion="off"])) .c::before {
+  html:not([data-motion="off"]) .bo-c::before {
     transition: transform 320ms var(--ease-out);
   }
 }

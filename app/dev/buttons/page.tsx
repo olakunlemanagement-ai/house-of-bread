@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 import { buttonClasses } from "@/components/shared/Button";
 import { ThemeToggle } from "@/components/shared/theme/ThemeToggle";
-import s from "./buttons.module.css";
+import "./buttons.css";
 
 // A preview for choosing the site's button style (28 October 2026). Not in
 // the sitemap or the nav, never indexed, and a 404 on the production
@@ -27,21 +27,21 @@ const options: {
     name: "A. Bookplate",
     summary:
       "Literata in small caps, letter spaced, on a 3px radius. A fine hairline sits 3px inside the edge, like the double rule of a bookplate. Hover shifts the fill.",
-    classes: { primary: s.aPrimary, secondary: s.aSecondary, tertiary: s.aTertiary },
+    classes: { primary: "bo-aPrimary", secondary: "bo-aSecondary", tertiary: "bo-aTertiary" },
   },
   {
     key: "b",
     name: "B. Ruled",
     summary:
       "Literata in sentence case on a 2px radius, edged with one 1px hairline. On hover a fine rule draws out beneath the label from its centre.",
-    classes: { primary: s.bPrimary, secondary: s.bSecondary, tertiary: s.bTertiary },
+    classes: { primary: "bo-bPrimary", secondary: "bo-bSecondary", tertiary: "bo-bTertiary" },
   },
   {
     key: "c",
     name: "C. Engraved",
     summary:
       "Geist in small caps with wide tracking on a 6px radius, an inset hairline inside the outline. On hover a deeper fill sweeps in from the left.",
-    classes: { primary: s.cPrimary, secondary: s.cSecondary, tertiary: s.cTertiary },
+    classes: { primary: "bo-cPrimary", secondary: "bo-cSecondary", tertiary: "bo-cTertiary" },
   },
 ];
 
@@ -71,9 +71,9 @@ function OptionButton({
       type="button"
       disabled={disabled}
       data-force={force}
-      className={`${s.base} ${s[option.key]} ${option.classes[variant]} ${size === "sm" ? s.sm : ""}`}
+      className={`bo-base bo-${option.key} ${option.classes[variant]} ${size === "sm" ? "bo-sm" : ""}`}
     >
-      <span className={s.label}>{children}</span>
+      <span className="bo-label">{children}</span>
     </button>
   );
 }
