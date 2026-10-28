@@ -1,7 +1,6 @@
 import Link from "next/link";
 import type { Route } from "next";
 import type { BookGroup, BookListing } from "@/lib/content/book-groups";
-import { Icon } from "./icons";
 
 type BookGridProps = {
   groups: BookGroup[];
@@ -24,13 +23,12 @@ export function BookGrid({ groups, books }: BookGridProps) {
             <ul className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
               {items.map((book) =>
                 book.hasPage ? (
-                  <li key={book.slug} className="lift rounded-tile">
+                  <li key={book.slug} className="rounded-tile">
                     <Link
                       href={`/new-testament/${book.slug}` as Route}
-                      className="flex min-h-18 items-center justify-between gap-2 rounded-tile border border-border-strong bg-surface px-4 py-3 font-serif text-lg font-semibold text-emerald-deep shadow-soft"
+                      className="flex min-h-18 items-center rounded-tile border border-border-strong bg-surface-raised px-4 py-3 font-serif text-lg font-semibold text-emerald-deep hover:border-glyph"
                     >
                       {book.name}
-                      <Icon name="arrow-right" className="size-4 shrink-0" />
                     </Link>
                   </li>
                 ) : (

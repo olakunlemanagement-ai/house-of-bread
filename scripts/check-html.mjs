@@ -96,7 +96,7 @@ const PATTERNS = [
   { pattern: /^\/academy\/[^/]+$/, key: "What you'll learn" },
   { pattern: /^\/events\/[^/]+$/, key: "About this session" },
   { pattern: /^\/teachings\/[^/]+$/, key: "Related teachings" },
-  { pattern: /^\/new-testament\/[^/]+$/, key: "Browse all 27 books" },
+  { pattern: /^\/new-testament\/[^/]+$/, key: "See all 27 books" },
   { pattern: /^\/plans\/[^/]+$/, key: "About this journey" },
 ];
 

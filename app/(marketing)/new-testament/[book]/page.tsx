@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import type { Route } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AppBand } from "@/components/shared/AppBand";
 import { ButtonLink } from "@/components/shared/Button";
-import { Icon } from "@/components/shared/icons";
+import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { PlaceholderBadge } from "@/components/shared/Placeholder";
 import { MdxBody } from "@/components/shared/MdxBody";
+import { bandClass } from "@/components/shared/Section";
 import { getAll, getEntry } from "@/lib/content";
 import { bookListings, type BookListing } from "@/lib/content/book-groups";
 
@@ -41,18 +41,14 @@ function Neighbour({ book, direction }: { book: BookListing; direction: "previou
   const content = (
     <>
       <span className="eyebrow block">{label}</span>
-      <span className="mt-2 flex items-center gap-2 font-serif text-2xl font-semibold">
-        {direction === "previous" ? <Icon name="arrow-left" className="size-5" /> : null}
-        {book.name}
-        {direction === "next" ? <Icon name="arrow-right" className="size-5" /> : null}
-      </span>
+      <span className="mt-2 block font-serif text-2xl font-semibold">{book.name}</span>
     </>
   );
-  const align = direction === "next" ? "sm:text-right sm:[&>span]:justify-end" : "";
+  const align = direction === "next" ? "sm:text-right" : "";
   return book.hasPage ? (
     <Link
       href={`/new-testament/${book.slug}` as Route}
-      className={`lift block rounded-card border border-border-strong bg-surface p-6 text-emerald-deep shadow-soft ${align}`}
+      className={`block rounded-card border border-border-strong bg-surface-raised p-6 text-emerald-deep hover:border-glyph ${align}`}
     >
       {content}
     </Link>
@@ -68,7 +64,7 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
   const { book } = await params;
   const match = findBook(book);
   if (!match) notFound();
-  const { found, listing: entry, previous, next } = match;
+  const { found, previous, next } = match;
 
   return (
     <main id="main" tabIndex={-1}>
@@ -79,18 +75,16 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
         meta={found.data.placeholder ? <PlaceholderBadge label="Sample" /> : null}
         actions={
           <>
-            <ButtonLink href="/app">
-              Read this book in the app
-            </ButtonLink>
+            <ButtonLink href="/app">Get the app</ButtonLink>
             <ButtonLink href="/new-testament" variant="secondary">
-              Browse all 27 books
+              See all 27 books
             </ButtonLink>
           </>
         }
       />
 
       <article aria-labelledby="book-heading" className="bg-surface">
-        <div className="container-page py-18 md:py-24">
+        <div className={bandClass}>
           <div className="mx-auto max-w-[68ch]">
             <h2 id="book-heading" className="sr-only">
               {found.data.title}
@@ -107,11 +101,9 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
         </div>
       </nav>
 
-      <AppBand
-        idPrefix="book-app"
-        heading={`Read ${entry.name} in the app`}
-        action={{ href: "/app", label: "Read this book in the app" }}
-      />
+      <NextStep tone="warm" title="Want a guide through it?" text="Our free courses take you through it, one lesson at a time.">
+        <ButtonLink href="/academy">Browse free courses</ButtonLink>
+      </NextStep>
     </main>
   );
 }
