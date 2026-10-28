@@ -65,9 +65,9 @@ export function StartingCards({ courses }: { courses: Course[] }) {
           <li
             key={card.slot}
             data-pos={index === 0 ? "left" : index === 1 ? "mid" : "right"}
-            className="fan-card flex flex-col rounded-[2rem] border border-border bg-surface-raised p-3 shadow-raised md:w-56 lg:w-72"
+            className="fan-card flex flex-col rounded-[2rem] border border-border bg-surface-raised p-3 shadow-raised md:w-56 lg:w-80"
           >
-            <ImageSlot id={card.slot} sizes="(min-width: 1024px) 18rem, (min-width: 768px) 14rem, 100vw" />
+            <ImageSlot id={card.slot} sizes="(min-width: 1024px) 20rem, (min-width: 768px) 14rem, 100vw" />
             <div className="flex flex-1 flex-col px-2 pb-2 pt-5 sm:px-3">
               <p aria-hidden="true" className="font-serif text-2xl leading-none text-emerald-deep">
                 {String(index + 1).padStart(2, "0")}
