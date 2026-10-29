@@ -67,14 +67,14 @@ export function PageHeader({
             {eyebrow}
           </p>
           <h1
-            className={`mt-5 max-w-3xl text-display ${center ? "mx-auto font-semibold" : ""} ${smooth}`}
+            className={`mt-5 ${center ? "mx-auto max-w-4xl text-display-lg font-semibold" : "max-w-3xl text-display"} ${smooth}`}
             style={stagger(120)}
           >
             {title}
           </h1>
           {lead ? (
             <p
-              className={`mt-5 max-w-2xl text-lead ${center ? "mx-auto font-semibold text-ink" : "text-ink-muted"} ${smooth}`}
+              className={`${center ? "mt-6 mx-auto max-w-3xl text-lead-lg font-semibold text-ink" : "mt-5 max-w-2xl text-lead text-ink-muted"} ${smooth}`}
               style={stagger(260)}
             >
               {lead}

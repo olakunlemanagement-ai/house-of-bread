@@ -521,11 +521,18 @@ html:has(main [data-hero-tone="night"]) [data-site-header] .logo-mark {
   --text-display: clamp(2.25rem, 1.6rem + 2.4vw, 3.5rem);
   --text-display--line-height: 1.1;
   --text-display--letter-spacing: -0.015em;
+  /* The centred night hero (About): a step above display, 40 to 68px. */
+  --text-display-lg: clamp(2.5rem, 1.6rem + 3.6vw, 4.25rem);
+  --text-display-lg--line-height: 1.06;
+  --text-display-lg--letter-spacing: -0.02em;
   --text-h2: clamp(1.75rem, 1.35rem + 1.2vw, 2.25rem);
   --text-h2--line-height: 1.2;
   --text-h2--letter-spacing: -0.01em;
   --text-lead: 1.125rem;
   --text-lead--line-height: 1.65;
+  /* The centred night hero's lead: 20px on phones, 23px on wide screens. */
+  --text-lead-lg: clamp(1.25rem, 1.1rem + 0.5vw, 1.4375rem);
+  --text-lead-lg--line-height: 1.55;
 
   --shadow-soft: var(--elev-soft);
   --shadow-raised: var(--elev-raised);

@@ -1481,6 +1481,12 @@ lighter than 80% and is checked over pure white, the same in both themes
 
 The header mark takes the dark theme's white tile over it.
 
+The centred hero sets a step above the inner page scale (29 October
+2026, the ministry asked for it a bit larger): the title in
+`text-display-lg` (40 to 68px, against display's 36 to 56px) and the lead
+in `text-lead-lg` (20 to 23px, against 18px). Larger text only eases the
+ratios above.
+
 ### New pairings, WCAG 2.2 AA (npm run contrast)
 
 | Pairing | Light | Dark |
