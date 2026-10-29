@@ -24,7 +24,7 @@ export function AppMockup({ rule, nextSessionIso }: { rule: WeeklyRule; nextSess
         <div aria-hidden="true" className="relative">
           <PhoneFrame className="mx-auto" />
           {/* Illustrative progress card over the phone's lower right. */}
-          <div className={`${floating} bottom-10 right-0 w-48 sm:-right-4 sm:w-56`}>
+          <div className={`${floating} bottom-10 right-0 w-44 sm:-right-4 sm:w-56`}>
             <p className="font-serif text-base font-semibold leading-snug text-emerald-deep">30 Day NT Journey</p>
             <p className="mt-1 text-sm text-ink-muted">Day 1 of 30</p>
             <div className="mt-3 h-2 overflow-hidden rounded-full bg-surface-mint">
@@ -34,8 +34,8 @@ export function AppMockup({ rule, nextSessionIso }: { rule: WeeklyRule; nextSess
         </div>
       </div>
       {/* The real next session, over the phone's upper left. */}
-      <div className={`${floating} left-0 top-16 w-48 sm:-left-6 sm:w-60`}>
-        <p className="eyebrow eyebrow-dot leading-tight">Next live session</p>
+      <div className={`${floating} left-0 top-16 w-52 sm:-left-6 sm:w-60`}>
+        <p className="eyebrow eyebrow-dot whitespace-nowrap leading-tight">Next live session</p>
         <p className="mt-3 font-serif text-base font-semibold leading-snug text-emerald-deep">Live teaching</p>
         <p className="mt-1 text-xs leading-snug text-ink-muted">
           <NextSessionTime rule={rule} serverIso={nextSessionIso} />
@@ -45,7 +45,8 @@ export function AppMockup({ rule, nextSessionIso }: { rule: WeeklyRule; nextSess
   );
 }
 
-const floating = "glass-card absolute z-10 rounded-tile border border-(--glass-border) p-4";
+// Tighter below sm, so the cards cover less of the phone on a 320 to 375 screen.
+const floating = "glass-card absolute z-10 rounded-tile border border-(--glass-border) p-3 sm:p-4";
 
 /** The phone, drawn in CSS: the app's reading screen at John 6 (KJV), verses 33 to 35. */
 function PhoneFrame({ className = "" }: { className?: string }) {

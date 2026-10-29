@@ -23,11 +23,13 @@ export const PHONE_FRAME: Partial<Record<LoopId, string>> = {
  * negative margin in SiteHeader), so the body's top padding is the header
  * plus the same clear space as the bottom padding: the content is centred
  * in the screen below the header. scripts/check-noscript.mjs measures it at
- * 375, 768 and 1280.
+ * 375, 768 and 1280. On a short screen (a phone held sideways, 32rem tall
+ * or less) the clear space drops to 2rem, so the headline is not pushed
+ * below the fold by padding alone.
  */
 export const heroFrameClass = "relative flex min-h-svh flex-col overflow-hidden bg-surface";
 export const heroBodyClass =
-  "container-page relative z-10 w-full flex-1 pb-16 pt-32 sm:pb-20 sm:pt-36";
+  "container-page relative z-10 w-full flex-1 pb-16 pt-32 sm:pb-20 sm:pt-36 [@media(max-height:32rem)]:pb-8 [@media(max-height:32rem)]:pt-24";
 
 const phoneFrame =
   "max-md:inset-auto max-md:left-1/2 max-md:top-1/2 max-md:min-h-full max-md:min-w-full max-md:-translate-x-1/2 max-md:-translate-y-1/2";

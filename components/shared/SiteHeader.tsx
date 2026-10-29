@@ -35,7 +35,7 @@ export function SiteHeader() {
           aria-label="House of Bread Global, home"
           className="shrink-0 rounded-lg py-2 text-sm text-ink sm:text-base"
         >
-          <Logo priority />
+          <Logo priority compact />
         </Link>
 
         <nav aria-label="Main" className="hidden lg:block">

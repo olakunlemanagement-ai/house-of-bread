@@ -25,7 +25,11 @@ export function Logo({
   /** The footer: the mark sits in a white rounded tile (see above). */
   onDeep?: boolean;
   className?: string;
-  /** Hide the name on very narrow screens (the header), keeping the mark. */
+  /**
+   * Hide the name below 375px (the header), keeping the mark: at 320 and 360 the
+   * name, the theme switch and the Menu button would overflow the screen.
+   * The link around the logo carries the full name as its label.
+   */
   compact?: boolean;
 }) {
   return (
@@ -37,7 +41,7 @@ export function Logo({
       >
         <Image src={mark} alt="" priority={priority} sizes="36px" className="h-full w-auto" />
       </span>
-      <span className={compact ? "hidden min-[480px]:inline" : ""}>
+      <span className={compact ? "hidden min-[375px]:inline" : ""}>
         <Wordmark className="tracking-[0.14em] sm:tracking-[0.18em]" />
       </span>
     </span>
