@@ -6,7 +6,7 @@ import { NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
-import { StartingRows } from "@/components/shared/StartingRows";
+import { StartingCards } from "@/components/shared/StartingCards";
 import { courseCatalog } from "@/lib/academy";
 import { academyCopy as copy } from "@/lib/content/copy";
 
@@ -43,14 +43,14 @@ export default async function AcademyPage() {
       />
 
       <Section id="start" title="Where are you starting from?" tone="mint">
-        <StartingRows courses={courses} />
+        <StartingCards courses={courses} />
       </Section>
 
       <Section id="courses" title="Which course will you start with?">
         {courses.length > 0 ? (
           <ul className={`grid gap-4 md:gap-5 ${courseGrid}`}>
             {courses.map((course) => (
-              <CourseCard key={course.slug} course={course} showStatus />
+              <CourseCard key={course.slug} course={course} />
             ))}
           </ul>
         ) : (

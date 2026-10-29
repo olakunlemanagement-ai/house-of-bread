@@ -3,6 +3,7 @@
 // run this under plain Node.
 
 import { z } from "zod";
+import { IMAGE_SLOT_IDS, type ImageSlotId } from "../media/image-slots.ts";
 import { bookById, canonicalise, parseReference } from "../scripture/index.ts";
 
 const isoDate = z.iso.date({ error: "must be a date written as YYYY-MM-DD" });
@@ -51,22 +52,120 @@ export const planSchema = z.strictObject({
   pace: z.string().min(1),
 });
 
-export const classSchema = z.strictObject({
-  ...shared,
-  audience: z.string().min(1).optional(),
-  schedule: z.string().min(1).optional(),
-  joinUrl: z.url({ protocol: /^https$/, error: "must be an https URL" }).optional(),
-  cost: z.string().min(1).optional(),
-  /** Number of lessons, shown on course cards. Until supplied, cards show "[6]". */
-  lessons: z.number().int().positive().optional(),
-  /** Typical length of one lesson in minutes. Until supplied, cards show "[20]". */
-  minutesPerLesson: z.number().int().positive().optional(),
-  /** "What you'll learn" on the course page: three to five short lines. */
-  outcomes: z.array(z.string().min(1)).min(3).max(5).optional(),
-  /** "Lessons" on the course page: the lesson titles, in order. */
-  outline: z.array(z.string().min(1)).min(1).optional(),
-  /** Who teaches it. Until supplied, the page shows "[Isaac Ola]". */
-  teacher: z.string().min(1).optional(),
+// House of Bread Academy: Category, Course (with its Sections), Lesson.
+// Totals (lessons and time per section and course) are computed in
+// lib/academy, never typed here. Cross-file rules (a lesson's course and
+// section exist, lesson numbers run 1 to N, one Start Here course) live in
+// lib/content/academy-checks.ts.
+
+const slugValue = z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "must be lower case words joined by hyphens");
+const youtubeId = z.string().regex(/^[A-Za-z0-9_-]{11}$/, "must be a YouTube video id (11 characters)");
+const positiveInt = z.number().int().positive();
+const isImageSlotId = (value: unknown): value is ImageSlotId =>
+  typeof value === "string" && (IMAGE_SLOT_IDS as readonly string[]).includes(value);
+/** An image slot id from lib/media/image-slots.ts. */
+const imageSlot = z.custom<ImageSlotId>(isImageSlotId, {
+  error: (issue) => `"${String(issue.input)}" is not an image slot in lib/media/image-slots.ts`,
+});
+/** A downloadable file, served from /public/academy. PDF only for now. */
+const academyFile = z.string().regex(/^\/academy\/[a-z0-9][a-z0-9/-]*\.pdf$/, "must be a PDF path under /academy, for example /academy/notes/lesson-1.pdf");
+
+export const academyCategorySchema = z.strictObject({
+  title: z.string().min(1),
+  slug: slugValue,
+  /** Display order on /academy, 1 first. */
+  order: positiveInt,
+  placeholder: z.boolean().default(false),
+});
+
+/** Course tags, a fixed list so the labels stay consistent. */
+export const courseTags = ["New", "Small-group guide"] as const;
+export const resourceKinds = ["PDF"] as const;
+
+const sectionSchema = z.strictObject({
+  number: positiveInt,
+  title: z.string().min(1),
+  /** One paragraph. */
+  description: z.string().min(1),
+  image: imageSlot,
+});
+
+/** Brackets mark a placeholder; the reference inside them is still checked. */
+const unbracket = (value: string) => value.replace(/^\[(.*)\]$/, "$1");
+
+export const academyCourseSchema = z
+  .strictObject({
+    title: shared.title,
+    slug: shared.slug,
+    /** Opens with a question, then two or three sentences. */
+    description: shared.description,
+    date: shared.date,
+    updated: shared.updated,
+    placeholder: shared.placeholder,
+    /** The passage the course covers, canonical, for example "Matthew 1-4". */
+    scriptureRange: z.string().min(1),
+    teacher: z.string().min(1).default("[Isaac Ola]"),
+    /** "Meet your teacher", one or two short paragraphs. */
+    teacherBio: z.string().min(1).optional(),
+    /** A category slug from content/academy/categories. */
+    category: slugValue,
+    /** Order within its category, 1 first. */
+    order: positiveInt,
+    /** The one course pinned beside the catalogue for newcomers. */
+    startHere: z.boolean().default(false),
+    tags: z.array(z.enum(courseTags)).default([]),
+    /** "What you'll learn". */
+    outcomes: z.array(z.string().min(1)).min(3).max(9),
+    image: imageSlot,
+    trailerVideoId: youtubeId.optional(),
+    resources: z
+      .array(z.strictObject({ title: z.string().min(1), kind: z.enum(resourceKinds), file: academyFile.optional() }))
+      .default([]),
+    sections: z.array(sectionSchema).min(1),
+  })
+  .superRefine((data, ctx) => {
+    // The first sentence is a question: nothing ends a sentence before the first "?".
+    if (!/^[^.!]*\?/.test(data.description)) {
+      ctx.addIssue({ code: "custom", path: ["description"], message: "must open with a question, ending in ?" });
+    }
+    const bracketed = /^\[.*\]$/.test(data.scriptureRange);
+    if (bracketed && !data.placeholder) {
+      ctx.addIssue({ code: "custom", path: ["scriptureRange"], message: "is in [brackets], so the course must be marked placeholder: true" });
+    }
+    const range = unbracket(data.scriptureRange);
+    const parsed = parseReference(range);
+    if (!parsed.ok) {
+      ctx.addIssue({ code: "custom", path: ["scriptureRange"], message: parsed.error });
+    } else if (canonicalise(range) !== range) {
+      ctx.addIssue({ code: "custom", path: ["scriptureRange"], message: `write "${range}" in canonical form as "${canonicalise(range)}"` });
+    }
+    data.sections.forEach((section, index) => {
+      if (section.number !== index + 1) {
+        ctx.addIssue({ code: "custom", path: ["sections", index, "number"], message: `must be ${index + 1}: sections are numbered 1, 2, 3 in order` });
+      }
+    });
+  });
+
+export const academyLessonSchema = z.strictObject({
+  title: z.string().min(1),
+  /** Must match the file name. The URL is /academy/<course>/<slug>. */
+  slug: slugValue,
+  /** The course slug. Must match the folder: content/academy/lessons/<course>/. */
+  course: slugValue,
+  /** The section number within the course. */
+  section: positiveInt,
+  /** Position in the whole course, 1 to N across every section. */
+  number: positiveInt,
+  /** One line. */
+  description: z.string().min(1),
+  minutes: z.number().int().positive().max(600),
+  videoId: youtubeId.optional(),
+  /** Plain text, paragraphs separated by a blank line. Moves to content/transcripts in stage two. */
+  transcript: z.string().min(1).optional(),
+  reflection: z.strictObject({ question: z.string().min(1), response: z.string().min(1) }).optional(),
+  /** The lesson's notes as a PDF, for "Download notes". */
+  notesFile: academyFile.optional(),
+  placeholder: z.boolean().default(false),
 });
 
 export const eventKinds = ["live", "training", "meeting"] as const;
@@ -133,7 +232,9 @@ export const schemas = {
   book: bookSchema,
   plan: planSchema,
   event: eventSchema,
-  class: classSchema,
+  academyCategory: academyCategorySchema,
+  academyCourse: academyCourseSchema,
+  academyLesson: academyLessonSchema,
   video: videoSchema,
 } as const;
 
@@ -144,7 +245,9 @@ export const contentDirs: Record<ContentType, string> = {
   book: "books",
   plan: "plans",
   event: "events",
-  class: "classes",
+  academyCategory: "academy/categories",
+  academyCourse: "academy/courses",
+  academyLesson: "academy/lessons",
   video: "videos",
 };
 
@@ -154,7 +257,9 @@ export type TeachingData = ContentData["teaching"];
 export type BookData = ContentData["book"];
 export type PlanData = ContentData["plan"];
 export type EventData = ContentData["event"];
-export type ClassData = ContentData["class"];
+export type AcademyCategoryData = ContentData["academyCategory"];
+export type AcademyCourseData = ContentData["academyCourse"];
+export type AcademyLessonData = ContentData["academyLesson"];
 export type VideoData = ContentData["video"];
 export type EventKind = EventData["kind"];
 export type EventStatus = EventData["status"];

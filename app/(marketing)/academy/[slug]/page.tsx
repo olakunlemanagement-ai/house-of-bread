@@ -43,11 +43,11 @@ export default async function CoursePage({ params }: PageProps<"/academy/[slug]"
   const courses = await courseCatalog.listCourses();
   const index = courses.findIndex((item) => item.slug === course.slug);
   const next = courses[index + 1];
-  const open = course.status === "open" && course.joinUrl;
-  const lessons = course.lessons ?? <Placeholder>[N]</Placeholder>;
-  const minutes = course.minutesPerLesson ?? <Placeholder>[N]</Placeholder>;
+  const open = false;
+  const lessons = course.lessons;
+  const minutes = course.minutesPerLesson;
   const outcomes = course.outcomes ?? placeholderOutcomes;
-  const outline = course.outline ?? placeholderOutline;
+  const outline = course.sections.flatMap((section) => section.lessons.map((lesson) => lesson.title)) ?? placeholderOutline;
 
   return (
     <main id="main" tabIndex={-1}>
@@ -66,7 +66,7 @@ export default async function CoursePage({ params }: PageProps<"/academy/[slug]"
         }
         actions={
           open ? (
-            <ButtonLink href={course.joinUrl as `https://${string}`}>Start this course</ButtonLink>
+            <ButtonLink href="/academy">Start this course</ButtonLink>
           ) : (
             <ButtonLink href={academyCopy.waitlistHref}>{academyCopy.waitlistLabel}</ButtonLink>
           )
@@ -93,7 +93,7 @@ export default async function CoursePage({ params }: PageProps<"/academy/[slug]"
                 {String(lesson + 1).padStart(2, "0")}
               </span>
               <span className="text-lg leading-snug text-ink">
-                {course.outline ? title : <Placeholder>{title}</Placeholder>}
+                {title}
               </span>
             </li>
           ))}

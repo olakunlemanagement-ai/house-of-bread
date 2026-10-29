@@ -2,11 +2,12 @@
 // and check the MDX body. Pure Node with relative imports, shared by the Next
 // build (lib/content/index.ts) and `npm run content:validate`.
 
-import { readdirSync, readFileSync, existsSync } from "node:fs";
+import { readdirSync, readFileSync, existsSync, statSync } from "node:fs";
 import path from "node:path";
 import { compileSync } from "@mdx-js/mdx";
 import { parseDocument } from "yaml";
 import { parseReference, scriptureVersions } from "../scripture/index.ts";
+import { academyErrors } from "./academy-checks.ts";
 import { contentDirs, schemas, type ContentData, type ContentType } from "./schemas.ts";
 
 export type ContentError = {
@@ -178,6 +179,13 @@ export function parseEntry<T extends ContentType>(type: T, file: string, source:
 
 export type Collection<T extends ContentType> = { entries: Entry<T>[]; errors: ContentError[] };
 
+/**
+ * Types whose files sit one folder deeper, in a folder per parent:
+ * content/academy/lessons/<course>/<lesson>.mdx. The folder name must match
+ * the entry's `course` field.
+ */
+const nestedTypes: Partial<Record<ContentType, "course">> = { academyLesson: "course" };
+
 /** Loads every `.mdx` file of one type under `root/content`. A missing folder is an empty collection. */
 export function loadCollection<T extends ContentType>(root: string, type: T): Collection<T> {
   const dir = path.join(root, "content", contentDirs[type]);
@@ -185,16 +193,43 @@ export function loadCollection<T extends ContentType>(root: string, type: T): Co
 
   const entries: Entry<T>[] = [];
   const errors: ContentError[] = [];
-  for (const name of readdirSync(dir).sort()) {
-    const file = `content/${contentDirs[type]}/${name}`;
-    if (name.startsWith(".")) continue;
-    if (!name.endsWith(".mdx")) {
+  const parent = nestedTypes[type];
+
+  const loadFile = (relative: string, folder?: string) => {
+    const file = `content/${contentDirs[type]}/${relative}`;
+    if (!relative.endsWith(".mdx")) {
       errors.push({ file, message: "only .mdx files belong in /content" });
+      return;
+    }
+    const result = parseEntry(type, file, readFileSync(path.join(dir, relative), "utf8"));
+    if (!result.ok) {
+      errors.push(...result.errors);
+      return;
+    }
+    if (parent && folder !== undefined) {
+      const value = (result.entry.data as Record<string, unknown>)[parent];
+      if (value !== folder) {
+        errors.push({ file, field: parent, message: `"${String(value)}" must match the folder name "${folder}"` });
+        return;
+      }
+    }
+    entries.push(result.entry);
+  };
+
+  for (const name of readdirSync(dir).sort()) {
+    if (name.startsWith(".")) continue;
+    if (!parent) {
+      loadFile(name);
       continue;
     }
-    const result = parseEntry(type, file, readFileSync(path.join(dir, name), "utf8"));
-    if (result.ok) entries.push(result.entry);
-    else errors.push(...result.errors);
+    const sub = path.join(dir, name);
+    if (!statSync(sub).isDirectory()) {
+      errors.push({ file: `content/${contentDirs[type]}/${name}`, message: `belongs in a folder named after its ${parent}` });
+      continue;
+    }
+    for (const child of readdirSync(sub).sort()) {
+      if (!child.startsWith(".")) loadFile(`${name}/${child}`, name);
+    }
   }
   return { entries, errors };
 }
@@ -214,9 +249,13 @@ export function loadLibrary(root: string): { library: Library; errors: ContentEr
     book: load("book"),
     plan: load("plan"),
     event: load("event"),
-    class: load("class"),
+    academyCategory: load("academyCategory"),
+    academyCourse: load("academyCourse"),
+    academyLesson: load("academyLesson"),
     video: load("video"),
   };
+  // Rules across files, checked only once every file parses on its own.
+  if (errors.length === 0) errors.push(...academyErrors(library));
   return { library, errors };
 }
 

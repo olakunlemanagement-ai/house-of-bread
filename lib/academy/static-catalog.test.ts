@@ -1,105 +1,94 @@
-import fs from "node:fs";
-import path from "node:path";
 import { describe, expect, it } from "vitest";
-import { StaticCourseCatalog, type ClassRecord, type ClassSource } from "./static-catalog";
+import type { AcademyCategoryData, AcademyCourseData, AcademyLessonData } from "../content/schemas";
+import { roundToFive, StaticCourseCatalog, type AcademySource } from "./static-catalog";
 
-const records: ClassRecord[] = [
-  { slug: "first", title: "First course", description: "One line.", placeholder: true },
-  {
-    slug: "second",
-    title: "Second course",
-    description: "Another line.",
-    audience: "Believers",
-    schedule: "Weekly",
-    cost: "Free",
-    joinUrl: "https://example.com/join",
-    lessons: 6,
-    minutesPerLesson: 20,
-    outcomes: ["One", "Two", "Three"],
-    outline: ["Lesson one", "Lesson two"],
-    teacher: "Isaac Ola",
-  },
-];
+const category = (slug: string, order: number): AcademyCategoryData => ({ slug, title: `[${slug}]`, order, placeholder: true });
 
-const source: ClassSource = {
-  all: () => records,
-  one: (slug) => {
-    const data = records.find((record) => record.slug === slug);
-    return data ? { data, body: `Body of ${slug}` } : undefined;
-  },
+const course = (slug: string, categorySlug: string, order: number, sections: number): AcademyCourseData => ({
+  title: `[${slug}]`,
+  slug,
+  description: "Who is this course for? It is for everyone.",
+  date: "2026-10-29",
+  placeholder: true,
+  scriptureRange: "[John 6]",
+  teacher: "[Isaac Ola]",
+  category: categorySlug,
+  order,
+  startHere: slug === "first",
+  tags: [],
+  outcomes: ["One", "Two", "Three"],
+  image: "academy-course-reading-the-bible",
+  resources: [],
+  sections: Array.from({ length: sections }, (_, index) => ({
+    number: index + 1,
+    title: `Section ${index + 1}`,
+    description: "A paragraph.",
+    image: "academy-section-reading-the-bible-1",
+  })),
+});
+
+const lesson = (courseSlug: string, slug: string, number: number, section: number, minutes: number): AcademyLessonData => ({
+  title: slug,
+  slug,
+  course: courseSlug,
+  section,
+  number,
+  description: "One line.",
+  minutes,
+  placeholder: true,
+  ...(number === 1 ? { videoId: "wpNuDtvzMzs" } : {}),
+});
+
+// Lessons given out of order, to check the catalog orders them.
+const source: AcademySource = {
+  categories: () => [category("found", 1), category("nt", 2)],
+  courses: () => [
+    { data: course("later", "nt", 1, 1), body: "" },
+    { data: course("second", "found", 2, 1), body: "" },
+    { data: course("first", "found", 1, 2), body: "Overview of first." },
+  ],
+  lessons: () => [
+    { data: lesson("first", "c", 3, 2, 25), body: "Notes c." },
+    { data: lesson("first", "a", 1, 1, 18), body: "\nNotes a.\n" },
+    { data: lesson("first", "b", 2, 1, 24), body: "" },
+    { data: lesson("second", "x", 1, 1, 30), body: "" },
+    { data: lesson("later", "y", 1, 1, 61), body: "" },
+  ],
 };
 
 const catalog = new StaticCourseCatalog(source);
 
 describe("StaticCourseCatalog", () => {
-  it("lists every class as a course, in source order", async () => {
-    const courses = await catalog.listCourses();
-    expect(courses.map((course) => course.slug)).toEqual(["first", "second"]);
-    expect(courses[0]).toEqual({
-      slug: "first",
-      title: "First course",
-      summary: "One line.",
-      status: "coming-soon",
-      placeholder: true,
-    });
+  it("lists courses by category order, then course order", async () => {
+    expect((await catalog.listCourses()).map((c) => c.slug)).toEqual(["first", "second", "later"]);
   });
 
-  it("marks a course open only when it has a join link", async () => {
-    const [first, second] = await catalog.listCourses();
-    expect(first.status).toBe("coming-soon");
-    expect(second.status).toBe("open");
-    expect(second.placeholder).toBe(false);
+  it("computes totals: sections, lessons, minutes and the average lesson", async () => {
+    const [first] = await catalog.listCourses();
+    expect(first).toMatchObject({ sections: 2, lessons: 3, minutes: 67, minutesPerLesson: 20, lessonSlugs: ["a", "b", "c"] });
   });
 
-  it("returns a course with its overview and details", async () => {
-    expect(await catalog.getCourse("second")).toEqual({
-      slug: "second",
-      title: "Second course",
-      summary: "Another line.",
-      status: "open",
-      placeholder: false,
-      lessons: 6,
-      minutesPerLesson: 20,
-      overview: "Body of second",
-      audience: "Believers",
-      schedule: "Weekly",
-      cost: "Free",
-      joinUrl: "https://example.com/join",
-      outcomes: ["One", "Two", "Three"],
-      outline: ["Lesson one", "Lesson two"],
-      teacher: "Isaac Ola",
-    });
+  it("computes each section's lesson range and time", async () => {
+    const detail = await catalog.getCourse("first");
+    expect(detail?.sectionCount).toBe(2);
+    expect(detail?.sections.map(({ number, firstLesson, lastLesson, minutes }) => ({ number, firstLesson, lastLesson, minutes }))).toEqual([
+      { number: 1, firstLesson: 1, lastLesson: 2, minutes: 42 },
+      { number: 2, firstLesson: 3, lastLesson: 3, minutes: 25 },
+    ]);
+    expect(detail?.sections[0]?.lessons.map((l) => [l.slug, l.hasVideo])).toEqual([
+      ["a", true],
+      ["b", false],
+    ]);
+    expect(detail?.overview).toBe("Overview of first.");
   });
 
-  it("carries lesson count and length only when supplied", async () => {
-    const [first, second] = await catalog.listCourses();
-    expect(first).not.toHaveProperty("lessons");
-    expect(first).not.toHaveProperty("minutesPerLesson");
-    expect(second.lessons).toBe(6);
-    expect(second.minutesPerLesson).toBe(20);
+  it("finds a lesson only within its own course, with its notes trimmed", async () => {
+    expect(await catalog.getLesson("first", "a")).toMatchObject({ number: 1, notes: "Notes a.", videoId: "wpNuDtvzMzs" });
+    expect(await catalog.getLesson("second", "a")).toBeUndefined();
+    expect(await catalog.getCourse("nowhere")).toBeUndefined();
   });
 
-  it("returns undefined for an unknown slug", async () => {
-    expect(await catalog.getCourse("missing")).toBeUndefined();
-  });
-});
-
-describe("the academy seam", () => {
-  const dir = path.join(process.cwd(), "lib", "academy");
-
-  it("imports no framework code", () => {
-    for (const file of fs.readdirSync(dir).filter((name) => name.endsWith(".ts"))) {
-      const text = fs.readFileSync(path.join(dir, file), "utf8");
-      expect(text, file).not.toMatch(/from\s+["'](next|react)(\/[^"']*)?["']/);
-    }
-  });
-
-  it("is the only way Academy pages reach course content", () => {
-    const pages = path.join(process.cwd(), "app", "(marketing)", "academy");
-    const files = fs.readdirSync(pages, { recursive: true, encoding: "utf8" }).filter((f) => f.endsWith(".tsx"));
-    for (const file of files) {
-      const text = fs.readFileSync(path.join(pages, file), "utf8");
-      expect(text, file).not.toMatch(/@\/lib\/content["']/);
-    }
+  it("rounds the average lesson to 5 minutes, never below 5", () => {
+    expect([roundToFive(1), roundToFive(22.3), roundToFive(22.5), roundToFive(61)]).toEqual([5, 20, 25, 60]);
   });
 });

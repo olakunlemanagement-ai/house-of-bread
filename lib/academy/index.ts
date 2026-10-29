@@ -1,5 +1,5 @@
 import "server-only";
-import { getAll, getEntry } from "../content/index.ts";
+import { getAll, getEntries } from "../content/index.ts";
 import { StaticCourseCatalog } from "./static-catalog.ts";
 import type { CourseCatalog } from "./types.ts";
 
@@ -8,8 +8,19 @@ import type { CourseCatalog } from "./types.ts";
  * the LMS arrives; pages do not change.
  */
 export const courseCatalog: CourseCatalog = new StaticCourseCatalog({
-  all: () => getAll("class"),
-  one: (slug) => getEntry("class", slug),
+  categories: () => getAll("academyCategory"),
+  courses: () => getEntries("academyCourse"),
+  lessons: () => getEntries("academyLesson"),
 });
 
-export type { Course, CourseCatalog, CourseDetail, CourseStatus } from "./types.ts";
+export type {
+  Category,
+  Course,
+  CourseCatalog,
+  CourseDetail,
+  CourseTag,
+  Lesson,
+  LessonSummary,
+  Resource,
+  Section,
+} from "./types.ts";

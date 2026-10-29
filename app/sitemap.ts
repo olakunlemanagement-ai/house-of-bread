@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { courseCatalog } from "@/lib/academy";
 import { getAll } from "@/lib/content";
 import { placeholderPlans } from "@/lib/content/placeholder-data";
 import { siteConfig } from "@/lib/site-config";
@@ -29,10 +30,14 @@ const staticPaths = [
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Teachings: every long-form teaching, episode and series the catalog holds (lib/youtube).
-  const [videos, series] = await Promise.all([watchParams(), seriesParams()]);
+  const [videos, series, courses] = await Promise.all([watchParams(), seriesParams(), courseCatalog.listCourses()]);
   const paths = [
     ...staticPaths,
-    ...getAll("class").map((entry) => `/academy/${entry.slug}`),
+    // The Academy: every course and every lesson.
+    ...courses.flatMap((course) => [
+      `/academy/${course.slug}`,
+      ...course.lessonSlugs.map((lesson) => `/academy/${course.slug}/${lesson}`),
+    ]),
     ...getAll("event").map((entry) => `/events/${entry.slug}`),
     ...getAll("teaching").map((entry) => `/teachings/${entry.slug}`),
     ...getAll("book").map((entry) => `/new-testament/${entry.slug}`),

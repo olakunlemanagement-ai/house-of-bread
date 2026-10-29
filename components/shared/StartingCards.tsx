@@ -1,4 +1,5 @@
 import type { Route } from "next";
+import { startingCourses } from "@/lib/academy/navigation";
 import type { Course } from "@/lib/academy/types";
 import type { ImageSlotId } from "@/lib/media/image-slots";
 import { AskQuestion } from "./AskQuestion";
@@ -23,15 +24,18 @@ type StartingCard = {
  * out from a stack once as they scroll in (FanReveal), and a hovered card
  * lifts a little. Phones stack the same cards with no fan. Motion Off and
  * reduced motion: a still fan, nothing lifts. Each card carries an image
- * slot, its number, title, line and button. Cards 01 and 02 open the first
- * and second courses in the catalogue, stand-ins until the ministry names
- * the [foundations course] and the [book-by-book course]; 03 opens the
- * Ask dialog (AskQuestion), or /ask without script.
- * The Academy keeps the same three as numbered rows (StartingRows).
+ * slot, its number, title, line and button. Card 01 opens the Start Here
+ * course and 02 the first course in another category (startingCourses),
+ * stand-ins until the ministry names the [foundations course] and the
+ * [book-by-book course]; 03 opens the Ask dialog (AskQuestion), or /ask
+ * without script. Home and the Academy show the same fan.
  */
 export function StartingCards({ courses }: { courses: Course[] }) {
-  const courseHref = (index: number): Route =>
-    courses[index] ? (`/academy/${courses[index].slug}` as Route) : "/academy";
+  const starts = startingCourses(courses);
+  const courseHref = (index: 0 | 1): Route => {
+    const course = starts[index];
+    return course ? (`/academy/${course.slug}` as Route) : "/academy";
+  };
   const cards: StartingCard[] = [
     {
       slot: "home-start-new",

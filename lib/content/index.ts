@@ -26,7 +26,11 @@ function sortLibrary(loaded: Library): Library {
     book: [...loaded.book].sort((a, b) => (bookOrder.get(a.data.slug) ?? 0) - (bookOrder.get(b.data.slug) ?? 0)),
     plan: [...loaded.plan].sort((a, b) => a.data.days - b.data.days),
     event: [...loaded.event],
-    class: [...loaded.class].sort((a, b) => a.data.title.localeCompare(b.data.title)),
+    academyCategory: [...loaded.academyCategory].sort((a, b) => a.data.order - b.data.order),
+    academyCourse: [...loaded.academyCourse].sort((a, b) => a.data.order - b.data.order),
+    academyLesson: [...loaded.academyLesson].sort(
+      (a, b) => a.data.course.localeCompare(b.data.course) || a.data.number - b.data.number,
+    ),
     video: [...loaded.video],
   };
 }
@@ -34,6 +38,11 @@ function sortLibrary(loaded: Library): Library {
 /** Frontmatter of every entry of a type, without bodies. Safe to pass to client components. */
 export function getAll<T extends ContentType>(type: T): ContentData[T][] {
   return (getLibrary()[type] as Entry<T>[]).map((entry) => entry.data);
+}
+
+/** Every entry of a type with its body, in the library's order. Server only. */
+export function getEntries<T extends ContentType>(type: T): Entry<T>[] {
+  return getLibrary()[type] as Entry<T>[];
 }
 
 /** One entry with its body, or undefined. */
