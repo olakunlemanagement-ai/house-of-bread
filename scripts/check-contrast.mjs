@@ -217,6 +217,10 @@ const shared = [
   ["Focus ring on mint", "@ring", ["@mint"], UI],
   ["Focus ring on warm", "@ring", ["@warm"], UI],
   ["Focus ring on tint (current pill)", "@ring", ["@tint"], UI],
+  // Teachings (29 October 2026): the series count pill, the Shorts dialog and the watch page breadcrumb.
+  ["Teachings series count: accent on raised pill", "@accent", ["@raised"], TEXT],
+  ["Teachings Shorts dialog: ink on surface", "@ink", ["@surface"], TEXT],
+  ["Teachings breadcrumb link: accent on surface", "@accent", ["@surface"], TEXT],
 ];
 
 /** Light only. Labels keep their earlier wording, so the log stays comparable. */
@@ -309,6 +313,11 @@ const invariant = [
   ["Badge: ink on gold-soft", "ink", ["goldSoft"], TEXT],
   ["Play chip: white on 85% green-night over a white image", "white", ["white", "greenNight/0.85"], TEXT],
   ["Play chip: white on 85% green-night over a black image", "white", ["black", "greenNight/0.85"], TEXT],
+  // Teachings (29 October 2026): the duration badge on thumbnails and the
+  // series name band on its cover, the same white on 85% green-night.
+  ["Teachings duration badge: white on 85% green-night over a white image", "white", ["white", "greenNight/0.85"], TEXT],
+  ["Teachings duration badge: white on 85% green-night over a black image", "white", ["black", "greenNight/0.85"], TEXT],
+  ["Teachings series name band: white on 85% green-night over a white image", "white", ["white", "greenNight/0.85"], TEXT],
   // Social brand marks on their white tiles (UI, 3:1), white in both themes.
   ["Social: YouTube red on white", "#ff0000", ["white"], UI],
   ["Social: Facebook blue on white", "#0866ff", ["white"], UI],

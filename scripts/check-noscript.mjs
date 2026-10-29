@@ -19,7 +19,8 @@ const PAGES = [
   { path: "/", lead: "Courses and teaching that bring you into an accurate understanding" },
   { path: "/about", lead: "The name comes from Bethlehem, the house of bread" },
   { path: "/academy", lead: "Self-paced video lessons that take you through Scripture in context." },
-  { path: "/media", lead: "Every message, in one place." },
+  { path: "/media", lead: "Featured teaching" },
+  { path: "/media/series/PLUHSYJnvnito", lead: "Series" },
   { path: "/events", lead: "New teaching live every Monday at 8 pm Lagos time." },
   { path: "/app", lead: "Daily reading and journeys through the New Testament, in your pocket." },
   { path: "/contact", lead: "Questions about the ministry, live sessions, the Academy or the app are welcome." },
@@ -31,7 +32,10 @@ const PAGES = [
 /** Async regions: the element whose height must not change when content replaces the fallback. */
 const REGIONS = [
   { path: "/", name: "Home teachings", selector: "[data-region='home-teachings']", fallbackLink: true },
-  { path: "/media", name: "Library video grid", selector: "#video .container-page > div > :last-child", fallbackLink: true },
+  // Teachings sections. Their cards link to pages on this site, so no "Watch now" link is expected.
+  { path: "/media", name: "Latest teachings", selector: "[data-region='latest']", watchLink: false },
+  { path: "/media", name: "Bible nuggets", selector: "[data-region='nuggets']", watchLink: false },
+  { path: "/media", name: "Explore series", selector: "[data-region='series']", watchLink: false },
 ];
 
 const VIEWPORTS = [
@@ -234,7 +238,7 @@ try {
   // where the page already carries one in the first HTML.
   console.log('\n"Watch now" without JavaScript, reached by Tab');
   const keyboard = await browser.newContext({ javaScriptEnabled: false, viewport: VIEWPORTS[0] });
-  for (const region of REGIONS) {
+  for (const region of REGIONS.filter((r) => r.watchLink !== false)) {
     const page = await keyboard.newPage();
     await page.goto(new URL(region.path, base).href, { waitUntil: "load" });
     const found = await page.$eval(region.selector, (root) => {

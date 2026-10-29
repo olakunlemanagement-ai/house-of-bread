@@ -56,9 +56,9 @@ const EXACT = {
     h1: "Live every Monday",
     key: "New teaching live every Monday at 8 pm Lagos time.",
   },
+  // The h1 is the featured teaching's title, from YouTube, so only a section heading is fixed.
   "/media": {
-    h1: "Need a word for this season?",
-    key: "Every message, in one place. Watch, then go deeper in the Academy.",
+    key: "Latest teachings",
   },
   "/new-testament": {
     h1: "Study the New Testament, book by book",
@@ -98,6 +98,9 @@ const PATTERNS = [
   { pattern: /^\/teachings\/[^/]+$/, key: "Related teachings" },
   { pattern: /^\/new-testament\/[^/]+$/, key: "See all 27 books" },
   { pattern: /^\/plans\/[^/]+$/, key: "About this journey" },
+  // Teachings: the h1 is the video's or the playlist's title, from YouTube.
+  { pattern: /^\/media\/watch\/[A-Za-z0-9_-]{11}$/, key: "Ready to go deeper?" },
+  { pattern: /^\/media\/series\/[A-Za-z0-9_-]+$/, key: "What's in this series?" },
 ];
 
 /** Pages the sitemap leaves out on purpose. */
