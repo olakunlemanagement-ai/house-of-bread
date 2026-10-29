@@ -66,6 +66,8 @@ Rules:
 | Live line, to the session times | See the session times |
 | Teachings: share a teaching or series (amended 29 October 2026) | Share |
 | Teachings: close the Shorts player | Close |
+| Teachings: every series (amended 29 October 2026) | See all series |
+| Ask dialog on Home and About: send, close, ask again (amended 29 October 2026) | Send question, Close, Ask another question |
 | Teachings: a section whose YouTube data failed, only there | Watch on YouTube |
 
 Square brackets mark facts the ministry must confirm. Keep them visible until confirmed.

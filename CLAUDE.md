@@ -392,8 +392,12 @@ disagrees with the brief, the brief wins.
   them `plain`: no scrim or full screen checks, layout shift still checked.
 - Another exception (29 October 2026): About's hero is a night hero
   (`PageHeader tone="night" align="center" animate`): the wheat loop under
-  night at 80% across the full width in both themes, the eyebrow, a bold
-  (600) title and a bold lead centred. `.tone-night` in `app/globals.css`
+  night at 80% across the full width in both themes, and, centred, the
+  eyebrow and a dictionary entry for didaskalos (`about/DictionaryEntry.tsx`,
+  passed as `PageHeader body`; 29 October 2026): the headword and its Greek
+  as the h1, pronunciation, part of speech and Strong's G1320 on one small
+  line, a fine rule, then the numbered sense as the lead. The Greek uses
+  Literata's Greek subset, loaded in that file only. `.tone-night` in `app/globals.css`
   gives the hero and the header over it (through `:has`) the dark roles;
   checked over pure white (docs/PLACEHOLDERS.md, "Night hero").
 - Responsive floor: no sideways scroll from 320px up. Below 375px the
@@ -438,19 +442,28 @@ disagrees with the brief, the brief wins.
 ### Teachings (`/media`)
 
 - Since 29 October 2026, in the shape of BibleProject's Videos page: the
-  featured teaching as the hero (`siteConfig.featuredTeachingId`), "Latest
-  teachings" (five long-form), "Bible nuggets" (six Shorts), "Explore
-  series" (playlists), the live line, then "Browse courses". Teaching
-  cards open `/media/watch/[videoId]`, series tiles
-  `/media/series/[playlistId]`; only a Short plays in place, in a modal
-  `<dialog>`.
+  featured teaching as the hero, "Latest teachings" (five long-form) with
+  "See all teachings" (`/media/all`, every teaching and Short), "Latest
+  series" (one row of four playlists) with "See all series"
+  (`/media/series`, shown when there are more than four), "Bible nuggets"
+  (six Shorts), the live line, then "Browse courses". Teaching cards open
+  `/media/watch/[videoId]`, series tiles `/media/series/[playlistId]`;
+  only a Short plays in place, in a modal `<dialog>`.
+- Everything updates itself, hourly, with no edit: the hero is the newest
+  long-form teaching while `siteConfig.featuredTeachingId` is null (set an
+  id to pin one), and new uploads and playlists join their rows.
 - All YouTube data goes through `lib/youtube` (`teachings.ts` is the
   cached entry, `catalog.ts` the framework free loader). Videos come from
   both channels in `siteConfig.teachingChannels`, through their UULF and
-  UUSH playlist feeds. Series and durations use `YOUTUBE_API_KEY` when set;
-  without it, series come from `siteConfig.seriesPlaylistIds` and no
-  duration shows. `content/videos/<videoId>.mdx` overrides a title or
-  description. See `docs/MEDIA-FEED.md`.
+  UUSH playlist feeds (the latest 15 each). With `YOUTUBE_API_KEY` set,
+  the same playlists come from the Data API too, so every upload is
+  listed (200 per list), every public playlist is a series (24 at most),
+  and durations show. Without it, series come from
+  `siteConfig.seriesPlaylistIds` only. `content/videos/<videoId>.mdx`
+  overrides a title or description. See `docs/MEDIA-FEED.md`.
+- A playing YouTube player (`YouTubeFacade`) pauses once it scrolls fully
+  out of view (an IntersectionObserver and the embed's `enablejsapi`
+  command); it does not resume by itself.
 - A watch page exists only for a video from a teaching channel (in the
   feeds, configured, or placed there by oEmbed); any other id is a 404.
 - The pages are fully static (`ensureStatic = "navigation"`), no Suspense:
@@ -552,10 +565,14 @@ disagrees with the brief, the brief wins.
     heading arms only after mount and only while below the fold, so
     nothing hides without JavaScript and nothing on screen blinks. Hero
     h1s stay static, except About's.
-  - About's hero eyebrow, title and lead smooth in once on load
+  - About's hero writes itself in once on load, CSS only, so it ends
+    visible without JavaScript; none under Motion Off or reduced motion
+    (`motion.test.ts`). The eyebrow, the Greek and the details smooth in
     (`.smooth-in`: opacity, a 0.6em rise and a 10px blur clearing over
-    900ms, 0, 120 and 260ms apart). CSS only, so it ends visible without
-    JavaScript; none under Motion Off or reduced motion.
+    900ms); the headword's letters rise out of a blur 55ms apart
+    (`.letter-rise`); the rule draws out from its centre (`.rule-draw`);
+    the definition is written out left to right by a moving mask
+    (`.write-on`, 1.6 s), done by about 2.9 s.
   - About's belief cards (`BeliefCards`, `RiseReveal`) rise 1.5rem into
     place once, 90ms apart, when armed below the fold, like the fan.
   - Home's starting cards (`StartingCards.tsx`, `FanReveal.tsx`): from md
@@ -651,7 +668,17 @@ disagrees with the brief, the brief wins.
   current page in a tint pill with an inset emerald ring, then one primary
   button, "Browse courses", to `/academy`, and the theme icon switch. Teachings points at
   `/media` (once labelled Library) until the routes are renamed. Ask lives
-  in the footer and in Home's third starting card, not the header.
+  in the footer, in Home's third starting card and in About's "Is there a
+  passage you can't make sense of?" section, not the header.
+- The Ask dialog (29 October 2026): on Home and About, "Ask a question" is
+  `AskQuestion` (`components/shared/AskQuestion.tsx`), which opens the
+  anonymous question form in a modal `<dialog>` on the visitor's click.
+  It is not a pop-up in the brief's sense: nothing opens unasked. Without
+  JavaScript the button is a link to `/ask`. The form posts to
+  `/api/questions` like the Ask page's (`lib/questions/submit.ts`, shared):
+  the question and an optional topic (pills), nothing else, with the
+  honeypot, the Vercel rate limit and the "opens soon" state until Resend
+  is configured.
 - Below `lg`: the logo, the "Browse courses" button from `sm`, the
   theme switch and a "Menu" button. The menu is a `details` element and
   works without JavaScript. Its panel fills the screen below the header,
