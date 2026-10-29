@@ -282,10 +282,12 @@ themes), run `npm run contrast`, and log it before it ships.
   literal colour outside its short list of theme invariant uses (the deep
   green footer, brand marks on white tiles, white text on fills).
 - Dark tokens are written once, inside `:root { @variant dark { ... } }`.
-  The `dark` variant matches the system preference when no theme is saved
-  (this is also the no JavaScript case), or `data-theme="dark"`;
-  `data-theme="light"` opts out. Use `dark:` utilities for dark only
-  additions.
+  Light is the default (since 28 October 2026): a first visit, no saved
+  choice and the no JavaScript case all paint light, whatever the system
+  says. The `dark` variant matches `data-theme="dark"`, or
+  `data-theme="system"` while the system prefers dark. Every choice is
+  saved (`hob:theme`: light, dark or system). Use `dark:` utilities for
+  dark only additions.
 - A colour that is both a fill and text gets two tokens. `emerald` is a
   fill that carries white text; `emerald-deep` is text and links; `glyph`
   is icons, rules, progress fills and outline borders; `fill-primary`,
@@ -294,20 +296,24 @@ themes), run `npm run contrast`, and log it before it ships.
   pills.
 - Dark is deep green black (`#0a1510`), never pure black, with raised
   surfaces a step lighter. The footer stays deep green in both themes.
-- The head script in `app/layout.tsx` sets `data-theme` from the saved
-  choice before first paint, so the wrong theme never flashes. Do not move
+- The head script in `app/layout.tsx` sets `data-theme` before first
+  paint (the saved choice, or light), so the wrong theme never flashes.
+  The browser chrome (`theme-color`) starts light and follows the theme in
+  effect once the page runs. Do not move
   theme logic into a component that runs after hydration. Theme controls
   carry `data-theme-control` and stay hidden without JavaScript.
 
 ### Simplicity first (the reset)
 
 `docs/RESET-BRIEF.md` sets the direction since 27 October 2026. The site
-has one job: get people into free courses (Academy) and teaching videos
-(Teachings). Where an older rule below or in `docs/PLACEHOLDERS.md`
+has one job: get people into courses (Academy) and teaching videos
+(Teachings). Nothing calls a course free until pricing is decided (28
+October 2026; `reset-copy.test.ts` checks). Where an older rule below or in `docs/PLACEHOLDERS.md`
 disagrees with the brief, the brief wins.
 
 - One idea and one primary button per screen. Lots of white space.
-- Question-led section headings. Lists of options are big numbered rows.
+- Question-led section headings. Lists of options are big numbered rows
+  (Home's "Where are you starting from?" is a fan of cards instead).
 - No sliders, carousels with dots, pop-ups or countdowns.
 - Live sessions, events and the newsletter are supporting detail: small
   lines or the footer, never a main section. Every page ends with a next
@@ -315,8 +321,9 @@ disagrees with the brief, the brief wins.
 - Shared pieces, so every page matches Home: `Section` and `bandClass`
   (one rhythm, 40px on phones and 112px from md, no rule above the
   heading), `NextStep` (the closing band every page ends with),
-  `StartingRows` (Home and Academy), `NumberedRows` (rows with a
-  button), `NumberedList` (rows without), `LiveLine` (the one live
+  `StartingCards` (Home's "Where are you starting from?" fan of cards),
+  `StartingRows` (the same three as rows, on the Academy), `NumberedRows`
+  (rows with a button), `NumberedList` (rows without), `LiveLine` (the one live
   line, Home and Teachings). `lib/content/reset-copy.test.ts` fails on a
   banned phrase or a retired button label anywhere in app, components,
   lib or content.
@@ -360,26 +367,35 @@ disagrees with the brief, the brief wins.
   weight 500; h3 and smaller at 600.
 - Eyebrows: 0.75rem, uppercase, 0.14em tracking, emerald-deep, no pill.
 - Radii: buttons are pills, inputs 10px, icon tiles 14px, cards 20px.
-- Motion is minimal: the hero loops, the Home mission typewriter, the
-  one time heading reveal (both under Motion, below), the menu fade
-  (180ms) and the skeleton shimmer. No button or card moves on hover (a
-  linked card only deepens its edge), no floating or 3D icons. Nothing
-  loops except hero loops and a skeleton. Nothing runs under reduced
-  motion.
-- Hero and page headers sit below the sticky header with at least 64px of
-  clear space above their first line.
+- Motion is minimal: the hero loops, the Home mission typewriter and its
+  blinking cursor, the one time heading reveal, Home's starting cards
+  fanning out (all under Motion, below), the menu fade (180ms) and the
+  skeleton shimmer. No button or card moves on hover (a linked card only
+  deepens its edge), except Home's starting cards, which lift 0.5rem with
+  Motion On. No floating or 3D icons. Nothing loops except hero loops,
+  the mission cursor and a skeleton. Nothing runs under reduced motion.
+- Every hero fills the first screen (since 28 October 2026):
+  `heroFrameClass` in `HeroBackdrop.tsx`, `min-height: 100svh` with the
+  header included, used by `Hero`, `PageHeader` and the error page. The
+  content is centred in the space below the header (top padding is the
+  64px header plus the bottom padding). The next section never shows
+  before the visitor scrolls; `scripts/check-noscript.mjs` checks it at
+  375, 768 and 1280, with layout shift.
 
 ### Translucent surfaces and glass
 
-- The sticky header is the only translucent surface (`glass-header`:
-  white at 94%, night at 94% in dark), so its text keeps AA over anything
-  that scrolls beneath, checked against black in light and white in dark.
-  Under `prefers-reduced-transparency` it turns solid. Cards, panels and
-  sections are always solid.
+- The header has no surface at all (since 28 October 2026): transparent,
+  no border or blur, on top of the hero scrim (see Navigation).
+- The one translucent surface is an allowed exception: the two floating
+  cards over Home's app mockup (`AppMockup.tsx`) keep their glass look
+  (`glass-card`: white at 84%, raised night at 88% in dark), checked
+  against the green-night phone frame in light and white in dark. Under
+  `prefers-reduced-transparency` they turn solid. Every other card, panel
+  and section is solid.
 - `backdrop-filter` ships off: a 4x CPU slowdown test on 17 October 2026
-  could not show it was cheap. Turn it on for the header only after a
-  scroll check on a real mid range Android phone shows no more than a few
-  fps lost, at 12px blur or less, with the current colour as fallback.
+  could not show it was cheap. Turn it on only after a scroll check on a
+  real mid range Android phone shows no more than a few fps lost, at 12px
+  blur or less, with the current colour as fallback.
 
 ### Loading states
 
@@ -408,10 +424,11 @@ disagrees with the brief, the brief wins.
 - The scrim (`hero-scrim`) is white at 80% (night at 80% in dark), solid
   on phones and tablets, where the text spans the hero. From `lg` it holds
   80% over the text column, to `HeroBackdrop`'s `hold` (60% of the width,
-  70% on Home), then eases in and out over the next 15 points, to
+  70% on Home, and 70% at least from 1024 to 1279, where the header nav
+  runs to about 68%), then eases in and out over the next 15 points, to
   nothing in light and 6% in dark (`--scrim-tail`), so the loop shows
-  clearly on the right. Hero text stays inside the
-  hold; `scripts/check-noscript.mjs` measures it at 1024, 1280 and 1920.
+  clearly on the right. Hero text and the header nav stay inside the
+  hold; `scripts/check-noscript.mjs` measures both at 1024, 1280 and 1920.
   Text is checked against the worst pixel of every loop: pure black in
   light, pure white in dark (`npm run loops:sample`). A new loop, a wider
   text column or a weaker scrim needs the same check.
@@ -469,7 +486,9 @@ disagrees with the brief, the brief wins.
   `npm run loops:verify`.
 - Text motion runs once and only with Motion On and no reduced motion:
   - The Home mission types itself out (`Typewriter.tsx`) over about 2.7 s
-    when it scrolls into view, with a blinking cursor that fades after. The
+    when it scrolls into view. Its cursor then stays at the end and keeps
+    blinking, following the text if it rewraps; Motion Off removes it at
+    once (the WCAG 2.2.2 control). The
     full text holds its space throughout: the untyped rest is laid out
     invisibly after an empty marker span, the cursor is a bar outside the
     text moved by transform, and the heading wraps plainly (no balance),
@@ -482,6 +501,12 @@ disagrees with the brief, the brief wins.
     heading arms only after mount and only while below the fold, so
     nothing hides without JavaScript and nothing on screen blinks. Hero
     h1s stay static.
+  - Home's starting cards (`StartingCards.tsx`, `FanReveal.tsx`): from md
+    a fan, the middle card in front and raised, the side cards turned 5
+    degrees behind it. Armed below the fold, they fold into a stack and
+    fan out once as they scroll in (transforms only). A hovered or focused
+    card comes to the front and lifts 0.5rem. Phones stack the cards with
+    no fan. Without JavaScript, Motion Off or reduced motion: a still fan.
 
 ### Logo
 
@@ -489,7 +514,7 @@ disagrees with the brief, the brief wins.
   by `node scripts/logo/make-transparent.mjs` (edge connected fill, so the
   white cross stays; 1px feathered and defringed), shown with `next/image`
   beside the text wordmark (`Logo.tsx`), with `priority` in the header,
-  straight on the header glass with no tile. On the footer it sits in a
+  straight on the hero scrim with no tile. On the footer it sits in a
   white tile, because the lid edge falls to 2.49:1 on green-deep, and in
   dark the header mark gets the same tile (`.logo-mark`) until the ministry
   supplies a reversed mark. `app/icon.png`, `app/apple-icon.png` and
@@ -505,6 +530,10 @@ disagrees with the brief, the brief wins.
 - Button labels say exactly what happens. Use only the labels in the
   table in `docs/RESET-BRIEF.md` section 2, plus any label the brief names
   for a specific page.
+- A classic replacement for the pills is under review (28 October 2026):
+  three options at `/dev/buttons` (noindexed, not in the sitemap or nav,
+  a 404 in production). Until one is chosen the pills below stand; delete
+  the route once the choice is built into `Button.tsx`.
 - Variants, all pills with a text label only:
   - Primary: solid deep green (`fill-primary`), white text, emerald on
     hover, `fill-press` on press. One per screen.
@@ -539,18 +568,22 @@ disagrees with the brief, the brief wins.
 
 ### Navigation
 
-- Header: 64px, sticky, so it stays small and visible on scroll, on the
-  header glass with a hairline below. From `lg`: logo, then Home,
-  Academy, Teachings, About and Contact in ink, the current page in a tint
-  pill with an inset emerald ring, then one primary pill, "Browse free
-  courses", to `/academy`, and the theme icon switch. Teachings points at
+- Header: 64px, not sticky (since 28 October 2026). It sits transparent
+  on top of the hero, with no background, border or blur, and scrolls
+  away with the page: a negative margin pulls the hero up beneath it, so
+  every page must open with a full screen hero. Its text sits on the hero
+  scrim and is checked over every loop's worst pixel in both themes. From
+  `lg`: logo, then Home, Academy, Teachings, About and Contact in ink, the
+  current page in a tint pill with an inset emerald ring, then one primary
+  pill, "Browse courses", to `/academy`, and the theme icon switch. Teachings points at
   `/media` (once labelled Library) until the routes are renamed. Ask lives
-  in the footer and in Home's third numbered row, not the header.
-- Below `lg`: the logo, the "Browse free courses" pill from `sm`, the
+  in the footer and in Home's third starting card, not the header.
+- Below `lg`: the logo, the "Browse courses" pill from `sm`, the
   theme switch and a "Menu" button. The menu is a `details` element and
   works without JavaScript. Its panel fills the screen below the header,
   solid surface: the five links as large serif items, then the "Browse
-  free courses" pill, and nothing else.
+  courses" pill, and nothing else. While it is open the page holds still
+  beneath it.
 - Footer: deep green in both themes, the site's trust block. The full
   ministry name (in brackets until confirmed), socials (the icon row shows
   the ministry's YouTube channel only; both channels are labelled on
@@ -558,7 +591,9 @@ disagrees with the brief, the brief wins.
   the store links exist, one list of links (Teachings, Academy, About,
   What we believe, Ask, Events, App, Subscribe, Contact, Privacy), and the
   Light, Dark or System theme choice beside the Motion control.
-- The app has one section, just before the footer, on Home. Newsletter
+- The app has one section, just before the footer, on Home: text and
+  button on one side, the phone mockup (`AppMockup`) on the other, below
+  the button on phones. Newsletter
   signup lives on `/subscribe` and in the footer link, not in a closing
   card on every page.
 

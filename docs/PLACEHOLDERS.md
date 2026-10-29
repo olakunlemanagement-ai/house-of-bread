@@ -317,6 +317,9 @@ image arrives, set the status to `final` and build it.
 |---|---|---|---|---|
 | `home-teacher` | Home, The teacher | 4:5 | Isaac Ola teaching, Bible open, warm natural light. Portrait crop with space above the head. Also wanted: a photo of him teaching for the hero, which the ambient loop stands in for | Real needed (person) |
 | `home-start-here` | Home, Teachings (only if no video) | 16:9 | Stands in for the latest teaching when neither the feed nor `featuredVideoId` gives a video, so today it does not show | Interim allowed |
+| `home-start-new` | Home, Where are you starting from? card 01 (New to the Bible) | 3:2 | A Bible opened for the first time on a table, soft morning light. No people. Decorative (alt=""): the card's title carries the meaning | Interim allowed |
+| `home-start-connect` | Home, Where are you starting from? card 02 (How the stories connect) | 3:2 | An open Bible beside handwritten notes linking one book to another. No people. Decorative | Interim allowed |
+| `home-start-question` | Home, Where are you starting from? card 03 (Carrying a question) | 3:2 | A notebook with a question written in it, beside an open Bible. No people. Decorative | Interim allowed |
 | `about-mission` | `/about`, Mission | 16:9 | Believers following a live teaching online, with open Bibles: a laptop or phone showing the stream, hands on an open Bible | Real needed (community) |
 | `about-leadership` | `/about`, Leadership | 4:5 | A portrait of the teacher: head and shoulders, plain or softly blurred background, looking just off camera | Real needed (person) |
 | `academy-teacher` | `/academy`, Why learn here | 4:5 | The teacher leading an online class: on camera or at a desk, Bible open, warm natural light. Real photo needed, do not use generated people | Real needed (person) |
@@ -1665,3 +1668,82 @@ Page weight at 375, everything transferred after load, a full scroll and
 
 Dark weighs a little more because the light poster keeps its preload for
 everyone (it is the default theme) and dark adds its own.
+
+## Home corrections (28 October 2026)
+
+Branch `feat/reset`. Items 2, 3 and 7 apply site wide.
+
+### Decisions
+
+- Light by default. A first visit, no saved choice and no JavaScript all
+  paint light. `hob:theme` saves light, dark or system; only system follows
+  the OS. People who chose System before this change had nothing saved,
+  so they now land on light once and can choose System again.
+- The dark hero poster's preload limited to prefers-color-scheme: dark
+  (logged above, 23 October) is removed: the OS setting no longer says
+  which theme shows, so it would fetch for visitors who see light. The
+  dark poster now loads at high priority once laid out. A saved dark
+  choice may see a slower hero LCP than before; Lighthouse (no saved
+  choice) now always measures light.
+- Header: not sticky, transparent, no border or blur, pulled over the hero
+  by a negative margin. From 1024 to 1279 the hero scrim holds full
+  strength to 70% at least, because the header nav ends at 68.4% there.
+  While the phone menu is open the page holds still beneath it.
+- Every hero fills the first screen (100svh, header included).
+- Glass: only the two floating cards over Home's app mockup.
+- "Free" removed while pricing is open (see the list below).
+- Buttons: three options at `/dev/buttons`, awaiting a choice. The pills
+  stand until then.
+
+### "Free" removed
+
+| Where | Was | Now |
+|---|---|---|
+| Header pill, phone menu, 404, every NextStep button | Browse free courses | Browse courses |
+| Home Academy band, course page | Browse all free courses | Browse all courses |
+| Home Academy line, every NextStep line | Our free courses take you through it... | Our courses take you through it... |
+| Home hero subline, site description (metadata) | Free courses and teaching... | Courses and teaching... |
+| Course cards | "Free" badge | removed |
+| Course page eyebrow, lessons line, title | Free course; "· Free"; "a free course" | Course; removed; "a Bible course" |
+| Academy title, heading and lead | Free Bible courses; "Free, always." | Bible courses; removed |
+| About, story | The teaching is free, online, and verse by verse. | The teaching is online and verse by verse. |
+| Share image line and alt text | Free Bible courses and teaching | Bible courses and teaching |
+| Check scripts (check-html, check-noscript, build-og) | the old lines | the new lines |
+
+Left as is: "Listen free" in the brief (another ministry's button, quoted
+as an example) and `cost: "Free"` in `lib/academy/static-catalog.test.ts`
+(test data for a field nothing renders). `reset-copy.test.ts` now fails
+on any line calling a course free.
+
+### Contrast, WCAG 2.2 AA (npm run contrast)
+
+| Pairing | Light | Dark |
+|---|---|---|
+| Header over hero: ink nav, worst loop pixel, 80% scrim | 10.25 | 8.70 |
+| Header over hero: accent (Menu label) | 4.77 | 5.78 |
+| Header over hero: current pill, accent on tint | 6.80 | 8.04 |
+| Header over hero: Menu border, glyph (UI) | 4.09 | 4.54 |
+| Header over hero: focus ring (UI) | 4.77 | 5.78 |
+| Logo lid edge over the hero scrim (UI) | 3.39 | in its white tile |
+| App mockup glass: ink | 11.92 | 10.37 |
+| App mockup glass: muted | 5.53 | 5.99 |
+| App mockup glass: accent | 5.54 | 6.89 |
+| App mockup glass: eyebrow | 5.54 | 6.31 |
+| Starting card: number, accent on raised | 7.65 | 9.84 |
+| Starting card: line, muted on raised | 7.64 | 8.57 |
+| Mission pull quote: ink on warm | 14.89 | 14.57 |
+
+The button options reuse the current buttons' text pairings; their
+hairlines are decorative.
+
+### Checks (scripts/check-noscript.mjs, production build)
+
+- Every hero fills the screen at 375x812, 768x1024 and 1280x800 on all
+  ten checked pages: the next section starts at the fold, the hero text
+  sits centred below the header (space above and below within 1px).
+- Layout shift with script and Motion On, 4.5 s after load: 0.007 at
+  most (30 page and width pairs).
+- Hero text and header nav inside the scrim hold at 1024, 1280 and 1920.
+- Home height at 375: 7,428px (light and dark), over the brief's 5,000px.
+  The full screen hero (812px), the stacked starting cards with their
+  images and the app mockup account for most of it.
