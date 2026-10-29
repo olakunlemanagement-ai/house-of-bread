@@ -331,6 +331,17 @@ Each image carries `data-placeholder="stock-image"`. Raw crops sit in
 | `about-belief-scripture` | Open Bible, close view | John-Mark Kuznietsov (Unsplash) | CC0 |
 | `about-belief-text` | 1611 King James Bible title page | Church of England (UPenn scan) | Public domain |
 | `about-belief-plain` | Open Bible, soft daylight | Ben White (Unsplash) | CC0 |
+| `academy-course-reading-the-bible` | Open Bible in sunlight, green bokeh | Aaron Burden (Unsplash) | CC0 |
+| `academy-course-the-story-of-scripture` | Torah scroll, close view | Jacob Gucker | CC0 |
+| `academy-course-in-the-beginning` | Starry sky over a mountain and a lake | Priscilla Du Preez (Unsplash) | CC0 |
+| `academy-course-the-bread-of-life` | Fresh loaf on a white cloth | Brooke Cagle (Unsplash) | CC0 |
+| `academy-course-life-in-the-spirit` | Flame in a ceramic lamp | Hans Vivek (Unsplash) | CC0 |
+| `academy-course-walking-in-the-word` | Forest trail, fallen leaves | Taylor Swayze (Unsplash) | CC0 |
+
+The six Academy course images were added on 29 October 2026. The Torah
+scroll is supplied at 1024 wide and the trail at 1200, softened slightly:
+their fine detail cannot fit 150 KB at 1600. The course hero shows them at
+36rem at most.
 
 Source links are in `lib/media/image-slots.ts`.
 
@@ -1425,8 +1436,8 @@ the nav, buttons, loops and motion.
 | Page | Loop | Phones |
 |---|---|---|
 | Home | ambient-light | phone loop (2:3 crop) |
-| Academy | open-bible | phone loop (4:3 crop) |
-| Academy course page | open-bible | poster |
+| Academy | open-bible, under the night overlay, centred (29 October 2026) | phone loop (4:3 crop) |
+| Academy course page | none: a plain hero with the course image, like Teachings (29 October 2026) | none |
 | Academy lesson page | none: the lesson bar and its video, after BibleProject's session player (29 October 2026) | none |
 | Teachings (`/media`), series and teaching pages | none: a plain hero, after BibleProject (29 October 2026). water-light is now in no hero; its files stay until the ministry decides | none |
 | Teachings articles (`/teachings`, `/teachings/[slug]`) | dust-light | poster |
@@ -1942,13 +1953,14 @@ No accounts, no database, no new dependency or font.
 
 ### Image slots
 
-Twenty slots, status `interim` (illustrations, no people, so an interim
-image may fill them), decorative (the title beside each carries the
+Twenty slots, decorative (the title beside each carries the
 meaning): `academy-course-<course>` (16:9, the catalogue row, the Start Here
 card and the course hero) for each of the six courses, and
 `academy-section-<course>-<n>` (1:1, round, in the section accordion and the
-lesson list) for each of the fourteen sections. Until filled they show the
-designed placeholder; small frames drop the caption (`ImageSlot compact`).
+lesson list) for each of the fourteen sections. The six course images hold
+CC0 stock photos since 29 October 2026 ("Stock photos" above); the section
+images are `interim` and show the designed placeholder until filled;
+small frames drop the caption (`ImageSlot compact`).
 
 ### Button labels added
 

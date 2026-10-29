@@ -412,6 +412,12 @@ disagrees with the brief, the brief wins.
   (`/academy/[course]/[lesson]`) opens with its own lesson bar and its
   video, with no site header and no hero (see "Academy"). check-noscript
   marks it `plain`.
+- An Academy course page (`/academy/[course]`) has a plain hero too (29
+  October 2026): `CourseHero` in its `_components`, the Teachings shape
+  with the course image on the right. check-noscript marks it `plain`.
+- The Academy catalogue (`/academy`) is a night hero like About's (29
+  October 2026): the open Bible loop (phone loop kept) under night at 80%,
+  the eyebrow, h1, lead and buttons centred and smoothing in.
 - Another exception (29 October 2026): About's hero is a night hero
   (`PageHeader tone="night" align="center" animate`): the wheat loop under
   night at 80% across the full width in both themes, and, centred, the
@@ -503,16 +509,18 @@ disagrees with the brief, the brief wins.
   files in `lib/content/academy-checks.ts`, run by `content:validate`).
   Pages read it only through `lib/academy` (`courseCatalog`). Section and
   course totals (lessons, time) are computed, never typed.
-- `/academy`: the full screen hero (See all courses, Start here), then
+- `/academy`: the full screen night hero, centred (See all courses, Start
+  here), then
   "Find a course": from lg a sticky column (the course categories, the one
   in view marked, and the Start Here card) beside each category's course
   rows; below lg the categories as wrapping chips, the card, the rows. A
   row shows the Scripture range, title, a two line description, "N
   sections · N lessons · N hr N min", tags and progress. Then the starting
   cards and the next step.
-- `/academy/[course]`: the full screen hero (title, range and teacher,
+- `/academy/[course]`: a plain hero, no loop (title, range and teacher,
   description, stats, progress, Start this course or Continue learning,
-  Watch the trailer when there is one; the course image beside it), then
+  Watch the trailer when there is one; the course image beside it, a CC0
+  stock photo until the ministry's own arrives), then
   tabs: Sections (a `details` accordion per section, a round image in a
   progress ring, a timeline of lessons), Overview (trailer, what you'll
   learn, the teacher) and Resources (hidden when empty). The next step is
@@ -549,7 +557,7 @@ disagrees with the brief, the brief wins.
   in `lib/media/loops.ts`. Files in `public/media/loops` are built by
   `npm run loops:build` from raw clips kept outside the repo, never by hand.
 - Every page has an animated hero (since 27 October 2026), except the
-  Teachings pages (since 29 October, see "Every hero fills"): Home's `Hero`
+  Teachings and Academy course pages (since 29 October, see "Every hero fills"): Home's `Hero`
   and every inner page's `PageHeader` draw their loop full bleed behind
   the text through `components/shared/HeroBackdrop.tsx`, the only place a
   `LoopVideo` renders. No loop sits in a lower panel. `PageHeader` takes
@@ -635,7 +643,7 @@ disagrees with the brief, the brief wins.
     Home's h2s) fade in and rise 0.35em, line by line, 90ms apart. A
     heading arms only after mount and only while below the fold, so
     nothing hides without JavaScript and nothing on screen blinks. Hero
-    h1s stay static, except About's.
+    h1s stay static, except About's and the Academy's (`.smooth-in`).
   - About's hero writes itself in once on load, CSS only, so it ends
     visible without JavaScript; none under Motion Off or reduced motion
     (`motion.test.ts`). The eyebrow, the Greek and the details smooth in
