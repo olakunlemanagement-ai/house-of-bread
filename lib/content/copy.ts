@@ -42,9 +42,6 @@ export const sessionTimeRegions = [
 export const academyCopy = {
   waitlistLabel: "Notify me when the Academy opens",
   waitlistHref: "/subscribe/academy",
-  courses: {
-    intro: "The first courses are being prepared now, and each one opens here when it is ready.",
-  },
   closingHeading: "Hear when the Academy opens",
   closingText:
     "Be among the first to know when the first courses open, with reminders before live sessions and new teaching from House of Bread Global.",
