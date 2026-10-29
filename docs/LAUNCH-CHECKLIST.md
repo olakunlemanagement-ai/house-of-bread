@@ -14,15 +14,18 @@ holds the detail behind each line.
 
 Decisions or work without which the site should not go live.
 
-- [ ] **Academy status contradicts Home.** Home's course cards and
-  "Where are you starting from?" rows say "Start this course"; the Academy
-  says "The first courses are being prepared now..." with "Notify me when
-  the Academy opens", and every course shows "Coming soon". Decide: courses
-  live at launch (each course gets a `joinUrl`, lessons and outline), or
-  Home switches to waitlist copy. Owner: ministry decides, developer
-  applies.
-- [ ] **Real courses.** All four courses are placeholders (`[COURSE TITLE 1]`
-  to `[COURSE TITLE 4]`). Owner: ministry.
+- [ ] **Switch the Academy status to open when real courses are loaded.**
+  Since 29 October 2026 the Academy is a placeholder LMS in preview
+  (`siteConfig.academy.status: "preview"`): every course and lesson page
+  is browsable, so Home's "Start this course" buttons lead to real course
+  pages, and a lesson without a video shows "This lesson is being
+  prepared" with "Notify me when the Academy opens". Set `"open"` once the
+  real courses, lessons and videos are in `content/academy`. Owner:
+  ministry supplies, developer switches.
+- [ ] **Real courses.** All six courses, their sections and 32 lessons are
+  placeholders in [brackets] (`content/academy`), and lesson 1 of the
+  Start Here course and its trailer use a stand-in video
+  (`siteConfig.startHereVideoId`). Owner: ministry.
 - [ ] **Privacy policy reviewed** by a qualified person; remove the "Draft,
   under review" badge after. Owner: ministry.
 - [ ] **Newsletter (Kit) set up.** Until then every signup form is disabled
@@ -44,8 +47,8 @@ Decisions or work without which the site should not go live.
 - [ ] Full ministry name: House of Bread Ministries International, or House
   of Bread Global (footer, Home teacher line, About; shown in brackets).
 - [ ] Hero headline: A (in use), B or C (docs/RESET-BRIEF.md section 6).
-- [ ] Which course is the [foundations course] and which the [book-by-book
-  course] (Home and Academy rows 01 and 02, the Academy next step).
+- [ ] Which course is the Start Here course (`startHere: true`) and which the
+  [book-by-book course] (Home and Academy starting cards 01 and 02).
 - [ ] How questions are answered (`/ask`, "[CONFIRM HOW QUESTIONS ARE
   ANSWERED]"), and that "We read every question, and some are answered in
   our teaching" is true.
@@ -94,7 +97,7 @@ Decisions or work without which the site should not go live.
 
 ## 3. From the developer
 
-- [ ] Apply the Academy decision above.
+- [ ] Switch `siteConfig.academy.status` to `"open"` once real courses are loaded.
 - [ ] Build the contact form slice (route handler, Zod, honeypot, rate limit,
   Resend).
 - [ ] Calendar files: an "Add to calendar" button and build time `.ics` once

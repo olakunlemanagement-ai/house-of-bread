@@ -18,12 +18,13 @@ Filling in a value there turns every matching placeholder into a real link.
 
 ## Launch blockers
 
-- **LAUNCH BLOCKER: Academy status contradicts Home ('Start this course' vs
-  'Academy opens soon').** Home's course cards and rows say "Start this
-  course", while the Academy keeps its status line ("The first courses are
-  being prepared now...") and "Notify me when the Academy opens", and every
-  course without a join link shows "Coming soon". Decide: courses live at
-  launch, or Home switches to waitlist copy. (Logged 28 October 2026.)
+- **LAUNCH BLOCKER: switch the Academy status to open when real courses
+  are loaded.** The contradiction logged on 28 October 2026 (Home's "Start
+  this course" against "Academy opens soon") is resolved for now (29
+  October 2026): the Academy is a placeholder LMS in preview
+  (`siteConfig.academy.status`), every course page is real, and lessons
+  without a video show "This lesson is being prepared" with the waitlist.
+  Set `"open"` once the ministry's courses are in `content/academy`.
 - **Global noindex flag.** `lib/site-config.ts` sets `noindex: true`, so every
   page sends `noindex, nofollow`. Flip it to `false` at launch, once
   placeholder copy is replaced.

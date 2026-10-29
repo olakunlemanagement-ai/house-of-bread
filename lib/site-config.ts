@@ -13,6 +13,9 @@ export type SocialAccount = {
   owner: "ministry" | "pastor";
 };
 
+/** "preview" while courses are placeholders; "open" once the real courses are loaded. */
+export type AcademyStatus = "preview" | "open";
+
 export type SiteLinks = {
   /** The ministry's YouTube channel. Null renders the [CHANNEL LINK] placeholder. */
   youtubeChannel: string | null;
@@ -87,6 +90,16 @@ export const siteConfig = {
    * `list=` value.
    */
   seriesPlaylistIds: ["PLUHSYJnvnito"] as readonly string[],
+  /**
+   * House of Bread Academy. "preview" (29 October 2026): the catalogue and
+   * course pages are fully browsable, and a lesson without a video shows
+   * "This lesson is being prepared" with the Academy waitlist. Switch to
+   * "open" when the real courses are loaded (docs/LAUNCH-CHECKLIST.md):
+   * the waitlist then leaves the lesson pages.
+   */
+  academy: {
+    status: "preview" as AcademyStatus,
+  },
   /**
    * The regular live session: every Monday at 8:00 pm Lagos time (19:00 UTC).
    * Every page works out the next occurrence and each region's local time
