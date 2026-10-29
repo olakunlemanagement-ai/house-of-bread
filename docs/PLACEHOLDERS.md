@@ -236,7 +236,7 @@ No email address is published anywhere on the site.
 | Where | Placeholder |
 |---|---|
 | `/media`, Social | [CONFIRM CONTENT] after the intro line. The links are filled, see "Social accounts to confirm" |
-| `/media`, Audio | [AUDIO PLATFORMS AND LINKS TO BE SUPPLIED]. Fill `siteConfig.links.audio` |
+| `/media`, Audio | Retired with the audio section in the reset; `siteConfig.links.audio` removed (29 October 2026) |
 | `/media`, Video | Set `YOUTUBE_CHANNEL_ID=UCGkSJEWgmpHK7eR1ysKZZgA` in Vercel (all environments) and redeploy. Until then Vercel builds show "Videos will appear here soon" |
 | Every AppBand (Home, `/new-testament`, book pages, `/plans`, journey pages, `/subscribe`) | [GOOGLE PLAY LINK] |
 | Same places | [APP STORE LINK OR "COMING SOON", CONFIRM WITH APP DEVELOPER] |
@@ -1787,3 +1787,25 @@ Edges and hairlines on fills are decorative; the secondary's 1px glyph
 edge holds 3:1 on every band, as the 1.5px border did. `--radius-button`
 is 6px, so the Menu button, store badges and other button shaped
 elements follow.
+
+## Post-reset cleanup (29 October 2026)
+
+Code and tokens the reset left with no user, removed on
+`chore/post-reset-cleanup`. Nothing on screen changes.
+
+- `/dev/buttons` was already deleted with the button style (8521c39); it
+  never had a sitemap, robots, header or test entry.
+- `replayEvents()` (the Events replays list). The event `replay` status
+  stays: `upcomingEvents` and the announcement still skip replays.
+- The `labelled` variant of `SocialLinks` (the old Teachings social
+  section). The footer row is the only use; `/media` names both channels.
+- `siteConfig.links.audio` (the old Teachings audio section).
+- Tokens: `surface-gold` with `brand-gold-50` and `brand-night-gold` (the
+  retired newsletter card), `chip-fill`, `facade-bar`, and the unused
+  `fg-accent` utility mapping (the `--fg-accent` variable stays). The
+  contrast script drops its unused `gold50` constant; no pairing changes.
+
+Kept on purpose: the calendar placeholder note on event pages (until
+dates exist), the unused image slots, the Plans FAQ, and
+`public/house-of-bread-logo.png` (the source for
+`scripts/logo/make-transparent.mjs`).
