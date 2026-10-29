@@ -296,7 +296,15 @@ themes), run `npm run contrast`, and log it before it ships.
   in both themes; `surface-raised` replaces white for inputs, cards and
   pills.
 - Dark is deep green black (`#0a1510`), never pure black, with raised
-  surfaces a step lighter. The footer stays deep green in both themes.
+  surfaces a step lighter.
+- Light islands (29 October 2026): a few panels stay light in dark, so
+  the dark page has light space to breathe: Home's starting cards
+  panel, Home's app section and About's Ask section. `.tone-light` in
+  `app/globals.css` restates the light roles on the panel (no effect in
+  light); `Section island` or `islandOuterClass` and `islandInnerClass`
+  (`Section.tsx`) inset and round it on the night page. Nothing inside an
+  island may use a `dark:` utility. `colour-tokens.test.ts` fails if a
+  token the dark theme changes is missing from `.tone-light`. The footer stays deep green in both themes.
 - The head script in `app/layout.tsx` sets `data-theme` before first
   paint (the saved choice, or light), so the wrong theme never flashes.
   The browser chrome (`theme-color`) starts light and follows the theme in
@@ -336,8 +344,9 @@ disagrees with the brief, the brief wins.
   shouts.
 - Surfaces: white carries the page. `surface-warm` (cream, `#f7f3ec`) and
   `surface-mint` (pale green) alternate as section bands, one tint per
-  section. In dark the cream band is a dark green tint (`#112018`), never
-  brown. `tint` (emerald at 8%) is for the current nav pill, icon tiles,
+  section. In dark the cream band is a dark green tint (`#14261c`, the
+  mint band `#13271e`; lifted a step on 29 October 2026 so bands no
+  longer blend into the page), never brown. `tint` (emerald at 8%) is for the current nav pill, icon tiles,
   skeletons and the tertiary button; `tint-strong` and `tint-press` are
   its hover and press. No decorative gradients anywhere, the footer
   included; `bg-panel-tint` is flat.
@@ -668,7 +677,8 @@ disagrees with the brief, the brief wins.
   current page in a tint pill with an inset emerald ring, then one primary
   button, "Browse courses", to `/academy`, and the theme icon switch. Teachings points at
   `/media` (once labelled Library) until the routes are renamed. Ask lives
-  in the footer, in Home's third starting card and in About's "Is there a
+  in the footer, in Home's third starting card, in the "Is there a passage
+  you can't make sense of?" section before Home's app section, and in About's "Is there a
   passage you can't make sense of?" section, not the header.
 - The Ask dialog (29 October 2026): on Home and About, "Ask a question" is
   `AskQuestion` (`components/shared/AskQuestion.tsx`), which opens the

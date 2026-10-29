@@ -113,7 +113,7 @@ Footer:
 
 ## 4. Home page
 
-Seven screens, in this order.
+Seven screens, in this order. (Amended 29 October 2026: an eighth, the Ask prompt, "Is there a passage you can't make sense of?" with one "Ask a question" button that opens the anonymous question dialog, sits between screen 6 and the app.)
 
 ### Screen 1: Hero
 

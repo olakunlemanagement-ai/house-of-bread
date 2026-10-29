@@ -1,6 +1,7 @@
 import type { Metadata, Route } from "next";
 import { Suspense } from "react";
 import { AppMockup } from "@/components/shared/AppMockup";
+import { AskQuestion } from "@/components/shared/AskQuestion";
 import { ButtonLink } from "@/components/shared/Button";
 import { CourseCard } from "@/components/shared/CourseCard";
 import { Hero } from "@/components/shared/Hero";
@@ -10,7 +11,7 @@ import { LiveLine } from "@/components/shared/LiveLine";
 import { Placeholder } from "@/components/shared/Placeholder";
 import { StoreButtons } from "@/components/shared/StoreButtons";
 import { RevealHeading } from "@/components/shared/RevealHeading";
-import { bandClass as band } from "@/components/shared/Section";
+import { bandClass as band, islandInnerClass, islandOuterClass } from "@/components/shared/Section";
 import { StartingCards } from "@/components/shared/StartingCards";
 import { Typewriter } from "@/components/shared/Typewriter";
 import { courseCatalog } from "@/lib/academy";
@@ -23,8 +24,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Home, seven screens in the order of docs/RESET-BRIEF.md section 4, copy
- * word for word. One idea and one primary button per screen. Section tints
+ * Home, eight screens: the seven of docs/RESET-BRIEF.md section 4, copy
+ * word for word, with the Ask prompt before the app (29 October 2026).
+ * One idea and one primary button per screen. Section tints
  * alternate white, cream and pale green, one per section. Every call to
  * action is a button. The mission types itself out once; section headings
  * reveal line by line once.
@@ -150,25 +152,53 @@ export default async function HomePage() {
       </section>
 
       {/*
-        Screen 7: the app, just before the footer. Text and button on the
-        left, the phone mockup on the right; on phones the mockup sits below
-        the button.
+        Screen 7: a question about Scripture, asked anonymously in a dialog
+        (AskQuestion; /ask without script). Centred, one idea, one button.
       */}
-      <section aria-labelledby="app-heading" className="overflow-hidden bg-surface-mint">
-        <div className={`${band} grid items-center gap-8 md:grid-cols-2 md:gap-12`}>
-          <div>
-            <RevealHeading id="app-heading" className="max-w-3xl text-h2" text="Take the Word with you." />
-            <p className="mt-4 max-w-xl text-lead text-ink-muted">
-              Daily reading and journeys through the New Testament, in your pocket.
-            </p>
-            <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
-              <ButtonLink href="/app" className="w-full sm:w-auto">
-                Get the app
-              </ButtonLink>
-              <StoreButtons hideMissing />
+      <section id="ask" aria-labelledby="ask-heading" className="bg-surface">
+        <div className={`${band} flex flex-col items-center text-center`}>
+          <p className="eyebrow">Ask anonymously</p>
+          <RevealHeading
+            id="ask-heading"
+            className="mt-4 max-w-3xl text-h2"
+            text="Is there a passage you can't make sense of?"
+          />
+          <p className="mt-4 max-w-2xl text-lead text-ink-muted">
+            Ask any question about Scripture: a verse that puzzles you, a word you want to understand, or a
+            passage that seems to say two things at once. Every question is read, and some are answered in the
+            teaching.
+          </p>
+          <AskQuestion className="mt-8 w-full sm:w-auto" />
+          <p className="mt-4 text-sm text-ink-muted">No name, email or phone number is asked for.</p>
+        </div>
+      </section>
+
+      {/*
+        Screen 8: the app, just before the footer. Text and button on the
+        left, the phone mockup on the right; on phones the mockup sits below
+        the button. In dark it is a light island (tone-light), inset and
+        rounded on the night page, so the phone reads clearly.
+      */}
+      <section
+        aria-labelledby="app-heading"
+        className={`bg-surface-mint ${islandOuterClass}`}
+      >
+        <div className={`${islandInnerClass} bg-surface-mint`}>
+          <div className={`${band} grid items-center gap-8 md:grid-cols-2 md:gap-12`}>
+            <div>
+              <RevealHeading id="app-heading" className="max-w-3xl text-h2" text="Take the Word with you." />
+              <p className="mt-4 max-w-xl text-lead text-ink-muted">
+                Daily reading and journeys through the New Testament, in your pocket.
+              </p>
+              <div className="mt-8 flex flex-col gap-4 sm:flex-row sm:flex-wrap sm:items-center">
+                <ButtonLink href="/app" className="w-full sm:w-auto">
+                  Get the app
+                </ButtonLink>
+                <StoreButtons hideMissing />
+              </div>
             </div>
+            <AppMockup rule={siteConfig.liveSession} nextSessionIso={nextSession} />
           </div>
-          <AppMockup rule={siteConfig.liveSession} nextSessionIso={nextSession} />
         </div>
       </section>
     </main>
