@@ -3,7 +3,7 @@ import type { Route } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/shared/Button";
-import { NextStep } from "@/components/shared/NextStep";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { PlaceholderBadge } from "@/components/shared/Placeholder";
 import { MdxBody } from "@/components/shared/MdxBody";
@@ -101,7 +101,7 @@ export default async function BookPage({ params }: PageProps<"/new-testament/[bo
         </div>
       </nav>
 
-      <NextStep tone="warm" title="Want a guide through it?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep tone="warm" title={NEXT_STEP_COURSES.title} text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

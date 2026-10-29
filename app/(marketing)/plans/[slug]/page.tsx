@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/shared/Button";
 import { IconTile } from "@/components/shared/icons";
-import { NextStep } from "@/components/shared/NextStep";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { NumberedList } from "@/components/shared/NumberedList";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
@@ -113,7 +113,7 @@ export default async function PlanPage({ params }: PageProps<"/plans/[slug]">) {
         <Placeholder block>[FREQUENTLY ASKED QUESTIONS TO BE SUPPLIED]</Placeholder>
       </Section>
 
-      <NextStep tone="warm" title="Want a guide through it?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep tone="warm" title={NEXT_STEP_COURSES.title} text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

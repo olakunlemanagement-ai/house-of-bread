@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/shared/Button";
-import { NextStep } from "@/components/shared/NextStep";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { YouTubeFacade } from "@/components/shared/YouTubeFacade";
 import { summarise, type Video } from "@/lib/youtube/catalog";
 import { getWatchTeaching, watchParams } from "@/lib/youtube/teachings";
@@ -136,7 +136,7 @@ export default async function WatchPage({ params }: PageProps<"/media/watch/[vid
         </div>
       </div>
 
-      <NextStep tight title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep tight title={NEXT_STEP_COURSES.title} text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

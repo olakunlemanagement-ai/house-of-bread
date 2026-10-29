@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { ButtonLink } from "@/components/shared/Button";
-import { NextStep } from "@/components/shared/NextStep";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { NumberedList } from "@/components/shared/NumberedList";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Section } from "@/components/shared/Section";
@@ -70,7 +70,7 @@ export default function AppPage() {
         </p>
       </Section>
 
-      <NextStep title="Prefer to learn on the web?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep title="Prefer to learn on the web?" text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

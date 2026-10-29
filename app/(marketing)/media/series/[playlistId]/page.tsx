@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/shared/Button";
-import { NextStep } from "@/components/shared/NextStep";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 
 import { RevealHeading } from "@/components/shared/RevealHeading";
 import { summarise } from "@/lib/youtube/catalog";
@@ -99,7 +99,7 @@ export default async function SeriesPage({ params }: PageProps<"/media/series/[p
         </div>
       </section>
 
-      <NextStep tight title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep tight title={NEXT_STEP_COURSES.title} text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

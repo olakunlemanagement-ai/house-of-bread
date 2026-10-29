@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ButtonLink } from "@/components/shared/Button";
-import { NextStep } from "@/components/shared/NextStep";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { NumberedList } from "@/components/shared/NumberedList";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { PlanCard } from "@/components/shared/PlanCard";
@@ -51,7 +51,7 @@ export default function PlansPage() {
         </div>
       </section>
 
-      <NextStep title="Want a guide through it?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep title={NEXT_STEP_COURSES.title} text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

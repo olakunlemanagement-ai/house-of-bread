@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { BookGrid } from "@/components/shared/BookGrid";
 import { ButtonLink } from "@/components/shared/Button";
-import { NextStep } from "@/components/shared/NextStep";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { NumberedList } from "@/components/shared/NumberedList";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Section } from "@/components/shared/Section";
@@ -37,7 +37,7 @@ export default function NewTestamentPage() {
         <BookGrid groups={bookGroups} books={bookListings(new Set(getAll("book").map((book) => book.slug)))} />
       </Section>
 
-      <NextStep tone="warm" title="Want a guide through it?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep tone="warm" title={NEXT_STEP_COURSES.title} text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
         <ButtonLink href="/app" variant="secondary">
           Get the app

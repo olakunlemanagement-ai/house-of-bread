@@ -3,7 +3,7 @@ import type { Route } from "next";
 import { ButtonLink } from "@/components/shared/Button";
 import { LinkCard } from "@/components/shared/Card";
 import { EmptyState } from "@/components/shared/EmptyState";
-import { NextStep } from "@/components/shared/NextStep";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder, PlaceholderBadge } from "@/components/shared/Placeholder";
 import { Section } from "@/components/shared/Section";
@@ -58,7 +58,7 @@ export default function TeachingsPage() {
         )}
       </Section>
 
-      <NextStep title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep title={NEXT_STEP_COURSES.title} text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

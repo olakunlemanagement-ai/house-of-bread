@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ButtonLink } from "@/components/shared/Button";
-import { NextStep } from "@/components/shared/NextStep";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { SignupSection } from "./SubscribeForm";
 
@@ -26,7 +26,7 @@ export default function SubscribePage({ searchParams }: PageProps<"/subscribe">)
 
       <SignupSection source="subscribe-page" idPrefix="subscribe" searchParams={searchParams} />
 
-      <NextStep title="Want to start now?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep title={NEXT_STEP_COURSES.title} text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

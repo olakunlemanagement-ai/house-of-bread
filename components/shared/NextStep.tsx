@@ -3,6 +3,15 @@ import { RevealHeading } from "./RevealHeading";
 import { bandClass, toneClass, type SectionTone } from "./Section";
 
 /**
+ * The closing line for pages whose next step is the Academy (About, Contact,
+ * App, New Testament, Teachings). One wording, so every page says the same.
+ */
+export const NEXT_STEP_COURSES = {
+  title: "Ready to go deeper into God's Word?",
+  text: "Take a course and study Scripture verse by verse, one lesson at a time.",
+} as const;
+
+/**
  * The last section of every page: one line that names the next step, and
  * its button (docs/RESET-BRIEF.md section 1: no page is a dead end). The
  * button is the page's closing primary action. Left aligned, in the Home
