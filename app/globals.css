@@ -121,13 +121,24 @@
   --phone-shadow: 0 2px 6px rgb(4 41 14 / 0.12), 0 24px 48px rgb(4 41 14 / 0.18);
 
   /*
-    Button option hairlines (/dev/buttons, a preview until one is chosen).
-    On the primary fill, deep green in both themes, so neither changes in
-    dark. Decorative: the label carries the contrast.
+    Buttons (.btn, components/shared/Button.tsx). Theme invariant: they sit
+    on fills that are deep green, gold or white in both themes. Hairlines
+    are decorative; the label carries the contrast.
+    - on-fill: white, the text on deep green fills (and the footer's
+      primary fill).
+    - hairline-on-fill: the fine edge on deep green.
+    - on-gold-line: the edge of the gold live button.
+    - on-deep-line: the edge of the white footer button.
+    - on-deep-fill, -hover, -press: white at 12%, 20% and 25% over the
+      deep green footer, for its secondary and tertiary buttons.
   */
   --on-fill: var(--brand-white);
   --hairline-on-fill: rgb(255 255 255 / 0.32);
-  --rule-on-fill: rgb(255 255 255 / 0.75);
+  --on-gold-line: rgb(11 36 18 / 0.28);
+  --on-deep-line: rgb(10 54 22 / 0.18);
+  --on-deep-fill: rgb(255 255 255 / 0.12);
+  --on-deep-hover: rgb(255 255 255 / 0.2);
+  --on-deep-press: rgb(255 255 255 / 0.25);
 
 
   /*
@@ -450,7 +461,7 @@
   --shadow-raised: var(--elev-raised);
 
   /* Radii: buttons are pills, inputs 10px, icon tiles 14px, cards 20px. */
-  --radius-button: 9999px;
+  --radius-button: 6px;
   --radius-input: 10px;
   --radius-tile: 14px;
   --radius-card: 20px;
@@ -471,6 +482,101 @@
   backdrop-filter (a 4x CPU slowdown test on 17 October 2026 could not show
   it was cheap). Solid under prefers-reduced-transparency.
 */
+/*
+  Buttons (components/shared/Button.tsx): Engraved, with a touch of Ruled
+  (chosen 29 October 2026). Geist small caps with wide tracking, a 6px
+  radius, a 1px edge (--btn-line) and an optional hairline 4px inside it
+  (--btn-inner), both drawn on ::after so the hover fill never covers
+  them. On hover the deeper fill (::before) sweeps in from the left, and a
+  fine rule draws out beneath the label from its centre; keyboard focus
+  draws the rule too. Press shows the press fill at once. The sweep and the
+  rule move only with Motion On and no reduced motion; otherwise they
+  appear at once. Size never changes. The global 3px focus ring sits
+  outside the button and is not clipped.
+*/
+@layer components {
+  .btn {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: 6px;
+    background-color: var(--btn-fill, transparent);
+    color: var(--btn-ink, currentColor);
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-variant-caps: all-small-caps;
+    letter-spacing: 0.16em;
+  }
+
+  .btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--btn-sweep, transparent);
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+  }
+
+  .btn:hover::before {
+    transform: scaleX(1);
+  }
+
+  .btn:active::before {
+    transform: scaleX(1);
+    background-color: var(--btn-press, var(--btn-sweep, transparent));
+  }
+
+  .btn::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 1px solid var(--btn-line, transparent);
+    border-radius: inherit;
+    outline: 1px solid var(--btn-inner, transparent);
+    outline-offset: -4px;
+    pointer-events: none;
+  }
+
+  .btn-label {
+    position: relative;
+    padding-bottom: 0.15em;
+  }
+
+  .btn-label::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background-color: currentColor;
+    opacity: 0.55;
+    transform: scaleX(0);
+    transform-origin: 50% 50%;
+  }
+
+  .btn:hover .btn-label::after,
+  .btn:focus-visible .btn-label::after {
+    transform: scaleX(1);
+  }
+
+  .btn:disabled::before,
+  .btn:disabled .btn-label::after {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html:not([data-motion="off"]) .btn::before {
+      transition: transform 320ms var(--ease-out);
+    }
+
+    html:not([data-motion="off"]) .btn-label::after {
+      transition: transform 260ms var(--ease-out);
+    }
+  }
+}
+
 @utility glass-card {
   background-color: var(--glass-card);
   box-shadow: var(--glass-edge), var(--elev-raised);

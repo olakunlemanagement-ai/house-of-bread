@@ -1,5 +1,5 @@
 import { siteConfig, type SocialAccount } from "@/lib/site-config";
-import { buttonClasses, type ButtonTone, type ButtonVariant } from "./Button";
+import { ButtonLabel, buttonClasses, type ButtonTone, type ButtonVariant } from "./Button";
 import { Icon } from "./icons";
 import { PlaceholderBadge } from "./Placeholder";
 import { platformName, SocialIcon } from "./SocialIcons";
@@ -28,7 +28,7 @@ export function YouTubeChannelButton({
     return (
       <a href={youtubeChannel} className={buttonClasses(variant, tone, className)}>
         <Icon name="play" className="size-5" />
-        {label}
+        <ButtonLabel>{label}</ButtonLabel>
       </a>
     );
   }

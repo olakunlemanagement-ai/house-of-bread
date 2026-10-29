@@ -38,7 +38,7 @@ export function AnnouncementBarView({
           href={href as Route | PlainHref}
           variant="secondary"
           size="sm"
-          className="border-on-gold! text-on-gold! hover:bg-gold-soft! active:bg-gold-soft!"
+          className="[--btn-ink:var(--on-gold)]! [--btn-line:var(--on-gold)]! [--btn-inner:transparent]! [--btn-sweep:var(--gold-soft)]! [--btn-press:var(--gold-soft)]!"
         >
           Watch now
         </ButtonLink>

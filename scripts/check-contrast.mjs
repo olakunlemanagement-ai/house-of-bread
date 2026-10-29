@@ -300,6 +300,8 @@ const invariant = [
   ["Footer placeholder border: off-white on green-deep", "offWhite", ["greenDeep"], UI],
   ["Footer secondary: white on 12% white over green-deep", "white", ["greenDeep", "white/0.12"], TEXT],
   ["Footer secondary press: white on 25% white over green-deep", "white", ["greenDeep", "white/0.25"], TEXT],
+  ["Footer secondary hover sweep: white on 20% white over green-deep", "white", ["greenDeep", "white/0.2"], TEXT],
+  ["Live hover sweep: ink on gold-soft", "ink", ["goldSoft"], TEXT],
   ["Announcement button: ink outline and text on gold", "ink", ["gold"], UI],
   ["Footer focus ring: white on green-deep", "white", ["greenDeep"], UI],
   ["Footer logo tile: white tile on green-deep", "white", ["greenDeep"], UI],

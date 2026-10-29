@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState, type MouseEvent } from "react";
 import type { FeedVideo } from "@/lib/media/youtube-feed";
-import { buttonClasses } from "./Button";
+import { ButtonLabel, buttonClasses } from "./Button";
 import { PlayChip } from "./PlayChip";
 import { VideoTitle } from "./VideoTitle";
 import { YouTubeFacade } from "./YouTubeFacade";
@@ -80,7 +80,9 @@ function VideoCard({
             }}
             className={buttonClasses("tertiary", "light", "w-full")}
           >
-            Watch now<span className="sr-only">: {video.title}</span>
+            <ButtonLabel>
+              Watch now<span className="sr-only">: {video.title}</span>
+            </ButtonLabel>
           </a>
         </div>
       </div>
