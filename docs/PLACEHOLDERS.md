@@ -1747,3 +1747,22 @@ hairlines are decorative.
 - Home height at 375: 7,428px (light and dark), over the brief's 5,000px.
   The full screen hero (812px), the stacked starting cards with their
   images and the app mockup account for most of it.
+
+### Responsive pass (29 October 2026)
+
+Audited at 320x568, 360x740, 390x844, 640x900, 740x360 (phone held
+sideways), 768x1024, 1024x768 and 1440x900 on Home, Academy, About and
+`/dev/buttons`.
+
+- 320 (and 360) overflowed by 50px: the header's logo name, theme switch
+  and Menu button need 370px. Below 375 the header now shows the mark
+  only (`Logo compact`); the link keeps the full name as its label. No
+  page scrolls sideways at any audited width.
+- Starting cards: at 1024 three 20rem cards did not fit and squeezed; the
+  fan is now 14rem from md, 18rem from lg and 20rem from xl. Stacked
+  cards (below md) are capped at 28rem, so they do not stretch across a
+  large phone or small tablet.
+- App mockup: below sm the floating cards use tighter padding and the
+  "Next live session" eyebrow stays on one line.
+- Heroes on a short screen (32rem tall or less): the clear space above and
+  below drops from 4rem to 2rem, so the headline sits at 96px, not 144px.

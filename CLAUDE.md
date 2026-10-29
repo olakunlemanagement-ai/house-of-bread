@@ -380,7 +380,11 @@ disagrees with the brief, the brief wins.
   content is centred in the space below the header (top padding is the
   64px header plus the bottom padding). The next section never shows
   before the visitor scrolls; `scripts/check-noscript.mjs` checks it at
-  375, 768 and 1280, with layout shift.
+  375, 768 and 1280, with layout shift. On a short screen (32rem tall or
+  less, a phone held sideways) the clear space drops to 2rem.
+- Responsive floor: no sideways scroll from 320px up. Below 375px the
+  header shows the logo mark without the name (`Logo compact`), so the
+  theme switch and Menu button fit.
 
 ### Translucent surfaces and glass
 
@@ -506,7 +510,9 @@ disagrees with the brief, the brief wins.
     degrees behind it. Armed below the fold, they fold into a stack and
     fan out once as they scroll in (transforms only). A hovered or focused
     card comes to the front and lifts 0.5rem. Phones stack the cards with
-    no fan. Without JavaScript, Motion Off or reduced motion: a still fan.
+    no fan, each at most 28rem wide. Fan cards are 14rem from md, 18rem
+    from lg and 20rem from xl. Without JavaScript, Motion Off or reduced
+    motion: a still fan.
 
 ### Logo
 
