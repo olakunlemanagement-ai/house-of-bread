@@ -38,7 +38,7 @@ function ShortThumb({ id, eager }: { id: string; eager: boolean }) {
  * nothing keeps playing. Focus moves to Close on open and back to the card
  * on close (the dialog element does both).
  */
-export function ShortsRow({ shorts }: { shorts: ShortItem[] }) {
+export function ShortsRow({ shorts, layout = "row" }: { shorts: ShortItem[]; layout?: "row" | "grid" }) {
   const dialog = useRef<HTMLDialogElement>(null);
   const [playing, setPlaying] = useState<ShortItem | null>(null);
 
@@ -55,9 +55,9 @@ export function ShortsRow({ shorts }: { shorts: ShortItem[] }) {
 
   return (
     <>
-      <ul className={rowClass(6)}>
+      <ul className={layout === "row" ? rowClass(6) : "grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6 lg:gap-5"}>
         {shorts.map((short, index) => (
-          <li key={short.id} className={rowItemClass(6)}>
+          <li key={short.id} className={layout === "row" ? rowItemClass(6) : undefined}>
             <a
               href={`https://www.youtube.com/shorts/${short.id}`}
               onClick={(event) => open(event, short)}

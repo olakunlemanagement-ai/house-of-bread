@@ -13,6 +13,8 @@ const staticPaths = [
   "/about",
   "/academy",
   "/media",
+  "/media/all",
+  "/media/series",
   "/events",
   "/teachings",
   "/new-testament",

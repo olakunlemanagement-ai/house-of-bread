@@ -62,9 +62,10 @@ Teachings (`/media`), its watch pages and its series pages read one catalog, `ge
 | Shorts | Each channel's `UUSH` playlist feed | Works for both. Ministry: 13. Pastor: 15 (the feed cap). |
 | Live streams | `UULV` | 404 for the ministry channel: no live uploads. Not used. |
 | Fallback for either | The channel feed, split by each entry's `/shorts/` link | Every Short in the ministry's channel feed links to `/shorts/`. |
-| Series | With `YOUTUBE_API_KEY`: every playlist on both channels plus `seriesPlaylistIds`, newest first, eight at most. Without: the `seriesPlaylistIds` playlist feeds. | `PLUHSYJnvnito` (Bible Foundations Series, 6 videos) works as a feed. |
+| Series | With `YOUTUBE_API_KEY`: every playlist on both channels plus `seriesPlaylistIds`, newest first, 24 at most (Teachings shows four; `/media/series` all). Without: the `seriesPlaylistIds` playlist feeds. | `PLUHSYJnvnito` (Bible Foundations Series, 6 videos) works as a feed. |
 | Durations | Data API `videos.list` only. No key, no badge. | Not run: no key yet. |
-| Featured title and description | The catalog, then oEmbed, then `content/videos/<id>.mdx` overrides. | `dC-2yHdPyGo` is in the pastor's long-form feed. |
+| Featured teaching | The newest long-form teaching while `siteConfig.featuredTeachingId` is null (since 29 October 2026). A pinned id: the catalog, then oEmbed, then `content/videos/<id>.mdx` overrides. | Was pinned to `dC-2yHdPyGo`, in the pastor's long-form feed. |
+| Every upload | With `YOUTUBE_API_KEY`: the UULF and UUSH playlists from the Data API as well, 200 per list, merged with the feeds. For `/media/all`. | Not run: no key yet. |
 
 RSS feeds list 15 entries at most, so without the key a series of 15 shows "15+ teachings", and an older upload drops out of the lists. Its watch page still works: oEmbed confirms it belongs to a teaching channel.
 
@@ -80,4 +81,4 @@ RSS feeds list 15 entries at most, so without the key a series of 15 shows "15+ 
 4. Edit the key. Under API restrictions choose "Restrict key" and tick only YouTube Data API v3. Leave application restrictions at None: the key is called from Vercel's servers, whose addresses change.
 5. Put it in `.env.local` as `YOUTUBE_API_KEY=...`, and in Vercel (Settings, Environment Variables) for Production and Preview, marked Sensitive. Never with a `NEXT_PUBLIC_` prefix.
 
-The key travels in the `X-Goog-Api-Key` header, never in a URL, and no log line includes it. Each hourly refresh costs about 15 units (playlists 3, playlist items one per series, videos one per 50 ids): a few hundred a day against the free 10,000.
+The key travels in the `X-Goog-Api-Key` header, never in a URL, and no log line includes it. Each hourly refresh costs about 50 units at most (playlists 3, playlist items one per page of 50: up to 16 for the upload lists and one per series, up to 24; videos one per 50 ids): about 1,200 a day against the free 10,000.

@@ -4,7 +4,7 @@ import type { Series } from "@/lib/youtube/catalog";
 import { seriesHref, teachingCount } from "./format";
 
 /**
- * Explore series: one tile per series, four across from lg as in
+ * Latest series (and /media/series): one tile per series, four across from lg as in
  * BibleProject's Explore grid, its cover the first episode's
  * thumbnail, the name on a solid band of green-night at 85% (white text,
  * 10:1 or more over any image, as PlayChip; no gradient), and the number

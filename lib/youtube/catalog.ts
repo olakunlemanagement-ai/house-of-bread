@@ -6,6 +6,8 @@
 // Data paths, in order of preference:
 // - Long-form and Shorts: each channel's UULF and UUSH playlist feeds. If
 //   either fails, the channel feed instead, split by its /shorts/ links.
+//   With an API key, the same two playlists from the Data API as well, so
+//   every upload is listed (200 per list), not just the feeds' latest 15.
 // - Series: with an API key, every playlist on the teaching channels plus
 //   the configured ones, newest first. Without a key, or if the API fails,
 //   the configured playlist ids (siteConfig.seriesPlaylistIds) from their
@@ -71,6 +73,9 @@ export type CatalogOptions = RequestOptions & {
 
 /** RSS feeds list this many entries at most. */
 export const FEED_CAP = 15;
+
+/** The most series the catalog holds (newest first). Teachings shows the first row; /media/series shows them all. */
+export const MAX_SERIES = 24;
 
 const toVideo = (entry: FeedEntry): Video => ({ ...entry, durationSeconds: null });
 
@@ -155,6 +160,34 @@ async function seriesFromApi(
     .filter((series) => series.episodes.length > 0);
 }
 
+/** How many pages of 50 to read from each uploads playlist with the Data API: 200 videos per list. */
+export const UPLOAD_PAGES = 4;
+
+/**
+ * Every upload on the teaching channels, from the Data API's UULF and UUSH
+ * playlists, past the feeds' cap of 15. Null when the API failed, so the
+ * feeds alone stand.
+ */
+async function uploadsFromApi(
+  channelIds: readonly string[],
+  api: ApiOptions,
+): Promise<{ long: FeedEntry[]; short: FeedEntry[] } | null> {
+  const list = async (channelId: string, kind: "long" | "short"): Promise<FeedEntry[]> => {
+    const items = await fetchPlaylistItems(uploadsPlaylistId(channelId, kind), { ...api, maxPages: UPLOAD_PAGES });
+    return items.map((item) => ({ ...item, url: watchUrl(item.id), thumbnail: thumbnailUrl(item.id), short: kind === "short" }));
+  };
+  try {
+    const [long, short] = await Promise.all([
+      Promise.all(channelIds.map((id) => list(id, "long"))),
+      Promise.all(channelIds.map((id) => list(id, "short"))),
+    ]);
+    return { long: long.flat(), short: short.flat() };
+  } catch (error) {
+    console.warn(`${error instanceof Error ? error.message : "YouTube Data API failed"}. Using the feeds for the upload lists.`);
+    return null;
+  }
+}
+
 function applyOverride(video: Video, overrides: ReadonlyMap<string, VideoOverride> | undefined): Video {
   const override = overrides?.get(video.id);
   if (!override) return video;
@@ -167,16 +200,19 @@ export async function loadCatalog({
   seriesPlaylistIds,
   apiKey,
   overrides,
-  maxSeries = 8,
+  maxSeries = MAX_SERIES,
   ...request
 }: CatalogOptions): Promise<Catalog> {
-  const channels = await Promise.all(channelIds.map((id) => loadChannel(id, request)));
-  const longForm = newestFirst(dedupe(channels.flatMap((channel) => channel.long))).map(toVideo);
-  const shorts = newestFirst(dedupe(channels.flatMap((channel) => channel.short))).map(toVideo);
-  const paths = new Set(channels.map((channel) => channel.path).filter((path) => path !== "none"));
-  const listsFailed = channels.length > 0 && channels.every((channel) => channel.path === "none");
-
   const api: ApiOptions | null = apiKey ? { key: apiKey, fetch: request.fetch, timeoutMs: request.timeoutMs } : null;
+  const [channels, uploads] = await Promise.all([
+    Promise.all(channelIds.map((id) => loadChannel(id, request))),
+    api ? uploadsFromApi(channelIds, api) : Promise.resolve(null),
+  ]);
+  // The feeds come first, so their fuller descriptions win; the API adds everything past the cap.
+  const longForm = newestFirst(dedupe([...channels.flatMap((channel) => channel.long), ...(uploads?.long ?? [])])).map(toVideo);
+  const shorts = newestFirst(dedupe([...channels.flatMap((channel) => channel.short), ...(uploads?.short ?? [])])).map(toVideo);
+  const paths = new Set(channels.map((channel) => channel.path).filter((path) => path !== "none"));
+  const listsFailed = channels.length > 0 && channels.every((channel) => channel.path === "none") && !uploads;
   let series: Series[] = [];
   let seriesFailed = false;
   let seriesSource: Catalog["source"]["series"] = "none";

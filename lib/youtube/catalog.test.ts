@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { loadCatalog, moreTeachings, seriesOf, summarise, type CatalogOptions } from "./catalog";
+import { loadCatalog, MAX_SERIES, moreTeachings, seriesOf, summarise, type CatalogOptions } from "./catalog";
 import { uploadsPlaylistId } from "./feed";
 import {
   API_KEY,
@@ -162,7 +162,7 @@ describe("loadCatalog: series from the playlist feeds (no API key)", () => {
     expect(catalog.series[0].countIsMinimum).toBe(true);
   });
 
-  it("orders several series newest first and keeps at most eight", async () => {
+  it("orders several series newest first and keeps at most maxSeries", async () => {
     const ids = Array.from({ length: 10 }, (_, i) => `PLseries${String(i).padStart(7, "0")}`);
     const { fetch } = fakeFetch([
       ...feeds,
@@ -171,8 +171,18 @@ describe("loadCatalog: series from the playlist feeds (no API key)", () => {
         respond: xml(feedXml(entries(1, { start: 100 + i }), { title: `Series ${i}`, published: `2026-10-${String(10 + i).padStart(2, "0")}T00:00:00Z` })),
       })),
     ]);
-    const catalog = await loadCatalog(options(fetch, { seriesPlaylistIds: ids }));
+    const catalog = await loadCatalog(options(fetch, { seriesPlaylistIds: ids, maxSeries: 8 }));
     expect(catalog.series.map((s) => s.title)).toEqual(["Series 9", "Series 8", "Series 7", "Series 6", "Series 5", "Series 4", "Series 3", "Series 2"]);
+  });
+
+  it("keeps up to MAX_SERIES by default, for the all series page", async () => {
+    const ids = Array.from({ length: MAX_SERIES + 2 }, (_, i) => `PLseries${String(i).padStart(7, "0")}`);
+    const { fetch } = fakeFetch([
+      ...feeds,
+      ...ids.map((id, i) => ({ match: feedFor(id), respond: xml(feedXml(entries(1, { start: 100 + i }), { title: `Series ${i}` })) })),
+    ]);
+    const catalog = await loadCatalog(options(fetch, { seriesPlaylistIds: ids }));
+    expect(catalog.series).toHaveLength(MAX_SERIES);
   });
 
   it("leaves out an empty playlist and one whose feed failed", async () => {
@@ -244,6 +254,30 @@ describe("loadCatalog: with the Data API", () => {
     expect(catalog.series[0].episodes[0].durationSeconds).toBe(1694);
     expect(catalog.longForm.map((v) => v.durationSeconds)).toEqual([1694, 3723]);
     expect(catalog.shorts[0].durationSeconds).toBe(45);
+  });
+
+  it("lists every upload from the Data API, past the feeds' cap of 15", async () => {
+    const uploads = (ids: string[]) => ({
+      items: ids.map((id, i) => ({
+        snippet: { title: `Upload ${id}`, description: "Notes" },
+        contentDetails: { videoId: id, videoPublishedAt: new Date(Date.parse("2026-10-01T00:00:00Z") - i * 86_400_000).toISOString() },
+      })),
+    });
+    const older = Array.from({ length: 20 }, (_, i) => vid(200 + i));
+    const { fetch } = fakeFetch([
+      ...feeds,
+      ...api,
+      { match: apiFor("playlistItems", (u) => u.searchParams.get("playlistId") === LONG_A), respond: json(uploads([vid(1), ...older])) },
+      { match: apiFor("playlistItems", (u) => u.searchParams.get("playlistId") === SHORT_A), respond: json(uploads([vid(1, "s")])) },
+    ]);
+    const catalog = await loadCatalog(options(fetch, { apiKey: API_KEY }));
+    // The feed's two, then the API's older twenty; vid(1) is in both and listed once, with the feed's description.
+    expect(catalog.longForm).toHaveLength(22);
+    expect(catalog.longForm.slice(0, 2).map((v) => v.id)).toEqual([vid(1), vid(2)]);
+    expect(catalog.longForm[0].description).toBe("About teaching 1.");
+    expect(catalog.longForm.at(-1)?.id).toBe(older.at(-1));
+    expect(catalog.shorts.map((v) => v.id)).toEqual([vid(1, "s")]);
+    expect(catalog.longForm.every((v) => !v.short)).toBe(true);
   });
 
   it("sends the key in a header, never in the URL", async () => {

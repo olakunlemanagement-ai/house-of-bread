@@ -30,6 +30,8 @@ export const metadata: Metadata = {
 const [ministry, pastor] = siteConfig.teachingChannels;
 const LATEST = 5;
 const NUGGETS = 6;
+/** One row of series tiles from lg. The rest are on /media/series. */
+const SERIES_ROW = 4;
 const cardSizes = "(min-width: 1024px) 14rem, (min-width: 640px) 44vw, 78vw";
 
 /** The featured teaching's image, large, on the right of the hero. The Watch now button is the named link; this one repeats it for pointers. */
@@ -105,15 +107,35 @@ function Latest({ videos }: { videos: Video[] }) {
 }
 
 /**
+ * "See all teachings" or "See all series", just under its section's row.
+ * Outside the section's measured region, so the region is the row alone
+ * (scripts/check-noscript.mjs). The count is for screen readers.
+ */
+function SeeAll({ href, label, count }: { href: "/media/all" | "/media/series"; label: string; count: number }) {
+  return (
+    <div className="bg-surface">
+      <div className="container-page -mt-2 md:-mt-4">
+        <ButtonLink href={href} variant="secondary" size="sm" className="w-full sm:w-auto">
+          {label}
+          <span className="sr-only"> ({count})</span>
+        </ButtonLink>
+      </div>
+    </div>
+  );
+}
+
+/**
  * Teachings (still at /media until the routes are renamed), after
- * BibleProject's Videos page: a plain hero with the featured teaching, the
- * latest five, the latest Shorts ("Bible nuggets"), the series, then the
- * live line and the next step to the Academy, all on one surface in a tight
- * rhythm (TeachingsLayout). Every card opens a page on this site
- * (/media/watch, /media/series); only a Short plays in place. All YouTube
- * data comes through lib/youtube, refreshed hourly. No Suspense: the page
- * must reach visitors without script, so the whole of it is prerendered
- * (ensureStatic), the cached catalog included.
+ * BibleProject's Videos page: a plain hero with the newest teaching (or a
+ * pinned one, siteConfig.featuredTeachingId), the latest five and "See all
+ * teachings", the latest series and "See all series", the latest Shorts
+ * ("Bible nuggets"), then the live line and the next step to the Academy,
+ * all on one surface in a tight rhythm (TeachingsLayout). Every card opens
+ * a page on this site (/media/watch, /media/series); only a Short plays in
+ * place. All YouTube data comes through lib/youtube, refreshed hourly, so
+ * each new upload and playlist shows within the hour with no edit here. No
+ * Suspense: the page must reach visitors without script, so the whole of
+ * it is prerendered (ensureStatic), the cached catalog included.
  */
 export default async function MediaPage() {
   const catalog = await getTeachingsCatalog();
@@ -128,6 +150,25 @@ export default async function MediaPage() {
       <TeachingsSection id="latest" title="Latest teachings">
         <Latest videos={latest} />
       </TeachingsSection>
+      {latest.length > 0 ? (
+        <SeeAll href="/media/all" label="See all teachings" count={catalog.longForm.length + catalog.shorts.length} />
+      ) : null}
+
+      <TeachingsSection id="series" title="Latest series">
+        {catalog.series.length > 0 ? (
+          <SeriesGrid series={catalog.series.slice(0, SERIES_ROW)} />
+        ) : (
+          <FeedFallback
+            text="Teaching series will show here soon."
+            href={`${pastor.url}/playlists`}
+            name="the playlists on YouTube"
+            className="min-h-56"
+          />
+        )}
+      </TeachingsSection>
+      {catalog.series.length > SERIES_ROW ? (
+        <SeeAll href="/media/series" label="See all series" count={catalog.series.length} />
+      ) : null}
 
       <TeachingsSection id="nuggets" title="Bible nuggets">
         {nuggets.length > 0 ? (
@@ -137,19 +178,6 @@ export default async function MediaPage() {
             text="Short Bible nuggets will show here soon."
             href={`${ministry.url}/shorts`}
             name="the ministry's Shorts"
-            className="min-h-56"
-          />
-        )}
-      </TeachingsSection>
-
-      <TeachingsSection id="series" title="Explore series">
-        {catalog.series.length > 0 ? (
-          <SeriesGrid series={catalog.series} />
-        ) : (
-          <FeedFallback
-            text="Teaching series will show here soon."
-            href={`${pastor.url}/playlists`}
-            name="the playlists on YouTube"
             className="min-h-56"
           />
         )}

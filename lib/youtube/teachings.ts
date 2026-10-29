@@ -86,9 +86,14 @@ async function outsideVideo(id: string): Promise<Video | null> {
   };
 }
 
-/** The featured teaching (siteConfig.featuredTeachingId), from the catalog or oEmbed. */
+/**
+ * The featured teaching: the pinned one (siteConfig.featuredTeachingId),
+ * from the catalog or oEmbed, or with none pinned the newest long-form
+ * teaching, so the hero follows each new upload.
+ */
 export async function getFeaturedTeaching(catalog: Catalog): Promise<Video | null> {
   const id = siteConfig.featuredTeachingId;
+  if (id === null) return catalog.longForm[0] ?? null;
   if (!isVideoId(id)) return null;
   return catalogVideos(catalog).get(id) ?? (await outsideVideo(id));
 }
@@ -115,11 +120,16 @@ export async function getSeries(id: string): Promise<Series | null> {
   return catalog.series.find((series) => series.id === id) ?? null;
 }
 
-/** The ids prebuilt at build time: every long-form teaching, every episode and the featured one. */
+/** Watch pages prebuilt from the long-form list. The rest render on their first visit, then stay cached. */
+const PREBUILT_TEACHINGS = 48;
+
+/** The ids prebuilt at build time: the latest long-form teachings, every episode and the pinned featured one. */
 export async function watchParams(): Promise<string[]> {
   const catalog = await getTeachingsCatalog();
-  const ids = new Set<string>([siteConfig.featuredTeachingId]);
-  for (const video of [...catalog.longForm, ...catalog.series.flatMap((series) => series.episodes)]) ids.add(video.id);
+  const ids = new Set<string>(siteConfig.featuredTeachingId ? [siteConfig.featuredTeachingId] : []);
+  for (const video of [...catalog.longForm.slice(0, PREBUILT_TEACHINGS), ...catalog.series.flatMap((series) => series.episodes)]) {
+    ids.add(video.id);
+  }
   return [...ids].filter(isVideoId);
 }
 

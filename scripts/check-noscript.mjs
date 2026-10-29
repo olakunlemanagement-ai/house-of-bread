@@ -17,11 +17,13 @@ import path from "node:path";
 
 const PAGES = [
   { path: "/", lead: "Courses and teaching that bring you into an accurate understanding" },
-  { path: "/about", lead: "The name comes from Bethlehem, the house of bread" },
+  { path: "/about", lead: "an ancient Greek word that translates to" },
   { path: "/academy", lead: "Self-paced video lessons that take you through Scripture in context." },
   // Teachings pages have a plain hero, not a full screen loop (BibleProject's pattern,
   // 29 October 2026): no scrim or full screen checks, the rest as every page.
   { path: "/media", lead: "Featured teaching", plain: true },
+  { path: "/media/all", lead: "Every teaching, newest first.", plain: true },
+  { path: "/media/series", lead: "Every series, newest first.", plain: true },
   { path: "/media/series/PLUHSYJnvnito", lead: "Series", plain: true },
   { path: "/media/watch/dC-2yHdPyGo", lead: "Teachings", plain: true },
   { path: "/events", lead: "New teaching live every Monday at 8 pm Lagos time." },
@@ -37,8 +39,8 @@ const REGIONS = [
   { path: "/", name: "Home teachings", selector: "[data-region='home-teachings']", fallbackLink: true },
   // Teachings sections. Their cards link to pages on this site, so no "Watch now" link is expected.
   { path: "/media", name: "Latest teachings", selector: "[data-region='latest']", watchLink: false },
+  { path: "/media", name: "Latest series", selector: "[data-region='series']", watchLink: false },
   { path: "/media", name: "Bible nuggets", selector: "[data-region='nuggets']", watchLink: false },
-  { path: "/media", name: "Explore series", selector: "[data-region='series']", watchLink: false },
 ];
 
 const VIEWPORTS = [

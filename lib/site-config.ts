@@ -73,15 +73,18 @@ export const siteConfig = {
     { id: PASTOR_CHANNEL_ID, url: "https://www.youtube.com/@TheBrotherOla" },
   ] satisfies TeachingChannel[] as readonly TeachingChannel[],
   /**
-   * The teaching that leads Teachings, as a YouTube video id. Change this
-   * one value to replace it. Its title and description come from the feed,
-   * then YouTube oEmbed; content/videos/<id>.mdx overrides either.
+   * The teaching that leads Teachings. Null (since 29 October 2026): the
+   * newest long-form teaching on the teaching channels, so the hero moves
+   * on by itself within the hour of each upload. Set a YouTube video id to
+   * pin one instead. Its title and description come from the feed, then
+   * YouTube oEmbed; content/videos/<id>.mdx overrides either.
    */
-  featuredTeachingId: "dC-2yHdPyGo" as string,
+  featuredTeachingId: null as string | null,
   /**
-   * Series shown under "Explore series" when there is no YOUTUBE_API_KEY
-   * (with one, every playlist on the teaching channels shows, and these
-   * too). Playlist ids, from a playlist link's `list=` value.
+   * Series shown under "Latest series" when there is no YOUTUBE_API_KEY
+   * (with one, every playlist on the teaching channels shows by itself,
+   * newest first, and these too). Playlist ids, from a playlist link's
+   * `list=` value.
    */
   seriesPlaylistIds: ["PLUHSYJnvnito"] as readonly string[],
   /**
