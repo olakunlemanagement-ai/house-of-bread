@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
-import { REDUCED_MOTION_QUERY } from "./theme/theme-script";
-import { useMotion } from "./theme/motion-store";
-
-function motionAllowed(): boolean {
-  if (document.documentElement.getAttribute("data-motion") === "off") return false;
-  return !window.matchMedia(REDUCED_MOTION_QUERY).matches;
-}
+import { motionAllowed, useMotion } from "./theme/motion-store";
 
 /**
  * The fan of cards in StartingCards: from md the three cards sit in a fan

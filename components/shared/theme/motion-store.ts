@@ -14,6 +14,12 @@ export function resolveMotion(saved: string | null, reduce: boolean): Motion {
   return reduce ? "off" : "on";
 }
 
+/** Whether a one time reveal may move now: Motion On and no reduced motion. Client only. */
+export function motionAllowed(): boolean {
+  if (document.documentElement.getAttribute("data-motion") === "off") return false;
+  return !window.matchMedia(REDUCED_MOTION_QUERY).matches;
+}
+
 function readSaved(): string | null {
   try {
     return window.localStorage.getItem(MOTION_KEY);
