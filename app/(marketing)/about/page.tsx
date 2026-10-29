@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AskQuestion } from "@/components/shared/AskQuestion";
 import { BeliefCards, type BeliefCard } from "@/components/shared/BeliefCards";
 import { ButtonLink } from "@/components/shared/Button";
 import { ImageSlot } from "@/components/shared/ImageSlot";
@@ -7,6 +8,7 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder } from "@/components/shared/Placeholder";
 import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
 import { bandClass, bandBodyClass, Section, SectionHeader } from "@/components/shared/Section";
+import { DictionaryEntry } from "./DictionaryEntry";
 
 export const metadata: Metadata = {
   title: "A teaching ministry",
@@ -38,22 +40,15 @@ const handled: BeliefCard[] = [
 ];
 
 /**
- * About, per docs/RESET-BRIEF.md section 5: the story (under 150 words),
- * the teacher, what we believe, then contact, and the next step to the
- * Academy. The full ministry name stays in brackets until confirmed.
+ * About, per docs/RESET-BRIEF.md section 5: a night hero set as the
+ * dictionary entry for didaskalos (teacher), the story (under 150 words),
+ * the teacher, what we believe, a prompt to ask a question about Scripture
+ * (the Ask dialog), then contact, and the next step to the Academy. The full ministry name stays in brackets until confirmed.
  */
 export default function AboutPage() {
   return (
     <main id="main" tabIndex={-1}>
-      <PageHeader
-        loop="wheat-field"
-        tone="night"
-        align="center"
-        animate
-        eyebrow="About"
-        title="A teaching ministry"
-        lead="The name comes from Bethlehem, the house of bread, where the Bread of Life was born."
-      />
+      <PageHeader loop="wheat-field" tone="night" align="center" animate eyebrow="About" body={<DictionaryEntry />} />
 
       {/* Our story: 96 words. Keep it under 150 (the brief). */}
       <section id="story" aria-labelledby="story-heading" className="bg-surface">
@@ -112,6 +107,15 @@ export default function AboutPage() {
             each with supporting Scripture.]
           </Placeholder>
         </div>
+      </Section>
+
+      <Section id="ask" title="Is there a passage you can't make sense of?" tone="warm" width="narrow">
+        <p className="max-w-2xl text-lead text-ink-muted">
+          Ask any question about Scripture: a verse that puzzles you, a word you want to understand, or a
+          passage that seems to say two things at once. No name or email is needed. Every question is read,
+          and some are answered in the teaching.
+        </p>
+        <AskQuestion className="mt-6 w-full sm:w-auto" />
       </Section>
 
       <Section id="contact" title="Want to talk to someone?" tone="mint" width="narrow">

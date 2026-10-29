@@ -464,6 +464,61 @@ html:has(main [data-hero-tone="night"]) [data-site-header] .logo-mark {
   }
 }
 
+/*
+  About's dictionary entry (DictionaryEntry.tsx), written in once on load,
+  CSS only, under the same rule as smooth-in: Motion On and no reduced
+  motion, otherwise it simply stands.
+  - letter-rise: the headword's letters rise out of a blur, 55ms apart
+    (--letter is each letter's index).
+  - rule-draw: the rule under the details draws out from its centre.
+  - write-on: the definition is revealed left to right by a moving mask,
+    as if written. The mask is alpha only; it carries no colour.
+*/
+@keyframes letter-rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@keyframes rule-draw {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes write-on {
+  from {
+    mask-position: 100% 0;
+  }
+  to {
+    mask-position: 0 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="off"]) .letter-rise {
+    animation: letter-rise 700ms cubic-bezier(0.22, 1, 0.36, 1) calc(150ms + var(--letter, 0) * 55ms) both;
+  }
+  html:not([data-motion="off"]) .rule-draw {
+    animation: rule-draw 600ms cubic-bezier(0.22, 1, 0.36, 1) var(--smooth-delay, 0ms) both;
+  }
+  html:not([data-motion="off"]) .write-on {
+    mask-image: linear-gradient(90deg, #000 33.3%, transparent 66.6%);
+    mask-size: 300% 100%;
+    animation: write-on 1600ms cubic-bezier(0.45, 0, 0.25, 1) var(--smooth-delay, 0ms) both;
+  }
+}
+
 @theme inline {
   /* Only the brand palette exists, so no stray default colour can slip in. */
   --color-*: initial;

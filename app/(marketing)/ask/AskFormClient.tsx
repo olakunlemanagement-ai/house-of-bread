@@ -6,12 +6,8 @@ import { Button } from "@/components/shared/Button";
 import { Field, FormError, Honeypot, inputClass, OpensSoonNote } from "@/components/shared/forms";
 import { Icon, IconTile } from "@/components/shared/icons";
 import { QUESTION_MAX, QUESTION_MIN, questionTopics, topicLabels } from "@/lib/questions/fields";
-import {
-  isQuestionError,
-  questionErrorMessage,
-  questionMessages,
-  type QuestionError,
-} from "@/lib/questions/messages";
+import { questionErrorMessage, questionMessages, type QuestionError } from "@/lib/questions/messages";
+import { isFieldError, submitQuestion } from "@/lib/questions/submit";
 
 type State =
   | { kind: "idle" }
@@ -20,10 +16,6 @@ type State =
   | { kind: "error"; error: QuestionError };
 
 const id = (name: string) => `ask-${name}`;
-
-/** Errors about the text itself point at the question field. */
-const isFieldError = (error: QuestionError) =>
-  error === "too-short" || error === "too-long" || error === "too-many-links";
 
 /**
  * Posts to /api/questions. Without JavaScript the browser submits the form
@@ -45,33 +37,10 @@ export function AskFormClient({ enabled }: { enabled: boolean }) {
     event.preventDefault();
     if (!enabled || state.kind === "submitting") return;
 
-    const data = new FormData(event.currentTarget);
-    const body = {
-      question: data.get("question"),
-      topic: data.get("topic"),
-      website: data.get("website"),
-    };
-
+    const form = event.currentTarget;
     setState({ kind: "submitting" });
-    try {
-      const response = await fetch("/api/questions", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (response.ok) {
-        setState({ kind: "success" });
-        return;
-      }
-      const reply: unknown = await response.json().catch(() => null);
-      const error =
-        typeof reply === "object" && reply !== null && "error" in reply && isQuestionError(reply.error)
-          ? reply.error
-          : "retry";
-      setState({ kind: "error", error });
-    } catch {
-      setState({ kind: "error", error: "retry" });
-    }
+    const result = await submitQuestion(form);
+    setState(result.ok ? { kind: "success" } : { kind: "error", error: result.error });
   }
 
   if (state.kind === "success") {

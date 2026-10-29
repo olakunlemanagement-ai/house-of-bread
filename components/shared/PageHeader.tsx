@@ -4,7 +4,13 @@ import { HeroBackdrop, heroBodyClass, heroFrameClass } from "./HeroBackdrop";
 
 type PageHeaderProps = {
   eyebrow: string;
-  title: ReactNode;
+  /** The h1's content. Leave it out only when `body` carries its own h1. */
+  title?: ReactNode;
+  /**
+   * A heading block of its own, in place of the h1 and lead: it must hold
+   * the page's h1. About's dictionary entry (DictionaryEntry).
+   */
+  body?: ReactNode;
   lead?: ReactNode;
   /** Extra lines under the lead, such as dates or passage chips. */
   meta?: ReactNode;
@@ -41,6 +47,7 @@ const delay = (ms: number) => ({ "--smooth-delay": `${ms}ms` }) as CSSProperties
 export function PageHeader({
   eyebrow,
   title,
+  body,
   lead,
   meta,
   actions,
@@ -66,13 +73,15 @@ export function PageHeader({
           <p className={`eyebrow eyebrow-dot ${smooth}`} style={stagger(0)}>
             {eyebrow}
           </p>
-          <h1
-            className={`mt-5 ${center ? "mx-auto max-w-4xl text-display-lg font-semibold" : "max-w-3xl text-display"} ${smooth}`}
-            style={stagger(120)}
-          >
-            {title}
-          </h1>
-          {lead ? (
+          {body ?? (
+            <h1
+              className={`mt-5 ${center ? "mx-auto max-w-4xl text-display-lg font-semibold" : "max-w-3xl text-display"} ${smooth}`}
+              style={stagger(120)}
+            >
+              {title}
+            </h1>
+          )}
+          {lead && !body ? (
             <p
               className={`${center ? "mt-6 mx-auto max-w-3xl text-lead-lg font-semibold text-ink" : "mt-5 max-w-2xl text-lead text-ink-muted"} ${smooth}`}
               style={stagger(260)}

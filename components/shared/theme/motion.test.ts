@@ -273,6 +273,17 @@ describe("Motion controls", () => {
     expect(css.match(/animation: smooth-in/g)).toHaveLength(1);
   });
 
+  it("writes About's dictionary entry in only with Motion On and no reduced motion", () => {
+    for (const name of ["letter-rise", "rule-draw", "write-on"]) {
+      expect(css.match(new RegExp(`animation: ${name}\\b`, "g")), name).toHaveLength(1);
+      expect(css, name).toMatch(
+        new RegExp(`@media \\(prefers-reduced-motion: no-preference\\) \\{[^@]*html:not\\(\\[data-motion="off"\\]\\) \\.${name} \\{\\s*(?:[a-z-]+: [^;]+;\\s*)*animation: ${name}`),
+      );
+    }
+    // The mask that hides the definition exists only while it animates.
+    expect(css.match(/mask-image:/g)).toHaveLength(1);
+  });
+
   it("rises cards in only with Motion On, and hides them only once armed by script", () => {
     expect(css).toMatch(/html:not\(\[data-motion="off"\]\) \[data-rise="open"\] > li \{/);
     const reveal = readFileSync("components/shared/RiseReveal.tsx", "utf8");

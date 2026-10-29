@@ -1,6 +1,7 @@
 import type { Route } from "next";
 import type { Course } from "@/lib/academy/types";
 import type { ImageSlotId } from "@/lib/media/image-slots";
+import { AskQuestion } from "./AskQuestion";
 import { ButtonLink } from "./Button";
 import { FanReveal } from "./FanReveal";
 import { ImageSlot } from "./ImageSlot";
@@ -10,7 +11,8 @@ type StartingCard = {
   slot: ImageSlotId;
   title: string;
   text: string;
-  href: Route;
+  /** Where the button goes; null opens the Ask dialog (AskQuestion). */
+  href: Route | null;
   action: string;
 };
 
@@ -23,7 +25,8 @@ type StartingCard = {
  * reduced motion: a still fan, nothing lifts. Each card carries an image
  * slot, its number, title, line and button. Cards 01 and 02 open the first
  * and second courses in the catalogue, stand-ins until the ministry names
- * the [foundations course] and the [book-by-book course]; 03 opens Ask.
+ * the [foundations course] and the [book-by-book course]; 03 opens the
+ * Ask dialog (AskQuestion), or /ask without script.
  * The Academy keeps the same three as numbered rows (StartingRows).
  */
 export function StartingCards({ courses }: { courses: Course[] }) {
@@ -47,8 +50,8 @@ export function StartingCards({ courses }: { courses: Course[] }) {
     {
       slot: "home-start-question",
       title: "You're carrying a question.",
-      text: "Ask it. You don't need to give your name.",
-      href: "/ask",
+      text: "A verse you can't make sense of, or a passage that troubles you? Ask it. You don't need to give your name.",
+      href: null,
       action: "Ask a question",
     },
   ];
@@ -80,10 +83,14 @@ export function StartingCards({ courses }: { courses: Course[] }) {
               <h3 className="mt-3 text-xl leading-snug">{card.title}</h3>
               <p className="mt-2 text-base leading-relaxed text-ink-muted">{card.text}</p>
               <div className="mt-auto pt-5">
-                <ButtonLink href={card.href} variant="tertiary" size="sm" className="w-full">
-                  {card.action}
-                  {card.action === "Start this course" ? <span className="sr-only">: {card.title}</span> : null}
-                </ButtonLink>
+                {card.href ? (
+                  <ButtonLink href={card.href} variant="tertiary" size="sm" className="w-full">
+                    {card.action}
+                    {card.action === "Start this course" ? <span className="sr-only">: {card.title}</span> : null}
+                  </ButtonLink>
+                ) : (
+                  <AskQuestion variant="tertiary" size="sm" className="w-full" />
+                )}
               </div>
             </div>
           </li>
