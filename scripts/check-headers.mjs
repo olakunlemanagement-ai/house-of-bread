@@ -10,8 +10,12 @@
 // stands in for /media/watch/:videoId; a series page has no player.
 const WATCH = "/media/watch/dC-2yHdPyGo";
 const SERIES = "/media/series/PLUHSYJnvnito";
-const EMBED_ROUTES = new Set(["/", "/media", WATCH]);
-const ROUTES = ["/", "/media", WATCH, SERIES, "/events", "/about", "/app", "/contact", "/subscribe", "/ask", "/teachings", "/privacy"];
+// An Academy course (its trailer) and a lesson (its video) frame YouTube;
+// the catalogue does not.
+const COURSE = "/academy/reading-the-bible";
+const LESSON = "/academy/reading-the-bible/one-story-many-books";
+const EMBED_ROUTES = new Set(["/", "/media", WATCH, COURSE, LESSON]);
+const ROUTES = ["/", "/media", WATCH, SERIES, "/academy", COURSE, LESSON, "/events", "/about", "/app", "/contact", "/subscribe", "/ask", "/teachings", "/privacy"];
 const YOUTUBE_FRAME = "https://www.youtube-nocookie.com";
 
 const REQUIRED = {

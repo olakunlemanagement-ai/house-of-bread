@@ -4,7 +4,7 @@ import { ImageSlot } from "@/components/shared/ImageSlot";
 import { Icon } from "@/components/shared/icons";
 import type { Section } from "@/lib/academy";
 import { count, formatDuration } from "@/lib/academy/navigation";
-import { LessonMarker, SectionRing, SectionStatus } from "./SectionProgress";
+import { LessonMarker, SectionRing, SectionStatus } from "@/components/academy/SectionProgress";
 
 /** "Lessons 1-4", or "Lesson 5" for a section of one. */
 function lessonRange(section: Section): string {

@@ -63,7 +63,9 @@ describe("securityHeaders", () => {
   });
 
   it("lists exactly the routes that render an embed", () => {
-    expect([...EMBED_ROUTES]).toEqual(["/", "/media", "/media/watch/:videoId"]);
+    expect([...EMBED_ROUTES]).toEqual(["/", "/media", "/media/watch/:videoId", "/academy/:course", "/academy/:course/:lesson"]);
+    // The catalogue has no player, so no pattern names /academy itself.
+    expect(EMBED_ROUTES).not.toContain("/academy");
   });
 
   it("gives no other rule a YouTube frame", () => {

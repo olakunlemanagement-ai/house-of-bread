@@ -10,7 +10,8 @@ export type YouTubeSource =
   /** Whatever the channel is streaming live right now. */
   | { kind: "live"; channelId: string };
 
-const EMBED = "https://www.youtube-nocookie.com/embed";
+const YOUTUBE_ORIGIN = "https://www.youtube-nocookie.com";
+const EMBED = `${YOUTUBE_ORIGIN}/embed`;
 
 // enablejsapi lets the page send the player one command: stop when scrolled away.
 function embedUrl(source: YouTubeSource): string {
@@ -45,6 +46,53 @@ function useStopWhenOffscreen(frame: RefObject<HTMLIFrameElement | null>, active
   }, [frame, active]);
 }
 
+/**
+ * Calls onEnded once the video plays to its end. It listens on the same
+ * enablejsapi channel: the page says "listening" until the player answers,
+ * then the player posts its state changes (0 is ended). Only messages from
+ * this iframe and the youtube-nocookie.com origin count. No YouTube script
+ * loads on the page.
+ */
+function useEnded(frame: RefObject<HTMLIFrameElement | null>, active: boolean, onEnded: (() => void) | undefined) {
+  const callback = useRef(onEnded);
+  useEffect(() => {
+    callback.current = onEnded;
+  });
+  const wanted = onEnded !== undefined;
+  useEffect(() => {
+    const iframe = frame.current;
+    if (!active || !wanted || !iframe) return;
+    let answered = false;
+    let tries = 0;
+    const listen = () => {
+      if (answered || tries++ > 40) return window.clearInterval(timer);
+      iframe.contentWindow?.postMessage(JSON.stringify({ event: "listening", id: 1, channel: "widget" }), YOUTUBE_ORIGIN);
+    };
+    const timer = window.setInterval(listen, 500);
+    const onMessage = (event: MessageEvent) => {
+      if (event.origin !== YOUTUBE_ORIGIN || event.source !== iframe.contentWindow || typeof event.data !== "string") return;
+      let data: unknown;
+      try {
+        data = JSON.parse(event.data);
+      } catch {
+        return;
+      }
+      answered = true;
+      if (typeof data !== "object" || data === null || !("event" in data) || !("info" in data)) return;
+      const info = data.info;
+      const ended =
+        (data.event === "onStateChange" && info === 0) ||
+        (data.event === "infoDelivery" && typeof info === "object" && info !== null && "playerState" in info && info.playerState === 0);
+      if (ended) callback.current?.();
+    };
+    window.addEventListener("message", onMessage);
+    return () => {
+      window.clearInterval(timer);
+      window.removeEventListener("message", onMessage);
+    };
+  }, [frame, active, wanted]);
+}
+
 function watchUrl(source: YouTubeSource): string {
   return source.kind === "video"
     ? `https://www.youtube.com/watch?v=${source.id}`
@@ -64,17 +112,21 @@ export function YouTubeFacade({
   title,
   autoStart = false,
   poster = "standard",
+  onEnded,
 }: {
   source: YouTubeSource;
   title: string;
   autoStart?: boolean;
   /** "large" (1280px wide) for a player that fills the page width; it falls back to the standard 480px one if YouTube has none. */
   poster?: "standard" | "large";
+  /** Called when the video plays to its end (an Academy lesson marks itself complete). */
+  onEnded?: () => void;
 }) {
   const [playing, setPlaying] = useState(autoStart);
   const [large, setLarge] = useState(poster === "large");
   const frame = useRef<HTMLIFrameElement>(null);
   useStopWhenOffscreen(frame, playing);
+  useEnded(frame, playing, onEnded);
 
   function play(event: MouseEvent<HTMLAnchorElement>) {
     // Let modified clicks open YouTube in a new tab as usual.
