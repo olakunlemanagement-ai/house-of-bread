@@ -64,6 +64,9 @@ Rules:
 | Beliefs | What we believe |
 | Academy, after the course cards | Browse all courses |
 | Live line, to the session times | See the session times |
+| Teachings: share a teaching or series (amended 29 October 2026) | Share |
+| Teachings: close the Shorts player | Close |
+| Teachings: a section whose YouTube data failed, only there | Watch on YouTube |
 
 Square brackets mark facts the ministry must confirm. Keep them visible until confirmed.
 
@@ -200,12 +203,14 @@ Visual (Amended, Home corrections): the phone mockup from before the reset, show
 - "Taught by [Isaac Ola]".
 - Next step: the next course.
 
-**Teachings**
+**Teachings** (amended 29 October 2026, in the shape of BibleProject's Videos page)
 
-- Heading: "Need a word for this season?"
-- Text: "Every message, in one place. Watch, then go deeper in the Academy."
-- Latest teaching large, then a grid of the rest, then the live line (as on Home).
-- Next step: **Browse courses**.
+- Hero: the featured teaching. Eyebrow "Featured teaching", its title, one or two lines, **Watch now**, and its thumbnail on the right (below on phones).
+- "Latest teachings": the four newest long-form teachings, from both channels.
+- "Bible nuggets": the latest Shorts, played in place.
+- "Explore series": the playlists, each opening a series page.
+- The live line, then next step: **Browse courses**.
+- A teaching page (video, title, date, **Share**, description, "More teachings") and a series page (cover, name, **Share**, every episode) both end with **Browse courses**.
 
 **About**
 

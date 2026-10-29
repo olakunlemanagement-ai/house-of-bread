@@ -3,7 +3,7 @@
 Operating instructions for Claude Code on the House of Bread Global website.
 Read this file at the start of every session. Follow it over general defaults.
 
-Last updated: 28 October 2026
+Last updated: 29 October 2026
 
 ---
 
@@ -102,7 +102,8 @@ declaring any task complete.
   /content              MDX loading, parsing, schemas
   /scripture            canonical reference module, framework free
   /newsletter           Kit client and subscribe logic
-  /media                YouTube feed parser and the cached video fetch
+  /media                hero loops and image slots
+  /youtube              YouTube feeds, Data API, oEmbed and the Teachings catalog
   /app-integration      future app link, interface and no-op provider only
 /docs                   SPEC-v3.md and supporting design notes
 /public
@@ -382,6 +383,10 @@ disagrees with the brief, the brief wins.
   before the visitor scrolls; `scripts/check-noscript.mjs` checks it at
   375, 768 and 1280, with layout shift. On a short screen (32rem tall or
   less, a phone held sideways) the clear space drops to 2rem.
+- One exception (29 October 2026): a teaching's watch page
+  (`/media/watch/[videoId]`) opens with its video, not a hero, on the
+  plain surface below the transparent header. No loop, so it is left out
+  of check-noscript's hero checks.
 - Responsive floor: no sideways scroll from 320px up. Below 375px the
   header shows the logo mark without the name (`Logo compact`), so the
   theme switch and Menu button fit.
@@ -403,8 +408,8 @@ disagrees with the brief, the brief wins.
 
 ### Loading states
 
-- Skeletons only where content really loads: the Library video grid and
-  Home's teaching block (Suspense fallbacks), route segments that await
+- Skeletons only where content really loads: Home's teaching block (a
+  Suspense fallback), route segments that await
   data (`loading.tsx`), and a still tint behind `next/image` thumbnails.
   Never on static content.
 - Use `components/shared/Skeleton.tsx`: `Skeleton` blocks inside a
@@ -412,6 +417,30 @@ disagrees with the brief, the brief wins.
   moves by transform only and stays still under reduced motion. Size every
   skeleton like the real content, so nothing shifts
   (`scripts/check-noscript.mjs` measures it).
+
+### Teachings (`/media`)
+
+- Since 29 October 2026, in the shape of BibleProject's Videos page: the
+  featured teaching as the hero (`siteConfig.featuredTeachingId`), "Latest
+  teachings" (four long-form), "Bible nuggets" (six Shorts), "Explore
+  series" (playlists), the live line, then "Browse courses". Teaching
+  cards open `/media/watch/[videoId]`, series tiles
+  `/media/series/[playlistId]`; only a Short plays in place, in a modal
+  `<dialog>`.
+- All YouTube data goes through `lib/youtube` (`teachings.ts` is the
+  cached entry, `catalog.ts` the framework free loader). Videos come from
+  both channels in `siteConfig.teachingChannels`, through their UULF and
+  UUSH playlist feeds. Series and durations use `YOUTUBE_API_KEY` when set;
+  without it, series come from `siteConfig.seriesPlaylistIds` and no
+  duration shows. `content/videos/<videoId>.mdx` overrides a title or
+  description. See `docs/MEDIA-FEED.md`.
+- A watch page exists only for a video from a teaching channel (in the
+  feeds, configured, or placed there by oEmbed); any other id is a 404.
+- The pages are fully static (`ensureStatic = "navigation"`), no Suspense:
+  with a boundary, Next streamed the sections after the first HTML, so
+  they needed script.
+- "Watch on YouTube" appears only in a section's fallback state
+  (`YouTubeButton` in `FeedFallback.tsx`), never beside working content.
 
 ### Decorative motion loops
 
@@ -604,8 +633,8 @@ disagrees with the brief, the brief wins.
   beneath it.
 - Footer: deep green in both themes, the site's trust block. The full
   ministry name (in brackets until confirmed), socials (the icon row shows
-  the ministry's YouTube channel only; both channels are labelled on
-  `/media`), store badges once
+  the ministry's YouTube channel only; both channels feed Teachings,
+  `siteConfig.teachingChannels`), store badges once
   the store links exist, one list of links (Teachings, Academy, About,
   What we believe, Ask, Events, App, Subscribe, Contact, Privacy), and the
   Light, Dark or System theme choice beside the Motion control.

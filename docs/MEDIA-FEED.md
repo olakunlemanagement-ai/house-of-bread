@@ -1,10 +1,10 @@
-# Library video feed
+# YouTube feeds: Home and Teachings
 
-Last updated: 17 October 2026
+Last updated: 29 October 2026
 
 ## Decision
 
-The Library page (`/media`) shows the latest six videos from the channel's public feed (`youtube.com/feeds/videos.xml`), fetched on the server by `getLatestVideos()` in `lib/media/videos.ts` and refreshed hourly. When a refresh fails, the page keeps the last list that loaded. The empty state shows only when no fetch has succeeded for the current deployment, or when the channel has no videos.
+The Library page (`/media`) shows the latest six videos from the channel's public feed (`youtube.com/feeds/videos.xml`), fetched on the server by `getLatestVideos()` in `lib/youtube/videos.ts` (Home's teaching block since the Teachings rebuild) and refreshed hourly. When a refresh fails, the page keeps the last list that loaded. The empty state shows only when no fetch has succeeded for the current deployment, or when the channel has no videos.
 
 ## How it works
 
@@ -43,9 +43,41 @@ A throwaway Next 16.4.2 app with `cacheComponents`, run with `next build` and `n
 
 Building with the feed returning 404, the new pattern built successfully, showed the empty state with a 2 second revalidate, then moved to the new list once the feed recovered and kept it through later failures. A probe without the build fallback failed the build, which confirmed the note above about errors during prerendering.
 
-The unit tests in `lib/media/videos.test.ts` cover the retry, the failure types, the build and development fallback, and that no message contains the channel id.
+The unit tests in `lib/youtube/videos.test.ts` cover the retry, the failure types, the build and development fallback, and that no message contains the channel id.
 
 ## Limits
 
 - The last good list lasts for the life of a deployment. A new deployment that builds during an outage starts with the empty state, and recovers on the first successful refresh after a minute.
 - During an outage, both Vercel and Next retry every 30 seconds on traffic. Each retry is one serverless invocation and two feed requests.
+
+## Teachings (29 October 2026)
+
+Teachings (`/media`), its watch pages and its series pages read one catalog, `getTeachingsCatalog()` in `lib/youtube/teachings.ts`, cached and refreshed hourly with the same failure rule as above: at runtime a section whose requests all fail throws, so the last good page stays; at build time it shows the section's fallback and retries after a minute. The loader itself (`lib/youtube/catalog.ts`) is framework free and tested on fixtures in `lib/youtube/catalog.test.ts` (0, 1, 4 and many items, Shorts mixed in, feed down, API down).
+
+### Data paths, checked on 29 October 2026
+
+| Data | Source | Checked |
+| --- | --- | --- |
+| Long-form teachings | Each channel's `UULF` + channel id without `UC` playlist feed | Works for both channels. Ministry: 2 videos. Pastor: 8. |
+| Shorts | Each channel's `UUSH` playlist feed | Works for both. Ministry: 13. Pastor: 15 (the feed cap). |
+| Live streams | `UULV` | 404 for the ministry channel: no live uploads. Not used. |
+| Fallback for either | The channel feed, split by each entry's `/shorts/` link | Every Short in the ministry's channel feed links to `/shorts/`. |
+| Series | With `YOUTUBE_API_KEY`: every playlist on both channels plus `seriesPlaylistIds`, newest first, eight at most. Without: the `seriesPlaylistIds` playlist feeds. | `PLUHSYJnvnito` (Bible Foundations Series, 6 videos) works as a feed. |
+| Durations | Data API `videos.list` only. No key, no badge. | Not run: no key yet. |
+| Featured title and description | The catalog, then oEmbed, then `content/videos/<id>.mdx` overrides. | `dC-2yHdPyGo` is in the pastor's long-form feed. |
+
+RSS feeds list 15 entries at most, so without the key a series of 15 shows "15+ teachings", and an older upload drops out of the lists. Its watch page still works: oEmbed confirms it belongs to a teaching channel.
+
+### Watch pages only for our videos
+
+`/media/watch/[videoId]` renders for a video in the catalog, a configured id, an override, or one whose oEmbed `author_url` is a teaching channel's handle URL (`siteConfig.teachingChannels`). Anything else is a 404, so the site never frames someone else's video under its own name.
+
+### Creating YOUTUBE_API_KEY
+
+1. In Google Cloud Console (console.cloud.google.com), create a project, for example "hob-website".
+2. APIs and Services, Library: find "YouTube Data API v3" and Enable it.
+3. APIs and Services, Credentials: Create credentials, API key.
+4. Edit the key. Under API restrictions choose "Restrict key" and tick only YouTube Data API v3. Leave application restrictions at None: the key is called from Vercel's servers, whose addresses change.
+5. Put it in `.env.local` as `YOUTUBE_API_KEY=...`, and in Vercel (Settings, Environment Variables) for Production and Preview, marked Sensitive. Never with a `NEXT_PUBLIC_` prefix.
+
+The key travels in the `X-Goog-Api-Key` header, never in a URL, and no log line includes it. Each hourly refresh costs about 15 units (playlists 3, playlist items one per series, videos one per 50 ids): a few hundred a day against the free 10,000.

@@ -1394,7 +1394,8 @@ the nav, buttons, loops and motion.
 | Home | ambient-light | phone loop (2:3 crop) |
 | Academy | open-bible | phone loop (4:3 crop) |
 | Academy course page | open-bible | poster |
-| Teachings (`/media`) | water-light | poster |
+| Teachings (`/media`), series pages | water-light | poster |
+| Teaching watch pages (`/media/watch/[videoId]`) | none: the video comes first (29 October 2026) | none |
 | Teachings articles (`/teachings`, `/teachings/[slug]`) | dust-light | poster |
 | Events, event page | dust-light | poster |
 | About | wheat-field | poster |
@@ -1809,3 +1810,37 @@ Kept on purpose: the calendar placeholder note on event pages (until
 dates exist), the unused image slots, the Plans FAQ, and
 `public/house-of-bread-logo.png` (the source for
 `scripts/logo/make-transparent.mjs`).
+
+## Teachings rebuild (29 October 2026)
+
+`/media` rebuilt in the shape of BibleProject's Videos page, on
+`feat/teachings`. Details and data paths: `docs/MEDIA-FEED.md`.
+
+### Removed from /media
+
+- The lead player with six cards under it (`VideoGrid`, `VideoLibrary`,
+  `VideoGridSkeleton`), which played every video in place.
+- The sentence naming both YouTube channels and linking written
+  teachings, the New Testament and the reading plans. Both channels now
+  feed the page instead; the pastor's channel is no longer named on it.
+- The hero heading "Need a word for this season?": it stays only as the
+  hero's fallback when no featured teaching resolves.
+- (The Live and replays chips, Video, Audio, Social and Read and study
+  sections were already gone in the reset.)
+
+### To confirm
+
+- The featured teaching's line under its title comes from the first
+  sentence of its YouTube description. Override in
+  `content/videos/dC-2yHdPyGo.mdx` if the ministry wants other words.
+- Two ministry uploads repeat pastor episodes under other titles
+  (`73oQ32ebppE` and `4dydp8uGr0I`; `Ga_ihzd3mTE` and `GsLhhf79Q2E`), so the same teaching can show twice in
+  "Latest teachings" and "More teachings". The ministry should pick one.
+- Durations stay hidden until `YOUTUBE_API_KEY` is set.
+
+### Contrast
+
+Duration badge and series name band: white on green-night at 85%, 10.01:1
+over a white image, 16.82:1 over black. Series count pill: accent on
+raised, 7.65:1 light, 9.84:1 dark. Breadcrumb links: accent on surface,
+7.65:1 and 10.67:1.

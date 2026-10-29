@@ -25,7 +25,7 @@ The policy still blocks external script hosts, limits where data can be sent (`c
 ## Policy
 
 - Site wide: `default-src 'self'`; `img-src` adds `data:` and `i.ytimg.com`; `connect-src` adds `plausible.io`; `frame-src 'none'`; `object-src 'none'`; `base-uri 'self'`; `form-action 'self'`; `frame-ancestors 'none'`.
-- Embed routes (`EMBED_ROUTES`: `/` and `/media`; `/events` dropped its player in the reset): `frame-src https://www.youtube-nocookie.com`. Add a path to the list when a page gains an embed.
+- Embed routes (`EMBED_ROUTES`: `/`, `/media` for the Shorts player, and `/media/watch/:videoId`; series pages and `/events` have none): `frame-src https://www.youtube-nocookie.com`. Add a path to the list when a page gains an embed.
 - Other headers: `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `X-Frame-Options`. Vercel sends `Strict-Transport-Security` itself.
 - When the Plausible script is added, `script-src` needs `https://plausible.io`, or Plausible can be proxied through a rewrite so it stays `'self'`.
 
@@ -37,7 +37,7 @@ If the policy ever moves to nonces or hashes, `'unsafe-inline'` is ignored and t
 
 ## Checking the headers
 
-Run `node scripts/check-headers.mjs <base-url>` against a production server (`npm run build`, then `npm run start`) or a deployed preview. The script prints the headers for `/`, `/media`, `/events`, `/app`, `/contact` and `/subscribe`, and exits 1 if any check fails.
+Run `node scripts/check-headers.mjs <base-url>` against a production server (`npm run build`, then `npm run start`) or a deployed preview. The script prints the headers for `/`, `/media`, a watch page, a series page, `/events`, `/app`, `/contact`, `/subscribe` and more, and exits 1 if any check fails.
 
 On 17 October 2026 all checks passed against a local production build. Home showed `frame-src https://www.youtube-nocookie.com`, and every other route showed `frame-src 'none'`.
 
