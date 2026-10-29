@@ -248,7 +248,7 @@ No email address is published anywhere on the site.
 | `/events`, Weekly rhythm | [WEEKLY SCHEDULE AND MINISTRY TIME ZONE TO BE SUPPLIED] |
 | `/academy`, Why learn here | [TEACHER NAME AND A SHORT INTRODUCTION TO BE SUPPLIED] |
 | `/academy`, Questions | [CONFIRM] on every answer: free or paid, device needed, how long access lasts, live attendance. See "House of Bread Academy, open questions" |
-| `/academy/[slug]`, all five sections | [COURSE DETAILS TO BE SUPPLIED] |
+| `/academy/[course]` and `/academy/[course]/[lesson]` | Every title, description, Scripture range, section, lesson, outcome, teacher bio, note, transcript and reflection is in [brackets] in `content/academy` (29 October 2026) |
 | `/plans/[slug]`, closing band | [APP DEEP LINK TO BE CONFIRMED] |
 | `/contact`, side panel | [RESPONSE TIME, EMAIL ADDRESS AND SOCIAL LINKS TO BE SUPPLIED] |
 | `/privacy`, section 1 | [LEGAL NAME, ADDRESS AND CONTACT EMAIL OF THE MINISTRY] |
@@ -265,7 +265,7 @@ No email address is published anywhere on the site.
 | Event cards, featured session card and `/events/[slug]` header | [DATE, TIME AND MINISTRY TIME ZONE TO BE SUPPLIED], [DURATION TO BE SUPPLIED] |
 | Featured session card and `/events/[slug]` | [YOUTUBE LINK TO BE SUPPLIED], [CALENDAR FILE AVAILABLE ONCE A DATE IS SUPPLIED] |
 | `/events/[slug]` | [SESSION DESCRIPTION TO BE SUPPLIED], [PASSAGES TO BE SUPPLIED, LINKED THROUGH /lib/scripture] |
-| Course cards and `/academy/[slug]` header | Titles [COURSE TITLE 1] to [COURSE TITLE 4], a placeholder summary and a "Coming soon" badge. No lesson counts, durations, prices or certificates until the ministry supplies them |
+| Course cards, catalogue rows and `/academy/[course]` header | Six courses in four categories ([Foundations], [Old Testament], [New Testament], [Christian Living]), titles and ranges in [brackets]. Lessons and time are computed from the placeholder lessons. No prices or certificates |
 | Teaching cards and `/teachings/[slug]` | [SUMMARY TO BE SUPPLIED], [READING TIME], [PASSAGES], [DATE], [PASSAGES AS LINKED CHIPS], [TEACHING BODY TO BE SUPPLIED] |
 | `/new-testament/[book]`, all five sections | [BODY TEXT FOR THIS SECTION TO BE SUPPLIED] |
 | `/plans/[slug]` for the 60 and 90 day journeys | [DAY ONE READING TO BE CONFIRMED AGAINST THE APP] |
@@ -474,7 +474,7 @@ is copied from the app. Replace or delete each one when real content arrives.
 | Route | Source | Sample |
 |---|---|---|
 | `/events/[slug]` | `content/events` | `sample-live-session` |
-| `/academy/[slug]` | `content/classes`, read through `lib/academy` | `sample-class`, `sample-class-2`, `sample-class-3`, `sample-class-4` (shown as "Coming soon") |
+| `/academy/[course]`, `/academy/[course]/[lesson]` | `content/academy`, read through `lib/academy` | 4 categories, 6 courses, 32 lessons (29 October 2026). The Start Here course, `reading-the-bible`, has 3 sections of 4 lessons |
 | `/teachings/[slug]` | `content/teachings` | `sample-teaching` (marked draft) |
 | `/new-testament/[book]` | `content/books` | `matthew` |
 | `/plans/[slug]` | `lib/content/placeholder-data.ts` | `30-day-plan`, `60-day-plan`, `90-day-plan` |
@@ -1427,6 +1427,7 @@ the nav, buttons, loops and motion.
 | Home | ambient-light | phone loop (2:3 crop) |
 | Academy | open-bible | phone loop (4:3 crop) |
 | Academy course page | open-bible | poster |
+| Academy lesson page | none: the lesson bar and its video, after BibleProject's session player (29 October 2026) | none |
 | Teachings (`/media`), series and teaching pages | none: a plain hero, after BibleProject (29 October 2026). water-light is now in no hero; its files stay until the ministry decides | none |
 | Teachings articles (`/teachings`, `/teachings/[slug]`) | dust-light | poster |
 | Events, event page | dust-light | poster |
@@ -1916,3 +1917,73 @@ scrim, not full screen), every section on the one surface (no cream or
 mint band but the closing next step), 24px and 40px per section instead
 of 40px and 112px, headings at 24 to 28px instead of the house h2, five
 cards in "Latest teachings" and four series tiles across, as BibleProject.
+
+## House of Bread Academy LMS (29 October 2026)
+
+`/academy`, every course and every lesson, built as a placeholder LMS in
+the shape of BibleProject Classroom (`docs/research/BIBLEPROJECT-CLASSROOM.md`).
+No accounts, no database, no new dependency or font.
+
+### Placeholders
+
+- **Content.** `content/academy`: 4 categories, 6 courses, 32 lessons, every
+  word in [brackets] and `placeholder: true`. The ministry supplies the real
+  courses; then `siteConfig.academy.status` becomes `"open"`.
+- **Stand-in video.** The Start Here course's trailer and its lesson 1 use
+  `siteConfig.startHereVideoId` (`wpNuDtvzMzs`, "Christianity is the slave
+  master's tool?", on the pastor's channel), so the facade, the CSP and
+  "complete when the video ends" can be tested. Every other lesson shows
+  "This lesson is being prepared". Replace both with the real course videos.
+- **Resources.** The Start Here course lists [Course notes] and
+  [Small-group guide] with no file: each row shows [File to be supplied]
+  until a PDF is added under `/public/academy` and named in `resources`.
+  No lesson has a `notesFile` yet, so "Download notes" shows nowhere.
+- **Categories** and the **Start Here course** are the ministry's to name.
+
+### Image slots
+
+Twenty slots, status `interim` (illustrations, no people, so an interim
+image may fill them), decorative (the title beside each carries the
+meaning): `academy-course-<course>` (16:9, the catalogue row, the Start Here
+card and the course hero) for each of the six courses, and
+`academy-section-<course>-<n>` (1:1, round, in the section accordion and the
+lesson list) for each of the fourteen sections. Until filled they show the
+designed placeholder; small frames drop the caption (`ImageSlot compact`).
+
+### Button labels added
+
+See all courses, Start here, Watch the trailer, Download (a resource),
+Back to course, Options, Share, Mark lesson complete, Download notes,
+Reveal response, Hide response, Previous lesson, Next lesson, Finish course.
+Reused: Start this course, Continue learning, Browse all courses, Close,
+Notify me when the Academy opens.
+
+### Decisions
+
+- Progress is `LessonProgressStore` in `lib/academy`, kept in localStorage
+  (`hob:academy-progress`), not `lib/app-integration`, which stays the app's
+  reading plan seam.
+- The lesson player has no site header (the `(player)` route group): its
+  lesson bar carries the theme switch; the footer keeps the theme choice
+  and the Motion control.
+- No Audio only: the YouTube embed has no audio mode, and hiding a playing
+  player breaks YouTube's terms.
+- "Scripture range · teacher" uses the middle dot: the bullet symbol is banned.
+- The Options menu's items (Share, Mark lesson complete, Download notes)
+  are menu items in a disclosure, not full buttons; the menu's trigger is
+  a button.
+- The category list wraps as chips on phones and tablets, so nothing
+  scrolls sideways.
+- One placeholder lesson was renamed from "[Set free]": with its
+  `course:` field it read as "course ... free" to `reset-copy.test.ts`.
+
+### Contrast
+
+Every new pairing is in `scripts/check-contrast.mjs` (the "Academy" rows)
+and passes in both themes: tag pills and the current category chip
+(accent on tint, 6.80:1 light, 8.04:1 dark), rows (muted on raised,
+7.64:1 and 8.57:1), the progress ring, dot and marker (glyph on raised,
+6.57:1 and 7.74:1), the progress bar (glyph on tint-strong, 5.16:1 and
+5.26:1), the completed tick (raised on glyph), the course hero's range and
+teacher over the worst loop pixel (4.77:1 and 5.78:1), the tabs, the lesson
+list's current lesson, the being prepared panel and the reflection response.

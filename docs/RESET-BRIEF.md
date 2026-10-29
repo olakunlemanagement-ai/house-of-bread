@@ -69,6 +69,10 @@ Rules:
 | Teachings: every series (amended 29 October 2026) | See all series |
 | Ask dialog on Home and About: send, close, ask again (amended 29 October 2026) | Send question, Close, Ask another question |
 | Teachings: a section whose YouTube data failed, only there | Watch on YouTube |
+| Academy hero (amended 29 October 2026) | See all courses, Start here |
+| Course page: the trailer (amended 29 October 2026) | Watch the trailer |
+| Course page: a resource (amended 29 October 2026) | Download |
+| Lesson page (amended 29 October 2026) | Back to course, Options, Share, Mark lesson complete, Download notes, Reveal response, Hide response, Previous lesson, Next lesson, Finish course |
 
 Square brackets mark facts the ministry must confirm. Keep them visible until confirmed.
 
@@ -151,10 +155,10 @@ Button under the cards: **Browse all courses**
 
 ### Screen 4: Where are you starting from?
 
-Three cards in a fan (Amended, Home corrections), in the style of BibleProject's "Follow your curiosity": one soft tinted rounded panel, the heading centred, the middle card in front and raised, the side cards slightly turned behind it. Each card has an image slot (placeholder for now), its number, title, line and a button (Start this course, Start this course, Ask a question). On scroll in, the cards fan out from a stack once; a hovered card lifts slightly. Phones stack the cards vertically, same style, no fan. Motion Off or reduced motion: a still fan. The Academy keeps the same three as numbered rows. The cards:
+Three cards in a fan (Amended, Home corrections), in the style of BibleProject's "Follow your curiosity": one soft tinted rounded panel, the heading centred, the middle card in front and raised, the side cards slightly turned behind it. Each card has an image slot (placeholder for now), its number, title, line and a button (Start this course, Start this course, Ask a question). On scroll in, the cards fan out from a stack once; a hovered card lifts slightly. Phones stack the cards vertically, same style, no fan. Motion Off or reduced motion: a still fan. The Academy shows the same fan (amended 29 October 2026; it had the three as numbered rows). The cards:
 
-- **01. New to the Bible.** "Start with the foundations: what the Bible is and how to read it." Links to [foundations course].
-- **02. You know the stories, but not how they connect.** "Go book by book and see the whole picture." Links to [book-by-book course].
+- **01. New to the Bible.** "Start with the foundations: what the Bible is and how to read it." Links to the Start Here course (amended 29 October 2026; the ministry names the [foundations course]).
+- **02. You know the stories, but not how they connect.** "Go book by book and see the whole picture." Links to the first course in another category, until the ministry names the [book-by-book course].
 - **03. You're carrying a question.** "Ask it. You don't need to give your name." Links to Ask.
 
 ### Screen 5: Teachings
@@ -189,21 +193,27 @@ Visual (Amended, Home corrections): the phone mockup from before the reset, show
 
 ## 5. Other pages (apply the same rules)
 
-**Academy**
+**Academy** (amended 29 October 2026, a placeholder LMS in the shape of BibleProject Classroom: docs/research/BIBLEPROJECT-CLASSROOM.md)
 
 - Heading: "Bible courses" (Amended, Home corrections)
 - Text: "Self-paced video lessons that take you through Scripture in context."
-- Below the text: "Where are you starting from?" rows (as on Home), then all courses as cards.
-- Next step: "Not sure where to begin? Start with [foundations course]."
+- Buttons: **See all courses** (to the catalogue) and **Start here** (the Start Here course).
+- "Find a course": the course categories and the Start Here card (image, title, short text, **Start this course**) beside every category's course rows; on phones and tablets the categories are chips above the card. Each row: thumbnail, Scripture range, title, two line description, "[N] sections · [N] lessons · [N] hr [N] min", tags, and progress once started.
+- Then the "Where are you starting from?" cards, as on Home.
+- Next step: "Not sure where to begin? Start with [the Start Here course]."
 
-**Course page**
+**Course page** (amended 29 October 2026)
 
-- Title, then a one-line promise, then "[N] lessons · about [N] min each".
-- **Start this course** button.
-- "What you'll learn" (3 to 5 bullets).
-- "Lessons" (a numbered outline).
-- "Taught by [Isaac Ola]".
-- Next step: the next course.
+- Hero: title, "Scripture range · teacher", the description (it opens with a question), "time · lessons · sections", progress ("Not started", "[N] of [N] lessons", "Completed"), **Start this course** (**Continue learning** once started) and **Watch the trailer** when there is one. The course image beside it.
+- Tabs, kept in the URL: Sections (an accordion per section, its lessons as a timeline), Overview (trailer, "What you'll learn", "Meet your teacher") and Resources (downloads; hidden when empty).
+- Next step: the next course in the category.
+
+**Lesson page** (29 October 2026)
+
+- A focused page: a lesson bar with **Back to course**, the centred "Lesson N · Title" (it opens every lesson, grouped by section) and **Options** (Share, Mark lesson complete, Download notes when there is a file).
+- The video, click to load; or "This lesson is being prepared", with **Notify me when the Academy opens** while the Academy is in preview.
+- Tabs: Notes, Transcript, Reflection (a question, then **Reveal response**, **Hide response**). Empty tabs are hidden.
+- **Previous lesson** and **Next lesson** always visible; the last lesson has **Finish course**.
 
 **Teachings** (amended 29 October 2026, in the shape of BibleProject's Videos page)
 

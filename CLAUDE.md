@@ -96,7 +96,8 @@ declaring any task complete.
   /plans                reading plan landing content
   /answers              apologetics Q and A
   /events               live sessions, trainings, meetings
-  /classes              class and training descriptions
+  /academy              House of Bread Academy: categories, courses (with
+                        their sections) and lessons/<course>/<lesson>.mdx
   /transcripts          video transcripts
 /lib
   /content              MDX loading, parsing, schemas
@@ -104,6 +105,8 @@ declaring any task complete.
   /newsletter           Kit client and subscribe logic
   /media                hero loops and image slots
   /youtube              YouTube feeds, Data API, oEmbed and the Teachings catalog
+  /academy              the CourseCatalog seam, totals, navigation and the
+                        LessonProgressStore (Academy progress, framework free)
   /app-integration      future app link, interface and no-op provider only
 /docs                   SPEC-v3.md and supporting design notes
 /public
@@ -205,6 +208,12 @@ Not built at launch. These rules keep it cheap later.
   calls for them. Raise it first.
 - Do not invent the app's URL scheme or API shape. Both are open items in the
   spec.
+- Academy lesson progress is not this seam (29 October 2026). It lives
+  behind `LessonProgressStore` in `lib/academy/progress.ts`: today
+  `LocalLessonProgress` keeps it in the visitor's browser, with no sign in.
+  Accounts, synced progress and certificates come later through the same
+  interface, and no component changes. Leave `lib/app-integration` to the
+  app's reading plans.
 
 ### Code
 
@@ -330,8 +339,8 @@ disagrees with the brief, the brief wins.
 - Shared pieces, so every page matches Home: `Section` and `bandClass`
   (one rhythm, 40px on phones and 112px from md, no rule above the
   heading), `NextStep` (the closing band every page ends with),
-  `StartingCards` (Home's "Where are you starting from?" fan of cards),
-  `StartingRows` (the same three as rows, on the Academy), `BeliefCards`
+  `StartingCards` (the "Where are you starting from?" fan of cards, on
+  Home and the Academy), `BeliefCards`
   (About's four beliefs in Home's card look, no buttons), `NumberedRows`
   (rows with a button), `NumberedList` (rows without), `LiveLine` (the one live
   line, Home and Teachings). `lib/content/reset-copy.test.ts` fails on a
@@ -399,6 +408,10 @@ disagrees with the brief, the brief wins.
   its video), one plain surface and a tight rhythm (`TeachingsLayout.tsx`,
   24px and 40px per section, a `tight` NextStep). check-noscript marks
   them `plain`: no scrim or full screen checks, layout shift still checked.
+- A third exception (29 October 2026): an Academy lesson
+  (`/academy/[course]/[lesson]`) opens with its own lesson bar and its
+  video, with no site header and no hero (see "Academy"). check-noscript
+  marks it `plain`.
 - Another exception (29 October 2026): About's hero is a night hero
   (`PageHeader tone="night" align="center" animate`): the wheat loop under
   night at 80% across the full width in both themes, and, centred, the
@@ -480,6 +493,55 @@ disagrees with the brief, the brief wins.
   they needed script.
 - "Watch on YouTube" appears only in a section's fallback state
   (`YouTubeButton` in `FeedFallback.tsx`), never beside working content.
+
+### Academy (`/academy`)
+
+- Since 29 October 2026 a placeholder LMS in the shape of BibleProject
+  Classroom (`docs/research/BIBLEPROJECT-CLASSROOM.md`), in the house
+  design. No accounts, no database. Category, Course, Section, Lesson, in
+  `content/academy` (Zod schemas in `lib/content/schemas.ts`; rules across
+  files in `lib/content/academy-checks.ts`, run by `content:validate`).
+  Pages read it only through `lib/academy` (`courseCatalog`). Section and
+  course totals (lessons, time) are computed, never typed.
+- `/academy`: the full screen hero (See all courses, Start here), then
+  "Find a course": from lg a sticky column (the course categories, the one
+  in view marked, and the Start Here card) beside each category's course
+  rows; below lg the categories as wrapping chips, the card, the rows. A
+  row shows the Scripture range, title, a two line description, "N
+  sections · N lessons · N hr N min", tags and progress. Then the starting
+  cards and the next step.
+- `/academy/[course]`: the full screen hero (title, range and teacher,
+  description, stats, progress, Start this course or Continue learning,
+  Watch the trailer when there is one; the course image beside it), then
+  tabs: Sections (a `details` accordion per section, a round image in a
+  progress ring, a timeline of lessons), Overview (trailer, what you'll
+  learn, the teacher) and Resources (hidden when empty). The next step is
+  the next course in the category.
+- `/academy/[course]/[lesson]`: the lesson player, a third exception to
+  the full screen hero, in the `(player)` route group: no site header or
+  announcement bar, a lesson bar instead (Back to course, the centred
+  "Lesson N · Title" that opens every lesson in a dialog, Options with
+  Share, Mark lesson complete and Download notes, the theme switch); the
+  site footer stays. The video sits behind `YouTubeFacade` (playing to the
+  end marks the lesson complete, through `onEnded`); with no video, "This
+  lesson is being prepared". Tabs for Notes, Transcript and Reflection
+  (Reveal response), hidden when empty. Previous lesson and Next lesson are
+  always visible; the last lesson offers Finish course. No Audio only: the
+  embed has no audio mode and hiding a playing player breaks YouTube's terms.
+  check-noscript marks it `plain`.
+- Tabs (`components/academy/Tabs.tsx`) keep their choice in the URL
+  (`?tab=`). Every panel is in the first HTML; an inline script picks the
+  panel before it paints, CSS shows it ("Academy tabs" in
+  `app/globals.css`, one rule per tab id), so nothing shifts. Without
+  script every panel shows under its heading.
+- Progress: `LessonProgressStore` (see the app integration seam). The
+  server render says "Not started"; stored progress shows after hydration,
+  in slots of fixed height, so nothing shifts.
+- `siteConfig.academy.status`: "preview" (the default) or "open". In preview
+  a lesson without a video offers the Academy waitlist. Switch to "open"
+  when the real courses are loaded (docs/LAUNCH-CHECKLIST.md).
+- CSP: the course and lesson routes may frame youtube-nocookie.com (the
+  trailer and the lesson video); `/academy` itself stays `frame-src 'none'`.
 
 ### Decorative motion loops
 

@@ -103,7 +103,8 @@ changes".
 /about                    Ministry, teacher, doctrinal position
 /academy                  House of Bread Academy, front door of the future
                           course platform (was /classes)
-/academy/[slug]           Single course: what, who, when, how to join
+/academy/[course]         Single course: sections, lessons, overview, resources
+/academy/[course]/[lesson]  One lesson: video, notes, transcript, reflection
 /media                    Library: live and replays, video, audio,
                           social pages, read and study
 /events                   Live sessions, trainings, meetings, schedule
@@ -289,6 +290,19 @@ courses, get a course) with a `StaticCourseCatalog` over the MDX class
 files. A later LMS plugs in behind that interface, and no page changes. No
 accounts, sign in or progress exist on the website until stage three.
 
+Decision recorded 29 October 2026: the owner approved a placeholder LMS
+front end, in the shape of BibleProject Classroom
+(`docs/research/BIBLEPROJECT-CLASSROOM.md` and the build brief in that
+session serve as the Academy spec for this phase). Content is Category,
+Course, Section and Lesson in `content/academy`, read through
+`CourseCatalog`; lessons play YouTube videos behind the click to load
+facade. Progress is kept in the visitor's browser only, behind a
+`LessonProgressStore` interface in `/lib/academy`, with no sign in.
+`siteConfig.academy.status` is "preview" until the real courses are loaded.
+Still not built, and still stage three: accounts, sign in, a database,
+synced progress, certificates, payments. They plug in behind the same two
+interfaces.
+
 ---
 
 ## 8. Scripture reference handling
@@ -417,7 +431,9 @@ consent, a privacy policy update, and read only scope.
 - Classes with accounts and lesson progress, if demand justifies
 - House of Bread Academy course platform. Decision recorded 21 October
   2026: the ministry prefers a custom built LMS. It is deferred, and no LMS
-  code is written until an Academy spec is approved. It plugs in behind
+  code is written until an Academy spec is approved. Amended 29 October
+  2026: the placeholder LMS front end is built, with browser only progress
+  (section 7); everything below stays deferred. It plugs in behind
   `/lib/academy` (section 7). It will need:
   - An Academy spec first: courses, lessons, roles, who uploads, how people
     join, free or paid, and what `biblecourse.hobglobal.online` is
