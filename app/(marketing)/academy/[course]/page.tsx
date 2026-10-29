@@ -6,10 +6,9 @@ import { ButtonLink } from "@/components/shared/Button";
 import { ImageSlot } from "@/components/shared/ImageSlot";
 import { MdxBody } from "@/components/shared/MdxBody";
 import { NextStep } from "@/components/shared/NextStep";
-import { PageHeader } from "@/components/shared/PageHeader";
-import { bandClass } from "@/components/shared/Section";
 import { YouTubeFacade } from "@/components/shared/YouTubeFacade";
 import { courseCatalog } from "@/lib/academy";
+import { CourseHero } from "./_components/CourseHero";
 import { CourseActions, CourseProgressBar } from "./_components/CourseProgress";
 import { ResourceList } from "./_components/ResourceList";
 import { SectionAccordion } from "./_components/SectionAccordion";
@@ -31,10 +30,11 @@ export async function generateMetadata({ params }: PageProps<"/academy/[course]"
 }
 
 /**
- * One course, in the shape of BibleProject's class page: the hero (title,
+ * One course, in the shape of BibleProject's class page: a plain hero, as
+ * on the Teachings pages (no loop, not full screen; 29 October 2026): title,
  * Scripture range and teacher, description, time, lessons and sections,
  * the visitor's progress, Start this course or Continue learning, and the
- * trailer when there is one) with the course image beside it. Then tabs,
+ * trailer when there is one, with the course image beside it. Then tabs,
  * kept in the URL: Sections (an accordion per section, its lessons as a
  * timeline), Overview (trailer, what you'll learn, the teacher) and
  * Resources (hidden when there are none). The next step is the next
@@ -106,18 +106,11 @@ export default async function CoursePage({ params }: PageProps<"/academy/[course
 
   return (
     <main id="main" tabIndex={-1}>
-      <PageHeader
-        loop="open-bible"
+      <CourseHero
         eyebrow={category?.title ?? "Course"}
-        body={
-          <>
-            <h1 className="mt-5 max-w-3xl text-display">{course.title}</h1>
-            <p className="mt-4 text-base font-semibold text-emerald-deep">
-              {course.scriptureRange} · {course.teacher}
-            </p>
-            <p className="mt-4 max-w-2xl text-lead text-ink-muted">{course.summary}</p>
-          </>
-        }
+        title={course.title}
+        byline={`${course.scriptureRange} · ${course.teacher}`}
+        lead={course.summary}
         meta={
           <div className="flex flex-col gap-5">
             <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
@@ -135,11 +128,11 @@ export default async function CoursePage({ params }: PageProps<"/academy/[course
             hasTrailer={course.trailerVideoId !== undefined}
           />
         }
-        visual={<ImageSlot id={course.image} sizes="(min-width: 1024px) 40vw, 100vw" />}
+        visual={<ImageSlot id={course.image} priority sizes="(min-width: 1280px) 36rem, (min-width: 1024px) 48vw, 100vw" />}
       />
 
       <div className="bg-surface">
-        <div className={bandClass}>
+        <div className="container-page pb-10 pt-8 md:pb-28 md:pt-12">
           <Tabs label="Course" tabs={tabs} defaultTab="sections" />
         </div>
       </div>

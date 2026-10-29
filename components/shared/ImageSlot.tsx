@@ -24,6 +24,8 @@ type ImageSlotProps = {
   compact?: boolean;
   /** "card" (20px corners), "tile" (14px) or "round" (a circle, for a 1/1 slot). */
   shape?: "card" | "tile" | "round";
+  /** Load the image first: only for an image on the first screen, such as a course hero. */
+  priority?: boolean;
 };
 
 const shapeClass = { card: "rounded-card", tile: "rounded-tile", round: "rounded-full" } as const;
@@ -42,6 +44,7 @@ export function ImageSlot({
   className = "",
   compact = false,
   shape = "card",
+  priority = false,
 }: ImageSlotProps) {
   const slot = getImageSlot(id);
   const image = getSlotImage(id);
@@ -62,6 +65,7 @@ export function ImageSlot({
           alt={slot.decorative ? "" : slot.alt}
           fill
           sizes={sizes}
+          priority={priority}
           placeholder="blur"
           blurDataURL={image.blurDataURL}
           className="object-cover"
