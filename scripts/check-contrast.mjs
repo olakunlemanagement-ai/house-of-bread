@@ -21,7 +21,6 @@ const tokens = {
   white: "#ffffff",
   cream: "#f7f3ec",
   mint50: "#eef6e8",
-  gold50: "#fdf3d6",
   tint: "#edf3ef",
   ink: "#0b2412",
   inkMuted: "#3d5a46",

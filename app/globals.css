@@ -22,7 +22,6 @@
   --brand-white: #ffffff;
   --brand-cream: #f7f3ec;
   --brand-mint-50: #eef6e8;
-  --brand-gold-50: #fdf3d6;
   --brand-ink: #0b2412;
   --brand-ink-muted: #3d5a46;
   --brand-emerald: #1b6b33;
@@ -39,7 +38,6 @@
   --brand-night-raised: #111e17;
   --brand-night-mint: #10211a;
   --brand-night-warm: #112018;
-  --brand-night-gold: #1c1a10;
   --brand-night-tint: #163122;
   --brand-mist: #e9f0ea;
   --brand-mist-muted: #a8bcae;
@@ -56,7 +54,6 @@
   --surface: var(--brand-white);
   --surface-warm: var(--brand-cream);
   --surface-mint: var(--brand-mint-50);
-  --surface-gold: var(--brand-gold-50);
   /* Emerald at 8% over white: the nav pill, icon tiles, skeletons. */
   --tint: #edf3ef;
   /* Emerald at 16% and 24% over white: tertiary button hover and press. */
@@ -96,7 +93,6 @@
   --fg-link: var(--emerald-deep);
   --fg-accent: var(--emerald-deep);
   --ring: var(--emerald-deep);
-  --chip-fill: var(--surface);
   --chip-hover: var(--tint);
   --link-line: rgb(27 107 51 / 0.5);
   --link-line-hover: var(--emerald);
@@ -171,7 +167,6 @@
   /* What is left of the scrim at the far right of a hero, from lg. Light
      clears fully, so the pale light loops show; dark keeps a trace. */
   --scrim-tail: 0%;
-  --facade-bar: rgb(255 255 255 / 0.95);
   --skeleton-sheen: rgb(255 255 255 / 0.55);
   --fill-highlight: rgb(255 255 255 / 0.18);
   --slot-glow: rgb(27 107 51 / 0.14);
@@ -217,7 +212,6 @@
     --surface-raised: var(--brand-night-raised);
     --surface-warm: var(--brand-night-warm);
     --surface-mint: var(--brand-night-mint);
-    --surface-gold: var(--brand-night-gold);
     --tint: var(--brand-night-tint);
     --tint-strong: #1d3f2c;
     --tint-press: #255038;
@@ -252,7 +246,6 @@
     /* Night over the dark hero loop, checked against its brightest pixel. */
     --scrim: rgb(10 21 16 / 0.8);
     --scrim-tail: 7.5%;
-    --facade-bar: rgb(17 30 23 / 0.95);
     --skeleton-sheen: rgb(255 255 255 / 0.06);
     --slot-glow: rgb(46 158 79 / 0.16);
     --flag-edge: rgb(255 255 255 / 0.2);
@@ -381,7 +374,6 @@
   --fg-accent: var(--on-green);
   --fg-eyebrow: var(--on-green);
   --ring: var(--on-green);
-  --chip-fill: rgb(255 255 255 / 0.08);
   --chip-hover: rgb(255 255 255 / 0.12);
   --link-line: rgb(255 255 255 / 0.5);
   --link-line-hover: var(--on-green);
@@ -399,7 +391,6 @@
   --color-surface: var(--surface);
   --color-surface-warm: var(--surface-warm);
   --color-surface-mint: var(--surface-mint);
-  --color-surface-gold: var(--surface-gold);
   --color-tint: var(--tint);
   --color-tint-strong: var(--tint-strong);
   --color-tint-press: var(--tint-press);
@@ -430,7 +421,6 @@
   --color-fg-muted: var(--fg-muted);
   --color-fg-heading: var(--fg-heading);
   --color-fg-link: var(--fg-link);
-  --color-fg-accent: var(--fg-accent);
   --color-ring: var(--ring);
 
   --font-sans: var(--font-geist-sans), Arial, Helvetica, sans-serif;
