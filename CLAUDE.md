@@ -323,7 +323,8 @@ disagrees with the brief, the brief wins.
   (one rhythm, 40px on phones and 112px from md, no rule above the
   heading), `NextStep` (the closing band every page ends with),
   `StartingCards` (Home's "Where are you starting from?" fan of cards),
-  `StartingRows` (the same three as rows, on the Academy), `NumberedRows`
+  `StartingRows` (the same three as rows, on the Academy), `BeliefCards`
+  (About's four beliefs in Home's card look, no buttons), `NumberedRows`
   (rows with a button), `NumberedList` (rows without), `LiveLine` (the one live
   line, Home and Teachings). `lib/content/reset-copy.test.ts` fails on a
   banned phrase or a retired button label anywhere in app, components,
@@ -389,6 +390,12 @@ disagrees with the brief, the brief wins.
   its video), one plain surface and a tight rhythm (`TeachingsLayout.tsx`,
   24px and 40px per section, a `tight` NextStep). check-noscript marks
   them `plain`: no scrim or full screen checks, layout shift still checked.
+- Another exception (29 October 2026): About's hero is a night hero
+  (`PageHeader tone="night" align="center" animate`): the wheat loop under
+  night at 80% across the full width in both themes, the eyebrow, a bold
+  (600) title and a bold lead centred. `.tone-night` in `app/globals.css`
+  gives the hero and the header over it (through `:has`) the dark roles;
+  checked over pure white (docs/PLACEHOLDERS.md, "Night hero").
 - Responsive floor: no sideways scroll from 320px up. Below 375px the
   header shows the logo mark without the name (`Logo compact`), so the
   theme switch and Menu button fit.
@@ -419,6 +426,14 @@ disagrees with the brief, the brief wins.
   moves by transform only and stays still under reduced motion. Size every
   skeleton like the real content, so nothing shifts
   (`scripts/check-noscript.mjs` measures it).
+
+### Image slots
+
+- Every photo sits in an `ImageSlot` (`lib/media/image-slots.ts`), built
+  by `npm run images:build` from raw files outside the repo. Since 29
+  October 2026 a slot with no people may hold a stock photo (status
+  `stock`): CC0 or public domain only, credited in the slot, still a
+  placeholder. People and app screens wait for the ministry's own.
 
 ### Teachings (`/media`)
 
@@ -536,7 +551,13 @@ disagrees with the brief, the brief wins.
     Home's h2s) fade in and rise 0.35em, line by line, 90ms apart. A
     heading arms only after mount and only while below the fold, so
     nothing hides without JavaScript and nothing on screen blinks. Hero
-    h1s stay static.
+    h1s stay static, except About's.
+  - About's hero eyebrow, title and lead smooth in once on load
+    (`.smooth-in`: opacity, a 0.6em rise and a 10px blur clearing over
+    900ms, 0, 120 and 260ms apart). CSS only, so it ends visible without
+    JavaScript; none under Motion Off or reduced motion.
+  - About's belief cards (`BeliefCards`, `RiseReveal`) rise 1.5rem into
+    place once, 90ms apart, when armed below the fold, like the fan.
   - Home's starting cards (`StartingCards.tsx`, `FanReveal.tsx`): from md
     a fan, the middle card in front and raised, the side cards turned 5
     degrees behind it. Armed below the fold, they fold into a stack and
@@ -603,6 +624,9 @@ disagrees with the brief, the brief wins.
   "Transform your life", "Unforgettable" or "Journey of faith"
   (`lib/content/reset-copy.test.ts` checks every route, with the retired
   button labels).
+- A closing band that leads to the Academy uses `NEXT_STEP_COURSES`
+  (`NextStep.tsx`): "Ready to go deeper into God's Word?" (29 October
+  2026), so every page says it the same way.
 - Every interactive element has a visible focus ring: emerald-deep on
   light, white in the footer.
 

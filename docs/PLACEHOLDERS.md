@@ -278,7 +278,9 @@ No email address is published anywhere on the site.
 `ImageSlot` (`components/shared/ImageSlot.tsx`) stands wherever a photo,
 video or screenshot belongs. Each slot has an id in
 `lib/media/image-slots.ts`, which holds its ratio, brief, alt text and
-status. No stock photos.
+status. Stock photos may fill a slot with no people since 29 October 2026
+(the ministry's request): CC0 or public domain only, each credited in the
+registry (see "Stock photos" below).
 
 - **With an image.** When `public/images/slots/<id>.webp` has been built,
   the slot shows it through `next/image` with a blur placeholder, in the
@@ -305,6 +307,32 @@ built HTML can be searched for them. Replace every one with a real photo
 before launch, then set the slot's status to `final`. As of this date no
 interim image has been built.
 
+### Stock photos (29 October 2026)
+
+Asked for by the ministry: related photos found online in every image
+section, until its own arrive. Only slots with no people take one; the
+teacher, community and app screenshot slots keep the designed placeholder
+(Isaac Ola's portrait is coming from the ministry). Every photo is CC0 or
+public domain from Wikimedia Commons, so no on-page credit is owed; the
+credit lives in each slot's `credit` field (`slot-images.test.ts` checks).
+Each image carries `data-placeholder="stock-image"`. Raw crops sit in
+`house-of-bread-assets/slot-images-raw`. The 1611 title page is supplied at
+1000 wide: at 1600 its engraving cannot fit 150 KB, and cards show it at
+320px at most.
+
+| Slot | Photo | Author | Licence |
+|---|---|---|---|
+| `home-start-here` | Open Bible on a dark desk | John-Mark Kuznietsov (Unsplash) | CC0 |
+| `home-start-new` | Bible in sunlight, autumn leaves | Aaron Burden (Unsplash) | CC0 |
+| `home-start-connect` | Open Bible on a table | Aaron Burden (Unsplash) | CC0 |
+| `home-start-question` | Pen on a closed notebook | Thomas Martinsen (Unsplash) | CC0 |
+| `about-belief-context` | Hebrew scrolls laid open | Pete Unseth | CC0 |
+| `about-belief-scripture` | Open Bible, close view | John-Mark Kuznietsov (Unsplash) | CC0 |
+| `about-belief-text` | 1611 King James Bible title page | Church of England (UPenn scan) | Public domain |
+| `about-belief-plain` | Open Bible, soft daylight | Ben White (Unsplash) | CC0 |
+
+Source links are in `lib/media/image-slots.ts`.
+
 ### Every slot
 
 Status `real needed` means the slot shows people or the app's own screens:
@@ -316,10 +344,14 @@ image arrives, set the status to `final` and build it.
 | Id | Page | Ratio | Brief for the photo | Status |
 |---|---|---|---|---|
 | `home-teacher` | Home, The teacher | 4:5 | Isaac Ola teaching, Bible open, warm natural light. Portrait crop with space above the head. Also wanted: a photo of him teaching for the hero, which the ambient loop stands in for | Real needed (person) |
-| `home-start-here` | Home, Teachings (only if no video) | 16:9 | Stands in for the latest teaching when neither the feed nor `featuredVideoId` gives a video, so today it does not show | Interim allowed |
-| `home-start-new` | Home, Where are you starting from? card 01 (New to the Bible) | 3:2 | A Bible opened for the first time on a table, soft morning light. No people. Decorative (alt=""): the card's title carries the meaning | Interim allowed |
-| `home-start-connect` | Home, Where are you starting from? card 02 (How the stories connect) | 3:2 | An open Bible beside handwritten notes linking one book to another. No people. Decorative | Interim allowed |
-| `home-start-question` | Home, Where are you starting from? card 03 (Carrying a question) | 3:2 | A notebook with a question written in it, beside an open Bible. No people. Decorative | Interim allowed |
+| `home-start-here` | Home, Teachings (only if no video) | 16:9 | Stands in for the latest teaching when neither the feed nor `featuredVideoId` gives a video, so today it does not show | Stock (CC0) |
+| `home-start-new` | Home, Where are you starting from? card 01 (New to the Bible) | 3:2 | A Bible opened for the first time on a table, soft morning light. No people. Decorative (alt=""): the card's title carries the meaning | Stock (CC0) |
+| `home-start-connect` | Home, Where are you starting from? card 02 (How the stories connect) | 3:2 | An open Bible beside handwritten notes linking one book to another. No people. Decorative | Stock (CC0) |
+| `home-start-question` | Home, Where are you starting from? card 03 (Carrying a question) | 3:2 | A notebook with a question written in it, beside an open Bible. No people. Decorative | Stock (CC0) |
+| `about-belief-context` | `/about`, What we believe card 01 (Context first) | 3:2 | The Scriptures as first written, on scrolls. No people. Decorative | Stock (CC0) |
+| `about-belief-scripture` | `/about`, What we believe card 02 (Scripture in full) | 3:2 | An open Bible, whole pages of text. No people. Decorative | Stock (CC0) |
+| `about-belief-text` | `/about`, What we believe card 03 (A clear text) | 3:2 | The 1611 King James Bible title page. Decorative | Stock (public domain) |
+| `about-belief-plain` | `/about`, What we believe card 04 (Plain English) | 3:2 | An open Bible on a table in soft daylight. No people. Decorative | Stock (CC0) |
 | `about-mission` | `/about`, Mission | 16:9 | Believers following a live teaching online, with open Bibles: a laptop or phone showing the stream, hands on an open Bible | Real needed (community) |
 | `about-leadership` | `/about`, Leadership | 4:5 | A portrait of the teacher: head and shoulders, plain or softly blurred background, looking just off camera | Real needed (person) |
 | `academy-teacher` | `/academy`, Why learn here | 4:5 | The teacher leading an online class: on camera or at a desk, Bible open, warm natural light. Real photo needed, do not use generated people | Real needed (person) |
@@ -1397,7 +1429,7 @@ the nav, buttons, loops and motion.
 | Teachings (`/media`), series and teaching pages | none: a plain hero, after BibleProject (29 October 2026). water-light is now in no hero; its files stay until the ministry decides | none |
 | Teachings articles (`/teachings`, `/teachings/[slug]`) | dust-light | poster |
 | Events, event page | dust-light | poster |
-| About | wheat-field | poster |
+| About | wheat-field, under the night overlay (29 October 2026) | poster |
 | New Testament, book pages | open-bible | poster |
 | Plans, plan page | wheat-field | poster |
 | App | green-mesh | poster |
@@ -1426,6 +1458,28 @@ is checked against those.
 | Accent and focus ring | 4.77 | 5.78 |
 | Secondary outline border (3:1) | 4.09 | 4.54 |
 | Secondary hover, accent on the solid tint | 6.80 | 8.04 |
+
+### Night hero, About (29 October 2026)
+
+The ministry asked for the wheat field under a dark overlay, with the
+title and lead bold, centred and smoothing in. `PageHeader tone="night"`
+holds night at 80% across the whole width (`hold={100}`) in both themes,
+and the hero and the header over it take the dark roles (`.tone-night`).
+`npm run loops:sample`: the light wheat loop's brightest pixel is
+`#ffffd2` (L 0.974), the dark one's `#fffff1`, so the overlay cannot be
+lighter than 80% and is checked over pure white, the same in both themes
+(`npm run contrast`, role pairings "Night hero" and "Night header").
+
+| Pairing | Ratio |
+|---|---|
+| Title and lead, mist | 8.70 |
+| Muted, mist muted | 5.03 |
+| Eyebrow, lime | 5.30 |
+| Menu label and focus ring, spring | 5.78 |
+| Current nav pill, spring on night tint | 8.04 |
+| Menu border, sprout (3:1) | 4.54 |
+
+The header mark takes the dark theme's white tile over it.
 
 ### New pairings, WCAG 2.2 AA (npm run contrast)
 
