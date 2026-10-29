@@ -11,7 +11,10 @@ export function CourseStats({
 }) {
   return (
     <p className={`text-sm text-ink ${className}`}>
-      {count(course.sections, "section")} · {count(course.lessons, "lesson")} · {formatDuration(course.minutes)}
+      {/* Each figure stays whole when the line wraps. */}
+      <span className="whitespace-nowrap">{count(course.sections, "section")}</span> ·{" "}
+      <span className="whitespace-nowrap">{count(course.lessons, "lesson")}</span> ·{" "}
+      <span className="whitespace-nowrap">{formatDuration(course.minutes)}</span>
     </p>
   );
 }
