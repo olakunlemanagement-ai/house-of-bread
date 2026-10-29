@@ -1,5 +1,16 @@
 import { describe, expect, it } from "vitest";
-import { decodeEntities, feedUrl, parseChannelId, parseYouTubeFeed } from "./youtube-feed";
+import {
+  cleanDescription,
+  cleanVideoTitle,
+  decodeEntities,
+  feedUrl,
+  isPlaylistId,
+  parseChannelId,
+  parseFeed,
+  parseYouTubeFeed,
+  replaceDashes,
+  uploadsPlaylistId,
+} from "./feed";
 
 // Same structure as a real channel feed checked on 17 October 2026, with
 // neutral titles and made up ids.
@@ -149,5 +160,79 @@ describe("parseChannelId", () => {
 describe("decodeEntities", () => {
   it("leaves unknown and invalid entities as written", () => {
     expect(decodeEntities("&nbsp; &#0; &#xD800; &#x1F600;")).toBe("&nbsp; &#0; &#xD800; \u{1F600}");
+  });
+});
+
+describe("parseFeed", () => {
+  it("reads the playlist's own title and date, and each entry's description and Shorts link", async () => {
+    const { feedXml } = await import("./fixtures");
+    const parsed = parseFeed(
+      feedXml(
+        [
+          { id: "aV81SqB6HQg", title: "Long", description: "Line one\nLine two\n\n\n\nNext &amp; last" },
+          { id: "bV81SqB6HQg", title: "Short", short: true },
+        ],
+        { title: "Bible Foundations Series", published: "2026-10-22T11:40:25+00:00" },
+      ),
+    );
+    expect(parsed?.title).toBe("Bible Foundations Series");
+    expect(parsed?.publishedAt).toBe("2026-10-22T11:40:25.000Z");
+    expect(parsed?.entries.map((e) => [e.id, e.short])).toEqual([
+      ["aV81SqB6HQg", false],
+      ["bV81SqB6HQg", true],
+    ]);
+    expect(parsed?.entries[0].description).toBe("Line one\nLine two\n\nNext & last");
+    expect(parsed?.entries[1].description).toBeNull();
+  });
+
+  it("keeps feed order (a playlist's own order)", async () => {
+    const { feedXml, entries } = await import("./fixtures");
+    const list = entries(3).reverse();
+    expect(parseFeed(feedXml(list))?.entries.map((e) => e.id)).toEqual(list.map((e) => e.id));
+  });
+
+  it("returns null for anything that is not a feed, and an empty list for an empty feed", async () => {
+    const { feedXml } = await import("./fixtures");
+    expect(parseFeed("<!doctype html><title>Error</title>")).toBeNull();
+    expect(parseFeed("")).toBeNull();
+    expect(parseFeed(42)).toBeNull();
+    expect(parseFeed(feedXml([]))?.entries).toEqual([]);
+  });
+});
+
+describe("replaceDashes", () => {
+  const em = String.fromCharCode(0x2014);
+  const en = String.fromCharCode(0x2013);
+  it("turns a dash between words into a comma and one between numbers into a hyphen", () => {
+    expect(replaceDashes(`Grace ${em} the gift`)).toBe("Grace, the gift");
+    expect(replaceDashes(`Grace${em}the gift`)).toBe("Grace, the gift");
+    expect(replaceDashes(`Romans 3:21${en}26`)).toBe("Romans 3:21-26");
+    expect(replaceDashes(`Part 1 ${en} 3`)).toBe("Part 1-3");
+    expect(replaceDashes(`${em} a lead dash`)).toBe("a lead dash");
+    expect(replaceDashes("No dashes - just a hyphen")).toBe("No dashes - just a hyphen");
+  });
+
+  it("cleans titles and descriptions too", () => {
+    expect(cleanVideoTitle(`Faith ${em} Part 1`)).toBe("Faith, Part 1");
+    expect(cleanDescription(`One ${em} two`)).toBe("One, two");
+  });
+});
+
+describe("playlist ids", () => {
+  it("accepts creator playlists, short ones included, and the uploads playlists", () => {
+    expect(isPlaylistId("PLUHSYJnvnito")).toBe(true);
+    expect(isPlaylistId("PL590L5WQmH8fJ54F369BLDSqIwcs-TCfs")).toBe(true);
+    expect(isPlaylistId(uploadsPlaylistId("UCGkSJEWgmpHK7eR1ysKZZgA", "long"))).toBe(true);
+  });
+
+  it("rejects anything else", () => {
+    for (const bad of ["", "PL", "PLshort", "XX1234567890ab", "PL<script>12345", "PL../../etc/pass", null]) {
+      expect(isPlaylistId(bad)).toBe(false);
+    }
+  });
+
+  it("builds the long-form and Shorts playlists from a channel id", () => {
+    expect(uploadsPlaylistId("UCGkSJEWgmpHK7eR1ysKZZgA", "long")).toBe("UULFGkSJEWgmpHK7eR1ysKZZgA");
+    expect(uploadsPlaylistId("UCGkSJEWgmpHK7eR1ysKZZgA", "short")).toBe("UUSHGkSJEWgmpHK7eR1ysKZZgA");
   });
 });

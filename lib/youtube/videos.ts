@@ -1,5 +1,5 @@
 import { cacheLife } from "next/cache";
-import { feedUrl, parseChannelId, parseYouTubeFeed, type FeedVideo } from "./youtube-feed";
+import { feedUrl, parseChannelId, parseYouTubeFeed, type FeedVideo } from "./feed";
 
 export type VideoFeed = { status: "ok"; videos: FeedVideo[] } | { status: "unavailable" };
 

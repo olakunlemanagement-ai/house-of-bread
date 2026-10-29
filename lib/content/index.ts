@@ -18,7 +18,7 @@ function getLibrary(): Library {
 }
 
 const bookOrder = new Map(books.map((book, index) => [book.id, index]));
-const newestFirst = (a: Entry, b: Entry) => b.data.date.localeCompare(a.data.date);
+const newestFirst = (a: Entry<"teaching">, b: Entry<"teaching">) => b.data.date.localeCompare(a.data.date);
 
 function sortLibrary(loaded: Library): Library {
   return {
@@ -27,6 +27,7 @@ function sortLibrary(loaded: Library): Library {
     plan: [...loaded.plan].sort((a, b) => a.data.days - b.data.days),
     event: [...loaded.event],
     class: [...loaded.class].sort((a, b) => a.data.title.localeCompare(b.data.title)),
+    video: [...loaded.video],
   };
 }
 

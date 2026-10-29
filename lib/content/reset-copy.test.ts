@@ -44,6 +44,10 @@ const retired = [
   "Browse all free courses",
 ];
 
+// "Watch on YouTube" came back on 29 October 2026 as the Teachings escape,
+// for a section whose YouTube data failed, and only there: YouTubeButton.
+const youTubeEscape = /app\/\(marketing\)\/media\/_components\/FeedFallback\.tsx$/;
+
 // Nothing says or shows that a course is free until pricing is decided.
 const freeCourse = /\bfree(?: bible)? courses?\b|\bfree, always\b|\bcourse[^.]{0,40}\bfree\b|>\s*free\s*</;
 
@@ -88,7 +92,10 @@ describe("reset copy rules", () => {
   it("uses none of the retired button labels", () => {
     const found = files.flatMap((file) => {
       const text = copyOf(file);
-      return retired.filter((label) => text.includes(label.toLowerCase())).map((label) => `${file}: ${label}`);
+      return retired
+        .filter((label) => text.includes(label.toLowerCase()))
+        .filter((label) => !(label === "Watch on YouTube" && youTubeEscape.test(file.replaceAll("\\", "/"))))
+        .map((label) => `${file}: ${label}`);
     });
     expect(found).toEqual([]);
   });

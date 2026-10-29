@@ -69,3 +69,19 @@ describe("resolveVideoWithTitle", () => {
     expect(video?.title).toBe(VIDEO_TITLE_PLACEHOLDER);
   });
 });
+
+describe("parseOEmbedInfo", () => {
+  it("reads the title and the channel's handle URL", async () => {
+    const { parseOEmbedInfo } = await import("./oembed");
+    expect(
+      parseOEmbedInfo({ title: "Understanding the New Testament", author_url: "https://www.youtube.com/@TheBrotherOla" }),
+    ).toEqual({ title: "Understanding the New Testament", authorUrl: "https://www.youtube.com/@TheBrotherOla" });
+  });
+
+  it("drops an author URL that is not a plain YouTube channel URL", async () => {
+    const { parseOEmbedInfo } = await import("./oembed");
+    expect(parseOEmbedInfo({ title: "T", author_url: "https://evil.example/@x" })?.authorUrl).toBeNull();
+    expect(parseOEmbedInfo({ title: "T", author_url: "https://www.youtube.com/@x?y=<z>" })?.authorUrl).toBeNull();
+    expect(parseOEmbedInfo({ nope: true })).toBeNull();
+  });
+});

@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { resolveVideoWithTitle } from "@/lib/media/oembed";
-import { getLatestVideos } from "@/lib/media/videos";
-import type { FeedVideo } from "@/lib/media/youtube-feed";
+import { resolveVideoWithTitle } from "@/lib/youtube/oembed";
+import { getLatestVideos } from "@/lib/youtube/videos";
+import type { FeedVideo } from "@/lib/youtube/feed";
 import { siteConfig, YOUTUBE_CHANNEL_ID } from "@/lib/site-config";
 import { teachingsLayout, thumbSizes } from "./home-teachings-layout";
 import { ImageSlot } from "./ImageSlot";

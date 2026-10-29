@@ -714,8 +714,14 @@
   While the theme switches, transitions pause for two frames, so colours
   change at once rather than fading.
 */
-html:not([data-js]) [data-theme-control] {
+html:not([data-js]) [data-theme-control],
+html:not([data-js]) [data-js-only] {
   display: none !important;
+}
+
+/* The page holds still behind an open modal dialog (the Shorts player on Teachings). */
+html:has(dialog[open]) {
+  overflow: hidden;
 }
 
 /*

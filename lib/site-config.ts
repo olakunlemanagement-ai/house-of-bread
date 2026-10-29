@@ -19,10 +19,8 @@ export type SiteLinks = {
   /** Social accounts, in display order. Empty renders a placeholder. */
   social: SocialAccount[];
   /**
-   * The featured video, as a YouTube video id. It leads the Teachings page
-   * (/media) player ahead of the feed, and stands in on Home when the feed
-   * is empty. Change this one value to replace it. Null puts the newest feed
-   * video in the lead.
+   * A YouTube video id that stands in on Home's teaching block when the
+   * ministry feed is empty. Teachings has its own, featuredTeachingId.
    */
   featuredVideoId: string | null;
   /** Store links. Null renders a marked placeholder in the button's place. */
@@ -36,6 +34,15 @@ export type SiteLinks = {
  * for the video feed.
  */
 export const YOUTUBE_CHANNEL_ID = "UCGkSJEWgmpHK7eR1ysKZZgA";
+
+/**
+ * The pastor's YouTube channel (@TheBrotherOla), added as a source of
+ * teaching on 29 October 2026. Public, like the one above.
+ */
+export const PASTOR_CHANNEL_ID = "UCfPlw2N9OgpF3I6xBv4XZ5Q";
+
+/** A channel whose videos fill Teachings. `url` is the channel's handle URL, as oEmbed reports it. */
+export type TeachingChannel = { id: string; url: `https://www.youtube.com/@${string}` };
 
 export const siteConfig = {
   name: "House of Bread Global",
@@ -56,6 +63,27 @@ export const siteConfig = {
    * feed video, then to an image slot.
    */
   startHereVideoId: "wpNuDtvzMzs" as string | null,
+  /**
+   * Teachings (/media) and its watch and series pages. Long-form videos and
+   * Shorts come from every channel here, merged newest first. A watch page
+   * exists only for a video from one of these channels (lib/youtube).
+   */
+  teachingChannels: [
+    { id: YOUTUBE_CHANNEL_ID, url: "https://www.youtube.com/@HOBglobal" },
+    { id: PASTOR_CHANNEL_ID, url: "https://www.youtube.com/@TheBrotherOla" },
+  ] satisfies TeachingChannel[] as readonly TeachingChannel[],
+  /**
+   * The teaching that leads Teachings, as a YouTube video id. Change this
+   * one value to replace it. Its title and description come from the feed,
+   * then YouTube oEmbed; content/videos/<id>.mdx overrides either.
+   */
+  featuredTeachingId: "dC-2yHdPyGo" as string,
+  /**
+   * Series shown under "Explore series" when there is no YOUTUBE_API_KEY
+   * (with one, every playlist on the teaching channels shows, and these
+   * too). Playlist ids, from a playlist link's `list=` value.
+   */
+  seriesPlaylistIds: ["PLUHSYJnvnito"] as readonly string[],
   /**
    * The regular live session: every Monday at 8:00 pm Lagos time (19:00 UTC).
    * Every page works out the next occurrence and each region's local time

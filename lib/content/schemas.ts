@@ -111,12 +111,30 @@ export const eventSchema = z
     }
   });
 
+
+/**
+ * A manual title or description for one YouTube video, shown on Teachings
+ * in place of YouTube's own (lib/youtube). The file is named after the
+ * video id: content/videos/<videoId>.mdx. The body is not used.
+ */
+export const videoSchema = z
+  .strictObject({
+    slug: z.string().regex(/^[A-Za-z0-9_-]{11}$/, "must be the YouTube video id (11 characters), matching the file name"),
+    title: z.string().trim().min(1).max(200).optional(),
+    /** One or two sentences for the hero and cards; paragraphs on the watch page. */
+    description: z.string().trim().min(1).max(2000).optional(),
+  })
+  .refine((data) => data.title !== undefined || data.description !== undefined, {
+    message: "needs a title, a description or both",
+  });
+
 export const schemas = {
   teaching: teachingSchema,
   book: bookSchema,
   plan: planSchema,
   event: eventSchema,
   class: classSchema,
+  video: videoSchema,
 } as const;
 
 export type ContentType = keyof typeof schemas;
@@ -127,6 +145,7 @@ export const contentDirs: Record<ContentType, string> = {
   plan: "plans",
   event: "events",
   class: "classes",
+  video: "videos",
 };
 
 export type ContentData = { [K in ContentType]: z.output<(typeof schemas)[K]> };
@@ -136,5 +155,6 @@ export type BookData = ContentData["book"];
 export type PlanData = ContentData["plan"];
 export type EventData = ContentData["event"];
 export type ClassData = ContentData["class"];
+export type VideoData = ContentData["video"];
 export type EventKind = EventData["kind"];
 export type EventStatus = EventData["status"];

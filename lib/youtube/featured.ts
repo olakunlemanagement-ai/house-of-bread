@@ -1,4 +1,4 @@
-import { isVideoId, type FeedVideo } from "./youtube-feed";
+import { isVideoId, type FeedVideo } from "./feed";
 
 /**
  * Shown when a configured video is not in the channel feed, so its title is

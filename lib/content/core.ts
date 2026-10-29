@@ -215,6 +215,7 @@ export function loadLibrary(root: string): { library: Library; errors: ContentEr
     plan: load("plan"),
     event: load("event"),
     class: load("class"),
+    video: load("video"),
   };
   return { library, errors };
 }

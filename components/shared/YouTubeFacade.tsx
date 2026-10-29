@@ -36,12 +36,16 @@ export function YouTubeFacade({
   source,
   title,
   autoStart = false,
+  poster = "standard",
 }: {
   source: YouTubeSource;
   title: string;
   autoStart?: boolean;
+  /** "large" (1280px wide) for a player that fills the page width; it falls back to the standard 480px one if YouTube has none. */
+  poster?: "standard" | "large";
 }) {
   const [playing, setPlaying] = useState(autoStart);
+  const [large, setLarge] = useState(poster === "large");
 
   function play(event: MouseEvent<HTMLAnchorElement>) {
     // Let modified clicks open YouTube in a new tab as usual.
@@ -77,9 +81,10 @@ export function YouTubeFacade({
         // A plain img: the thumbnail loads only when this element renders, and needs no optimiser.
         // eslint-disable-next-line @next/next/no-img-element
         <img
-          src={`https://i.ytimg.com/vi/${source.id}/hqdefault.jpg`}
+          src={`https://i.ytimg.com/vi/${source.id}/${large ? "hq720" : "hqdefault"}.jpg`}
+          onError={() => setLarge(false)}
           alt=""
-          loading="lazy"
+          loading={poster === "large" ? "eager" : "lazy"}
           className="absolute inset-0 size-full object-cover"
         />
       )}

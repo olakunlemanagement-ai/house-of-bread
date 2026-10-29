@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { hasPlaceholderTitle, resolveVideo, VIDEO_TITLE_PLACEHOLDER } from "./featured";
-import type { FeedVideo } from "./youtube-feed";
+import type { FeedVideo } from "./feed";
 
 const inFeed: FeedVideo = {
   id: "wpNuDtvzMzs",
