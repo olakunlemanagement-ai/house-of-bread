@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, type MouseEvent } from "react";
+import { useEffect, useRef, useState, type MouseEvent, type RefObject } from "react";
 import { LoadingRegion, Skeleton } from "./Skeleton";
 import { ButtonLink } from "./Button";
 
@@ -12,10 +12,37 @@ export type YouTubeSource =
 
 const EMBED = "https://www.youtube-nocookie.com/embed";
 
+// enablejsapi lets the page send the player one command: stop when scrolled away.
 function embedUrl(source: YouTubeSource): string {
   return source.kind === "video"
-    ? `${EMBED}/${source.id}?autoplay=1&rel=0`
-    : `${EMBED}/live_stream?channel=${source.channelId}&autoplay=1&rel=0`;
+    ? `${EMBED}/${source.id}?autoplay=1&rel=0&enablejsapi=1`
+    : `${EMBED}/live_stream?channel=${source.channelId}&autoplay=1&rel=0&enablejsapi=1`;
+}
+
+/**
+ * Stops (pauses) the player once it has scrolled fully out of view, so a teaching
+ * never keeps talking from a part of the page the visitor has left. It
+ * does not resume on return: the visitor presses play again. Picture in
+ * picture is left alone, since the visitor chose to keep watching.
+ */
+function useStopWhenOffscreen(frame: RefObject<HTMLIFrameElement | null>, active: boolean) {
+  useEffect(() => {
+    const iframe = frame.current;
+    if (!active || !iframe || typeof IntersectionObserver === "undefined") return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry && !entry.isIntersecting) {
+          iframe.contentWindow?.postMessage(
+            JSON.stringify({ event: "command", func: "pauseVideo", args: [] }),
+            "https://www.youtube-nocookie.com",
+          );
+        }
+      },
+      { threshold: 0 },
+    );
+    observer.observe(iframe);
+    return () => observer.disconnect();
+  }, [frame, active]);
 }
 
 function watchUrl(source: YouTubeSource): string {
@@ -46,6 +73,8 @@ export function YouTubeFacade({
 }) {
   const [playing, setPlaying] = useState(autoStart);
   const [large, setLarge] = useState(poster === "large");
+  const frame = useRef<HTMLIFrameElement>(null);
+  useStopWhenOffscreen(frame, playing);
 
   function play(event: MouseEvent<HTMLAnchorElement>) {
     // Let modified clicks open YouTube in a new tab as usual.
@@ -58,6 +87,7 @@ export function YouTubeFacade({
     return (
       <div className="relative aspect-video overflow-hidden rounded-card bg-green-night shadow-raised">
         <iframe
+          ref={frame}
           src={embedUrl(source)}
           title={title}
           allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
