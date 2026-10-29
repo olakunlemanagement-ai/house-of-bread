@@ -19,8 +19,9 @@ export const metadata: Metadata = {
 
 /**
  * The Academy catalogue, in the shape of BibleProject's Classroom
- * (docs/research/BIBLEPROJECT-CLASSROOM.md) in the house design: the full
- * screen hero, then "Find a course": from lg the category list and the
+ * (docs/research/BIBLEPROJECT-CLASSROOM.md) in the house design: a full
+ * screen night hero, centred over the open Bible loop (29 October 2026),
+ * then "Find a course": from lg the category list and the
  * Start Here card in a sticky column beside every category's course rows;
  * below lg the categories as chips, the Start Here card, then the rows.
  * Then "Where are you starting from?" (Home's fan) and the next step.
@@ -38,6 +39,9 @@ export default async function AcademyPage() {
       <PageHeader
         loop="open-bible"
         phoneLoop
+        tone="night"
+        align="center"
+        animate
         eyebrow="The Academy"
         title="Bible courses"
         lead="Self-paced video lessons that take you through Scripture in context."

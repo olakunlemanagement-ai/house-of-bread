@@ -97,7 +97,7 @@ const roles = {
     // thing beneath them (the green-night phone frame).
     glass: "white/0.84",
     glassWorst: "greenNight",
-    // The night hero (About, PageHeader tone="night") and the header over
+    // The night hero (About and the Academy, PageHeader tone="night") and the header over
     // it take the dark roles in both themes (.tone-night): night at 80%
     // over the brightest pixel of either wheat loop (pure white at worst).
     nightInk: "mist",
@@ -133,7 +133,7 @@ const roles = {
     // Dark glass, raised night at 88%, over white: lighter than anything beneath it.
     glass: "nightRaised/0.88",
     glassWorst: "white",
-    // The night hero (About, PageHeader tone="night") and the header over
+    // The night hero (About and the Academy, PageHeader tone="night") and the header over
     // it take the dark roles in both themes (.tone-night): night at 80%
     // over the brightest pixel of either wheat loop (pure white at worst).
     nightInk: "mist",

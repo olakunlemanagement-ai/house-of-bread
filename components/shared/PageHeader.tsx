@@ -25,7 +25,7 @@ type PageHeaderProps = {
   /**
    * "night": a dark overlay across the whole hero, in both themes, with the
    * dark palette's text (`.tone-night` in app/globals.css). The header over
-   * it takes the same tokens. About only.
+   * it takes the same tokens. About and the Academy.
    */
   tone?: "default" | "night";
   /** "center": the text centred across the hero, with no visual beside it. */
