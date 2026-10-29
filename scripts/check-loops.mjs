@@ -31,13 +31,14 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-// Every loop sits in a page hero since 27 October 2026, one per page.
-// These seven pages cover all seven loops.
+// Every loop sits in a page hero since 27 October 2026, one per page. Since
+// 29 October 2026 Teachings has a plain hero, so water-light is in no hero
+// and is left out (its files stay until the ministry decides).
+// These six pages cover the six loops in use.
 const HERO = {
   "/": "ambient-light",
   "/academy": "open-bible",
   "/about": "wheat-field",
-  "/media": "water-light",
   "/ask": "dust-light",
   "/contact": "bread-steam",
   "/privacy": "green-mesh",
@@ -317,7 +318,7 @@ async function checkLoopsOn(context, theme, phone = false) {
     await page.close();
   }
   // Every hero loop is on the page at every width: a moving loop, or its poster on phones.
-  for (const id of ["ambient-light", "dust-light", "open-bible", "wheat-field", "bread-steam", "water-light", "green-mesh"]) {
+  for (const id of ["ambient-light", "dust-light", "open-bible", "wheat-field", "bread-steam", "green-mesh"]) {
     check(seenIds.has(id), `${view} ${theme}: loop ${id} not found on ${PAGES.join(", ")}`);
   }
 }

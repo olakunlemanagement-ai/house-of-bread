@@ -19,8 +19,11 @@ const PAGES = [
   { path: "/", lead: "Courses and teaching that bring you into an accurate understanding" },
   { path: "/about", lead: "The name comes from Bethlehem, the house of bread" },
   { path: "/academy", lead: "Self-paced video lessons that take you through Scripture in context." },
-  { path: "/media", lead: "Featured teaching" },
-  { path: "/media/series/PLUHSYJnvnito", lead: "Series" },
+  // Teachings pages have a plain hero, not a full screen loop (BibleProject's pattern,
+  // 29 October 2026): no scrim or full screen checks, the rest as every page.
+  { path: "/media", lead: "Featured teaching", plain: true },
+  { path: "/media/series/PLUHSYJnvnito", lead: "Series", plain: true },
+  { path: "/media/watch/dC-2yHdPyGo", lead: "Teachings", plain: true },
   { path: "/events", lead: "New teaching live every Monday at 8 pm Lagos time." },
   { path: "/app", lead: "Daily reading and journeys through the New Testament, in your pocket." },
   { path: "/contact", lead: "Questions about the ministry, live sessions, the Academy or the app are welcome." },
@@ -104,7 +107,7 @@ try {
   console.log("\nHero text inside the scrim's full strength (lg and up)");
   for (const width of [1024, 1280, 1920]) {
     const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width, height: 900 } });
-    for (const { path: route } of PAGES) {
+    for (const { path: route } of PAGES.filter((p) => !p.plain)) {
       const page = await context.newPage();
       await page.goto(new URL(route, base).href, { waitUntil: "load" });
       const result = await page.evaluate(() => {
@@ -168,14 +171,15 @@ try {
         for (const entry of list.getEntries()) if (!entry.hadRecentInput) window.__cls += entry.value;
       }).observe({ type: "layout-shift", buffered: true });
     });
-    for (const { path: route } of PAGES) {
+    for (const { path: route, plain } of PAGES) {
       const page = await context.newPage();
       await page.goto(new URL(route, base).href, { waitUntil: "load" });
       await page.waitForTimeout(4500);
-      const r = await page.evaluate(() => {
+      const r = await page.evaluate((plainHero) => {
         const hero = document.querySelector("main > :first-child");
         const text = hero?.querySelector("[data-hero-text]");
         const header = document.querySelector("[data-site-header]");
+        if (plainHero) return { plain: true, cls: window.__cls };
         if (!hero || !text || !header) return null;
         const h = hero.getBoundingClientRect();
         const t = text.getBoundingClientRect();
@@ -189,9 +193,16 @@ try {
           below: h.bottom - t.bottom,
           cls: window.__cls,
         };
-      });
+      }, !!plain);
       if (!r) {
         fail(`${route} at ${viewport.width}px has no hero, marked hero text or header`);
+        await page.close();
+        continue;
+      }
+      if (r.plain) {
+        const cls = Math.round(r.cls * 10000) / 10000;
+        console.log(`${String(viewport.width).padStart(4)}px  ${route.padEnd(20)} plain hero  CLS ${cls}`);
+        if (cls > 0.01) fail(`${route} at ${viewport.width}px: layout shift ${cls}`);
         await page.close();
         continue;
       }
