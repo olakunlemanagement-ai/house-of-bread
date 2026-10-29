@@ -4,8 +4,6 @@ import Link from "next/link";
 import { ButtonLink } from "@/components/shared/Button";
 import { LiveLine } from "@/components/shared/LiveLine";
 import { NextStep } from "@/components/shared/NextStep";
-import { PageHeader } from "@/components/shared/PageHeader";
-import { bandBodyClass, bandClass, SectionHeader, toneClass, type SectionTone } from "@/components/shared/Section";
 import { summarise, type Video } from "@/lib/youtube/catalog";
 import { getFeaturedTeaching, getTeachingsCatalog } from "@/lib/youtube/teachings";
 import { siteConfig } from "@/lib/site-config";
@@ -15,6 +13,7 @@ import { rowClass, rowItemClass } from "./_components/rows";
 import { SeriesGrid } from "./_components/SeriesGrid";
 import { ShortsRow } from "./_components/ShortsRow";
 import { TeachingCard, TitleText } from "./_components/TeachingCard";
+import { TeachingsHero, TeachingsSection } from "./_components/TeachingsLayout";
 import { DurationBadge, PlayMark } from "./_components/VideoThumb";
 
 // The whole page is static output, rebuilt hourly in the background. With a
@@ -29,51 +28,20 @@ export const metadata: Metadata = {
 };
 
 const [ministry, pastor] = siteConfig.teachingChannels;
-const LATEST = 4;
+const LATEST = 5;
 const NUGGETS = 6;
-const cardSizes = "(min-width: 1024px) 18rem, (min-width: 640px) 44vw, 78vw";
+const cardSizes = "(min-width: 1024px) 14rem, (min-width: 640px) 44vw, 78vw";
 
-/** A section in the Home rhythm, labelled by its heading, with a marked region whose height check-noscript measures. */
-function Band({
-  id,
-  title,
-  tone = "white",
-  children,
-}: {
-  id: string;
-  title: string;
-  tone?: SectionTone;
-  children: React.ReactNode;
-}) {
-  return (
-    <section id={id} aria-labelledby={`${id}-heading`} className={toneClass[tone]}>
-      <div className={bandClass}>
-        <SectionHeader id={`${id}-heading`}>{title}</SectionHeader>
-        <div data-region={id} className={bandBodyClass}>
-          {children}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/** The featured teaching's thumbnail, large, on the right of the hero. The Watch now button is the named link; this one repeats it for pointers. */
+/** The featured teaching's image, large, on the right of the hero. The Watch now button is the named link; this one repeats it for pointers. */
 function FeaturedThumb({ video }: { video: Video }) {
   return (
     <Link
       href={watchHref(video.id)}
       tabIndex={-1}
       aria-hidden="true"
-      className="group relative block aspect-video overflow-hidden rounded-card bg-tint shadow-raised ring-1 ring-border hover:ring-border-strong"
+      className="group relative block aspect-video overflow-hidden rounded-card bg-tint ring-1 ring-border hover:ring-border-strong"
     >
-      <Image
-        src={video.thumbnail}
-        alt=""
-        fill
-        priority
-        sizes="(min-width: 1024px) 34rem, 100vw"
-        className="object-cover"
-      />
+      <Image src={video.thumbnail} alt="" fill priority sizes="(min-width: 1024px) 42rem, 100vw" className="object-cover" />
       <PlayMark size="lg" />
       <DurationBadge seconds={video.durationSeconds} className="bottom-4 right-4 text-sm" />
     </Link>
@@ -83,8 +51,7 @@ function FeaturedThumb({ video }: { video: Video }) {
 function Hero({ featured }: { featured: Video | null }) {
   if (!featured) {
     return (
-      <PageHeader
-        loop="water-light"
+      <TeachingsHero
         eyebrow="Featured teaching"
         title="Need a word for this season?"
         lead="Every message, in one place. The latest teaching will show here soon."
@@ -93,22 +60,17 @@ function Hero({ featured }: { featured: Video | null }) {
     );
   }
   return (
-    <PageHeader
-      loop="water-light"
+    <TeachingsHero
       eyebrow="Featured teaching"
       title={<TitleText video={featured} />}
       lead={summarise(featured.description) ?? undefined}
-      actions={
-        <ButtonLink href={watchHref(featured.id)}>
-          Watch now
-        </ButtonLink>
-      }
+      actions={<ButtonLink href={watchHref(featured.id)}>Watch now</ButtonLink>}
       visual={<FeaturedThumb video={featured} />}
     />
   );
 }
 
-/** Latest teachings: four cards. With fewer, the next slot is the fallback tile, so the row never ends in a gap. */
+/** Latest teachings: five cards. With fewer, the next slot is the fallback tile, so the row never ends in a gap. */
 function Latest({ videos }: { videos: Video[] }) {
   if (videos.length === 0) {
     return (
@@ -116,19 +78,19 @@ function Latest({ videos }: { videos: Video[] }) {
         text="New teachings will show here soon."
         href={`${ministry.url}/videos`}
         name="the ministry's videos"
-        className="min-h-72"
+        className="min-h-56"
       />
     );
   }
   return (
-    <ul className={rowClass(4)}>
+    <ul className={rowClass(5)}>
       {videos.map((video, index) => (
-        <li key={video.id} className={rowItemClass(4)}>
+        <li key={video.id} className={rowItemClass(5)}>
           <TeachingCard video={video} sizes={cardSizes} eager={index < 2} />
         </li>
       ))}
       {videos.length < LATEST ? (
-        <li className={rowItemClass(4)}>
+        <li className={rowItemClass(5)}>
           <FeedFallback
             text="Every teaching is also on YouTube."
             href={`${ministry.url}/videos`}
@@ -142,21 +104,32 @@ function Latest({ videos }: { videos: Video[] }) {
   );
 }
 
-async function TeachingsContent() {
+/**
+ * Teachings (still at /media until the routes are renamed), after
+ * BibleProject's Videos page: a plain hero with the featured teaching, the
+ * latest five, the latest Shorts ("Bible nuggets"), the series, then the
+ * live line and the next step to the Academy, all on one surface in a tight
+ * rhythm (TeachingsLayout). Every card opens a page on this site
+ * (/media/watch, /media/series); only a Short plays in place. All YouTube
+ * data comes through lib/youtube, refreshed hourly. No Suspense: the page
+ * must reach visitors without script, so the whole of it is prerendered
+ * (ensureStatic), the cached catalog included.
+ */
+export default async function MediaPage() {
   const catalog = await getTeachingsCatalog();
   const featured = await getFeaturedTeaching(catalog);
   const latest = catalog.longForm.filter((video) => video.id !== featured?.id).slice(0, LATEST);
   const nuggets = catalog.shorts.slice(0, NUGGETS).map(({ id, title }) => ({ id, title }));
 
   return (
-    <>
+    <main id="main" tabIndex={-1}>
       <Hero featured={featured} />
 
-      <Band id="latest" title="Latest teachings">
+      <TeachingsSection id="latest" title="Latest teachings">
         <Latest videos={latest} />
-      </Band>
+      </TeachingsSection>
 
-      <Band id="nuggets" title="Bible nuggets" tone="warm">
+      <TeachingsSection id="nuggets" title="Bible nuggets">
         {nuggets.length > 0 ? (
           <ShortsRow shorts={nuggets} />
         ) : (
@@ -164,12 +137,12 @@ async function TeachingsContent() {
             text="Short Bible nuggets will show here soon."
             href={`${ministry.url}/shorts`}
             name="the ministry's Shorts"
-            className="min-h-72"
+            className="min-h-56"
           />
         )}
-      </Band>
+      </TeachingsSection>
 
-      <Band id="series" title="Explore series">
+      <TeachingsSection id="series" title="Explore series">
         {catalog.series.length > 0 ? (
           <SeriesGrid series={catalog.series} />
         ) : (
@@ -177,31 +150,13 @@ async function TeachingsContent() {
             text="Teaching series will show here soon."
             href={`${pastor.url}/playlists`}
             name="the playlists on YouTube"
-            className="min-h-72"
+            className="min-h-56"
           />
         )}
-        <LiveLine className="mt-10 md:mt-14" />
-      </Band>
-    </>
-  );
-}
+        <LiveLine className="mt-8 md:mt-10" />
+      </TeachingsSection>
 
-/**
- * Teachings (still at /media until the routes are renamed), in the shape of
- * BibleProject's Videos page: the featured teaching as the hero, the latest
- * four, the latest Shorts ("Bible nuggets"), the series, then the live line
- * and the next step to the Academy. Every card opens a page on this site
- * (/media/watch, /media/series); only a Short plays in place. All YouTube
- * data comes through lib/youtube, refreshed hourly. No Suspense: the page
- * must reach visitors without script, so the whole of it is prerendered
- * (ensureStatic), the cached catalog included.
- */
-export default function MediaPage() {
-  return (
-    <main id="main" tabIndex={-1}>
-      <TeachingsContent />
-
-      <NextStep title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep tight title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

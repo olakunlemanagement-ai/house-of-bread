@@ -77,7 +77,7 @@ export default async function WatchPage({ params }: PageProps<"/media/watch/[vid
   return (
     <main id="main" tabIndex={-1}>
       <div className="bg-surface">
-        <div className="container-page pb-12 pt-24 sm:pt-28 md:pb-20">
+        <div className="container-page pb-8 pt-24 sm:pt-28 md:pb-12">
           <nav aria-label="Breadcrumb">
             <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm">
               <li>
@@ -104,7 +104,7 @@ export default async function WatchPage({ params }: PageProps<"/media/watch/[vid
             <YouTubeFacade key={video.id} source={{ kind: "video", id: video.id }} title={video.title} poster="large" />
           </div>
 
-          <div className="mt-8 grid gap-12 lg:mt-10 lg:grid-cols-12 lg:gap-12">
+          <div className="mt-6 grid gap-10 lg:mt-8 lg:grid-cols-12 lg:gap-12">
             <article className="lg:col-span-8">
               <h1 className="text-h2">
                 <TitleText video={video} />
@@ -136,7 +136,7 @@ export default async function WatchPage({ params }: PageProps<"/media/watch/[vid
         </div>
       </div>
 
-      <NextStep title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep tight title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

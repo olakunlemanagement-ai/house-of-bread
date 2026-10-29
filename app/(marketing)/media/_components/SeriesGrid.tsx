@@ -4,14 +4,15 @@ import type { Series } from "@/lib/youtube/catalog";
 import { seriesHref, teachingCount } from "./format";
 
 /**
- * Explore series: one large tile per series, its cover the first episode's
+ * Explore series: one tile per series, four across from lg as in
+ * BibleProject's Explore grid, its cover the first episode's
  * thumbnail, the name on a solid band of green-night at 85% (white text,
  * 10:1 or more over any image, as PlayChip; no gradient), and the number
  * of teachings in a pill. The whole tile is one link to the series page.
  */
 export function SeriesGrid({ series }: { series: Series[] }) {
   return (
-    <ul className={`grid gap-6 ${series.length > 1 ? "md:grid-cols-2" : "md:max-w-2xl"} ${series.length > 2 ? "lg:grid-cols-3" : ""}`}>
+    <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
       {series.map((item) => {
         const cover = item.episodes[0]?.thumbnail;
         return (
@@ -25,7 +26,7 @@ export function SeriesGrid({ series }: { series: Series[] }) {
                   src={cover}
                   alt=""
                   fill
-                  sizes="(min-width: 1024px) 24rem, (min-width: 768px) 50vw, 100vw"
+                  sizes="(min-width: 1024px) 18rem, (min-width: 640px) 50vw, 100vw"
                   className="object-cover"
                   loading="lazy"
                 />
@@ -33,7 +34,7 @@ export function SeriesGrid({ series }: { series: Series[] }) {
               <span className="absolute left-3 top-3 rounded-full bg-surface-raised px-3 py-1 text-sm font-semibold text-emerald-deep shadow-soft">
                 {teachingCount(item)}
               </span>
-              <span className="absolute inset-x-0 bottom-0 bg-green-night/85 px-5 py-4 font-serif text-xl font-semibold leading-snug text-white">
+              <span className="absolute inset-x-0 bottom-0 bg-green-night/85 px-4 py-3 font-serif text-lg font-semibold leading-snug text-white">
                 <span className="line-clamp-2">{item.title}</span>
               </span>
             </Link>

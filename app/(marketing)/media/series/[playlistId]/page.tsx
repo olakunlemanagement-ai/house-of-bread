@@ -4,13 +4,14 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ButtonLink } from "@/components/shared/Button";
 import { NextStep } from "@/components/shared/NextStep";
-import { PageHeader } from "@/components/shared/PageHeader";
-import { bandBodyClass, bandClass, SectionHeader } from "@/components/shared/Section";
+
+import { RevealHeading } from "@/components/shared/RevealHeading";
 import { summarise } from "@/lib/youtube/catalog";
 import { getSeries, seriesParams } from "@/lib/youtube/teachings";
 import { seriesHref, teachingCount, watchHref } from "../../_components/format";
 import { ShareButton } from "../../_components/ShareButton";
 import { TitleText } from "../../_components/TeachingCard";
+import { teachingsBandClass, teachingsHeadingClass, TeachingsHero } from "../../_components/TeachingsLayout";
 import { VideoThumb } from "../../_components/VideoThumb";
 
 // Render the full page before responding, so an unknown playlist returns a real 404.
@@ -44,8 +45,7 @@ export default async function SeriesPage({ params }: PageProps<"/media/series/[p
 
   return (
     <main id="main" tabIndex={-1}>
-      <PageHeader
-        loop="water-light"
+      <TeachingsHero
         eyebrow="Series"
         title={series.title}
         lead={summarise(series.description, 220) ?? undefined}
@@ -59,21 +59,21 @@ export default async function SeriesPage({ params }: PageProps<"/media/series/[p
           </>
         }
         visual={
-          <span className="relative block aspect-video overflow-hidden rounded-card bg-tint shadow-raised ring-1 ring-border">
-            <Image src={first.thumbnail} alt="" fill priority sizes="(min-width: 1024px) 34rem, 100vw" className="object-cover" />
+          <span className="relative block aspect-video overflow-hidden rounded-card bg-tint ring-1 ring-border">
+            <Image src={first.thumbnail} alt="" fill priority sizes="(min-width: 1024px) 42rem, 100vw" className="object-cover" />
           </span>
         }
       />
 
       <section aria-labelledby="episodes-heading" className="bg-surface">
-        <div className={bandClass}>
-          <SectionHeader id="episodes-heading">What&apos;s in this series?</SectionHeader>
-          <ol className={`${bandBodyClass} divide-y divide-border border-y border-border`}>
+        <div className={teachingsBandClass}>
+          <RevealHeading id="episodes-heading" text="What's in this series?" className={teachingsHeadingClass} />
+          <ol className={`mt-4 md:mt-5 divide-y divide-border border-y border-border`}>
             {series.episodes.map((video, index) => (
               <li key={video.id}>
                 <Link
                   href={watchHref(video.id)}
-                  className="group grid grid-cols-[8.5rem_1fr] items-start gap-4 py-5 sm:grid-cols-[14rem_1fr] sm:gap-6 sm:py-6"
+                  className="group grid grid-cols-[8.5rem_1fr] items-start gap-4 py-4 sm:grid-cols-[14rem_1fr] sm:gap-6 sm:py-5"
                 >
                   <VideoThumb
                     src={video.thumbnail}
@@ -99,7 +99,7 @@ export default async function SeriesPage({ params }: PageProps<"/media/series/[p
         </div>
       </section>
 
-      <NextStep title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep tight title="Ready to go deeper?" text="Our courses take you through it, one lesson at a time.">
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

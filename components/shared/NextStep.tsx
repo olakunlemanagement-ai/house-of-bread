@@ -13,6 +13,7 @@ export function NextStep({
   title,
   text,
   tone = "mint",
+  tight = false,
   children,
 }: {
   id?: string;
@@ -20,13 +21,15 @@ export function NextStep({
   title: ReactNode;
   text?: ReactNode;
   tone?: SectionTone;
+  /** The Teachings pages' tight rhythm (BibleProject's pattern), instead of the house band. */
+  tight?: boolean;
   /** The button or buttons. Full width and stacked on phones. */
   children: ReactNode;
 }) {
   const headingId = `${id}-heading`;
   return (
     <section aria-labelledby={headingId} className={toneClass[tone]}>
-      <div className={bandClass}>
+      <div className={tight ? "container-page py-8 md:py-12" : bandClass}>
         {typeof title === "string" ? (
           <RevealHeading id={headingId} className="max-w-3xl text-h2" text={title} />
         ) : (
