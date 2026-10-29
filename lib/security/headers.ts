@@ -8,11 +8,12 @@
 
 /**
  * Routes that render a YouTube embed. Only these may frame
- * youtube-nocookie.com: Home (the latest teaching) and Teachings (/media,
- * the player). Events has had no player since the reset. Add a path here, and in
+ * youtube-nocookie.com: Home (the latest teaching), Teachings (/media, the
+ * Shorts player) and each teaching's watch page (/media/watch/:videoId).
+ * Series pages and Events have no player. Add a path here, and in
  * scripts/check-headers.mjs, when a page gains an embed.
  */
-export const EMBED_ROUTES = ["/", "/media"] as const;
+export const EMBED_ROUTES = ["/", "/media", "/media/watch/:videoId"] as const;
 
 const YOUTUBE_FRAME = "https://www.youtube-nocookie.com";
 

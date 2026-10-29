@@ -6,9 +6,12 @@
 // Prints the headers per route and exits 1 if any check fails. No
 // dependencies: uses the global fetch in Node 18 and later.
 
-// Keep in step with EMBED_ROUTES in lib/security/headers.ts.
-const EMBED_ROUTES = new Set(["/", "/media"]);
-const ROUTES = ["/", "/media", "/events", "/about", "/app", "/contact", "/subscribe", "/ask", "/teachings", "/privacy"];
+// Keep in step with EMBED_ROUTES in lib/security/headers.ts. A watch page
+// stands in for /media/watch/:videoId; a series page has no player.
+const WATCH = "/media/watch/dC-2yHdPyGo";
+const SERIES = "/media/series/PLUHSYJnvnito";
+const EMBED_ROUTES = new Set(["/", "/media", WATCH]);
+const ROUTES = ["/", "/media", WATCH, SERIES, "/events", "/about", "/app", "/contact", "/subscribe", "/ask", "/teachings", "/privacy"];
 const YOUTUBE_FRAME = "https://www.youtube-nocookie.com";
 
 const REQUIRED = {
