@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
+import { BeliefCards, type BeliefCard } from "@/components/shared/BeliefCards";
 import { ButtonLink } from "@/components/shared/Button";
 import { ImageSlot } from "@/components/shared/ImageSlot";
-import { NextStep } from "@/components/shared/NextStep";
-import { NumberedList } from "@/components/shared/NumberedList";
+import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Placeholder } from "@/components/shared/Placeholder";
 import { john6_33to35, ScriptureBlock } from "@/components/shared/ScriptureBlock";
@@ -14,20 +14,27 @@ export const metadata: Metadata = {
     "Why House of Bread? The story behind the name, the teacher, what the ministry believes and how Scripture is handled, and how to get in touch.",
 };
 
-const handled = [
+const handled: BeliefCard[] = [
   {
+    slot: "about-belief-context",
     title: "Context first.",
     text: "Who wrote it, who received it, and what prompted it, before any verse is applied.",
   },
   {
+    slot: "about-belief-scripture",
     title: "Scripture in full.",
     text: "Passages are quoted whole, with the verses either side where the argument depends on them.",
   },
   {
+    slot: "about-belief-text",
     title: "A clear text.",
     text: "The King James Version is the primary text. Any other translation is labelled.",
   },
-  { title: "Plain English.", text: "Rigorous without being academic, and warm without being vague." },
+  {
+    slot: "about-belief-plain",
+    title: "Plain English.",
+    text: "Rigorous without being academic, and warm without being vague.",
+  },
 ];
 
 /**
@@ -40,6 +47,9 @@ export default function AboutPage() {
     <main id="main" tabIndex={-1}>
       <PageHeader
         loop="wheat-field"
+        tone="night"
+        align="center"
+        animate
         eyebrow="About"
         title="A teaching ministry"
         lead="The name comes from Bethlehem, the house of bread, where the Bread of Life was born."
@@ -95,7 +105,7 @@ export default function AboutPage() {
       </section>
 
       <Section id="beliefs" title="What we believe">
-        <NumberedList items={handled} />
+        <BeliefCards cards={handled} />
         <div className="mt-8 max-w-3xl">
           <Placeholder block>
             [DOCTRINAL STATEMENT TO BE SUPPLIED BY THE MINISTRY. Layout: a short list of headed statements,
@@ -113,7 +123,7 @@ export default function AboutPage() {
         </ButtonLink>
       </Section>
 
-      <NextStep tone="warm" title="Ready to start?" text="Our courses take you through it, one lesson at a time.">
+      <NextStep tone="warm" title={NEXT_STEP_COURSES.title} text={NEXT_STEP_COURSES.text}>
         <ButtonLink href="/academy">Browse courses</ButtonLink>
       </NextStep>
     </main>

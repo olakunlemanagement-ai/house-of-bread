@@ -264,4 +264,19 @@ describe("Motion controls", () => {
     expect(source).toContain("focus-visible:outline-3");
     expect(source).toContain("data-theme-control");
   });
+
+  it("smooths the About hero text in only with Motion On and no reduced motion", () => {
+    expect(css).toMatch(
+      /@media \(prefers-reduced-motion: no-preference\) \{\s*html:not\(\[data-motion="off"\]\) \.smooth-in \{\s*animation: smooth-in/,
+    );
+    // Nowhere else may the animation start, so it never runs under Motion Off.
+    expect(css.match(/animation: smooth-in/g)).toHaveLength(1);
+  });
+
+  it("rises cards in only with Motion On, and hides them only once armed by script", () => {
+    expect(css).toMatch(/html:not\(\[data-motion="off"\]\) \[data-rise="open"\] > li \{/);
+    const reveal = readFileSync("components/shared/RiseReveal.tsx", "utf8");
+    expect(reveal).toContain(`data-rise="static"`);
+    expect(reveal).toContain("motionAllowed()");
+  });
 });

@@ -97,6 +97,17 @@ const roles = {
     // thing beneath them (the green-night phone frame).
     glass: "white/0.84",
     glassWorst: "greenNight",
+    // The night hero (About, PageHeader tone="night") and the header over
+    // it take the dark roles in both themes (.tone-night): night at 80%
+    // over the brightest pixel of either wheat loop (pure white at worst).
+    nightInk: "mist",
+    nightMuted: "mistMuted",
+    nightAccent: "spring",
+    nightEyebrow: "lime",
+    nightGlyph: "sprout",
+    nightTint: "nightTint",
+    nightScrim: "night/0.8",
+    nightWorst: "white",
   },
   dark: {
     surface: "night",
@@ -122,6 +133,17 @@ const roles = {
     // Dark glass, raised night at 88%, over white: lighter than anything beneath it.
     glass: "nightRaised/0.88",
     glassWorst: "white",
+    // The night hero (About, PageHeader tone="night") and the header over
+    // it take the dark roles in both themes (.tone-night): night at 80%
+    // over the brightest pixel of either wheat loop (pure white at worst).
+    nightInk: "mist",
+    nightMuted: "mistMuted",
+    nightAccent: "spring",
+    nightEyebrow: "lime",
+    nightGlyph: "sprout",
+    nightTint: "nightTint",
+    nightScrim: "night/0.8",
+    nightWorst: "white",
   },
 };
 
@@ -178,6 +200,14 @@ const shared = [
   ["Header over hero: nav hover and current pill, accent on tint over the scrim", "@accent", ["@heroWorst", "@scrim", "@tint"], TEXT],
   ["Header over hero: Menu border, glyph over the worst loop pixel, 80% scrim", "@glyph", ["@heroWorst", "@scrim"], UI],
   ["Header over hero: focus ring over the worst loop pixel, 80% scrim", "@ring", ["@heroWorst", "@scrim"], UI],
+  // The night hero (About) and the header over it, in both themes.
+  ["Night hero: title and lead, ink over the worst pixel, night scrim", "@nightInk", ["@nightWorst", "@nightScrim"], TEXT],
+  ["Night hero: muted over the worst pixel, night scrim", "@nightMuted", ["@nightWorst", "@nightScrim"], TEXT],
+  ["Night hero: eyebrow, lime over the worst pixel, night scrim", "@nightEyebrow", ["@nightWorst", "@nightScrim"], TEXT],
+  ["Night header: Menu label, accent over the worst pixel, night scrim", "@nightAccent", ["@nightWorst", "@nightScrim"], TEXT],
+  ["Night header: current pill, accent on tint over the night scrim", "@nightAccent", ["@nightWorst", "@nightScrim", "@nightTint"], TEXT],
+  ["Night header: Menu border, glyph over the worst pixel, night scrim", "@nightGlyph", ["@nightWorst", "@nightScrim"], UI],
+  ["Night header: focus ring over the worst pixel, night scrim", "@nightAccent", ["@nightWorst", "@nightScrim"], UI],
   // Home's app mockup: the floating glass cards, the one translucent
   // surface since 28 October 2026, over their worst background.
   ["App mockup glass card: ink over its worst background", "@ink", ["@glassWorst", "@glass"], TEXT],

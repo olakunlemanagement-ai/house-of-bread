@@ -384,6 +384,86 @@
   color: var(--fg);
 }
 
+/*
+  Night tone: the About hero (PageHeader tone="night") and the header over
+  it, in both themes. The dark palette's roles, restated on the element so
+  text, links, rings and pills read on the dark overlay even in the light
+  theme. The scrim is night at 80%, the strength checked over pure white
+  (docs/PLACEHOLDERS.md, "Night hero"). Derived tokens are restated too,
+  because a var() set on :root resolves there, to the light value.
+*/
+.tone-night,
+html:has(main [data-hero-tone="night"]) [data-site-header] {
+  color-scheme: dark;
+  --surface: var(--brand-night);
+  --surface-raised: var(--brand-night-raised);
+  --surface-warm: var(--brand-night-warm);
+  --surface-mint: var(--brand-night-mint);
+  --tint: var(--brand-night-tint);
+  --tint-strong: #1d3f2c;
+  --tint-press: #255038;
+  --ink: var(--brand-mist);
+  --ink-muted: var(--brand-mist-muted);
+  --emerald: var(--brand-emerald-night);
+  --emerald-deep: var(--brand-spring);
+  --glyph: var(--brand-sprout);
+  --fill-primary: var(--brand-emerald-night);
+  --fill-hover: var(--brand-emerald);
+  --fill-press: #175a2b;
+  --border: color-mix(in srgb, var(--brand-spring) 14%, var(--brand-night));
+  --border-strong: color-mix(in srgb, var(--brand-spring) 35%, var(--brand-night));
+  --input-border: var(--brand-mist-muted);
+  --fg: var(--brand-mist);
+  --fg-muted: var(--brand-mist-muted);
+  --fg-heading: var(--brand-mist);
+  --fg-link: var(--brand-spring);
+  --fg-accent: var(--brand-spring);
+  --fg-eyebrow: var(--lime);
+  --ring: var(--brand-spring);
+  --chip-hover: var(--brand-night-tint);
+  --link-line: rgb(143 211 165 / 0.5);
+  --link-line-hover: var(--brand-spring);
+  --choice-edge: color-mix(in srgb, var(--brand-spring) 14%, var(--brand-night));
+  --pill-current-bg: var(--brand-night-tint);
+  --pill-current-ring: color-mix(in oklab, var(--brand-sprout) 25%, transparent);
+  --pill-current-fg: var(--brand-spring);
+  --scrim: rgb(10 21 16 / 0.8);
+  --scrim-tail: 100%;
+  color: var(--fg);
+}
+
+/* The header mark over the night hero takes the dark theme's white tile. */
+html:has(main [data-hero-tone="night"]) [data-site-header] .logo-mark {
+  border-radius: 8px;
+  background-color: var(--brand-white);
+  box-shadow: 0 0 0 4px var(--brand-white);
+}
+
+/*
+  Smooth in: the About hero's eyebrow, title and lead rise out of a soft
+  blur once, on load, staggered by --smooth-delay. CSS only, so it runs
+  without JavaScript and always ends visible. Motion Off and reduced
+  motion: no animation, the text simply stands.
+*/
+@keyframes smooth-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.6em);
+    filter: blur(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="off"]) .smooth-in {
+    animation: smooth-in 900ms cubic-bezier(0.22, 1, 0.36, 1) var(--smooth-delay, 0ms) both;
+  }
+}
+
 @theme inline {
   /* Only the brand palette exists, so no stray default colour can slip in. */
   --color-*: initial;
@@ -938,6 +1018,26 @@ html[data-motion="off"] .tw-caret {
   html:not([data-motion="off"]) .fan-card:hover,
   html:not([data-motion="off"]) .fan-card:focus-within {
     translate: 0 -0.5rem;
+  }
+}
+
+/*
+  Rise reveal (components/shared/RiseReveal.tsx, About's belief cards).
+  Armed, below the fold with Motion On: each item lowered 1.5rem and
+  clear. Open: they rise into place once, 90ms apart (--i). Static, the
+  server default: no change at all.
+*/
+[data-rise="armed"] > li {
+  opacity: 0;
+  transform: translateY(1.5rem);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  html:not([data-motion="off"]) [data-rise="open"] > li {
+    transition:
+      opacity 700ms var(--ease-out),
+      transform 800ms var(--ease-out);
+    transition-delay: calc(var(--i, 0) * 90ms);
   }
 }
 
