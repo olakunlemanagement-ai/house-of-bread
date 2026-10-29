@@ -10,6 +10,10 @@
 //                  the app's own screens. Only a real photo or screenshot
 //                  will do, so the slot keeps the designed placeholder and
 //                  the build script refuses any file for it.
+//   "stock"        a free licence stock photo (CC0 or public domain, from
+//                  Wikimedia Commons) fills the slot, with its credit
+//                  recorded. No people. Still a placeholder until the
+//                  ministry supplies its own photo.
 //   "final"        a real photo or screenshot has been supplied. Switch a
 //                  slot to "final" in the same commit that adds it.
 
@@ -22,7 +26,10 @@ export const SLOT_IMAGE_DIR = "/images/slots";
 
 export type ImageSlotRatio = "16/9" | "4/5" | "1/1" | "3/2";
 export type ImageSlotKind = "photo" | "video" | "screenshot";
-export type ImageSlotStatus = "interim" | "real-needed" | "final";
+export type ImageSlotStatus = "interim" | "stock" | "real-needed" | "final";
+
+/** Where a stock photo came from. Only CC0 and public domain, so no on-page credit is owed. */
+export type ImageCredit = { author: string; source: string; licence: "CC0" | "Public domain" };
 
 export type ImageSlotDef = {
   page: string;
@@ -35,6 +42,8 @@ export type ImageSlotDef = {
   /** True only when the image adds nothing a reader would miss. Renders alt="". */
   decorative?: boolean;
   status: ImageSlotStatus;
+  /** Required for a "stock" slot (slot-images.test.ts checks). */
+  credit?: ImageCredit;
 };
 
 export const REAL_PHOTO_NEEDED = "real photo needed, do not use generated people";
@@ -54,37 +63,115 @@ export const IMAGE_SLOTS = {
     ratio: "16/9",
     kind: "video",
     brief: "a first teaching for someone new to the ministry",
-    alt: "An open Bible ready for a first teaching from House of Bread Global",
-    status: "interim",
+    alt: "An open Bible on a dark wooden desk, ready for a first teaching",
+    status: "stock",
+    credit: {
+      author: "John-Mark Kuznietsov (Unsplash)",
+      source: "https://commons.wikimedia.org/wiki/File:John-Mark_Kuznietsov_2016-12-13_(Unsplash).jpg",
+      licence: "CC0",
+    },
   },
   // Home, "Where are you starting from?": one image per card, no people,
-  // so an interim image may stand in until the ministry supplies photos.
+  // so a stock photo stands in until the ministry supplies its own.
   "home-start-new": {
     page: "Home, Where are you starting from? (01, New to the Bible)",
     ratio: "3/2",
     kind: "photo",
     brief: "a Bible opened for the first time, morning light",
-    alt: "A Bible lying open on a table in soft morning light",
+    alt: "A Bible lying open on a wooden table in sunlight, autumn leaves around it",
     decorative: true,
-    status: "interim",
+    status: "stock",
+    credit: {
+      author: "Aaron Burden (Unsplash)",
+      source:
+        "https://commons.wikimedia.org/wiki/File:Bokeh_photo_of_an_English_Bible,_opened_at_Psalm_143,_with_fallen_leaves_(Unsplash).jpg",
+      licence: "CC0",
+    },
   },
   "home-start-connect": {
     page: "Home, Where are you starting from? (02, How the stories connect)",
     ratio: "3/2",
     kind: "photo",
-    brief: "an open Bible with notes tracing one book to another",
-    alt: "An open Bible beside handwritten notes linking passages across books",
+    brief: "an open Bible, read from one book to the next",
+    alt: "An open Bible on a table, its pages ready to read",
     decorative: true,
-    status: "interim",
+    status: "stock",
+    credit: {
+      author: "Aaron Burden (Unsplash)",
+      source: "https://commons.wikimedia.org/wiki/File:Reading_Scripture_(Unsplash).jpg",
+      licence: "CC0",
+    },
   },
   "home-start-question": {
     page: "Home, Where are you starting from? (03, Carrying a question)",
     ratio: "3/2",
     kind: "photo",
-    brief: "a notebook with a question written beside an open Bible",
-    alt: "A notebook with a question written in it, beside an open Bible",
+    brief: "a notebook and pen, ready for a question",
+    alt: "A pen resting on a closed notebook",
     decorative: true,
-    status: "interim",
+    status: "stock",
+    credit: {
+      author: "Thomas Martinsen (Unsplash)",
+      source: "https://commons.wikimedia.org/wiki/File:Pen_on_a_notebook_(Unsplash).jpg",
+      licence: "CC0",
+    },
+  },
+  // About, "What we believe": one image per card, no people.
+  "about-belief-context": {
+    page: "/about, What we believe (01, Context first)",
+    ratio: "3/2",
+    kind: "photo",
+    brief: "the Scriptures as first written, on scrolls",
+    alt: "A set of Hebrew scrolls of the Scriptures laid open",
+    decorative: true,
+    status: "stock",
+    credit: {
+      author: "Pete Unseth",
+      source: "https://commons.wikimedia.org/wiki/File:Entire_Tanakh_scroll_set.png",
+      licence: "CC0",
+    },
+  },
+  "about-belief-scripture": {
+    page: "/about, What we believe (02, Scripture in full)",
+    ratio: "3/2",
+    kind: "photo",
+    brief: "an open Bible, whole pages of text",
+    alt: "A Bible lying open, its pages of text in close view",
+    decorative: true,
+    status: "stock",
+    credit: {
+      author: "John-Mark Kuznietsov (Unsplash)",
+      source: "https://commons.wikimedia.org/wiki/File:Bible_(Unsplash).jpg",
+      licence: "CC0",
+    },
+  },
+  "about-belief-text": {
+    page: "/about, What we believe (03, A clear text)",
+    ratio: "3/2",
+    kind: "photo",
+    brief: "the title page of the 1611 King James Bible",
+    alt: "The engraved title page of the first King James Bible, 1611",
+    decorative: true,
+    status: "stock",
+    credit: {
+      author: "Church of England, 1611 (University of Pennsylvania scan)",
+      source: "https://commons.wikimedia.org/wiki/File:King-James-Version-Bible-first-edition-title-page-1611.png",
+      licence: "Public domain",
+    },
+  },
+  "about-belief-plain": {
+    page: "/about, What we believe (04, Plain English)",
+    ratio: "3/2",
+    kind: "photo",
+    brief: "an open Bible on a table in soft daylight",
+    alt: "An open Bible on a table in soft daylight, plants behind it",
+    decorative: true,
+    status: "stock",
+    credit: {
+      author: "Ben White (Unsplash)",
+      source: "https://commons.wikimedia.org/wiki/File:Open_book_(Unsplash).jpg",
+      licence: "CC0",
+    },
   },
   "about-mission": {
     page: "/about, Mission",

@@ -36,8 +36,10 @@ export function ImageSlot({ id, sizes = "(min-width: 1024px) 40vw, 100vw", class
       <div
         className={`${frame} bg-tint`}
         data-slot={id}
-        // An interim (AI generated) image is still a placeholder until replaced.
-        data-placeholder={slot.status === "interim" ? "interim-image" : undefined}
+        // An interim (AI generated) or stock image is still a placeholder until replaced.
+        data-placeholder={
+          slot.status === "interim" ? "interim-image" : slot.status === "stock" ? "stock-image" : undefined
+        }
       >
         <Image
           src={image.src}

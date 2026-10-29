@@ -29,6 +29,18 @@ describe("image slot registry", () => {
     }
   });
 
+  it("credits every stock photo, and only stock photos", () => {
+    for (const id of IMAGE_SLOT_IDS) {
+      const slot = slots[id];
+      if (slot.status === "stock") {
+        expect(slot.credit?.author, id).toBeTruthy();
+        expect(slot.credit?.source, id).toMatch(/^https:\/\/commons\.wikimedia\.org\/wiki\/File:/);
+      } else {
+        expect(slot.credit, id).toBeUndefined();
+      }
+    }
+  });
+
   it("locks every slot meant for people or app screens", () => {
     for (const id of ["home-teacher", "about-mission", "about-leadership", "academy-teacher", "events-how-it-works"] as const) {
       expect(lockReason(IMAGE_SLOTS[id]), id).toMatch(/real photo needed/);

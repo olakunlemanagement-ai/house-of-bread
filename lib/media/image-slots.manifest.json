@@ -1,1 +1,50 @@
-{}
+{
+  "home-start-here": {
+    "width": 1600,
+    "height": 900,
+    "bytes": 35920,
+    "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAACwAQCdASoQAAkAA4BaJZQAApMqBpuAAP75LK9T2n+lA3rGFx0Yc2ow6Fu0so6PfeMFi10e5RIAAA=="
+  },
+  "home-start-new": {
+    "width": 1600,
+    "height": 1067,
+    "bytes": 118098,
+    "blurDataURL": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAAAQAgCdASoQAAsAA4BaJZgCdAYtK3VtIKuAAP68frFmgpZscRmt6nePQxc58/fIXM60PAenBYOtorPbxMVxMJOkbYmn1PzXi6AfGBqaGyFF+b96rjWxv0Uvo4Y1IooWqGOAAA=="
+  },
+  "home-start-connect": {
+    "width": 1600,
+    "height": 1067,
+    "bytes": 140490,
+    "blurDataURL": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAADwAQCdASoQAAsAA4BaJQApgAgUkXCxDUAA/uaYzz/ENRvjlUBYAh1OFHV0KdJwHqLLELMQr8vivrHKisxxlbvdLFRxp1lP6AA="
+  },
+  "home-start-question": {
+    "width": 1600,
+    "height": 1067,
+    "bytes": 143116,
+    "blurDataURL": "data:image/webp;base64,UklGRkQAAABXRUJQVlA4IDgAAADwAQCdASoQAAsAA4BaJYwC7AEPDBLhx4AA/lv8d9fDXstr/nNXs3Z9DrqFQL+V79cerKlUYZAAAA=="
+  },
+  "about-belief-context": {
+    "width": 1600,
+    "height": 1067,
+    "bytes": 124886,
+    "blurDataURL": "data:image/webp;base64,UklGRmYAAABXRUJQVlA4IFoAAABQAgCdASoQAAsAA4BaJZQCw7YuvwGEOqJfxrgA/viMkbloX8H1RsR7IQVsPcX4ulnHM9Eb0YxT9Q3v7hzSD8sOrrPOl8E7lprp/zVXGq9yuW/YZuVGcAr+gAA="
+  },
+  "about-belief-scripture": {
+    "width": 1600,
+    "height": 1067,
+    "bytes": 137310,
+    "blurDataURL": "data:image/webp;base64,UklGRm4AAABXRUJQVlA4IGIAAABwAgCdASoQAAsAA4BaJZAC7AYsZdVfVgbllgoAAP70lXaf0eRjBqtJP86Usv0s6mTpxYN47ALcb8HtWRB5QSaxXYchsgk92UQJibpBFcCU2jmudJgRD8UtUBDK9tq6+WkAAA=="
+  },
+  "about-belief-text": {
+    "width": 1000,
+    "height": 667,
+    "bytes": 149040,
+    "blurDataURL": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADwAQCdASoQAAsAA4BaJaQAApNiGN1sHAAA/i/LawqEht+Oub6YXp9AaKykj4pJHRgRTBfHCMmu5bd4oLohI0sMINetiwM8EVsIo8t2Vh+AAA=="
+  },
+  "about-belief-plain": {
+    "width": 1600,
+    "height": 1067,
+    "bytes": 70256,
+    "blurDataURL": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADQAQCdASoQAAsAA4BaJQBOgBSX7TTYAAD+8JvgDtf9MLLjrvQDC88y87BYU6jY7c25ellQC7HCBkjIxgoG5ge6IoJA77X5+OOLaPBtoswyFvtBfjVUFT+1oxphaDxPu9qGOAAA"
+  }
+}
