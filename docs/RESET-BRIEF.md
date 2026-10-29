@@ -206,7 +206,8 @@ Visual (Amended, Home corrections): the phone mockup from before the reset, show
 **Teachings** (amended 29 October 2026, in the shape of BibleProject's Videos page)
 
 - Hero: the featured teaching. Eyebrow "Featured teaching", its title, one or two lines, **Watch now**, and its thumbnail on the right (below on phones).
-- "Latest teachings": the four newest long-form teachings, from both channels.
+- "Latest teachings": the five newest long-form teachings, from both channels.
+- A plain hero (no loop, not full screen), one surface and tight spacing between sections, as BibleProject (amended again 29 October 2026).
 - "Bible nuggets": the latest Shorts, played in place.
 - "Explore series": the playlists, each opening a series page.
 - The live line, then next step: **Browse courses**.

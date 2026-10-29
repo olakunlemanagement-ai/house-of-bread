@@ -383,10 +383,12 @@ disagrees with the brief, the brief wins.
   before the visitor scrolls; `scripts/check-noscript.mjs` checks it at
   375, 768 and 1280, with layout shift. On a short screen (32rem tall or
   less, a phone held sideways) the clear space drops to 2rem.
-- One exception (29 October 2026): a teaching's watch page
-  (`/media/watch/[videoId]`) opens with its video, not a hero, on the
-  plain surface below the transparent header. No loop, so it is left out
-  of check-noscript's hero checks.
+- One exception (29 October 2026): the Teachings pages (`/media`, a
+  series, a teaching) follow BibleProject's Videos page instead: a plain
+  hero (no loop, no scrim, not full screen; a teaching's page opens with
+  its video), one plain surface and a tight rhythm (`TeachingsLayout.tsx`,
+  24px and 40px per section, a `tight` NextStep). check-noscript marks
+  them `plain`: no scrim or full screen checks, layout shift still checked.
 - Responsive floor: no sideways scroll from 320px up. Below 375px the
   header shows the logo mark without the name (`Logo compact`), so the
   theme switch and Menu button fit.
@@ -422,7 +424,7 @@ disagrees with the brief, the brief wins.
 
 - Since 29 October 2026, in the shape of BibleProject's Videos page: the
   featured teaching as the hero (`siteConfig.featuredTeachingId`), "Latest
-  teachings" (four long-form), "Bible nuggets" (six Shorts), "Explore
+  teachings" (five long-form), "Bible nuggets" (six Shorts), "Explore
   series" (playlists), the live line, then "Browse courses". Teaching
   cards open `/media/watch/[videoId]`, series tiles
   `/media/series/[playlistId]`; only a Short plays in place, in a modal
@@ -447,7 +449,8 @@ disagrees with the brief, the brief wins.
 - Every loop renders through `components/shared/LoopVideo.tsx` and is listed
   in `lib/media/loops.ts`. Files in `public/media/loops` are built by
   `npm run loops:build` from raw clips kept outside the repo, never by hand.
-- Every page has an animated hero (since 27 October 2026): Home's `Hero`
+- Every page has an animated hero (since 27 October 2026), except the
+  Teachings pages (since 29 October, see "Every hero fills"): Home's `Hero`
   and every inner page's `PageHeader` draw their loop full bleed behind
   the text through `components/shared/HeroBackdrop.tsx`, the only place a
   `LoopVideo` renders. No loop sits in a lower panel. `PageHeader` takes

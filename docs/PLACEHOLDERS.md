@@ -1394,8 +1394,7 @@ the nav, buttons, loops and motion.
 | Home | ambient-light | phone loop (2:3 crop) |
 | Academy | open-bible | phone loop (4:3 crop) |
 | Academy course page | open-bible | poster |
-| Teachings (`/media`), series pages | water-light | poster |
-| Teaching watch pages (`/media/watch/[videoId]`) | none: the video comes first (29 October 2026) | none |
+| Teachings (`/media`), series and teaching pages | none: a plain hero, after BibleProject (29 October 2026). water-light is now in no hero; its files stay until the ministry decides | none |
 | Teachings articles (`/teachings`, `/teachings/[slug]`) | dust-light | poster |
 | Events, event page | dust-light | poster |
 | About | wheat-field | poster |
@@ -1844,3 +1843,13 @@ Duration badge and series name band: white on green-night at 85%, 10.01:1
 over a white image, 16.82:1 over black. Series count pill: accent on
 raised, 7.65:1 light, 9.84:1 dark. Breadcrumb links: accent on surface,
 7.65:1 and 10.67:1.
+
+### Closer to BibleProject (29 October 2026, second pass)
+
+The ministry asked for BibleProject's Videos page pattern exactly: a plain
+hero and smaller spaces between sections. The three Teachings pages now
+share `TeachingsLayout.tsx`: a plain hero on the surface (no loop, no
+scrim, not full screen), every section on the one surface (no cream or
+mint band but the closing next step), 24px and 40px per section instead
+of 40px and 112px, headings at 24 to 28px instead of the house h2, five
+cards in "Latest teachings" and four series tiles across, as BibleProject.
