@@ -251,6 +251,21 @@ const shared = [
   ["Teachings series count: accent on raised pill", "@accent", ["@raised"], TEXT],
   ["Teachings Shorts dialog: ink on surface", "@ink", ["@surface"], TEXT],
   ["Teachings breadcrumb link: accent on surface", "@accent", ["@surface"], TEXT],
+  // Academy LMS (29 October 2026): catalogue rows, course hero, tabs, sections, lesson player.
+  ["Academy tag pill and current category chip: accent on tint", "@accent", ["@tint"], TEXT],
+  ["Academy row: muted (range, description, progress) on raised", "@muted", ["@raised"], TEXT],
+  ["Academy row: ink (title, stats) on raised", "@ink", ["@raised"], TEXT],
+  ["Academy progress ring, dot and marker: glyph on raised", "@glyph", ["@raised"], UI],
+  ["Academy progress bar: glyph on the tint-strong track", "@glyph", ["@tintStrong"], UI],
+  ["Academy completed tick: raised on glyph", "@raised", ["@glyph"], UI],
+  ["Academy course hero: range and teacher, accent over the worst loop pixel, 80% scrim", "@accent", ["@heroWorst", "@scrim"], TEXT],
+  ["Academy course hero: progress label, ink over the worst loop pixel, 80% scrim", "@ink", ["@heroWorst", "@scrim"], TEXT],
+  ["Academy tabs: selected, accent on surface", "@accent", ["@surface"], TEXT],
+  ["Academy tabs: others, muted on surface", "@muted", ["@surface"], TEXT],
+  ["Academy tabs: selected bar, glyph on surface", "@glyph", ["@surface"], UI],
+  ["Academy lesson list: current lesson, ink on tint", "@ink", ["@tint"], TEXT],
+  ["Academy lesson being prepared: ink on mint", "@ink", ["@mint"], TEXT],
+  ["Academy reflection response: ink on warm", "@ink", ["@warm"], TEXT],
 ];
 
 /** Light only. Labels keep their earlier wording, so the log stays comparable. */

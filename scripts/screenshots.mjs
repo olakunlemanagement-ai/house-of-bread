@@ -21,7 +21,8 @@ import path from "node:path";
 const ROUTES = [
   "/",
   "/academy",
-  "/academy/sample-class",
+  "/academy/reading-the-bible",
+  "/academy/reading-the-bible/one-story-many-books",
   "/media",
   "/about",
   "/ask",

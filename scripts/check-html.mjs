@@ -94,6 +94,8 @@ const EXACT = {
 
 const PATTERNS = [
   { pattern: /^\/academy\/[^/]+$/, key: "What you'll learn" },
+  // An Academy lesson: "Lesson 3 of 12 · 27 min" under its title. A key may be a pattern.
+  { pattern: /^\/academy\/[^/]+\/[^/]+$/, key: /Lesson \d+ of \d+ · \d+/ },
   { pattern: /^\/events\/[^/]+$/, key: "About this session" },
   { pattern: /^\/teachings\/[^/]+$/, key: "Related teachings" },
   { pattern: /^\/new-testament\/[^/]+$/, key: "See all 27 books" },
@@ -185,9 +187,10 @@ export function analyse(html, { h1: expectedH1, key, h1InTitle = false, source }
     if (!title.includes(h1)) failures.push(`h1 "${h1}" does not appear in the title "${title}"`);
   }
 
-  if (!mainText.includes(key)) {
+  const has = (text) => (key instanceof RegExp ? key.test(text) : text.includes(key));
+  if (!has(mainText)) {
     failures.push(
-      textOf(html).includes(key)
+      has(textOf(html))
         ? `key sentence arrives only after script runs: "${key}"`
         : `key sentence missing: "${key}"`,
     );

@@ -19,6 +19,10 @@ const PAGES = [
   { path: "/", lead: "Courses and teaching that bring you into an accurate understanding" },
   { path: "/about", lead: "an ancient Greek word that translates to" },
   { path: "/academy", lead: "Self-paced video lessons that take you through Scripture in context." },
+  { path: "/academy/reading-the-bible", lead: "[What is the Bible, and how do you read it well?]" },
+  // A lesson is a plain page like a Teachings watch page: the video opens it, no hero.
+  { path: "/academy/reading-the-bible/one-story-many-books", lead: "[One line on what this lesson covers.]", plain: true },
+  { path: "/academy/reading-the-bible/how-we-got-the-bible", lead: "This lesson is being prepared.", plain: true },
   // Teachings pages have a plain hero, not a full screen loop (BibleProject's pattern,
   // 29 October 2026): no scrim or full screen checks, the rest as every page.
   { path: "/media", lead: "Featured teaching", plain: true },
