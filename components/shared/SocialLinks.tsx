@@ -56,25 +56,17 @@ export function accountLabel(account: SocialAccount): string {
   return account.platform === "youtube" && account.owner === "pastor" ? `${base} (pastor's channel)` : base;
 }
 
-/** Visible name: the platform, plus "pastor's channel" for the second YouTube. */
-function visibleName(account: SocialAccount): string {
-  const name = platformName[account.platform];
-  return account.platform === "youtube" && account.owner === "pastor" ? `${name}, pastor's channel` : name;
-}
-
 const tileClasses =
   "flex size-11 shrink-0 items-center justify-center rounded-full border border-border bg-white shadow-soft";
 
 /**
  * The social accounts from siteConfig.links.social, each a brand mark in a
- * 44px white round tile. "icons" is a row of tiles (the footer): it shows
- * the ministry's YouTube channel only, since two identical YouTube marks
- * cannot be told apart, and six tiles fit one row at 375px. "labelled" adds
- * the platform name beside each tile and lists both channels (the Teachings
- * page).
- * Links open in a new tab with rel="noopener noreferrer".
+ * 44px white round tile, in a row (the footer). It shows the ministry's
+ * YouTube channel only, since two identical YouTube marks cannot be told
+ * apart, and six tiles fit one row at 375px. Both channels are named on
+ * /media. Links open in a new tab with rel="noopener noreferrer".
  */
-export function SocialLinks({ variant = "icons" }: { variant?: "icons" | "labelled" }) {
+export function SocialLinks() {
   const { social } = siteConfig.links;
 
   if (social.length === 0) {
@@ -83,29 +75,6 @@ export function SocialLinks({ variant = "icons" }: { variant?: "icons" | "labell
         <PlaceholderBadge />
         [SOCIAL PLATFORMS AND LINKS TO BE SUPPLIED]
       </span>
-    );
-  }
-
-  if (variant === "labelled") {
-    return (
-      <ul className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-        {social.map((account) => (
-          <li key={account.href}>
-            <a
-              href={account.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`${accountLabel(account)} (opens in a new tab)`}
-              className="flex min-h-16 items-center gap-4 rounded-card border border-border bg-surface px-4 py-3 font-semibold text-ink shadow-soft hover:border-border-strong"
-            >
-              <span className={tileClasses}>
-                <SocialIcon platform={account.platform} />
-              </span>
-              {visibleName(account)}
-            </a>
-          </li>
-        ))}
-      </ul>
     );
   }
 

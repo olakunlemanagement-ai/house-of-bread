@@ -42,4 +42,4 @@ export function getEntry<T extends ContentType>(type: T, slug: string): Entry<T>
 
 export type { Entry } from "./core.ts";
 export type * from "./schemas.ts";
-export { replayEvents, upcomingEvents, type DatedEvent } from "./events.ts";
+export { upcomingEvents, type DatedEvent } from "./events.ts";

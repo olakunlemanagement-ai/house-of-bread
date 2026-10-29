@@ -18,13 +18,11 @@ export type SiteLinks = {
   youtubeChannel: string | null;
   /** Social accounts, in display order. Empty renders a placeholder. */
   social: SocialAccount[];
-  /** Audio platforms (podcast and similar), in display order. Empty renders a placeholder. */
-  audio: { label: string; href: string }[];
   /**
-   * The featured video, as a YouTube video id. It leads the Library page
-   * player ahead of the feed, and fills the Events Watch panel as the latest
-   * session until a session is live or a dated replay exists. Change this
-   * one value to replace it. Null puts the newest feed video in the lead.
+   * The featured video, as a YouTube video id. It leads the Teachings page
+   * (/media) player ahead of the feed, and stands in on Home when the feed
+   * is empty. Change this one value to replace it. Null puts the newest feed
+   * video in the lead.
    */
   featuredVideoId: string | null;
   /** Store links. Null renders a marked placeholder in the button's place. */
@@ -86,7 +84,6 @@ export const siteConfig = {
       { platform: "x", href: "https://x.com/brotherola", owner: "pastor" },
       { platform: "linktree", href: "https://linktr.ee/brotherola", owner: "pastor" },
     ],
-    audio: [],
     featuredVideoId: "wpNuDtvzMzs",
     googlePlay: null,
     appStore: null,

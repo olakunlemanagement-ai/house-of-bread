@@ -14,11 +14,3 @@ export function upcomingEvents(events: EventData[]): DatedEvent[] {
     .filter((event) => event.status !== "replay")
     .sort((a, b) => Date.parse(a.startsAtUtc) - Date.parse(b.startsAtUtc));
 }
-
-/** Past sessions with a replay, most recent first. */
-export function replayEvents(events: EventData[]): DatedEvent[] {
-  return events
-    .filter(isDated)
-    .filter((event) => event.status === "replay")
-    .sort((a, b) => Date.parse(b.startsAtUtc) - Date.parse(a.startsAtUtc));
-}
