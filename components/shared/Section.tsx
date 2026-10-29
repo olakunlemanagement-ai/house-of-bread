@@ -16,6 +16,16 @@ export const toneClass: Record<SectionTone, string> = {
 /** One rhythm for every section on every page: 40px on phones, 112px from md. */
 export const bandClass = "container-page py-10 md:py-28";
 
+/**
+ * A light island: a section that stays light in dark too (.tone-light in
+ * app/globals.css), inset and rounded on the night page, so the dark theme
+ * has light panels to breathe (29 October 2026). In light it is the plain
+ * full width band. The outer class goes on the section, the inner on one
+ * wrapper inside it, which carries the section's tone class.
+ */
+export const islandOuterClass = "dark:bg-surface dark:px-3 dark:py-6 sm:dark:px-6 md:dark:py-8";
+export const islandInnerClass = "tone-light overflow-hidden dark:rounded-[2rem] lg:dark:rounded-[2.5rem]";
+
 /** The gap between a section's heading block and its content. */
 export const bandBodyClass = "mt-6 md:mt-12";
 
@@ -28,21 +38,39 @@ type SectionProps = {
   tone?: SectionTone;
   /** Narrow keeps reading width for text heavy sections. */
   width?: "wide" | "narrow";
+  /** Stays light in dark, as an inset panel (islandOuterClass). */
+  island?: boolean;
   children?: ReactNode;
 };
 
 /** A page section in the Home rhythm: a question-led heading, an optional line, then content. */
-export function Section({ id, eyebrow, title, intro, tone = "white", width = "wide", children }: SectionProps) {
-  return (
-    <section id={id} aria-labelledby={`${id}-heading`} className={toneClass[tone]}>
-      <div className={bandClass}>
-        <div className={width === "narrow" ? "max-w-3xl" : ""}>
-          <SectionHeader id={`${id}-heading`} eyebrow={eyebrow} intro={intro}>
-            {title}
-          </SectionHeader>
-          {children ? <div className={bandBodyClass}>{children}</div> : null}
-        </div>
+export function Section({
+  id,
+  eyebrow,
+  title,
+  intro,
+  tone = "white",
+  width = "wide",
+  island = false,
+  children,
+}: SectionProps) {
+  const band = (
+    <div className={bandClass}>
+      <div className={width === "narrow" ? "max-w-3xl" : ""}>
+        <SectionHeader id={`${id}-heading`} eyebrow={eyebrow} intro={intro}>
+          {title}
+        </SectionHeader>
+        {children ? <div className={bandBodyClass}>{children}</div> : null}
       </div>
+    </div>
+  );
+  return (
+    <section
+      id={id}
+      aria-labelledby={`${id}-heading`}
+      className={island ? `${toneClass[tone]} ${islandOuterClass}` : toneClass[tone]}
+    >
+      {island ? <div className={`${islandInnerClass} ${toneClass[tone]}`}>{band}</div> : band}
     </section>
   );
 }

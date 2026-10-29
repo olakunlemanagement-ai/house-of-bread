@@ -109,7 +109,7 @@ export default function AboutPage() {
         </div>
       </Section>
 
-      <Section id="ask" title="Is there a passage you can't make sense of?" tone="warm" width="narrow">
+      <Section id="ask" title="Is there a passage you can't make sense of?" tone="mint" width="narrow" island>
         <p className="max-w-2xl text-lead text-ink-muted">
           Ask any question about Scripture: a verse that puzzles you, a word you want to understand, or a
           passage that seems to say two things at once. No name or email is needed. Every question is read,
@@ -118,7 +118,7 @@ export default function AboutPage() {
         <AskQuestion className="mt-6 w-full sm:w-auto" />
       </Section>
 
-      <Section id="contact" title="Want to talk to someone?" tone="mint" width="narrow">
+      <Section id="contact" title="Want to talk to someone?" width="narrow">
         <p className="max-w-2xl text-lead text-ink-muted">
           Questions about the ministry, the Academy or the app are welcome.
         </p>

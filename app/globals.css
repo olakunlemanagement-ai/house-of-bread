@@ -36,8 +36,8 @@
   /* Night primitives for the dark theme. Deep green black, never pure black. */
   --brand-night: #0a1510;
   --brand-night-raised: #111e17;
-  --brand-night-mint: #10211a;
-  --brand-night-warm: #112018;
+  --brand-night-mint: #13271e;
+  --brand-night-warm: #14261c;
   --brand-night-tint: #163122;
   --brand-mist: #e9f0ea;
   --brand-mist-muted: #a8bcae;
@@ -429,6 +429,62 @@ html:has(main [data-hero-tone="night"]) [data-site-header] {
   --pill-current-fg: var(--brand-spring);
   --scrim: rgb(10 21 16 / 0.8);
   --scrim-tail: 100%;
+  color: var(--fg);
+}
+
+/*
+  Light tone: the reverse of the night tone. A panel that stays light in
+  both themes, so the dark page has a few light islands to breathe
+  (29 October 2026): Home's starting cards panel and its app panel. In
+  light it changes nothing; in dark it restates the light roles on the
+  panel, derived tokens included, so every pairing inside is the light
+  theme's, already checked (npm run contrast). Nothing inside may use a
+  dark: utility, which would still follow the page's theme.
+*/
+.tone-light {
+  color-scheme: light;
+  --surface: var(--brand-white);
+  --surface-raised: var(--brand-white);
+  --surface-warm: var(--brand-cream);
+  --surface-mint: var(--brand-mint-50);
+  --tint: #edf3ef;
+  --tint-strong: #dbe7de;
+  --tint-press: #c8dbce;
+  --ink: var(--brand-ink);
+  --ink-muted: var(--brand-ink-muted);
+  --emerald: var(--brand-emerald);
+  --emerald-deep: var(--brand-emerald-deep);
+  --glyph: var(--brand-emerald);
+  --fill-primary: var(--brand-green-deep);
+  --fill-hover: var(--brand-emerald);
+  --fill-press: var(--brand-green-night);
+  --fill-disabled: var(--brand-ink-muted);
+  --border: color-mix(in srgb, var(--brand-emerald) 12%, var(--brand-white));
+  --border-strong: color-mix(in srgb, var(--brand-emerald) 35%, var(--brand-white));
+  --input-border: var(--brand-ink-muted);
+  --fg: var(--brand-ink);
+  --fg-muted: var(--brand-ink-muted);
+  --fg-heading: var(--brand-ink);
+  --fg-link: var(--brand-emerald-deep);
+  --fg-accent: var(--brand-emerald-deep);
+  --fg-eyebrow: var(--brand-emerald-deep);
+  --ring: var(--brand-emerald-deep);
+  --chip-hover: #edf3ef;
+  --link-line: rgb(27 107 51 / 0.5);
+  --link-line-hover: var(--brand-emerald);
+  --choice-edge: color-mix(in srgb, var(--brand-emerald) 12%, var(--brand-white));
+  --pill-current-bg: #edf3ef;
+  --pill-current-ring: color-mix(in oklab, var(--brand-emerald) 25%, transparent);
+  --pill-current-fg: var(--brand-emerald-deep);
+  --elev-soft: 0 1px 2px rgb(11 36 18 / 0.04), 0 8px 24px rgb(11 36 18 / 0.05);
+  --elev-raised: 0 2px 6px rgb(11 36 18 / 0.05), 0 16px 40px rgb(11 36 18 / 0.08);
+  --glass-card: rgb(255 255 255 / 0.84);
+  --glass-edge: inset 0 1px 0 rgb(255 255 255 / 0.6);
+  --glass-border: rgb(255 255 255 / 0.7);
+  --phone-shadow: 0 2px 6px rgb(4 41 14 / 0.12), 0 24px 48px rgb(4 41 14 / 0.18);
+  --skeleton-sheen: rgb(255 255 255 / 0.55);
+  --slot-glow: rgb(27 107 51 / 0.14);
+  --flag-edge: rgb(11 36 18 / 0.15);
   color: var(--fg);
 }
 

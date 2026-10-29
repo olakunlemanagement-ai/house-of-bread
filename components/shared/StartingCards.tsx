@@ -57,7 +57,8 @@ export function StartingCards({ courses }: { courses: Course[] }) {
   ];
 
   return (
-    <div className="rounded-[2rem] bg-surface-mint px-4 py-10 sm:px-8 md:px-10 md:pb-24 md:pt-16 lg:rounded-[2.5rem]">
+    // tone-light: the panel stays light in dark too, one of the page's light islands.
+    <div className="tone-light rounded-[2rem] bg-surface-mint px-4 py-10 sm:px-8 md:px-10 md:pb-24 md:pt-16 lg:rounded-[2.5rem]">
       <RevealHeading
         id="start-heading"
         className="mx-auto max-w-3xl text-center text-h2"

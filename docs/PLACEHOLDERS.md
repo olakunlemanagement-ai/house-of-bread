@@ -1497,7 +1497,9 @@ ratios above.
 | Tertiary hover and press: accent on tint-press | 5.28 | 5.27 |
 | Tertiary press ring: glyph on tint-press (3:1) | 4.53 | 4.14 |
 | Typewriter cursor: glyph on the warm band (3:1) | 5.94 | 7.61 |
-| Ink, muted, accent, eyebrow on the dark warm band (`#112018`) | | 14.57, 8.42, 9.67, 8.87 |
+| Ink, muted, accent, eyebrow on the dark warm band (`#14261c` since 29 October 2026, was `#112018`) | | 13.69, 7.91, 9.09, 8.33 |
+| Ink, muted, accent, eyebrow on the dark mint band (`#13271e` since 29 October 2026, was `#10211a`) | | 13.55, 7.83, 9.00, 8.25 |
+| Light islands in dark (`.tone-light`): every pairing inside is the light theme's, restated on the panel | same as light | n/a |
 | Free badge: ink on gold-soft | 11.85 | same |
 | Announcement button: ink outline on gold | 9.02 | same |
 | Footer secondary press: white on 25% white over green-deep | 6.22 | same |

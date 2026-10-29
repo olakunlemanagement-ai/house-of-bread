@@ -37,9 +37,9 @@ const tokens = {
   // Night palette (dark theme).
   night: "#0a1510",
   nightRaised: "#111e17",
-  nightMint: "#10211a",
+  nightMint: "#13271e",
   // Dark green tint since 27 October 2026 (was #16170f, brown olive).
-  nightWarm: "#112018",
+  nightWarm: "#14261c",
   tintStrong: "#dbe7de",
   tintPress: "#c8dbce",
   nightTintStrong: "#1d3f2c",

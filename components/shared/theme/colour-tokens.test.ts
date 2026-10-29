@@ -71,3 +71,27 @@ describe("colour tokens", () => {
     expect(found).toEqual([]);
   });
 });
+
+describe("light islands (.tone-light)", () => {
+  const css = readFileSync("app/globals.css", "utf8");
+  const block = (start: RegExp) => {
+    const at = css.search(start);
+    expect(at, String(start)).toBeGreaterThan(-1);
+    const open = css.indexOf("{", at);
+    let depth = 0;
+    for (let i = open; i < css.length; i++) {
+      if (css[i] === "{") depth++;
+      if (css[i] === "}" && --depth === 0) return css.slice(open, i);
+    }
+    return "";
+  };
+  const names = (text: string) => new Set([...text.matchAll(/(--[a-z-]+):/g)].map((match) => match[1]));
+
+  it("restates every token the dark theme changes, so no dark value leaks into a light panel", () => {
+    const dark = names(block(/:root \{\s*@variant dark \{/));
+    const light = names(block(/^\.tone-light \{/m));
+    expect(dark.size).toBeGreaterThan(20);
+    const missing = [...dark].filter((name) => !light.has(name) && !["--scrim", "--scrim-tail"].includes(name));
+    expect(missing).toEqual([]);
+  });
+});
