@@ -36,6 +36,8 @@ export default async function AcademyPage() {
   return (
     <main id="main" tabIndex={-1}>
       <PageHeader
+        loop="open-bible"
+        phoneLoop
         eyebrow="The Academy"
         title="Bible courses"
         lead="Self-paced video lessons that take you through Scripture in context."
@@ -47,8 +49,6 @@ export default async function AcademyPage() {
             </ButtonLink>
           </>
         }
-        loop="open-bible"
-        phoneLoop
       />
 
       <Section id="courses" title="Find a course">
