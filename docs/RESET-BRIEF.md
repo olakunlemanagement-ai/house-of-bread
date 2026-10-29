@@ -76,7 +76,7 @@ Simplicity first, in the spirit of Fyreworks, in our own white and green.
 | One idea and one primary button per screen. Lots of white space. | Fyreworks |
 | Huge display type for statements only (clamp about 2.5rem to 5rem, tight leading). Readable body type everywhere else. | Fyreworks |
 | Big numbered rows (01, 02, 03) with thin dividers for lists of options | Fyreworks |
-| Pill buttons, label only, no arrow (Amended). Under review (Amended, Home corrections): three classic options at `/dev/buttons`, to replace the pills once one is chosen. Primary: solid deep green. Secondary: outline. Tertiary: soft tinted fill, for cards and rows. Sizes md and sm, 44px tap height or more. | Fyreworks, Bevere |
+| Buttons, label only, no arrow (Amended). Style (Amended, Home corrections, chosen 29 October 2026): Engraved with a touch of Ruled, Geist small caps with wide tracking, 6px corners and a fine inset hairline; on hover a deeper fill sweeps in and a fine rule draws under the label. Primary: solid deep green. Secondary: outline. Tertiary: soft tinted fill, for cards and rows. Sizes md and sm, 44px tap height or more. | Fyreworks, Bevere |
 | Full-screen menu on phones: large items, nothing else | Fyreworks |
 | Question-led section headings | BibleProject |
 | Soft tinted section backgrounds (white, then warm cream `#F7F3EC`, then pale green) alternating, never more than one per section | BibleProject, Bevere |
@@ -250,5 +250,4 @@ Visual (Amended, Home corrections): the phone mockup from before the reset, show
 - The first three courses: titles, lesson counts and lengths.
 - The hero headline choice: A, B or C.
 - Pricing for the courses (until then, nothing calls them free).
-- The button style: A, B or C at `/dev/buttons`.
 - Photos for the three starting cards, or approval for interim images.

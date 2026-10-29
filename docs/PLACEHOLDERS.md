@@ -1766,3 +1766,24 @@ sideways), 768x1024, 1024x768 and 1440x900 on Home, Academy, About and
   "Next live session" eyebrow stays on one line.
 - Heroes on a short screen (32rem tall or less): the clear space above and
   below drops from 4rem to 2rem, so the headline sits at 96px, not 144px.
+
+### Button style chosen (29 October 2026)
+
+Engraved, with a touch of Ruled (options C and B from the preview, which
+is now deleted). Geist small caps at 0.16em tracking, a 6px radius, a 1px
+edge and on outlines a hairline 4px inside it. Hover: the deeper fill
+sweeps in from the left and a fine rule (current colour at 55%) draws out
+beneath the label; keyboard focus draws the rule too. Both move only with
+Motion On and no reduced motion. `.btn` in `app/globals.css`, colours per
+variant as custom properties in `Button.tsx`. The text pairings are the
+same as the pills'; two new ones:
+
+| Pairing | Ratio |
+|---|---|
+| Footer secondary hover sweep: white on 20% white over green-deep | 7.29 |
+| Live hover sweep: ink on gold-soft | 11.85 |
+
+Edges and hairlines on fills are decorative; the secondary's 1px glyph
+edge holds 3:1 on every band, as the 1.5px border did. `--radius-button`
+is 6px, so the Menu button, store badges and other button shaped
+elements follow.

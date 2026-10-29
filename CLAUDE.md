@@ -345,7 +345,7 @@ disagrees with the brief, the brief wins.
   is icon glyphs and the primary hover. `fill-press` is the primary
   press.
 - Deep green (`green-deep`, `green-night`) is the footer, the primary
-  pill and small elements only. No deep green section or panel anywhere
+  button and small elements only. No deep green section or panel anywhere
   else, and no full bleed green hero.
 - `lime` is a decorative 6px dot at most on light. Never a fill, a
   headline colour or a carrier of meaning. Lime text only on `#0f4a22` or
@@ -366,11 +366,11 @@ disagrees with the brief, the brief wins.
   H1 is `text-display` (36 to 56px), H2 `text-h2` (28 to 36px), both at
   weight 500; h3 and smaller at 600.
 - Eyebrows: 0.75rem, uppercase, 0.14em tracking, emerald-deep, no pill.
-- Radii: buttons are pills, inputs 10px, icon tiles 14px, cards 20px.
+- Radii: buttons 6px, inputs 10px, icon tiles 14px, cards 20px.
 - Motion is minimal: the hero loops, the Home mission typewriter and its
   blinking cursor, the one time heading reveal, Home's starting cards
   fanning out (all under Motion, below), the menu fade (180ms) and the
-  skeleton shimmer. No button or card moves on hover (a linked card only
+  skeleton shimmer, and the button hover sweep and rule. No button or card moves on hover (a linked card only
   deepens its edge), except Home's starting cards, which lift 0.5rem with
   Motion On. No floating or 3D icons. Nothing loops except hero loops,
   the mission cursor and a skeleton. Nothing runs under reduced motion.
@@ -536,23 +536,35 @@ disagrees with the brief, the brief wins.
 - Button labels say exactly what happens. Use only the labels in the
   table in `docs/RESET-BRIEF.md` section 2, plus any label the brief names
   for a specific page.
-- A classic replacement for the pills is under review (28 October 2026):
-  three options at `/dev/buttons` (noindexed, not in the sitemap or nav,
-  a 404 in production). Until one is chosen the pills below stand; delete
-  the route once the choice is built into `Button.tsx`.
-- Variants, all pills with a text label only:
-  - Primary: solid deep green (`fill-primary`), white text, emerald on
-    hover, `fill-press` on press. One per screen.
-  - Secondary: an outline, a 1.5px `glyph` border, emerald-deep text, tint
-    on hover, `tint-strong` on press.
-  - Tertiary: a soft `tint` fill with emerald-deep text, `tint-strong` on
-    hover, `tint-press` on press. For actions inside cards and rows.
+- Style (chosen 29 October 2026): Engraved, with a touch of Ruled. Geist
+  small caps (`font-variant-caps: all-small-caps`) at 0.16em tracking, a
+  6px radius, a 1px edge and, on outlines, a hairline 4px inside it. On
+  hover a deeper fill sweeps in from the left and a fine rule (current
+  colour at 55%) draws out beneath the label from its centre; keyboard
+  focus draws the rule too. Press shows the press fill at once. The sweep
+  and the rule move only with Motion On and no reduced motion; otherwise
+  they appear at once. Size never changes. The shape is `.btn` and
+  `.btn-label` in `app/globals.css` (`@layer components`); each variant
+  sets `--btn-fill`, `--btn-ink`, `--btn-sweep`, `--btn-press`,
+  `--btn-line` and `--btn-inner`. Anything drawn with `buttonClasses`
+  outside `Button` and `ButtonLink` wraps its text in `ButtonLabel`.
+- Variants, all with a text label only:
+  - Primary: solid deep green (`fill-primary`), white text, a white
+    hairline edge, emerald sweeping in on hover, `fill-press` on press.
+    One per screen.
+  - Secondary: an outline, a 1px `glyph` edge with a `border-strong`
+    hairline inside, emerald-deep text, `tint` sweeping in on hover,
+    `tint-strong` on press.
+  - Tertiary: a `tint-strong` fill with a `border-strong` edge and
+    emerald-deep text, `tint-press` sweeping in on hover. For actions
+    inside cards and rows.
   - Footer (`tone="green"`): primary is white with green-deep text;
-    secondary is white at 12% with a 1.5px white border.
-  - Live: gold fill, ink text, only while a session is live.
+    secondary is white at 12% with a white edge and an inner hairline.
+  - Live: gold fill, ink text, gold-soft on hover, only while a session
+    is live.
 - Sizes: `md` (48px tall, 52px from `sm`) and `sm` (44px, for cards,
   rows and the header). Full width and stacked in heroes and bands on
-  mobile. Nothing moves: hover and press change colour only.
+  mobile.
 - Two buttons with the same label in one list carry a visually hidden
   suffix naming their item ("Start this course: <title>").
 - Never use "Learn more", "Come and be fed", "Be fed by the Word",
@@ -581,14 +593,14 @@ disagrees with the brief, the brief wins.
   scrim and is checked over every loop's worst pixel in both themes. From
   `lg`: logo, then Home, Academy, Teachings, About and Contact in ink, the
   current page in a tint pill with an inset emerald ring, then one primary
-  pill, "Browse courses", to `/academy`, and the theme icon switch. Teachings points at
+  button, "Browse courses", to `/academy`, and the theme icon switch. Teachings points at
   `/media` (once labelled Library) until the routes are renamed. Ask lives
   in the footer and in Home's third starting card, not the header.
-- Below `lg`: the logo, the "Browse courses" pill from `sm`, the
+- Below `lg`: the logo, the "Browse courses" button from `sm`, the
   theme switch and a "Menu" button. The menu is a `details` element and
   works without JavaScript. Its panel fills the screen below the header,
   solid surface: the five links as large serif items, then the "Browse
-  courses" pill, and nothing else. While it is open the page holds still
+  courses" button, and nothing else. While it is open the page holds still
   beneath it.
 - Footer: deep green in both themes, the site's trust block. The full
   ministry name (in brackets until confirmed), socials (the icon row shows
