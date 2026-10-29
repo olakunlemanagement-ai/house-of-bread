@@ -46,5 +46,41 @@
     "height": 1067,
     "bytes": 70256,
     "blurDataURL": "data:image/webp;base64,UklGRnAAAABXRUJQVlA4IGQAAADQAQCdASoQAAsAA4BaJQBOgBSX7TTYAAD+8JvgDtf9MLLjrvQDC88y87BYU6jY7c25ellQC7HCBkjIxgoG5ge6IoJA77X5+OOLaPBtoswyFvtBfjVUFT+1oxphaDxPu9qGOAAA"
+  },
+  "academy-course-reading-the-bible": {
+    "width": 1600,
+    "height": 900,
+    "bytes": 65652,
+    "blurDataURL": "data:image/webp;base64,UklGRnYAAABXRUJQVlA4IGoAAADwAQCdASoQAAkAA4BaJbACdADwSErfJAAA/unuOlE+NiMfMVDWZwYdh0rk4nyh7xkyq9h81TkiT6Y7lH7eIk/eoi/HOIUyw9n2o7OXI7ExlX9gdcXcZgJ+sQN+HReEilN0ZryiGgGDygAA"
+  },
+  "academy-course-the-story-of-scripture": {
+    "width": 1024,
+    "height": 576,
+    "bytes": 125266,
+    "blurDataURL": "data:image/webp;base64,UklGRkoAAABXRUJQVlA4ID4AAADQAQCdASoQAAkAA4BaJYwCdAD0irrkwAD9vI7VXhTIdY70JWS06EP8EzzRL/+p5RqdaotrCsRyV9y5WQAAAA=="
+  },
+  "academy-course-in-the-beginning": {
+    "width": 1600,
+    "height": 900,
+    "bytes": 98296,
+    "blurDataURL": "data:image/webp;base64,UklGRkIAAABXRUJQVlA4IDYAAADwAQCdASoQAAkAA4BaJYwCdAEPDBbhhogA/u7uRVTfIGsEy6TN500In0Zgd+PY65isaiMAAAA="
+  },
+  "academy-course-the-bread-of-life": {
+    "width": 1600,
+    "height": 900,
+    "bytes": 91392,
+    "blurDataURL": "data:image/webp;base64,UklGRmQAAABXRUJQVlA4IFgAAAAwAgCdASoQAAkAA4BaJYgCdAYuvwib13gSAAD+7vOcyUDmJ8xkkRAUWNPlc1jpOVPiaGBygzjUNbiaYBD47zsxVfWIJwZb8/kWToKJrKsbyuMJyrYJQAAA"
+  },
+  "academy-course-life-in-the-spirit": {
+    "width": 1600,
+    "height": 900,
+    "bytes": 128396,
+    "blurDataURL": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAAAQAgCdASoQAAkAA4BaJYwCdAERH+F3aHXAAP724NSvmFHLdinmm/50ax/Nx64j6bYEytO+CCH4QhoqgCjh9gOIAAA="
+  },
+  "academy-course-walking-in-the-word": {
+    "width": 1200,
+    "height": 675,
+    "bytes": 142616,
+    "blurDataURL": "data:image/webp;base64,UklGRlwAAABXRUJQVlA4IFAAAADQAQCdASoQAAkAA4BaJQBWABl3ar9CAAD+cz8yPvyte2AFM5Eopf1nAGavKE0Tn204+B+amLjLwBdVeGFGEkUsZLZdHhyjMmSehEJNdmAAAA=="
   }
 }
