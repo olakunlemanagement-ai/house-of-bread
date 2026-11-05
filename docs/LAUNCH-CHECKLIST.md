@@ -17,7 +17,7 @@ Decisions or work without which the site should not go live.
 - [ ] **Switch the Academy status to open when real courses are loaded.**
   Since 29 October 2026 the Academy is a placeholder LMS in preview
   (`siteConfig.academy.status: "preview"`): every course and lesson page
-  is browsable, so Home's "Start this course" buttons lead to real course
+  is browsable, so Home's "View this course" buttons lead to real course
   pages, and a lesson without a video shows "This lesson is being
   prepared" with "Notify me when the Academy opens". Set `"open"` once the
   real courses, lessons and videos are in `content/academy`. Owner:

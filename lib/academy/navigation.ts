@@ -65,6 +65,35 @@ export function courseProgress(lessonSlugs: readonly string[], completed: Readon
   return { status, done, total, ...(resume !== undefined ? { resume } : {}) };
 }
 
+/**
+ * A button into a course: the label and where it goes, decided together so
+ * they never disagree (5 November 2026). "View this course" opens the
+ * course page; "Start this course" opens lesson 1; "Continue learning"
+ * opens the first unfinished lesson.
+ */
+export type CourseLink =
+  | { label: "View this course"; href: `/academy/${string}` }
+  | { label: "Start this course" | "Continue learning"; href: `/academy/${string}/${string}` };
+
+/** A course card's button, anywhere outside the course page: opens the course page. */
+export function viewCourseLink(courseSlug: string): CourseLink {
+  return { label: "View this course", href: `/academy/${courseSlug}` };
+}
+
+/**
+ * The course page's primary button. Lesson 1 until a lesson is done, then
+ * the first unfinished lesson; a completed course starts again at lesson 1.
+ * Undefined for a course with no lessons (content validation rejects one).
+ */
+export function startCourseLink(courseSlug: string, lessonSlugs: readonly string[], progress: CourseProgress): CourseLink | undefined {
+  const first = lessonSlugs[0];
+  if (first === undefined) return undefined;
+  if (progress.status === "in-progress" && progress.resume !== undefined) {
+    return { label: "Continue learning", href: `/academy/${courseSlug}/${progress.resume}` };
+  }
+  return { label: "Start this course", href: `/academy/${courseSlug}/${first}` };
+}
+
 /** The words for a course's progress: "Not started", "3 of 12 lessons", "Completed". */
 export function progressLabel(progress: CourseProgress): string {
   if (progress.status === "completed") return "Completed";

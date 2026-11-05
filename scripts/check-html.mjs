@@ -154,6 +154,29 @@ function visibleHtml(html) {
     .replace(/<template\b[^>]*\/?>/gi, "");
 }
 
+/**
+ * Course buttons whose label and destination disagree (5 November 2026):
+ * "View this course" opens a course page, /academy/<course>; "Start this
+ * course" and "Continue learning" open a lesson, /academy/<course>/<lesson>.
+ * Exported for testing.
+ */
+export function courseLinkFailures(html) {
+  const rules = [
+    { label: "View this course", href: /^\/academy\/[a-z0-9-]+$/, wants: "a course page" },
+    { label: "Start this course", href: /^\/academy\/[a-z0-9-]+\/[a-z0-9-]+$/, wants: "a lesson" },
+    { label: "Continue learning", href: /^\/academy\/[a-z0-9-]+\/[a-z0-9-]+$/, wants: "a lesson" },
+  ];
+  const failures = [];
+  for (const [, attrs, inner] of html.matchAll(/<a\b([^>]*)>([\s\S]*?)<\/a>/gi)) {
+    const text = textOf(inner);
+    const rule = rules.find(({ label }) => text.startsWith(label));
+    if (!rule) continue;
+    const href = decode(attrs.match(/\shref="([^"]*)"/)?.[1] ?? "");
+    if (!rule.href.test(href)) failures.push(`"${rule.label}" goes to "${href}", expected ${rule.wants}`);
+  }
+  return failures;
+}
+
 /** Checks one page's HTML. Returns { failures, notes }. Exported for testing. */
 export function analyse(html, { h1: expectedH1, key, h1InTitle = false, source }) {
   const failures = [];
@@ -205,6 +228,8 @@ export function analyse(html, { h1: expectedH1, key, h1InTitle = false, source }
       failures.push(`signup source is ${sources.join(", ")}, expected ${source}`);
     }
   }
+
+  failures.push(...courseLinkFailures(visible));
 
   const skeletons = main.match(SKELETON)?.length ?? 0;
   if (skeletons > 0) {

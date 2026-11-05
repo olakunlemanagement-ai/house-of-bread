@@ -1999,3 +1999,30 @@ and passes in both themes: tag pills and the current category chip
 5.26:1), the completed tick (raised on glyph), the course hero's range and
 teacher over the worst loop pixel (4.77:1 and 5.78:1), the tabs, the lesson
 list's current lesson, the being prepared panel and the reflection response.
+
+## Academy decisions (5 November 2026)
+
+### Course buttons
+
+- A course card or row, anywhere outside the course page, says **View this
+  course** and opens the course page: Home's course cards, the Start Here
+  card, the starting cards 01 and 02, the Academy's closing band and the
+  course page's "next course" band.
+- The course page's primary button says **Start this course** and opens
+  lesson 1, or **Continue learning** and opens the first unfinished lesson
+  once a lesson is done. A completed course starts again at lesson 1.
+- Both come from `lib/academy/navigation.ts` (`viewCourseLink`,
+  `startCourseLink`), which sets the label and the link together.
+  `lib/academy/course-links.test.ts` fails if a component writes one of the
+  three labels itself, and `scripts/check-html.mjs` fails a built page where
+  a label points at the wrong kind of page.
+- Button label added: View this course.
+
+### Lesson player
+
+- Next lesson and Finish course mark the lesson being left complete, then
+  navigate (`AdvanceLink`), so a lesson with no video can finish. Video
+  lessons still complete when the video ends.
+- On lesson 1, Previous lesson shows disabled in the same place (disabled
+  secondary: muted text and edge, dashed inner hairline; inactive controls
+  are outside WCAG 1.4.3).

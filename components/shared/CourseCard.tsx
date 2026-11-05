@@ -1,4 +1,5 @@
 import type { Route } from "next";
+import { viewCourseLink } from "@/lib/academy/navigation";
 import type { Course } from "@/lib/academy/types";
 import { ButtonLink } from "./Button";
 
@@ -17,6 +18,7 @@ export function CourseCard({
   headingLevel?: 2 | 3;
 }) {
   const Heading = headingLevel === 2 ? "h2" : "h3";
+  const view = viewCourseLink(course.slug);
   return (
     <li className="flex flex-col rounded-card border border-border bg-surface-raised p-5 sm:p-8">
       <Heading className="text-xl leading-snug sm:text-2xl">{course.title}</Heading>
@@ -25,8 +27,9 @@ export function CourseCard({
         {course.lessons} lessons · about {course.minutesPerLesson} min each
       </p>
       <div className="mt-auto pt-5">
-        <ButtonLink href={`/academy/${course.slug}` as Route} variant="tertiary" className="w-full sm:w-auto">
-          Start this course<span className="sr-only">: {course.title}</span>
+        <ButtonLink href={view.href as Route} variant="tertiary" className="w-full sm:w-auto">
+          {view.label}
+          <span className="sr-only">: {course.title}</span>
         </ButtonLink>
       </div>
     </li>

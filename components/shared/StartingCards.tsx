@@ -1,5 +1,5 @@
 import type { Route } from "next";
-import { startingCourses } from "@/lib/academy/navigation";
+import { startingCourses, viewCourseLink } from "@/lib/academy/navigation";
 import type { Course } from "@/lib/academy/types";
 import type { ImageSlotId } from "@/lib/media/image-slots";
 import { AskQuestion } from "./AskQuestion";
@@ -15,6 +15,8 @@ type StartingCard = {
   /** Where the button goes; null opens the Ask dialog (AskQuestion). */
   href: Route | null;
   action: string;
+  /** Adds the card's title, visually hidden, so two buttons with one label stay distinct. */
+  named: boolean;
 };
 
 /**
@@ -32,24 +34,25 @@ type StartingCard = {
  */
 export function StartingCards({ courses }: { courses: Course[] }) {
   const starts = startingCourses(courses);
-  const courseHref = (index: 0 | 1): Route => {
+  // A card opens its course's page; with no course yet, the catalogue.
+  const courseLink = (index: 0 | 1): { href: Route; action: string; named: boolean } => {
     const course = starts[index];
-    return course ? (`/academy/${course.slug}` as Route) : "/academy";
+    if (!course) return { href: "/academy", action: "Browse courses", named: false };
+    const view = viewCourseLink(course.slug);
+    return { href: view.href as Route, action: view.label, named: true };
   };
   const cards: StartingCard[] = [
     {
       slot: "home-start-new",
       title: "New to the Bible.",
       text: "Start with the foundations: what the Bible is and how to read it.",
-      href: courseHref(0),
-      action: "Start this course",
+      ...courseLink(0),
     },
     {
       slot: "home-start-connect",
       title: "You know the stories, but not how they connect.",
       text: "Go book by book and see the whole picture.",
-      href: courseHref(1),
-      action: "Start this course",
+      ...courseLink(1),
     },
     {
       slot: "home-start-question",
@@ -57,6 +60,7 @@ export function StartingCards({ courses }: { courses: Course[] }) {
       text: "A verse you can't make sense of, or a passage that troubles you? Ask it. You don't need to give your name.",
       href: null,
       action: "Ask a question",
+      named: false,
     },
   ];
 
@@ -91,7 +95,7 @@ export function StartingCards({ courses }: { courses: Course[] }) {
                 {card.href ? (
                   <ButtonLink href={card.href} variant="tertiary" size="sm" className="w-full">
                     {card.action}
-                    {card.action === "Start this course" ? <span className="sr-only">: {card.title}</span> : null}
+                    {card.named ? <span className="sr-only">: {card.title}</span> : null}
                   </ButtonLink>
                 ) : (
                   <AskQuestion variant="tertiary" size="sm" className="w-full" />

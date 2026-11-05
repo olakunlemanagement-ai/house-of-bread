@@ -721,7 +721,7 @@ disagrees with the brief, the brief wins.
   rows and the header). Full width and stacked in heroes and bands on
   mobile.
 - Two buttons with the same label in one list carry a visually hidden
-  suffix naming their item ("Start this course: <title>").
+  suffix naming their item ("View this course: <title>").
 - Never use "Learn more", "Come and be fed", "Be fed by the Word",
   "Transform your life", "Unforgettable" or "Journey of faith"
   (`lib/content/reset-copy.test.ts` checks every route, with the retired

@@ -8,6 +8,7 @@ import { MdxBody } from "@/components/shared/MdxBody";
 import { NextStep } from "@/components/shared/NextStep";
 import { YouTubeFacade } from "@/components/shared/YouTubeFacade";
 import { courseCatalog } from "@/lib/academy";
+import { viewCourseLink } from "@/lib/academy/navigation";
 import { CourseHero } from "./_components/CourseHero";
 import { CourseActions, CourseProgressBar } from "./_components/CourseProgress";
 import { ResourceList } from "./_components/ResourceList";
@@ -33,7 +34,7 @@ export async function generateMetadata({ params }: PageProps<"/academy/[course]"
  * One course, in the shape of BibleProject's class page: a plain hero, as
  * on the Teachings pages (no loop, not full screen; 29 October 2026): title,
  * Scripture range and teacher, description, time, lessons and sections,
- * the visitor's progress, Start this course or Continue learning, and the
+ * the visitor's progress, the start or continue button (startCourseLink), and the
  * trailer when there is one, with the course image beside it. Then tabs,
  * kept in the URL: Sections (an accordion per section, its lessons as a
  * timeline), Overview (trailer, what you'll learn, the teacher) and
@@ -139,8 +140,9 @@ export default async function CoursePage({ params }: PageProps<"/academy/[course
 
       {next ? (
         <NextStep title="Ready for the next course?" text={next.title}>
-          <ButtonLink href={`/academy/${next.slug}` as Route}>
-            Start this course<span className="sr-only">: {next.title}</span>
+          <ButtonLink href={viewCourseLink(next.slug).href as Route}>
+            {viewCourseLink(next.slug).label}
+            <span className="sr-only">: {next.title}</span>
           </ButtonLink>
         </NextStep>
       ) : (

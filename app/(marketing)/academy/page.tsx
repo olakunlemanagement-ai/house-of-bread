@@ -6,6 +6,7 @@ import { PageHeader } from "@/components/shared/PageHeader";
 import { Section } from "@/components/shared/Section";
 import { StartingCards } from "@/components/shared/StartingCards";
 import { courseCatalog } from "@/lib/academy";
+import { viewCourseLink } from "@/lib/academy/navigation";
 import { academyCopy as copy } from "@/lib/content/copy";
 import { CategoryNav } from "./_components/CategoryNav";
 import { CourseRow } from "./_components/CourseRow";
@@ -98,10 +99,14 @@ export default async function AcademyPage() {
         tone="warm"
         title={startHere ? `Not sure where to begin? Start with ${startHere.title}.` : "Not sure where to begin?"}
       >
-        <ButtonLink href={startHref}>
-          Start this course
-          {startHere ? <span className="sr-only">: {startHere.title}</span> : null}
-        </ButtonLink>
+        {startHere ? (
+          <ButtonLink href={viewCourseLink(startHere.slug).href as Route}>
+            {viewCourseLink(startHere.slug).label}
+            <span className="sr-only">: {startHere.title}</span>
+          </ButtonLink>
+        ) : (
+          <ButtonLink href="#courses">See all courses</ButtonLink>
+        )}
       </NextStep>
     </main>
   );

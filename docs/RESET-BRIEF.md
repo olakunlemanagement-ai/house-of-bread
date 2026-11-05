@@ -53,8 +53,9 @@ Rules:
 
 | Use | Button label |
 |---|---|
-| Course list | Start this course |
-| Course in progress | Continue learning |
+| Course card or row, to the course page (amended 5 November 2026) | View this course |
+| Course page, to lesson 1 | Start this course |
+| Course page, to the first unfinished lesson once started | Continue learning |
 | Academy entry | Browse courses |
 | Video | Watch now |
 | All videos | See all teachings |
@@ -149,13 +150,13 @@ Heading: "Read the Bible for years and still feel you only know it in parts?"
 
 Text: "Our courses take you through it, one lesson at a time."
 
-Show three course cards from the catalogue (two on phones, below 768px: amended 28 October 2026), each with a title, one-line promise, "[6] lessons · [20] min each" on one line and the button **Start this course**.
+Show three course cards from the catalogue (two on phones, below 768px: amended 28 October 2026), each with a title, one-line promise, "[6] lessons · [20] min each" on one line and the button **View this course** (to the course page; amended 5 November 2026).
 
 Button under the cards: **Browse all courses**
 
 ### Screen 4: Where are you starting from?
 
-Three cards in a fan (Amended, Home corrections), in the style of BibleProject's "Follow your curiosity": one soft tinted rounded panel, the heading centred, the middle card in front and raised, the side cards slightly turned behind it. Each card has an image slot (placeholder for now), its number, title, line and a button (Start this course, Start this course, Ask a question). On scroll in, the cards fan out from a stack once; a hovered card lifts slightly. Phones stack the cards vertically, same style, no fan. Motion Off or reduced motion: a still fan. The Academy shows the same fan (amended 29 October 2026; it had the three as numbered rows). The cards:
+Three cards in a fan (Amended, Home corrections), in the style of BibleProject's "Follow your curiosity": one soft tinted rounded panel, the heading centred, the middle card in front and raised, the side cards slightly turned behind it. Each card has an image slot (placeholder for now), its number, title, line and a button (View this course, View this course, Ask a question; amended 5 November 2026). On scroll in, the cards fan out from a stack once; a hovered card lifts slightly. Phones stack the cards vertically, same style, no fan. Motion Off or reduced motion: a still fan. The Academy shows the same fan (amended 29 October 2026; it had the three as numbered rows). The cards:
 
 - **01. New to the Bible.** "Start with the foundations: what the Bible is and how to read it." Links to the Start Here course (amended 29 October 2026; the ministry names the [foundations course]).
 - **02. You know the stories, but not how they connect.** "Go book by book and see the whole picture." Links to the first course in another category, until the ministry names the [book-by-book course].
@@ -198,7 +199,7 @@ Visual (Amended, Home corrections): the phone mockup from before the reset, show
 - Heading: "Bible courses" (Amended, Home corrections)
 - Text: "Self-paced video lessons that take you through Scripture in context."
 - Buttons: **See all courses** (to the catalogue) and **Start here** (the Start Here course).
-- "Find a course": the course categories and the Start Here card (image, title, short text, **Start this course**) beside every category's course rows; on phones and tablets the categories are chips above the card. Each row: thumbnail, Scripture range, title, two line description, "[N] sections · [N] lessons · [N] hr [N] min", tags, and progress once started.
+- "Find a course": the course categories and the Start Here card (image, title, short text, **View this course**) beside every category's course rows; on phones and tablets the categories are chips above the card. Each row: thumbnail, Scripture range, title, two line description, "[N] sections · [N] lessons · [N] hr [N] min", tags, and progress once started.
 - Then the "Where are you starting from?" cards, as on Home.
 - Next step: "Not sure where to begin? Start with [the Start Here course]."
 

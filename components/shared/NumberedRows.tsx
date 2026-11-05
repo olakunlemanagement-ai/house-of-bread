@@ -5,7 +5,7 @@ export type NumberedRow = {
   title: string;
   text: string;
   href: Route;
-  /** The row's button label, from the brief's list (such as "Start this course"). */
+  /** The row's button label, from the brief's list (such as "View this course"). */
   action: string;
 };
 
@@ -14,7 +14,7 @@ export type NumberedRow = {
  * options. Each row: the number, a bold title, a line of text, then a small
  * tertiary button, which is the row's link (below the text on phones, at
  * the row's end from sm). The row title completes the button's accessible
- * name, so two "Start this course" buttons stay distinct. Nothing moves.
+ * name, so two "View this course" buttons stay distinct. Nothing moves.
  */
 export function NumberedRows({ items, className = "" }: { items: NumberedRow[]; className?: string }) {
   return (
