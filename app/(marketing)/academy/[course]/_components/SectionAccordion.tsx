@@ -74,7 +74,7 @@ export function SectionAccordion({ course, sections }: { course: string; section
                       <span className="mt-0.5 block text-lg font-semibold leading-snug text-ink">{lesson.title}</span>
                       <span className="mt-1 block text-base leading-relaxed text-ink-muted">{lesson.description}</span>
                     </span>
-                    <span className="whitespace-nowrap text-sm text-ink">{lesson.minutes} min</span>
+                    <span className="whitespace-nowrap text-sm text-ink">{formatDuration(lesson.minutes)}</span>
                   </Link>
                 </li>
               ))}

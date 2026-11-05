@@ -38,7 +38,8 @@ export function Tabs({ label, tabs, defaultTab }: { label: string; tabs: TabDef[
   const pick = `(function(s){var w=s.parentElement,t=new URLSearchParams(location.search).get("tab");if(${JSON.stringify(ids)}.indexOf(t)>-1)w.setAttribute("data-tab",t)})(document.currentScript)`;
 
   return (
-    <div data-tabs data-tab={fallback}>
+    // The script below may change data-tab before hydration, on purpose.
+    <div data-tabs data-tab={fallback} suppressHydrationWarning>
       <script dangerouslySetInnerHTML={{ __html: pick }} />
       <TabList label={label} tabs={tabs.map(({ id, label: name }) => ({ id, label: name }))} fallback={fallback} />
       {tabs.map((tab) => (

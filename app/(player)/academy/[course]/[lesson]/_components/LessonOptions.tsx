@@ -53,6 +53,8 @@ export function LessonOptions({
   }, []);
 
   async function share() {
+    // Cleared first, so a second share is announced again.
+    setStatus("");
     const url = window.location.href.split("?")[0];
     if (typeof navigator.share === "function") {
       try {
@@ -71,7 +73,7 @@ export function LessonOptions({
   }
 
   return (
-    <details ref={menu} className="relative" {...(notesFile ? {} : { "data-js-only": "" })}>
+    <details ref={menu} className="relative" onToggle={() => setStatus("")} {...(notesFile ? {} : { "data-js-only": "" })}>
       <summary className={`${buttonClasses("secondary", "light", "list-none [&::-webkit-details-marker]:hidden", "sm")} cursor-pointer`}>
         <ButtonLabel>Options</ButtonLabel>
       </summary>
@@ -108,7 +110,7 @@ export function LessonOptions({
             </li>
           ) : null}
         </ul>
-        <p role="status" className="px-3 text-sm text-ink-muted empty:hidden">
+        <p role="status" className="px-3 text-sm text-ink-muted">
           {status}
         </p>
       </div>
