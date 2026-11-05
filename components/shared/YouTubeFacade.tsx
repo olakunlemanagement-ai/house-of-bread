@@ -64,11 +64,20 @@ function useEnded(frame: RefObject<HTMLIFrameElement | null>, active: boolean, o
     if (!active || !wanted || !iframe) return;
     let answered = false;
     let tries = 0;
+    let timer = 0;
     const listen = () => {
       if (answered || tries++ > 40) return window.clearInterval(timer);
       iframe.contentWindow?.postMessage(JSON.stringify({ event: "listening", id: 1, channel: "widget" }), YOUTUBE_ORIGIN);
     };
-    const timer = window.setInterval(listen, 500);
+    // Start again when the frame loads: on a slow connection the player can
+    // take longer to boot than the 20 s one round of tries lasts.
+    const start = () => {
+      tries = 0;
+      window.clearInterval(timer);
+      timer = window.setInterval(listen, 500);
+    };
+    start();
+    iframe.addEventListener("load", start);
     const onMessage = (event: MessageEvent) => {
       if (event.origin !== YOUTUBE_ORIGIN || event.source !== iframe.contentWindow || typeof event.data !== "string") return;
       let data: unknown;
@@ -88,6 +97,7 @@ function useEnded(frame: RefObject<HTMLIFrameElement | null>, active: boolean, o
     window.addEventListener("message", onMessage);
     return () => {
       window.clearInterval(timer);
+      iframe.removeEventListener("load", start);
       window.removeEventListener("message", onMessage);
     };
   }, [frame, active, wanted]);
@@ -125,13 +135,20 @@ export function YouTubeFacade({
   const [playing, setPlaying] = useState(autoStart);
   const [large, setLarge] = useState(poster === "large");
   const frame = useRef<HTMLIFrameElement>(null);
+  const clicked = useRef(false);
   useStopWhenOffscreen(frame, playing);
   useEnded(frame, playing, onEnded);
+  // The Play link the visitor pressed is gone: move focus to the player, so
+  // keyboard and screen reader users keep their place.
+  useEffect(() => {
+    if (playing && clicked.current) frame.current?.focus();
+  }, [playing]);
 
   function play(event: MouseEvent<HTMLAnchorElement>) {
     // Let modified clicks open YouTube in a new tab as usual.
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
     event.preventDefault();
+    clicked.current = true;
     setPlaying(true);
   }
 
