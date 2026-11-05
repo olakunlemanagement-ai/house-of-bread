@@ -55,7 +55,8 @@ describe("LocalLessonProgress", () => {
   });
 
   it("keeps the same snapshot until something changes, and tells subscribers once per change", () => {
-    const store = new LocalLessonProgress(() => memoryStorage());
+    const storage = memoryStorage();
+    const store = new LocalLessonProgress(() => storage);
     const first = store.snapshot();
     expect(store.snapshot()).toBe(first);
     const listener = vi.fn();
@@ -98,5 +99,33 @@ describe("LocalLessonProgress", () => {
     expect(store.snapshot()).toEqual({ "a-course": ["two"] });
     unsubscribe();
     expect(handler).toBeUndefined();
+  });
+
+  it("keeps another tab's progress when it writes after nobody was listening", () => {
+    const storage = memoryStorage();
+    const store = new LocalLessonProgress(() => storage);
+    const unsubscribe = store.subscribe(() => {});
+    expect(store.snapshot()).toEqual({});
+    unsubscribe();
+    // Another tab completes a lesson while this one has no progress on screen.
+    storage.setItem(PROGRESS_KEY, serialise({ "x-course": ["one", "two"] }));
+    store.setCompleted("y-course", "one", true);
+    expect(parseStored(storage.data.get(PROGRESS_KEY) ?? null)).toEqual({ "x-course": ["one", "two"], "y-course": ["one"] });
+    expect(store.snapshot()).toEqual({ "x-course": ["one", "two"], "y-course": ["one"] });
+  });
+
+  it("reads afresh once nobody is listening", () => {
+    const storage = memoryStorage();
+    const store = new LocalLessonProgress(() => storage);
+    store.subscribe(() => {})();
+    storage.setItem(PROGRESS_KEY, serialise({ "x-course": ["one"] }));
+    expect(store.snapshot()).toEqual({ "x-course": ["one"] });
+  });
+
+  it("never reads inherited keys as a course", () => {
+    expect(completedIn({}, "constructor")).toEqual(new Set());
+    const store = new LocalLessonProgress(() => memoryStorage());
+    store.setCompleted("constructor", "one", true);
+    expect(completedIn(store.snapshot(), "constructor")).toEqual(new Set(["one"]));
   });
 });

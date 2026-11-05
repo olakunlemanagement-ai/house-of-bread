@@ -55,7 +55,12 @@ export function serialise(snapshot: ProgressSnapshot): string {
 
 /** The completed lessons of one course, as a set. */
 export function completedIn(snapshot: ProgressSnapshot, course: string): ReadonlySet<string> {
-  return new Set(snapshot[course] ?? []);
+  return new Set(lessonsOf(snapshot, course));
+}
+
+/** Own keys only, so a slug like "constructor" never reads Object.prototype. */
+function lessonsOf(snapshot: ProgressSnapshot, course: string): readonly string[] {
+  return Object.hasOwn(snapshot, course) ? snapshot[course] : [];
 }
 
 type StorageLike = Pick<Storage, "getItem" | "setItem">;
@@ -80,23 +85,34 @@ export class LocalLessonProgress implements LessonProgressStore {
     private readonly events?: StorageEvents,
   ) {}
 
-  private read(): ProgressSnapshot {
+  /** What storage holds now, or undefined when storage is missing or throws. */
+  private readStorage(): ProgressSnapshot | undefined {
     try {
-      return parseStored(this.storage()?.getItem(PROGRESS_KEY) ?? null);
+      const storage = this.storage();
+      return storage ? parseStored(storage.getItem(PROGRESS_KEY)) : undefined;
     } catch {
-      return EMPTY_PROGRESS;
+      return undefined;
     }
   }
 
   snapshot(): ProgressSnapshot {
-    this.current ??= this.read();
+    this.current ??= this.readStorage() ?? EMPTY_PROGRESS;
     return this.current;
   }
 
   setCompleted(course: string, lesson: string, done: boolean): void {
-    const before = this.snapshot();
-    const lessons = new Set(before[course] ?? []);
-    if (lessons.has(lesson) === done) return;
+    // Start from storage, not the cache: with no listener, a change made in
+    // another tab never reached the cache, and writing it back would undo it.
+    const before = this.readStorage() ?? this.snapshot();
+    const lessons = new Set(lessonsOf(before, course));
+    if (lessons.has(lesson) === done) {
+      // Nothing to write, but take up what another tab changed.
+      if (serialise(before) !== serialise(this.current ?? EMPTY_PROGRESS)) {
+        this.current = before;
+        this.emit();
+      }
+      return;
+    }
     if (done) lessons.add(lesson);
     else lessons.delete(lesson);
     const next: Record<string, readonly string[]> = { ...before };
@@ -126,7 +142,11 @@ export class LocalLessonProgress implements LessonProgressStore {
     this.listeners.add(listener);
     return () => {
       this.listeners.delete(listener);
-      if (this.listeners.size === 0) this.events?.removeEventListener("storage", this.onStorage);
+      if (this.listeners.size === 0) {
+        this.events?.removeEventListener("storage", this.onStorage);
+        // Unwatched, the cache can fall behind other tabs: read afresh next time.
+        this.current = undefined;
+      }
     };
   }
 }
