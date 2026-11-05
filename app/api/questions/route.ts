@@ -4,6 +4,7 @@ import { buildQuestionEmail } from "@/lib/questions/email";
 import { questionErrorMessage, type QuestionError } from "@/lib/questions/messages";
 import { HONEYPOT_FIELD } from "@/lib/questions/fields";
 import { questionSchema } from "@/lib/questions/schema";
+import { isCrossSitePost } from "@/lib/security/origin";
 
 // Anonymous Bible questions. Accepts JSON from the enhanced form, and plain
 // form posts so it works without JavaScript. Form posts get a 303 redirect,
@@ -63,6 +64,9 @@ export async function POST(request: Request) {
   if (!mode) {
     return Response.json({ ok: false, error: "unsupported-media-type" }, { status: 415 });
   }
+
+  // A post from another site gets the normal success reply and nothing else.
+  if (isCrossSitePost(request)) return respond(request, mode, "success");
 
   const declaredLength = Number(request.headers.get("content-length") ?? 0);
   if (declaredLength > MAX_BODY_BYTES) return respond(request, mode, "invalid");

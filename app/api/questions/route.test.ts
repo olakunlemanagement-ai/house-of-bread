@@ -126,6 +126,20 @@ describe("POST /api/questions", () => {
     expect(sendCalls).toHaveLength(0);
   });
 
+  it("answers a post from another site with the normal success and sends nothing", async () => {
+    mockResend(200);
+    const response = await POST(
+      new Request("https://hobglobal.online/api/questions", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded", "Sec-Fetch-Site": "cross-site" },
+        body: new URLSearchParams({ question: QUESTION }).toString(),
+      }),
+    );
+
+    expect(response.headers.get("location")).toBe("https://hobglobal.online/ask/sent");
+    expect(sendCalls).toHaveLength(0);
+  });
+
   it("rejects a question with more than one link", async () => {
     mockResend(200);
     const response = await POST(jsonRequest({ question: "Look at https://a.example and https://b.example" }));

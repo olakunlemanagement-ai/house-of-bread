@@ -153,6 +153,20 @@ describe("POST /api/subscribe", () => {
     expect(kitCalls).toHaveLength(0);
   });
 
+  it("answers a post from another site with the normal success and does nothing else", async () => {
+    mockKit(201);
+    const request = new Request("https://hobglobal.online/api/subscribe", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded", "Sec-Fetch-Site": "cross-site", Origin: "https://evil.example" },
+      body: new URLSearchParams({ email: EMAIL, source: "footer" }).toString(),
+    });
+    const response = await POST(request);
+
+    expect(response.status).toBe(303);
+    expect(response.headers.get("location")).toBe("https://hobglobal.online/subscribe/check-email");
+    expect(kitCalls).toHaveLength(0);
+  });
+
   it("gives an existing address the same success response", async () => {
     mockKit(201);
     const fresh = await POST(jsonRequest({ email: EMAIL, source: "footer" }));
@@ -216,7 +230,8 @@ describe("POST /api/subscribe", () => {
   });
 });
 
-describe("the /subscribe/academy form", () => {
+// The first test imports and renders the whole page cold, which can pass 5 s on a busy machine.
+describe("the /subscribe/academy form", { timeout: 30_000 }, () => {
   /** The fields the page's form posts without JavaScript, read from its server HTML. */
   async function academyFormFields(): Promise<{ action: string; fields: Record<string, string> }> {
     const { createElement } = await import("react");

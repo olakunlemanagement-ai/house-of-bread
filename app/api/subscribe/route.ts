@@ -1,3 +1,4 @@
+import { isCrossSitePost } from "@/lib/security/origin";
 import { getKitConfig } from "@/lib/newsletter/config";
 import { KitError, subscribeToKit } from "@/lib/newsletter/kit";
 import { newsletterMessages } from "@/lib/newsletter/messages";
@@ -79,6 +80,9 @@ export async function POST(request: Request) {
   if (!mode) {
     return Response.json({ ok: false, error: "unsupported-media-type" }, { status: 415 });
   }
+
+  // A post from another site gets the normal success reply and nothing else.
+  if (isCrossSitePost(request)) return respond(request, mode, "success");
 
   const declaredLength = Number(request.headers.get("content-length") ?? 0);
   if (declaredLength > MAX_BODY_BYTES) return respond(request, mode, "invalid");
