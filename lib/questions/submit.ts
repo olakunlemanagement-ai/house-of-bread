@@ -19,6 +19,8 @@ export async function submitQuestion(form: HTMLFormElement): Promise<QuestionRes
       method: "POST",
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify(body),
+      // A stalled connection ends in "retry", not a form stuck on sending.
+      signal: typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(30_000) : undefined,
     });
     if (response.ok) return { ok: true };
     const reply: unknown = await response.json().catch(() => null);

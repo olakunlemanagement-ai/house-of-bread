@@ -66,6 +66,8 @@ export function NewsletterFormClient({
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify(body),
+        // A stalled connection ends in the error state, not a form stuck on submitting.
+        signal: typeof AbortSignal.timeout === "function" ? AbortSignal.timeout(30_000) : undefined,
       });
       if (response.ok) {
         setState({ kind: "success" });
