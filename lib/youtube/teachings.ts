@@ -123,10 +123,16 @@ export async function getSeries(id: string): Promise<Series | null> {
 /** Watch pages prebuilt from the long-form list. The rest render on their first visit, then stay cached. */
 const PREBUILT_TEACHINGS = 48;
 
-/** The ids prebuilt at build time: the latest long-form teachings, every episode and the pinned featured one. */
+/**
+ * The ids prebuilt at build time: the latest long-form teachings, every
+ * episode and the configured ones. The configured ids always have a page,
+ * so the list is never empty when the feeds fail at build (Next refuses
+ * an empty list under Cache Components, and the deploy would fail).
+ */
 export async function watchParams(): Promise<string[]> {
   const catalog = await getTeachingsCatalog();
-  const ids = new Set<string>(siteConfig.featuredTeachingId ? [siteConfig.featuredTeachingId] : []);
+  const configured = [siteConfig.featuredTeachingId, siteConfig.startHereVideoId, siteConfig.links.featuredVideoId];
+  const ids = new Set<string>(configured.filter((id): id is string => id !== null));
   for (const video of [...catalog.longForm.slice(0, PREBUILT_TEACHINGS), ...catalog.series.flatMap((series) => series.episodes)]) {
     ids.add(video.id);
   }
