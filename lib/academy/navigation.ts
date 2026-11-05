@@ -24,6 +24,24 @@ export function lessonNeighbours(lessonSlugs: readonly string[], current: string
   };
 }
 
+export type Advance = {
+  label: "Next lesson" | "Finish course";
+  /** The next lesson's slug, or undefined for Finish course, which returns to the course page. */
+  next?: string;
+  /** The lesson marked complete when the visitor moves on: the one they are leaving. */
+  completes: string;
+};
+
+/**
+ * The forward button under a lesson. Moving on marks the current lesson
+ * complete (a lesson with no video has no other way to finish); a video
+ * lesson also completes when its video ends.
+ */
+export function lessonAdvance(lessonSlugs: readonly string[], current: string): Advance {
+  const { next } = lessonNeighbours(lessonSlugs, current);
+  return next !== undefined ? { label: "Next lesson", next, completes: current } : { label: "Finish course", completes: current };
+}
+
 export type ProgressStatus = "not-started" | "in-progress" | "completed";
 
 export type CourseProgress = {

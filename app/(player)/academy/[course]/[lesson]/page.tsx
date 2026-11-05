@@ -5,9 +5,10 @@ import { ButtonLabel, ButtonLink, buttonClasses } from "@/components/shared/Butt
 import { MdxBody } from "@/components/shared/MdxBody";
 import { ThemeToggle } from "@/components/shared/theme/ThemeToggle";
 import { courseCatalog } from "@/lib/academy";
-import { formatDuration, lessonNeighbours } from "@/lib/academy/navigation";
+import { formatDuration, lessonAdvance, lessonNeighbours } from "@/lib/academy/navigation";
 import { academyCopy } from "@/lib/content/copy";
 import { siteConfig } from "@/lib/site-config";
+import { AdvanceLink } from "./_components/AdvanceLink";
 import { LessonList } from "./_components/LessonList";
 import { LessonListDialog } from "./_components/LessonListDialog";
 import { LessonOptions } from "./_components/LessonOptions";
@@ -51,7 +52,8 @@ export default async function LessonPage({ params }: PageProps<"/academy/[course
 
   const courseHref = `/academy/${course.slug}` as Route;
   const lessonHref = (slug: string) => `/academy/${course.slug}/${slug}` as Route;
-  const { previous, next } = lessonNeighbours(course.lessonSlugs, lesson.slug);
+  const { previous } = lessonNeighbours(course.lessonSlugs, lesson.slug);
+  const advance = lessonAdvance(course.lessonSlugs, lesson.slug);
   const section = course.sections.find((item) => item.number === lesson.section);
   const preview = siteConfig.academy.status === "preview";
   const label = `Lesson ${lesson.number} · ${lesson.title}`;
@@ -171,15 +173,7 @@ export default async function LessonPage({ params }: PageProps<"/academy/[course
               ) : (
                 <span className="hidden sm:block" />
               )}
-              {next ? (
-                <ButtonLink href={lessonHref(next)} className="w-full sm:w-auto">
-                  Next lesson
-                </ButtonLink>
-              ) : (
-                <ButtonLink href={courseHref} className="w-full sm:w-auto">
-                  Finish course
-                </ButtonLink>
-              )}
+              <AdvanceLink course={course.slug} advance={advance} href={advance.next ? lessonHref(advance.next) : courseHref} />
             </nav>
           </div>
         </div>
