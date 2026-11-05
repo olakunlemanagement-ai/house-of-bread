@@ -41,6 +41,14 @@ describe("moving on from a lesson", () => {
     expect(page).not.toMatch(/>\s*(Next lesson|Finish course)\s*</);
   });
 
+  it("shows Previous lesson disabled on lesson 1, in the same place and size", () => {
+    const page = readFileSync("app/(player)/academy/[course]/[lesson]/page.tsx", "utf8");
+    expect(page).toMatch(
+      /<button type="button" disabled className=\{buttonClasses\("secondary", "light", "w-full sm:w-auto"\)\}>\s*<ButtonLabel>Previous lesson<\/ButtonLabel>/,
+    );
+    expect(page).toMatch(/<ButtonLink href=\{lessonHref\(previous\)\} variant="secondary" className="w-full sm:w-auto">/);
+  });
+
   it("still completes a video lesson when its video ends", () => {
     const video = readFileSync("app/(player)/academy/[course]/[lesson]/_components/LessonVideo.tsx", "utf8");
     expect(video).toMatch(/onEnded=\{\(\) => setLessonCompleted\(course, lesson, true\)\}/);

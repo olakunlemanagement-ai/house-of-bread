@@ -171,7 +171,10 @@ export default async function LessonPage({ params }: PageProps<"/academy/[course
                   Previous lesson
                 </ButtonLink>
               ) : (
-                <span className="hidden sm:block" />
+                // Lesson 1: the same button, disabled, so the row keeps one layout on every lesson.
+                <button type="button" disabled className={buttonClasses("secondary", "light", "w-full sm:w-auto")}>
+                  <ButtonLabel>Previous lesson</ButtonLabel>
+                </button>
               )}
               <AdvanceLink course={course.slug} advance={advance} href={advance.next ? lessonHref(advance.next) : courseHref} />
             </nav>

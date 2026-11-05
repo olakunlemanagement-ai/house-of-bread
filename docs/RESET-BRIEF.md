@@ -213,7 +213,7 @@ Visual (Amended, Home corrections): the phone mockup from before the reset, show
 - A focused page: a lesson bar with **Back to course**, the centred "Lesson N · Title" (it opens every lesson, grouped by section) and **Options** (Share, Mark lesson complete, Download notes when there is a file).
 - The video, click to load; or "This lesson is being prepared", with **Notify me when the Academy opens** while the Academy is in preview.
 - Tabs: Notes, Transcript, Reflection (a question, then **Reveal response**, **Hide response**). Empty tabs are hidden.
-- **Previous lesson** and **Next lesson** always visible; the last lesson has **Finish course**.
+- **Previous lesson** and **Next lesson** always visible; on lesson 1 **Previous lesson** shows disabled, in the same place (amended 5 November 2026); the last lesson has **Finish course**. Next lesson and Finish course mark the lesson being left complete.
 
 **Teachings** (amended 29 October 2026, in the shape of BibleProject's Videos page)
 

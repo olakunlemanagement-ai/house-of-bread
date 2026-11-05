@@ -536,7 +536,8 @@ disagrees with the brief, the brief wins.
   end marks the lesson complete, through `onEnded`); with no video, "This
   lesson is being prepared". Tabs for Notes, Transcript and Reflection
   (Reveal response), hidden when empty. Previous lesson and Next lesson are
-  always visible; the last lesson offers Finish course. Next lesson and
+  always visible (on lesson 1, Previous lesson shows disabled, in the same
+  place); the last lesson offers Finish course. Next lesson and
   Finish course mark the lesson being left complete before they navigate
   (`AdvanceLink`, 5 November 2026), so a lesson with no video can finish
   too. No Audio only: the
