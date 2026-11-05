@@ -7,27 +7,21 @@
 // trade-off and when to revisit it.
 
 /**
- * Routes that render a YouTube embed. Only these may frame
- * youtube-nocookie.com: Home (the latest teaching), Teachings (/media, the
- * Shorts player), each teaching's watch page (/media/watch/:videoId), and
- * since 29 October 2026 an Academy course (its trailer) and lesson (its
- * video). The catalogue (/academy) has no player and stays 'none': the
- * patterns match one and two segments under it, never /academy itself.
- * Series pages and Events have no player. Add a path here, and in
- * scripts/check-headers.mjs, when a page gains an embed.
+ * The one host that may be framed, on every page (5 November 2026). It was
+ * once allowed only on pages with an embed, but a browser keeps the policy
+ * of the first page it loads: after an in-site navigation from a page that
+ * blocked frames, the lesson, trailer and teaching players stayed empty.
+ * Nothing loads from YouTube until the visitor presses play (YouTubeFacade),
+ * and no other host can be framed.
  */
-export const EMBED_ROUTES = ["/", "/media", "/media/watch/:videoId", "/academy/:course", "/academy/:course/:lesson"] as const;
-
 const YOUTUBE_FRAME = "https://www.youtube-nocookie.com";
 
 export type CspOptions = {
   /** Development adds 'unsafe-eval' (React debugging) and ws: (hot reload). */
   dev: boolean;
-  /** True only on EMBED_ROUTES. */
-  allowYouTubeFrame: boolean;
 };
 
-export function buildCsp({ dev, allowYouTubeFrame }: CspOptions): string {
+export function buildCsp({ dev }: CspOptions): string {
   const directives: Record<string, string[]> = {
     "default-src": ["'self'"],
     "script-src": ["'self'", "'unsafe-inline'", ...(dev ? ["'unsafe-eval'"] : [])],
@@ -38,7 +32,7 @@ export function buildCsp({ dev, allowYouTubeFrame }: CspOptions): string {
     // 'self' covers /api/subscribe, /api/contact and navigation fetches.
     // When the Plausible script lands, script-src needs plausible.io too.
     "connect-src": ["'self'", "https://plausible.io", ...(dev ? ["ws:"] : [])],
-    "frame-src": allowYouTubeFrame ? [YOUTUBE_FRAME] : ["'none'"],
+    "frame-src": [YOUTUBE_FRAME],
     "object-src": ["'none'"],
     "base-uri": ["'self'"],
     "form-action": ["'self'"],
@@ -66,22 +60,12 @@ const staticHeaders: Header[] = [
   { key: "X-Frame-Options", value: "DENY" },
 ];
 
-/**
- * The next.config headers() rules. The site wide rule comes first and each
- * embed route follows it: for the same key, the last matching rule wins.
- */
+/** The next.config headers() rules: one rule for every route. */
 export function securityHeaders(dev: boolean): HeaderRule[] {
   return [
     {
       source: "/(.*)",
-      headers: [
-        ...staticHeaders,
-        { key: "Content-Security-Policy", value: buildCsp({ dev, allowYouTubeFrame: false }) },
-      ],
+      headers: [...staticHeaders, { key: "Content-Security-Policy", value: buildCsp({ dev }) }],
     },
-    ...EMBED_ROUTES.map((source) => ({
-      source,
-      headers: [{ key: "Content-Security-Policy", value: buildCsp({ dev, allowYouTubeFrame: true }) }],
-    })),
   ];
 }

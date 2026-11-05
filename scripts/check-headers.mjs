@@ -6,16 +6,13 @@
 // Prints the headers per route and exits 1 if any check fails. No
 // dependencies: uses the global fetch in Node 18 and later.
 
-// Keep in step with EMBED_ROUTES in lib/security/headers.ts. A watch page
-// stands in for /media/watch/:videoId; a series page has no player.
+// Every route frames youtube-nocookie.com and nothing else (lib/security/headers.ts).
+// A watch page stands in for /media/watch/:videoId.
 const WATCH = "/media/watch/dC-2yHdPyGo";
 const SERIES = "/media/series/PLUHSYJnvnito";
-// An Academy course (its trailer) and a lesson (its video) frame YouTube;
-// the catalogue does not.
 const COURSE = "/academy/reading-the-bible";
 const LESSON = "/academy/reading-the-bible/one-story-many-books";
-const EMBED_ROUTES = new Set(["/", "/media", WATCH, COURSE, LESSON]);
-const ROUTES = ["/", "/media", WATCH, SERIES, "/academy", COURSE, LESSON, "/events", "/about", "/app", "/contact", "/subscribe", "/ask", "/teachings", "/privacy"];
+const ROUTES = ["/", "/media", "/media/all", WATCH, SERIES, "/academy", COURSE, LESSON, "/events", "/about", "/app", "/contact", "/subscribe", "/ask", "/teachings", "/privacy"];
 const YOUTUBE_FRAME = "https://www.youtube-nocookie.com";
 
 const REQUIRED = {
@@ -73,8 +70,7 @@ for (const route of ROUTES) {
   check(directive(csp, "frame-ancestors") === "'none'", "frame-ancestors should be 'none'");
   check(!csp.includes("'unsafe-eval'"), "CSP contains 'unsafe-eval' (development build?)");
 
-  const expectedFrame = EMBED_ROUTES.has(route) ? YOUTUBE_FRAME : "'none'";
-  check(directive(csp, "frame-src") === expectedFrame, `frame-src should be ${expectedFrame}`);
+  check(directive(csp, "frame-src") === YOUTUBE_FRAME, `frame-src should be ${YOUTUBE_FRAME}`);
 }
 
 console.log(failures ? `\n${failures} check(s) failed.` : "\nAll checks passed.");

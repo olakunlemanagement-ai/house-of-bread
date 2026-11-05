@@ -173,8 +173,10 @@ declaring any task complete.
 - Only variables that are public by design may carry the `NEXT_PUBLIC_` prefix.
 - Security headers are set in `next.config`: Content-Security-Policy,
   X-Content-Type-Options, Referrer-Policy, Permissions-Policy and
-  frame-ancestors. Only `youtube-nocookie.com` may be framed, and only on pages
-  with an embed.
+  frame-ancestors. Only `youtube-nocookie.com` may be framed, on every page
+  (5 November 2026): a browser keeps the first page's policy across in-site
+  navigation, so a per-page rule left players empty after a link click. The
+  click to load facade still keeps all YouTube code off until play.
 - Every route handler validates input, handles errors, and returns no
   internals. Treat all form input as hostile.
 
@@ -548,8 +550,8 @@ disagrees with the brief, the brief wins.
 - `siteConfig.academy.status`: "preview" (the default) or "open". In preview
   a lesson without a video offers the Academy waitlist. Switch to "open"
   when the real courses are loaded (docs/LAUNCH-CHECKLIST.md).
-- CSP: the course and lesson routes may frame youtube-nocookie.com (the
-  trailer and the lesson video); `/academy` itself stays `frame-src 'none'`.
+- CSP: youtube-nocookie.com may be framed site wide (see Security), which
+  covers the course trailer and the lesson video.
 
 ### Decorative motion loops
 

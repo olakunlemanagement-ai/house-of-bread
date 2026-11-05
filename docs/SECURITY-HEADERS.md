@@ -1,6 +1,6 @@
 # Security headers
 
-Last updated: 21 October 2026
+Last updated: 5 November 2026
 
 ## Decision
 
@@ -18,14 +18,14 @@ The risk is low today:
 - The only `dangerouslySetInnerHTML` is the theme script in `app/layout.tsx`, a constant string from `components/shared/theme/theme-script.ts` with no data from outside.
 - React escapes all output.
 
-The policy still blocks external script hosts, limits where data can be sent (`connect-src`) and where images can be loaded from (`img-src`), and prevents clickjacking (`frame-ancestors 'none'`). It also limits framing to YouTube on pages with an embed.
+The policy still blocks external script hosts, limits where data can be sent (`connect-src`) and where images can be loaded from (`img-src`), and prevents clickjacking (`frame-ancestors 'none'`). It also limits framing to youtube-nocookie.com.
 
 **Revisit** if the site ever renders HTML supplied by users or editors, such as comments, rich-text fields or CMS embeds. At that point, move to a nonce policy and accept the cost.
 
 ## Policy
 
-- Site wide: `default-src 'self'`; `img-src` adds `data:` and `i.ytimg.com`; `connect-src` adds `plausible.io`; `frame-src 'none'`; `object-src 'none'`; `base-uri 'self'`; `form-action 'self'`; `frame-ancestors 'none'`.
-- Embed routes (`EMBED_ROUTES`: `/`, `/media` for the Shorts player, `/media/watch/:videoId`, and since 29 October 2026 `/academy/:course` for a course trailer and `/academy/:course/:lesson` for a lesson video; series pages, `/events` and the `/academy` catalogue have none): `frame-src https://www.youtube-nocookie.com`. Add a path to the list when a page gains an embed.
+- Site wide: `default-src 'self'`; `img-src` adds `data:` and `i.ytimg.com`; `connect-src` adds `plausible.io`; `frame-src https://www.youtube-nocookie.com`; `object-src 'none'`; `base-uri 'self'`; `form-action 'self'`; `frame-ancestors 'none'`.
+- Why `frame-src` is site wide (5 November 2026): until then only pages with an embed allowed the frame. A browser keeps the policy of the first document it loads, and Next.js links change page without loading a new document. A visitor who arrived on `/academy` (`frame-src 'none'`) and clicked into a course or lesson got an empty player. Allowing the one host everywhere fixes that at no cost: no YouTube code loads until the visitor presses play on the facade, and no other host can be framed.
 - Other headers: `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` and `X-Frame-Options`. Vercel sends `Strict-Transport-Security` itself.
 - When the Plausible script is added, `script-src` needs `https://plausible.io`, or Plausible can be proxied through a rewrite so it stays `'self'`.
 
@@ -39,7 +39,7 @@ If the policy ever moves to nonces or hashes, `'unsafe-inline'` is ignored and t
 
 Run `node scripts/check-headers.mjs <base-url>` against a production server (`npm run build`, then `npm run start`) or a deployed preview. The script prints the headers for `/`, `/media`, a watch page, a series page, `/events`, `/app`, `/contact`, `/subscribe` and more, and exits 1 if any check fails.
 
-On 17 October 2026 all checks passed against a local production build. Home showed `frame-src https://www.youtube-nocookie.com`, and every other route showed `frame-src 'none'`.
+On 17 October 2026 all checks passed against a local production build, with the earlier per-page frame rule. Since 5 November 2026 the script expects `frame-src https://www.youtube-nocookie.com` on every route.
 
 ## Outstanding before launch
 
