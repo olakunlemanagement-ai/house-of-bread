@@ -38,11 +38,18 @@ const book =
 const ot = book("OT");
 const nt = book("NT");
 
-/** Numbered book spellings: "1 Sam", "I Samuel", "First Samuel". */
+/** Numbered book spellings: "1 Sam", "I Samuel", "I Sam", "First Samuel", "1st Samuel". */
 const numbered = (n: 1 | 2 | 3, name: string, short: string[]): string[] => {
   const roman = ["I", "II", "III"][n - 1];
   const word = ["First", "Second", "Third"][n - 1];
-  return [...short.map((s) => `${n} ${s}`), `${roman} ${name}`, ...short.map((s) => `${roman} ${s}`), `${word} ${name}`];
+  const ordinal = ["1st", "2nd", "3rd"][n - 1];
+  return [
+    ...short.map((s) => `${n} ${s}`),
+    `${roman} ${name}`,
+    ...short.map((s) => `${roman} ${s}`),
+    `${word} ${name}`,
+    `${ordinal} ${name}`,
+  ];
 };
 
 export const books: readonly Book[] = [
@@ -91,25 +98,25 @@ export const books: readonly Book[] = [
   nt("john", 21, "John", ["Jhn", "Jn"]),
   nt("acts", 28, "Acts", ["Act", "Ac", "Acts of the Apostles"]),
   nt("romans", 16, "Romans", ["Rom", "Ro", "Rm"]),
-  nt("1-corinthians", 16, "1 Corinthians", ["1 Cor", "1 Co", "I Corinthians", "I Cor", "First Corinthians"]),
-  nt("2-corinthians", 13, "2 Corinthians", ["2 Cor", "2 Co", "II Corinthians", "II Cor", "Second Corinthians"]),
+  nt("1-corinthians", 16, "1 Corinthians", numbered(1, "Corinthians", ["Cor", "Co"])),
+  nt("2-corinthians", 13, "2 Corinthians", numbered(2, "Corinthians", ["Cor", "Co"])),
   nt("galatians", 6, "Galatians", ["Gal", "Ga"]),
   nt("ephesians", 6, "Ephesians", ["Eph", "Ephes"]),
   nt("philippians", 4, "Philippians", ["Phil", "Php", "Pp"]),
   nt("colossians", 4, "Colossians", ["Col"]),
-  nt("1-thessalonians", 5, "1 Thessalonians", ["1 Thess", "1 Thes", "1 Th", "I Thessalonians", "First Thessalonians"]),
-  nt("2-thessalonians", 3, "2 Thessalonians", ["2 Thess", "2 Thes", "2 Th", "II Thessalonians", "Second Thessalonians"]),
-  nt("1-timothy", 6, "1 Timothy", ["1 Tim", "1 Ti", "I Timothy", "First Timothy"]),
-  nt("2-timothy", 4, "2 Timothy", ["2 Tim", "2 Ti", "II Timothy", "Second Timothy"]),
+  nt("1-thessalonians", 5, "1 Thessalonians", numbered(1, "Thessalonians", ["Thess", "Thes", "Th"])),
+  nt("2-thessalonians", 3, "2 Thessalonians", numbered(2, "Thessalonians", ["Thess", "Thes", "Th"])),
+  nt("1-timothy", 6, "1 Timothy", numbered(1, "Timothy", ["Tim", "Ti"])),
+  nt("2-timothy", 4, "2 Timothy", numbered(2, "Timothy", ["Tim", "Ti"])),
   nt("titus", 3, "Titus", ["Tit", "Ti"]),
   nt("philemon", 1, "Philemon", ["Philem", "Phm", "Pm"]),
   nt("hebrews", 13, "Hebrews", ["Heb"]),
   nt("james", 5, "James", ["Jas", "Jm"]),
-  nt("1-peter", 5, "1 Peter", ["1 Pet", "1 Pe", "1 Pt", "I Peter", "First Peter"]),
-  nt("2-peter", 3, "2 Peter", ["2 Pet", "2 Pe", "2 Pt", "II Peter", "Second Peter"]),
-  nt("1-john", 5, "1 John", ["1 Jn", "1 Jhn", "I John", "First John"]),
-  nt("2-john", 1, "2 John", ["2 Jn", "2 Jhn", "II John", "Second John"]),
-  nt("3-john", 1, "3 John", ["3 Jn", "3 Jhn", "III John", "Third John"]),
+  nt("1-peter", 5, "1 Peter", numbered(1, "Peter", ["Pet", "Pe", "Pt"])),
+  nt("2-peter", 3, "2 Peter", numbered(2, "Peter", ["Pet", "Pe", "Pt"])),
+  nt("1-john", 5, "1 John", numbered(1, "John", ["Jn", "Jhn"])),
+  nt("2-john", 1, "2 John", numbered(2, "John", ["Jn", "Jhn"])),
+  nt("3-john", 1, "3 John", numbered(3, "John", ["Jn", "Jhn"])),
   nt("jude", 1, "Jude", ["Jud", "Jd"]),
   nt("revelation", 22, "Revelation", ["Rev", "Re", "Revelations", "The Revelation"]),
 ];
