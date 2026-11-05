@@ -4,8 +4,7 @@ import { useSyncExternalStore } from "react";
 import { announcementFor } from "@/lib/content/announcement";
 import type { EventData } from "@/lib/content/schemas";
 import { AnnouncementBarView } from "./AnnouncementBarView";
-
-const subscribe = () => () => {};
+import { everyMinute } from "./useNextSession";
 
 /**
  * Decides from the visitor's clock whether a scheduled session is under way.
@@ -16,7 +15,7 @@ const subscribe = () => () => {};
 export function AnnouncementBarClient({ events }: { events: EventData[] }) {
   // A string snapshot, so React compares by value between renders.
   const key = useSyncExternalStore(
-    subscribe,
+    everyMinute,
     () => {
       const found = announcementFor(events, Date.now());
       return found?.kind === "live" ? found.event.slug : "";
