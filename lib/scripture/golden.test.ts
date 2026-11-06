@@ -113,10 +113,27 @@ const golden: [input: string, canonical: string][] = [
   ["Song 2:16", "Song of Solomon 2:16"],
   ["SOS 1:2", "Song of Solomon 1:2"],
   ["Canticles 4:7", "Song of Solomon 4:7"],
+
+  // The last verse of a chapter is still a verse
+  ["John 3:36", "John 3:36"],
+  ["John 3:36-4:54", "John 3:36-4:54"],
+  ["Psalm 119:176", "Psalm 119:176"],
+  ["Psalm 117:1-2", "Psalm 117:1-2"],
+  ["3 John 14", "3 John 1:14"],
+  ["Revelation 22:21", "Revelation 22:21"],
 ];
 
 const rejects: string[] = [
   "",
+  // Verses past a chapter's end (KJV numbering, verses.ts)
+  "John 3:999",
+  "John 3:37",
+  "John 3:16-37",
+  "John 3:36-4:55",
+  "Psalm 117:3",
+  "3 John 15",
+  "Jude 26",
+  "Genesis 1:32",
   "John",
   "6:35",
   "Genesis 51:1",

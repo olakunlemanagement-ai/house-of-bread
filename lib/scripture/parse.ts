@@ -7,10 +7,11 @@
 //   John 6:33-35      verse range
 //   John 6:70-7:2     cross chapter range
 //
-// Verse counts per chapter are not checked yet. Chapter counts are.
+// Chapter counts and verse counts per chapter (KJV numbering, verses.ts) are checked.
 // A one chapter book cited without a colon reads as verses: "Jude 3" is Jude 1:3.
 
 import { type Book, findBook } from "./books.ts";
+import { versesPerChapter } from "./verses.ts";
 
 export type Point = { chapter: number; verse?: number };
 
@@ -67,6 +68,10 @@ export function parseReference(input: string): ParseResult {
     }
     if (point.chapter > book.chapters) {
       return fail(`${book.name} has ${book.chapters} chapter${book.chapters === 1 ? "" : "s"}, "${input}" asks for chapter ${point.chapter}`);
+    }
+    const verses = versesPerChapter[book.id]?.[point.chapter - 1];
+    if (point.verse !== undefined && verses !== undefined && point.verse > verses) {
+      return fail(`${book.singular ?? book.name} ${point.chapter} has ${verses} verses, "${input}" asks for verse ${point.verse}`);
     }
   }
 
