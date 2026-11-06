@@ -15,7 +15,7 @@ import type { SubscribeInput } from "./schema";
 
 const KIT_API = "https://api.kit.com/v4";
 /**
- * One deadline for the whole signup, every call together (5 November 2026).
+ * One deadline for the whole signup, every call together (6 November 2026).
  * Up to five calls run in turn; with a timeout each, a slow Kit could hold
  * the route for 40 s, past the function limit (10 s on Vercel without Fluid
  * compute). 9 s leaves the route time to answer, so the visitor gets "try

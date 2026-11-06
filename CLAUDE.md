@@ -138,7 +138,7 @@ declaring any task complete.
   shared package if the app ever needs the same logic.
 - It owns canonical book identifiers, verse range notation, a parser that
   accepts common human spellings, the deep link builder, and KJV verse
-  counts per chapter (`verses.ts`, 5 November 2026), so a reference to a
+  counts per chapter (`verses.ts`, 6 November 2026), so a reference to a
   verse that does not exist, such as John 3:999, fails validation.
 - It has a golden test file of `input string -> canonical reference` pairs. A
   change to book naming or range notation is a breaking change for deep links.
