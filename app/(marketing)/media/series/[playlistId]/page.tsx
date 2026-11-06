@@ -7,14 +7,16 @@ import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 
 import { RevealHeading } from "@/components/shared/RevealHeading";
 import { summarise } from "@/lib/youtube/catalog";
-import { getSeries, seriesParams } from "@/lib/youtube/teachings";
+import { getSeriesPage, seriesParams } from "@/lib/youtube/teachings";
 import { seriesHref, teachingCount, watchHref } from "../../_components/format";
 import { ShareButton } from "../../_components/ShareButton";
 import { TitleText } from "../../_components/TeachingCard";
+import { TeachingUnavailable, unavailableMetadata } from "../../_components/TeachingUnavailable";
 import { teachingsBandClass, teachingsHeadingClass, TeachingsHero } from "../../_components/TeachingsLayout";
 import { VideoThumb } from "../../_components/VideoThumb";
 
 // Render the full page before responding, so an unknown playlist returns a real 404.
+// While YouTube is not answering, a calm unavailable state renders instead.
 export const ensureStatic = "navigation";
 
 export async function generateStaticParams() {
@@ -23,8 +25,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/media/series/[playlistId]">): Promise<Metadata> {
   const { playlistId } = await params;
-  const series = await getSeries(playlistId);
-  if (!series) return {};
+  const page = await getSeriesPage(playlistId);
+  if (page.kind === "unavailable") return unavailableMetadata("series");
+  if (page.kind !== "ok") return {};
+  const { series } = page;
   return {
     title: series.title,
     description: summarise(series.description) ?? `${teachingCount(series)} from House of Bread Global, in order.`,
@@ -39,8 +43,10 @@ export async function generateMetadata({ params }: PageProps<"/media/series/[pla
  */
 export default async function SeriesPage({ params }: PageProps<"/media/series/[playlistId]">) {
   const { playlistId } = await params;
-  const series = await getSeries(playlistId);
-  if (!series) notFound();
+  const page = await getSeriesPage(playlistId);
+  if (page.kind === "not-found") notFound();
+  if (page.kind === "unavailable") return <TeachingUnavailable kind="series" />;
+  const { series } = page;
   const first = series.episodes[0];
 
   return (

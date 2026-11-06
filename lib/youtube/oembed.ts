@@ -77,26 +77,40 @@ export function parseOEmbedInfo(body: unknown): OEmbedInfo | null {
   return { title, authorUrl: /^https:\/\/www\.youtube\.com\/[@A-Za-z0-9/_.-]+$/.test(author) ? author : null };
 }
 
-/** Fetches a video's title and channel URL. Null on any failure; never throws. */
-export async function loadVideoInfo(id: string, fetchImpl: typeof fetch = fetch): Promise<OEmbedInfo | null> {
-  if (!isVideoId(id)) return null;
+/**
+ * What oEmbed said about one video. "missing": YouTube answered that it has
+ * no public video by that id (400, 401, 403 or 404). "unreachable": no
+ * usable answer at all (a network error, a timeout, another status, or a
+ * body that is not oEmbed), so nothing is known either way.
+ */
+export type VideoLookup = { status: "found"; info: OEmbedInfo } | { status: "missing" } | { status: "unreachable" };
+
+const MISSING_STATUSES = new Set([400, 401, 403, 404]);
+
+/** Asks oEmbed for a video's title and channel URL. Never throws. */
+export async function lookupVideo(id: string, fetchImpl: typeof fetch = fetch): Promise<VideoLookup> {
+  if (!isVideoId(id)) return { status: "missing" };
   try {
     const response = await fetchImpl(oEmbedUrl(id), { signal: AbortSignal.timeout(5000) });
-    if (!response.ok) return null;
-    return parseOEmbedInfo(await response.json());
+    if (MISSING_STATUSES.has(response.status)) return { status: "missing" };
+    if (!response.ok) return { status: "unreachable" };
+    const info = parseOEmbedInfo(await response.json());
+    return info ? { status: "found", info } : { status: "unreachable" };
   } catch {
-    return null;
+    return { status: "unreachable" };
   }
 }
 
 /**
- * A video's title and channel from oEmbed, cached for days, or for an hour
- * when YouTube did not answer (the video may be new, or the request failed).
+ * A video's oEmbed answer, cached for days when found, for an hour when
+ * YouTube said it has no such video (it may be new), and for a minute when
+ * YouTube did not answer, so a watch page's unavailable state is short lived.
  */
-export async function getVideoInfo(id: string): Promise<OEmbedInfo | null> {
+export async function getVideoLookup(id: string): Promise<VideoLookup> {
   "use cache";
   cacheLife("days");
-  const info = await loadVideoInfo(id);
-  if (info === null) cacheLife({ stale: 60 * 5, revalidate: 60 * 60, expire: 60 * 60 * 24 });
-  return info;
+  const lookup = await lookupVideo(id);
+  if (lookup.status === "missing") cacheLife({ stale: 60 * 5, revalidate: 60 * 60, expire: 60 * 60 * 24 });
+  if (lookup.status === "unreachable") cacheLife({ revalidate: 60 });
+  return lookup;
 }

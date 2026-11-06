@@ -5,14 +5,16 @@ import { ButtonLink } from "@/components/shared/Button";
 import { NEXT_STEP_COURSES, NextStep } from "@/components/shared/NextStep";
 import { YouTubeFacade } from "@/components/shared/YouTubeFacade";
 import { summarise, type Video } from "@/lib/youtube/catalog";
-import { getWatchTeaching, watchParams } from "@/lib/youtube/teachings";
+import { getWatchPage, watchParams } from "@/lib/youtube/teachings";
 import { formatVideoDate, seriesHref, watchHref } from "../../_components/format";
 import { ShareButton } from "../../_components/ShareButton";
 import { TitleText } from "../../_components/TeachingCard";
+import { TeachingUnavailable, unavailableMetadata } from "../../_components/TeachingUnavailable";
 import { VideoThumb } from "../../_components/VideoThumb";
 
 // Render the full page before responding, so an unknown or foreign video id
-// returns a real 404 status rather than a 200 shell.
+// returns a real 404 status rather than a 200 shell. While YouTube is not
+// answering, a calm unavailable state renders instead, never a 500.
 export const ensureStatic = "navigation";
 
 export async function generateStaticParams() {
@@ -21,8 +23,10 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps<"/media/watch/[videoId]">): Promise<Metadata> {
   const { videoId } = await params;
-  const data = await getWatchTeaching(videoId);
-  if (!data) return {};
+  const page = await getWatchPage(videoId);
+  if (page.kind === "unavailable") return unavailableMetadata("teaching");
+  if (page.kind !== "ok") return {};
+  const { data } = page;
   return {
     title: data.video.title,
     description: summarise(data.video.description) ?? "A teaching from House of Bread Global.",
@@ -70,9 +74,10 @@ function MoreRow({ video }: { video: Video }) {
  */
 export default async function WatchPage({ params }: PageProps<"/media/watch/[videoId]">) {
   const { videoId } = await params;
-  const data = await getWatchTeaching(videoId);
-  if (!data) notFound();
-  const { video, series, more } = data;
+  const page = await getWatchPage(videoId);
+  if (page.kind === "not-found") notFound();
+  if (page.kind === "unavailable") return <TeachingUnavailable kind="teaching" />;
+  const { video, series, more } = page.data;
 
   return (
     <main id="main" tabIndex={-1}>

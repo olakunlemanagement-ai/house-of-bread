@@ -85,3 +85,34 @@ describe("parseOEmbedInfo", () => {
     expect(parseOEmbedInfo({ nope: true })).toBeNull();
   });
 });
+
+describe("lookupVideo", () => {
+  const body = { title: "A teaching", author_url: "https://www.youtube.com/@HOBglobal" };
+
+  it("finds a video with its title and channel", async () => {
+    const { lookupVideo } = await import("./oembed");
+    await expect(lookupVideo(ID, async () => Response.json(body))).resolves.toEqual({
+      status: "found",
+      info: { title: "A teaching", authorUrl: "https://www.youtube.com/@HOBglobal" },
+    });
+  });
+
+  it("is missing when YouTube says there is no public video by that id", async () => {
+    const { lookupVideo } = await import("./oembed");
+    for (const status of [400, 401, 403, 404]) {
+      await expect(lookupVideo(ID, async () => new Response("", { status }))).resolves.toEqual({ status: "missing" });
+    }
+  });
+
+  it("is unreachable on a network error, a server error, a rate limit or a body that is not oEmbed", async () => {
+    const { lookupVideo } = await import("./oembed");
+    const offline = async (): Promise<Response> => {
+      throw new TypeError("fetch failed");
+    };
+    await expect(lookupVideo(ID, offline)).resolves.toEqual({ status: "unreachable" });
+    for (const status of [429, 500, 503]) {
+      await expect(lookupVideo(ID, async () => new Response("", { status }))).resolves.toEqual({ status: "unreachable" });
+    }
+    await expect(lookupVideo(ID, async () => new Response("<html>consent</html>"))).resolves.toEqual({ status: "unreachable" });
+  });
+});

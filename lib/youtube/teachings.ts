@@ -3,10 +3,11 @@ import { cacheLife } from "next/cache";
 import { getAll } from "@/lib/content";
 import { siteConfig } from "@/lib/site-config";
 import { parseApiKey } from "./api";
-import { catalogVideos, loadCatalog, moreTeachings, seriesOf, type Catalog, type Series, type Video, type VideoOverride } from "./catalog";
+import { catalogVideos, loadCatalog, type Catalog, type Video, type VideoOverride } from "./catalog";
 import { VIDEO_TITLE_PLACEHOLDER } from "./featured";
 import { isPlaylistId, isVideoId, thumbnailUrl, watchUrl } from "./feed";
-import { getVideoInfo } from "./oembed";
+import { getVideoLookup } from "./oembed";
+import { decideSeriesPage, decideWatchPage, type SeriesPage, type WatchPage } from "./pages";
 
 /**
  * Refreshed hourly, like the Home feed (./videos.ts). The long expire keeps
@@ -62,21 +63,22 @@ export async function getTeachingsCatalog(): Promise<Catalog> {
   return catalog;
 }
 
-/** A video the catalog does not hold: the configured ids and overrides, with the best title known. */
-async function outsideVideo(id: string): Promise<Video | null> {
-  const override = videoOverrides().get(id);
-  const configured =
+/** True for an id the site names itself, which always has a watch page. */
+function isConfiguredVideo(id: string): boolean {
+  return (
     id === siteConfig.featuredTeachingId ||
     id === siteConfig.startHereVideoId ||
     id === siteConfig.links.featuredVideoId ||
-    override !== undefined;
-  const info = await getVideoInfo(id);
-  const channels = new Set<string>(siteConfig.teachingChannels.map((channel) => channel.url));
-  // A video from another channel never gets a page here, whatever the link says.
-  if (!configured && !(info?.authorUrl && channels.has(info.authorUrl))) return null;
+    videoOverrides().has(id)
+  );
+}
+
+/** A video known only by id: content/videos overrides first, then the title given, then the placeholder. */
+function outsideVideo(id: string, title: string | null): Video {
+  const override = videoOverrides().get(id);
   return {
     id,
-    title: override?.title ?? info?.title ?? VIDEO_TITLE_PLACEHOLDER,
+    title: override?.title ?? title ?? VIDEO_TITLE_PLACEHOLDER,
     publishedAt: null,
     url: watchUrl(id),
     thumbnail: thumbnailUrl(id),
@@ -84,6 +86,28 @@ async function outsideVideo(id: string): Promise<Video | null> {
     short: false,
     durationSeconds: null,
   };
+}
+
+/** Read by a page in a fallback state, so that page renders again within a minute. */
+async function retryWithinAMinute(): Promise<boolean> {
+  "use cache";
+  cacheLife({ revalidate: 60 });
+  return true;
+}
+
+/**
+ * The catalog, or null when it could not load at all (getTeachingsCatalog
+ * throws at runtime when YouTube is down and no earlier result is cached).
+ * A watch or series page then shows its unavailable state, retried within
+ * a minute, instead of failing with a 500.
+ */
+async function catalogOrNull(): Promise<Catalog | null> {
+  try {
+    return await getTeachingsCatalog();
+  } catch {
+    await retryWithinAMinute();
+    return null;
+  }
 }
 
 /**
@@ -95,29 +119,39 @@ export async function getFeaturedTeaching(catalog: Catalog): Promise<Video | nul
   const id = siteConfig.featuredTeachingId;
   if (id === null) return catalog.longForm[0] ?? null;
   if (!isVideoId(id)) return null;
-  return catalogVideos(catalog).get(id) ?? (await outsideVideo(id));
+  const listed = catalogVideos(catalog).get(id);
+  if (listed) return listed;
+  const lookup = await getVideoLookup(id);
+  return outsideVideo(id, lookup.status === "found" ? lookup.info.title : null);
 }
-
-export type WatchTeaching = { video: Video; series: Series | null; more: Video[] };
 
 /**
- * A watch page's data, or null for a video that is not ours: one in the
- * feeds or series, a configured one, or one oEmbed places on a teaching
- * channel (an older upload that has left the 15 item feeds).
+ * A watch page: the teaching, a 404 for a video that is not ours, or the
+ * unavailable state when YouTube cannot say (lib/youtube/pages.ts).
  */
-export async function getWatchTeaching(id: string): Promise<WatchTeaching | null> {
-  if (!isVideoId(id)) return null;
-  const catalog = await getTeachingsCatalog();
-  const video = catalogVideos(catalog).get(id) ?? (await outsideVideo(id));
-  if (!video) return null;
-  return { video, series: seriesOf(catalog, id), more: moreTeachings(catalog, id) };
+export async function getWatchPage(id: string): Promise<WatchPage> {
+  if (!isVideoId(id)) return { kind: "not-found" };
+  const page = await decideWatchPage(id, {
+    catalog: await catalogOrNull(),
+    lookup: getVideoLookup,
+    configured: isConfiguredVideo,
+    outside: outsideVideo,
+    channelUrls: new Set<string>(siteConfig.teachingChannels.map((channel) => channel.url)),
+  });
+  if (page.kind === "unavailable") console.warn("Teachings: YouTube unavailable. Showing a watch page's unavailable state.");
+  return page;
 }
 
-/** A series page's data, or null when the playlist is not one of ours. */
-export async function getSeries(id: string): Promise<Series | null> {
-  if (!isPlaylistId(id)) return null;
-  const catalog = await getTeachingsCatalog();
-  return catalog.series.find((series) => series.id === id) ?? null;
+/** A series page: the series, a 404 for a playlist that is not ours, or the unavailable state. */
+export async function getSeriesPage(id: string): Promise<SeriesPage> {
+  if (!isPlaylistId(id)) return { kind: "not-found" };
+  const page = decideSeriesPage(id, await catalogOrNull(), siteConfig.seriesPlaylistIds);
+  if (page.kind === "unavailable") {
+    console.warn("Teachings: YouTube unavailable. Showing a series page's unavailable state.");
+    // A build time catalog with failed series already retries in a minute; this covers every other case.
+    await retryWithinAMinute();
+  }
+  return page;
 }
 
 /** Watch pages prebuilt from the long-form list. The rest render on their first visit, then stay cached. */
