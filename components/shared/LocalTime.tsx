@@ -1,6 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
+import { zoneName } from "@/lib/content/dates";
 
 type LocalTimeProps = {
   /** ISO 8601 in UTC. */
@@ -11,7 +12,8 @@ type LocalTimeProps = {
   hour12?: boolean;
 };
 
-const format = (iso: string, timeZone?: string, hour12?: boolean) =>
+/** "Monday 9 November at 20:00": the wall clock in a zone, without its name. */
+const format = (iso: string, timeZone: string, hour12?: boolean) =>
   new Intl.DateTimeFormat("en-GB", {
     weekday: "long",
     day: "numeric",
@@ -20,29 +22,29 @@ const format = (iso: string, timeZone?: string, hour12?: boolean) =>
     minute: "2-digit",
     hour12,
     timeZone,
-    timeZoneName: "short",
   }).format(new Date(iso));
 
 const subscribe = () => () => {};
+const visitorZone = () => Intl.DateTimeFormat().resolvedOptions().timeZone;
 
 /**
  * Shows an event time in the visitor's local zone with the ministry's zone
- * beside it. The server HTML carries the ministry time, so the page still
- * says when the event is without JavaScript.
+ * beside it, each named by its city ("Lagos time", not "GMT+1"). The server
+ * HTML carries the ministry time, so the page still says when the event is
+ * without JavaScript. A visitor whose clock reads the same as the
+ * ministry's sees it once.
  */
 export function LocalTime({ iso, timeZone, hour12 }: LocalTimeProps) {
-  const ministry = format(iso, timeZone, hour12);
-  const local = useSyncExternalStore(
-    subscribe,
-    () => format(iso, undefined, hour12),
-    () => null,
-  );
+  const ministryTime = format(iso, timeZone, hour12);
+  const ministry = `${ministryTime} ${zoneName(timeZone)}`;
+  const zone = useSyncExternalStore(subscribe, visitorZone, () => null);
+  const localTime = zone ? format(iso, zone, hour12) : null;
 
   return (
     <time dateTime={iso}>
-      {local && local !== ministry ? (
+      {zone && localTime && localTime !== ministryTime ? (
         <>
-          {local} <span className="text-fg-muted">({ministry})</span>
+          {localTime} {zoneName(zone)} <span className="text-fg-muted">({ministry})</span>
         </>
       ) : (
         ministry
