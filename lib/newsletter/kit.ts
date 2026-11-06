@@ -14,7 +14,14 @@ import type { SubscribeInput } from "./schema";
 // 3. Apply the source tag, and the live-notify tag if asked for.
 
 const KIT_API = "https://api.kit.com/v4";
-const TIMEOUT_MS = 8000;
+/**
+ * One deadline for the whole signup, every call together (5 November 2026).
+ * Up to five calls run in turn; with a timeout each, a slow Kit could hold
+ * the route for 40 s, past the function limit (10 s on Vercel without Fluid
+ * compute). 9 s leaves the route time to answer, so the visitor gets "try
+ * again" instead of a platform error.
+ */
+export const KIT_DEADLINE_MS = 9000;
 
 export type KitStep = "create-subscriber" | "add-to-form" | "tag";
 
@@ -29,7 +36,7 @@ export class KitError extends Error {
   }
 }
 
-async function post(config: KitConfig, step: KitStep, path: string, body: object) {
+async function post(config: KitConfig, step: KitStep, path: string, body: object, signal: AbortSignal) {
   let response: Response;
   try {
     response = await fetch(`${KIT_API}${path}`, {
@@ -40,7 +47,7 @@ async function post(config: KitConfig, step: KitStep, path: string, body: object
         "X-Kit-Api-Key": config.apiKey,
       },
       body: JSON.stringify(body),
-      signal: AbortSignal.timeout(TIMEOUT_MS),
+      signal,
       cache: "no-store",
     });
   } catch {
@@ -62,31 +69,33 @@ export function tagIdsFor(input: SubscribeInput, config: KitConfig): string[] {
 }
 
 /**
- * Subscribes an address with double opt-in. Throws KitError if the subscriber
- * cannot be created or added to the form. Tag failures do not throw: the
+ * Subscribes an address with double opt-in, within one deadline for every
+ * call (a call cut off by it fails as unreachable). Throws KitError if the
+ * subscriber cannot be created or added to the form. Tag failures do not throw: the
  * signup itself succeeded, and they are returned so the caller can log them.
  */
 export async function subscribeToKit(
   input: SubscribeInput,
   config: KitConfig,
+  deadlineMs = KIT_DEADLINE_MS,
 ): Promise<{ tagFailures: KitError[] }> {
   const email_address = input.email;
+  const signal = AbortSignal.timeout(deadlineMs);
 
   // first_name is only sent when given, because the upsert would otherwise
   // clear the name of an existing subscriber.
-  await post(config, "create-subscriber", "/subscribers", {
+  const subscriber = {
     email_address,
     ...(input.firstName ? { first_name: input.firstName } : {}),
     state: "inactive",
-  });
+  };
+  await post(config, "create-subscriber", "/subscribers", subscriber, signal);
 
-  await post(config, "add-to-form", `/forms/${encodeURIComponent(config.formId)}/subscribers`, {
-    email_address,
-  });
+  await post(config, "add-to-form", `/forms/${encodeURIComponent(config.formId)}/subscribers`, { email_address }, signal);
 
   const results = await Promise.allSettled(
     tagIdsFor(input, config).map((tagId) =>
-      post(config, "tag", `/tags/${encodeURIComponent(tagId)}/subscribers`, { email_address }),
+      post(config, "tag", `/tags/${encodeURIComponent(tagId)}/subscribers`, { email_address }, signal),
     ),
   );
   const tagFailures = results.flatMap((result) =>
