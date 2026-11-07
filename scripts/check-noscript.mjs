@@ -307,14 +307,14 @@ try {
           return page.$eval(region.selector, (el) => ({
             height: Math.round(el.getBoundingClientRect().height * 10) / 10,
             // A region in its unavailable state says so (data-state), so the table shows which state was measured.
-            state: el.querySelector("[data-state]")?.getAttribute("data-state") ?? "loaded",
+            state: el.querySelector("[data-state]")?.getAttribute("data-state") ?? null,
           }));
         });
       }
       if (!measured.fallback || !measured.content) continue;
       const delta = Math.round((measured.content.height - measured.fallback.height) * 10) / 10;
       console.log(
-        `${String(viewport.width).padStart(4)}px  ${region.name.padEnd(26)} fallback ${measured.fallback.height}  content ${measured.content.height}  shift ${delta}  (${measured.content.state})`,
+        `${String(viewport.width).padStart(4)}px  ${region.name.padEnd(26)} fallback ${measured.fallback.height}  content ${measured.content.height}  shift ${delta}${measured.content.state ? `  (${measured.content.state} state)` : ""}`,
       );
       if (Math.abs(delta) > 1) fail(`${region.name} at ${viewport.width}px shifts by ${delta}px`);
     }
