@@ -12,7 +12,7 @@ export function Hero() {
     <section aria-labelledby="hero-heading" className={heroFrameClass}>
       <HeroBackdrop loop="ambient-light" phone hold={70} />
       <div className={`${heroBodyClass} flex flex-col justify-center`}>
-        <div data-hero-text className="max-w-4xl">
+        <div data-hero-text data-hero-align="start" className="max-w-4xl">
           <h1 id="hero-heading" className="text-statement">
             Understand the Bible you&apos;ve been reading.
           </h1>

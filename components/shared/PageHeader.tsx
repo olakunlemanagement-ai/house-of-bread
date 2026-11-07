@@ -69,7 +69,11 @@ export function PageHeader({
     >
       <HeroBackdrop loop={loop} phone={phoneLoop} hold={night ? 100 : undefined} />
       <div className={`${heroBodyClass} grid content-center items-center gap-12 lg:grid-cols-12`}>
-        <div data-hero-text className={center ? "text-center lg:col-span-12" : "lg:col-span-7"}>
+        <div
+          data-hero-text
+          data-hero-align={center ? "center" : "start"}
+          className={center ? "text-center lg:col-span-12" : "lg:col-span-7"}
+        >
           <p className={`eyebrow eyebrow-dot ${smooth}`} style={stagger(0)}>
             {eyebrow}
           </p>
