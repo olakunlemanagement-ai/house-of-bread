@@ -28,9 +28,10 @@ const EXACT = {
     h1: "Understand the Bible you've been reading.",
     key: "Courses and teaching that bring you into an accurate understanding of God's Word",
   },
+  // The h1 is the dictionary entry's headword and its Greek, as a screen reader reads it (DictionaryEntry).
   "/about": {
-    h1: "A teaching ministry",
-    key: "The name comes from Bethlehem, the house of bread, where the Bread of Life was born.",
+    h1: "Didaskalos (διδάσκαλος)",
+    key: "Bethlehem, Beyth Lechem in Hebrew (Strong's H1035), means house of bread.",
   },
   "/academy": {
     h1: "Bible courses",
@@ -59,6 +60,14 @@ const EXACT = {
   // The h1 is the featured teaching's title, from YouTube, so only a section heading is fixed.
   "/media": {
     key: "Latest teachings",
+  },
+  "/media/all": {
+    h1: "Looking for a particular teaching?",
+    key: "Every teaching, newest first. New ones appear here as soon as they are posted.",
+  },
+  "/media/series": {
+    h1: "Want to go through a subject from start to finish?",
+    key: "Every series, newest first. Each one runs in order from the first part.",
   },
   "/new-testament": {
     h1: "Study the New Testament, book by book",
@@ -101,7 +110,7 @@ const PATTERNS = [
   { pattern: /^\/new-testament\/[^/]+$/, key: "See all 27 books" },
   { pattern: /^\/plans\/[^/]+$/, key: "About this journey" },
   // Teachings: the h1 is the video's or the playlist's title, from YouTube.
-  { pattern: /^\/media\/watch\/[A-Za-z0-9_-]{11}$/, key: "Ready to go deeper?" },
+  { pattern: /^\/media\/watch\/[A-Za-z0-9_-]{11}$/, key: "Ready to go deeper into God's Word?" },
   { pattern: /^\/media\/series\/[A-Za-z0-9_-]+$/, key: "What's in this series?" },
 ];
 
@@ -138,6 +147,51 @@ function decode(text) {
 function textOf(html) {
   return decode(html.replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
 }
+
+/** Drops every element marked aria-hidden="true", with all it holds. */
+function withoutHidden(html) {
+  let out = "";
+  let hiddenDepth = 0;
+  let last = 0;
+  for (const match of html.matchAll(/<(\/?)([a-z][a-z0-9-]*)\b[^>]*?(\/?)>/gi)) {
+    const [tag, closing, , selfClosing] = match;
+    if (hiddenDepth === 0) out += html.slice(last, match.index);
+    last = match.index + tag.length;
+    const isVoid = selfClosing === "/" || /^<(br|img|input|hr|meta|link|source|wbr)\b/i.test(tag);
+    if (hiddenDepth > 0) {
+      if (closing) hiddenDepth -= 1;
+      else if (!isVoid) hiddenDepth += 1;
+      continue;
+    }
+    if (!closing && !isVoid && /\saria-hidden="true"/.test(tag)) {
+      hiddenDepth = 1;
+      continue;
+    }
+    out += tag;
+  }
+  return hiddenDepth === 0 ? out + html.slice(last) : out;
+}
+
+/**
+ * A heading's text as a screen reader reads it: aria-hidden parts left
+ * out, and inline tags joining text without a space, so "Didaskalos
+ * (<span>διδάσκαλος</span>)" reads as it shows. Exported for testing.
+ */
+export function headingText(html) {
+  return decode(
+    withoutHidden(html)
+      .replace(/<\/?(span|a|em|strong|b|i|time|abbr|small)\b[^>]*>/gi, "")
+      .replace(/<[^>]+>/g, " "),
+  )
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** The marker a watch or series page carries in its unavailable state (TeachingUnavailable). */
+const UNAVAILABLE = /<main\b[^>]*\sdata-state="unavailable"/;
+const UNAVAILABLE_KEY = "isn't answering at the moment";
+/** A watch page rendered while YouTube's lists failed: the teaching, without its series or "More teachings". */
+const PARTIAL = /<main\b[^>]*\sdata-state="partial"/;
 
 /**
  * The HTML a visitor sees without script: everything before React's first
@@ -177,8 +231,12 @@ export function courseLinkFailures(html) {
   return failures;
 }
 
-/** Checks one page's HTML. Returns { failures, notes }. Exported for testing. */
-export function analyse(html, { h1: expectedH1, key, h1InTitle = false, source }) {
+/**
+ * Checks one page's HTML. Returns { failures, notes }. Exported for testing.
+ * @param {string} html
+ * @param {{ h1?: string, key: string | RegExp, h1InTitle?: boolean, source?: string }} expectation
+ */
+export function analyse(html, { h1: expectedH1, key: expectedKey, h1InTitle = false, source }) {
   const failures = [];
   const notes = [];
   const visible = visibleHtml(html);
@@ -197,7 +255,7 @@ export function analyse(html, { h1: expectedH1, key, h1InTitle = false, source }
   // The visually hidden "Loading" status inside a LoadingRegion is not content.
   const mainText = textOf(main.replace(/<p role="status"[^>]*>[\s\S]*?<\/p>/g, ""));
 
-  const h1s = [...main.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)].map((match) => textOf(match[1]));
+  const h1s = [...main.matchAll(/<h1\b[^>]*>([\s\S]*?)<\/h1>/gi)].map((match) => headingText(match[1]));
   if (h1s.length === 0) {
     failures.push(/<h1\b/i.test(html) ? "the h1 arrives only after script runs" : "no h1 in main");
   } else if (h1s.length > 1) {
@@ -210,6 +268,11 @@ export function analyse(html, { h1: expectedH1, key, h1InTitle = false, source }
     if (!title.includes(h1)) failures.push(`h1 "${h1}" does not appear in the title "${title}"`);
   }
 
+  // A watch or series page while YouTube is not answering: a calm state with its own line, noted so it is seen.
+  const unavailable = UNAVAILABLE.test(main);
+  if (unavailable) notes.push("shows the unavailable state (YouTube not answering)");
+  if (PARTIAL.test(main)) notes.push("shows the partial state: the teaching without its series or more teachings (YouTube lists not answering)");
+  const key = unavailable ? UNAVAILABLE_KEY : expectedKey;
   const has = (text) => (key instanceof RegExp ? key.test(text) : text.includes(key));
   if (!has(mainText)) {
     failures.push(
