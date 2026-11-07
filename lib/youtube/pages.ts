@@ -12,7 +12,13 @@ import { catalogVideos, moreTeachings, seriesOf, type Catalog, type Series, type
 import { isPlaylistId, isVideoId } from "./feed";
 import type { VideoLookup } from "./oembed";
 
-export type WatchTeaching = { video: Video; series: Series | null; more: Video[] };
+export type WatchTeaching = {
+  video: Video;
+  series: Series | null;
+  more: Video[];
+  /** True when the catalog's lists failed, so the series and "More teachings" are missing, not empty. */
+  partial: boolean;
+};
 
 export type WatchPage = { kind: "ok"; data: WatchTeaching } | { kind: "not-found" } | { kind: "unavailable" };
 
@@ -48,6 +54,7 @@ export async function decideWatchPage(id: string, sources: WatchSources): Promis
       video,
       series: catalog ? seriesOf(catalog, id) : null,
       more: catalog ? moreTeachings(catalog, id) : [],
+      partial: !catalog || catalog.failed.longForm,
     },
   });
 

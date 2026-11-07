@@ -73,6 +73,22 @@ RSS feeds list 15 entries at most, so without the key a series of 15 shows "15+ 
 
 `/media/watch/[videoId]` renders for a video in the catalog, a configured id, an override, or one whose oEmbed `author_url` is a teaching channel's handle URL (`siteConfig.teachingChannels`). Anything else is a 404, so the site never frames someone else's video under its own name.
 
+### When YouTube is not answering (6 November 2026)
+
+A watch or series page that was not prebuilt used to fail while YouTube was down: the catalog throws at runtime when no earlier copy is cached, so a watch page gave a 500, and a series page gave a 404 when its feed had failed at build. Both now decide from what YouTube actually answered (`lib/youtube/pages.ts`, tested in `pages.test.ts`):
+
+- oEmbed reports one of three things: found, missing (400, 401, 403 or 404: no public video by that id) or unreachable (anything else).
+- A watch page is a 404 only when YouTube answered: missing, or found on another channel. With the catalog down it still renders a teaching that oEmbed places on a teaching channel, without its series or "More teachings".
+- A series page is a 404 only when the series list arrived and the playlist is neither in it nor configured.
+- With no usable answer, the page shows "This teaching is unavailable right now" (or "This series") and "See all teachings": status 200, noindex, retried within a minute (`TeachingUnavailable`).
+- A watch page rendered while the lists failed carries `data-state="partial"` on main; check-html and check-noscript note it.
+
+These pages read `loadTeachingsCatalog`, the cached loader, which never throws: it returns the catalog with `failed` set and a one minute revalidate. Next 16.4 fails a render whose cached function throws even when the caller catches the error (a 500 at runtime, as at build), so catching `getTeachingsCatalog`'s error was not enough. `getTeachingsCatalog` is now a plain function over the loader that throws at runtime for the list pages, so their refresh still fails and the last good page stays. It is not cached itself, so a refresh never reads a stale copy through two caches.
+
+The trade off: during an outage a failed catalog is cached for a minute at a time, so a watch page refreshed then shows the partial or unavailable state until YouTube answers again, where before its refresh failed and the last good page stayed. The list pages (/media, all, series) keep their last good page as before.
+
+Seen for real on 6 November 2026: YouTube's RSS feeds returned 404 for every channel and playlist while oEmbed answered. Watch pages rendered from oEmbed (partial), series pages showed the unavailable state, and an id YouTube does not know stayed a 404.
+
 ### Creating YOUTUBE_API_KEY
 
 1. In Google Cloud Console (console.cloud.google.com), create a project, for example "hob-website".

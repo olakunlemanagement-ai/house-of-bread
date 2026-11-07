@@ -77,10 +77,11 @@ export default async function WatchPage({ params }: PageProps<"/media/watch/[vid
   const page = await getWatchPage(videoId);
   if (page.kind === "not-found") notFound();
   if (page.kind === "unavailable") return <TeachingUnavailable kind="teaching" />;
-  const { video, series, more } = page.data;
+  const { video, series, more, partial } = page.data;
 
   return (
-    <main id="main" tabIndex={-1}>
+    // "partial": YouTube's lists failed, so the series and "More teachings" are missing (the checks note it).
+    <main id="main" tabIndex={-1} data-state={partial ? "partial" : undefined}>
       <div className="bg-surface">
         <div className="container-page pb-8 pt-24 sm:pt-28 md:pb-12">
           <nav aria-label="Breadcrumb">

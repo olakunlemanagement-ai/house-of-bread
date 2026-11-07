@@ -66,6 +66,7 @@ describe("decideWatchPage", () => {
     expect(page.data.video.id).toBe(vid(1));
     expect(page.data.series?.id).toBe(PLAYLIST);
     expect(page.data.more.map((v) => v.id)).toEqual([vid(2), vid(3)]);
+    expect(page.data.partial).toBe(false);
     expect(s.lookup).not.toHaveBeenCalled();
   });
 
@@ -80,7 +81,9 @@ describe("decideWatchPage", () => {
 
   it("still renders a teaching from oEmbed while the catalog is down, without series or more", async () => {
     const page = await decideWatchPage(vid(9), sources(found(OURS), { catalog: null }));
-    expect(page).toEqual({ kind: "ok", data: { video: video(vid(9), "From oEmbed"), series: null, more: [] } });
+    expect(page).toEqual({ kind: "ok", data: { video: video(vid(9), "From oEmbed"), series: null, more: [], partial: true } });
+    const fromFailed = await decideWatchPage(vid(9), sources(found(OURS), { catalog: failed }));
+    expect(fromFailed.kind === "ok" && fromFailed.data.partial).toBe(true);
   });
 
   it("is a 404 for a video oEmbed places on another channel, or that YouTube says does not exist", async () => {

@@ -28,16 +28,14 @@ function noPreviousPage(): boolean {
 }
 
 /**
- * Every teaching, Short and series, cached and refreshed hourly. Uses
- * YOUTUBE_API_KEY for series and durations when it is set.
- *
- * When a section's requests all fail at runtime this throws on purpose, as
- * getLatestVideos does: the refresh fails, and the last page that rendered
- * stays in place and is retried, instead of a fallback state being cached
- * as a success. At build time it returns what it has, with the sections'
- * fallback states, and retries after a minute. See docs/MEDIA-FEED.md.
+ * Every teaching, Short and series, cached and refreshed hourly, failures
+ * included: it never throws. When a section's requests all fail it returns
+ * what it has, with `failed` set, and retries after a minute. The watch and
+ * series pages read this one, because Next fails a render whose cached
+ * function throws even when the caller catches the error, so those pages
+ * would give a 500 instead of their unavailable state.
  */
-export async function getTeachingsCatalog(): Promise<Catalog> {
+async function loadTeachingsCatalog(): Promise<Catalog> {
   "use cache";
   cacheLife(catalogLife);
 
@@ -51,11 +49,27 @@ export async function getTeachingsCatalog(): Promise<Catalog> {
   console.info(
     `Teachings: videos from ${source.lists}, series from ${source.series}, durations ${source.durations ? "from the Data API" : "hidden"}.`,
   );
+  if (failed.longForm || failed.series) cacheLife({ revalidate: 60 });
+  return catalog;
+}
 
-  if (failed.longForm || failed.series) {
+/**
+ * The catalog for the Teachings pages that show lists (/media, all, series).
+ * Uses YOUTUBE_API_KEY for series and durations when it is set.
+ *
+ * When a section's requests all fail at runtime this throws on purpose, as
+ * getLatestVideos does: the page's refresh fails, and the last page that
+ * rendered stays in place and is retried, instead of a fallback state
+ * replacing it. It is not cached itself (loadTeachingsCatalog is), so a
+ * refresh never reads a stale copy through a second cache. At build time
+ * it returns what it has, with the sections' fallback states, retried
+ * after a minute. See docs/MEDIA-FEED.md.
+ */
+export async function getTeachingsCatalog(): Promise<Catalog> {
+  const catalog = await loadTeachingsCatalog();
+  if (catalog.failed.longForm || catalog.failed.series) {
     if (noPreviousPage()) {
       console.warn("Teachings: YouTube unavailable. Showing the fallback states, retrying in a minute.");
-      cacheLife({ revalidate: 60 });
       return catalog;
     }
     throw new Error("Teachings: YouTube unavailable. Keeping the last good page.");
@@ -96,21 +110,6 @@ async function retryWithinAMinute(): Promise<boolean> {
 }
 
 /**
- * The catalog, or null when it could not load at all (getTeachingsCatalog
- * throws at runtime when YouTube is down and no earlier result is cached).
- * A watch or series page then shows its unavailable state, retried within
- * a minute, instead of failing with a 500.
- */
-async function catalogOrNull(): Promise<Catalog | null> {
-  try {
-    return await getTeachingsCatalog();
-  } catch {
-    await retryWithinAMinute();
-    return null;
-  }
-}
-
-/**
  * The featured teaching: the pinned one (siteConfig.featuredTeachingId),
  * from the catalog or oEmbed, or with none pinned the newest long-form
  * teaching, so the hero follows each new upload.
@@ -132,7 +131,7 @@ export async function getFeaturedTeaching(catalog: Catalog): Promise<Video | nul
 export async function getWatchPage(id: string): Promise<WatchPage> {
   if (!isVideoId(id)) return { kind: "not-found" };
   const page = await decideWatchPage(id, {
-    catalog: await catalogOrNull(),
+    catalog: await loadTeachingsCatalog(),
     lookup: getVideoLookup,
     configured: isConfiguredVideo,
     outside: outsideVideo,
@@ -145,10 +144,10 @@ export async function getWatchPage(id: string): Promise<WatchPage> {
 /** A series page: the series, a 404 for a playlist that is not ours, or the unavailable state. */
 export async function getSeriesPage(id: string): Promise<SeriesPage> {
   if (!isPlaylistId(id)) return { kind: "not-found" };
-  const page = decideSeriesPage(id, await catalogOrNull(), siteConfig.seriesPlaylistIds);
+  const page = decideSeriesPage(id, await loadTeachingsCatalog(), siteConfig.seriesPlaylistIds);
   if (page.kind === "unavailable") {
     console.warn("Teachings: YouTube unavailable. Showing a series page's unavailable state.");
-    // A build time catalog with failed series already retries in a minute; this covers every other case.
+    // A failed catalog already retries in a minute; this covers a configured playlist missing from a working list.
     await retryWithinAMinute();
   }
   return page;
