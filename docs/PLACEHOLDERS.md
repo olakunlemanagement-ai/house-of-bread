@@ -1569,12 +1569,18 @@ text in dark is worst over the brightest.
 ### Home teaching block with a short feed
 
 It lays out only the videos it has (`components/shared/home-teachings-layout.ts`):
-the lead alone full width (the featured video when the feed fails), two
+the lead alone full width (a feed of one video), two
 side by side from sm, the lead with two stacked cards from lg, and the
 full layout with three. Checked by screenshot with 0 to 4 videos at 375,
 768 and 1280. The skeleton draws the full layout, so with a short feed the
 block changes height when it arrives (below the fold, by about 230px at
 1280 for a lone video).
+
+When the feed fails (6 November 2026) the block keeps the full layout:
+the featured video in the lead, and over three invisible rows built like
+the real ones, one line pointing to the YouTube channel
+(`HomeTeachingsFallback`). It is the same height as the loaded block and
+the skeleton at every width, measured at 375, 768 and 1280.
 
 ### Home height (Playwright, production build, 28 October 2026)
 

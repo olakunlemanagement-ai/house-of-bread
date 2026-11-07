@@ -3,7 +3,9 @@
   left empty when the feed fails or is short. `more` is the number of small
   videos after the lead (0 to 3):
 
-  - 0: the lead alone, full width (the featured video when the feed fails)
+  - 0: the lead alone, full width (a feed of one video). A failed feed
+    keeps the full layout instead (HomeTeachingsFallback), so it matches
+    the skeleton's height
   - 1: two equal videos side by side from sm
   - 2: the lead in eight columns from lg, two cards stacked beside it
   - 3: the lead in eight columns from lg, three rows beside it (the skeleton)
